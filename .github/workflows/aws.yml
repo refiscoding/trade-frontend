@@ -1,0 +1,98 @@
+name: AWS S3 Deploy
+
+on:
+  push:
+    branches:
+      - 'master'
+      - 'develop'
+      - 'feature/**'
+      - 'release/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x]
+
+    env:
+      COVERALLS_ENDPOINT: https://api.coverage.sovtech.org
+      AWS_DEFAULT_REGION: 'eu-west-1'
+      AWS_ACCESS_KEY_ID: 'AKIAQJ6QY46ORIOW5I2U'
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    steps:
+      ## Checkout current branch
+      - uses: actions/checkout@v1
+
+      ## Prepare Dev Environment
+      - name: Prepare Dev Environment
+        # if develop branch
+        if: contains(github.ref, 'refs/heads/feature/') || github.ref == 'refs/heads/develop'
+        env:
+          REACT_APP_STAGE: 'dev'
+          CLOUDFRONT_DIST: 'E1BZKPYW67O8TE'
+          S3_BUCKET: 's3://sovtech-core-developmentbucketf9af85a8-1hgskubqflfak'
+          REACT_APP_API_HOST: 'https://backend-dev.sovtech-core.sovtech.org'
+        # uses: ./.github/actions/say-hello
+        run: |
+          echo "REACT_APP_STAGE=$REACT_APP_STAGE" >> $GITHUB_ENV
+          echo "CLOUDFRONT_DIST=$CLOUDFRONT_DIST" >> $GITHUB_ENV
+          echo "S3_BUCKET=$S3_BUCKET" >> $GITHUB_ENV
+          echo "REACT_APP_API_HOST=$REACT_APP_API_HOST" >> $GITHUB_ENV
+
+      ## Prepare Staging Environment
+      - name: Prepare Staging Environment
+        # if release branch
+        if: contains(github.ref, 'refs/heads/release/')
+        env:
+          REACT_APP_STAGE: 'uat'
+          CLOUDFRONT_DIST: 'E7851QSI4O2OK'
+          S3_BUCKET: 's3://sovtech-core-stagingbucket9644c37c-1rgqilsrg56bu'
+          REACT_APP_API_HOST: 'https://backend-uat.sovtech-core.sovtech.org'
+        # uses: ./.github/actions/say-hello
+        run: |
+          echo "REACT_APP_STAGE=$REACT_APP_STAGE" >> $GITHUB_ENV
+          echo "CLOUDFRONT_DIST=$CLOUDFRONT_DIST" >> $GITHUB_ENV
+          echo "S3_BUCKET=$S3_BUCKET" >> $GITHUB_ENV
+          echo "REACT_APP_API_HOST=$REACT_APP_API_HOST" >> $GITHUB_ENV
+
+      ## Prepare Production Environment
+      - name: Prepare Production Environment
+        # if master branch
+        if: github.ref == 'refs/heads/master'
+        env:
+          REACT_APP_STAGE: 'prod'
+          CLOUDFRONT_DIST: 'E2G9EVK3CVR6BI'
+          S3_BUCKET: 's3://sovtech-core-productionbucket97868c75-6nt5g0bcyoh0'
+          REACT_APP_API_HOST: 'https://backend-prod.sovtech-core.sovtech.org'
+        # uses: ./.github/actions/say-hello
+        run: |
+          echo "REACT_APP_STAGE=$REACT_APP_STAGE" >> $GITHUB_ENV
+          echo "CLOUDFRONT_DIST=$CLOUDFRONT_DIST" >> $GITHUB_ENV
+          echo "S3_BUCKET=$S3_BUCKET" >> $GITHUB_ENV
+          echo "REACT_APP_API_HOST=$REACT_APP_API_HOST" >> $GITHUB_ENV
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+
+      - name: Install dependencies
+        run: |
+          sudo npm i -g graphql-cli
+          yarn
+
+      - name: Generate queries & build application
+        run: |
+          yarn generate
+          yarn build
+
+      - name: Copy build to S3 bucket & invalidate cache
+        run: |
+          aws s3 sync --delete build $S3_BUCKET
+          aws configure set preview.cloudfront true
+          aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DIST --paths "/*"

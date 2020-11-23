@@ -1,0 +1,19 @@
+# THIS IS FOR CRUD DEMONSTRATION PURPOSES ONLY!
+# You should not be creating users like this.
+mutation createUser($input: createUserInput) {
+  createUser(input: $input) {
+    user {
+      id
+      username
+      email
+      confirmed
+      blocked
+      role {
+        id
+        name
+        description
+        type
+      }
+    }
+  }
+}
