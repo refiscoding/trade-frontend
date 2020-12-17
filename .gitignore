@@ -10,6 +10,7 @@
 
 # production
 /build
+.idea/*
 
 # graphql code-gen
 src/generated

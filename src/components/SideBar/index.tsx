@@ -5,7 +5,7 @@ import { useMediaQuery } from 'react-responsive'
 import { ColorProps, get } from 'styled-system'
 import { useAppContext } from '../../context/AppProvider'
 import { useAuthContext } from '../../context/AuthProvider/index'
-import { NavItem } from '../../navigation'
+import { NavItem } from '../../constants/navItems'
 import { images, theme } from '../../theme'
 import { Text } from '../../typography'
 import Header from '../Header'
@@ -81,73 +81,46 @@ const SideBar: React.FC<SideBarProps> = ({
         // Calculate offset based on icon size
         iconOffset={(64 - 20) / 2}
         justifyContent="flex-start"
-        initial={{ width: drawerOpen ? 250 : 64 }}
+        pt={5}
+        initial={{ width: drawerOpen ? 300 : 64 }}
       >
         <Flex
           pl="20px"
           width="100%"
           height="64px"
           alignItems="center"
-          borderBottomWidth={1}
-          justifyContent="flex-start"
-          borderColor={borderColor}
+          justifyContent="space-between"
+          flexDirection="row-reverse"
+          mb={5}
         >
           <SideBarButton color={color} open={drawerOpen} onClick={toggleDrawer} />
-          <Flex pr={2} flex={1} justifyContent="flex-end">
+          <Flex flex={1} mr={4}>
             <AnimatePresence>
               {drawerOpen && (
-                <motion.img
-                  width="60%"
-                  height="auto"
-                  exit={{ opacity: 0 }}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  src={images.sovtechLogo}
-                  style={{ alignSelf: 'flex-start' }}
-                />
+                <Flex flexDirection="column">
+                  <motion.img
+                    width="100%"
+                    height="auto"
+                    exit={{ opacity: 0 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    src={images.TradeFedFullLogo}
+                    style={{ alignSelf: 'flex-start' }}
+                  />
+                  <Text
+                    fontSize="12px"
+                    color={color}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0, pointerEvents: 'none' }}
+                  >
+                    A B2B and B2C Trade App
+                  </Text>
+                </Flex>
               )}
             </AnimatePresence>
           </Flex>
         </Flex>
-        {user && (
-          <MotionFlex
-            py={4}
-            pr={4}
-            width="100%"
-            align="center"
-            pl={(64 - 30) / 2}
-            justify="flex-start"
-            borderBottomWidth={1}
-            borderBottomColor={borderColor}
-            style={{ whiteSpace: 'nowrap' }}
-            whileHover={{
-              backgroundColor: get(theme, `colors.${hoverColor}`, 'pink'),
-              cursor: 'pointer'
-            }}
-          >
-            <Avatar
-              mr={4}
-              width="30px"
-              height="30px"
-              fontSize="xs"
-              name={`${user?.username}` || ''}
-              src={user?.profilePicture?.url || ''}
-            />
-            <AnimatePresence>
-              {drawerOpen && (
-                <Text
-                  color={color}
-                  fontWeight="bold"
-                  animate={{ opacity: 1 }}
-                  initial={{ opacity: 0 }}
-                  exit={{ opacity: 0, pointerEvents: 'none' }}
-                >
-                  {`${user?.username}` || ''}
-                </Text>
-              )}
-            </AnimatePresence>
-          </MotionFlex>
-        )}
         {navItems.map((props) => (
           <SideBarItem
             color={color}

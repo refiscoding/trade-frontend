@@ -11,7 +11,7 @@ const PageNotFound: React.FC<RouteComponentProps> = ({ history }) => {
       <Flex justify="center" align="center" p={4} flexDir="column">
         <Image mb={6} src={images[404]} width="350px" maxWidth="100%" height="auto" />
         <H4>Sorry, we couldn&apos;t find what you were looking for.</H4>
-        <Button onClick={() => history.push('/')} mt={6} variantColor="brand">
+        <Button onClick={() => history.push('/auth/dashboard')} mt={6} variantColor="brand">
           <Text fontWeight="lighter">Back Home</Text>
         </Button>
       </Flex>

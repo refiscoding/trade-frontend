@@ -1,5 +1,4 @@
 import React, { Suspense } from 'react'
-import { Users } from 'react-feather'
 import { Redirect, Route, RouteProps, Switch } from 'react-router'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { FillLoader } from '../components'
@@ -7,25 +6,12 @@ import SideBar from '../components/SideBar'
 import PageNotFound from '../containers/PageNotFound'
 import { useAuthContext } from '../context/AuthProvider'
 import { PRIVATE_ROUTES, PUBLIC_ROUTES } from './routes'
+import { NAV_ITEMS } from '../constants'
 
 interface RouteType extends RouteProps {
   component: any
 }
 
-export type NavItem = {
-  to: string
-  title: string
-  icon: React.ReactNode
-  subMenu?: Array<{ to: string; title: string }>
-}
-
-const NAV_ITEMS: NavItem[] = [
-  {
-    to: `/auth/user-management`,
-    title: 'User Management',
-    icon: <Users size={20} color="white" className="sidebar-menu-icon" />
-  }
-]
 
 const PrivateRoute = ({ component: Component, ...rest }: RouteType) => {
   const { isAuthenticating, isAuthenticated } = useAuthContext()
@@ -43,7 +29,7 @@ const PrivateRoute = ({ component: Component, ...rest }: RouteType) => {
             <Component {...rest} />
           </Suspense>
         ) : (
-          <Redirect to={{ pathname: '/', state: { from: props.location } }} />
+          <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
         )
       }
     />
@@ -64,14 +50,14 @@ const Navigation = () => (
           return <PublicRoute key={route.path} {...route} />
         })}
         <Route
-          path="/auth"
+          path="/"
           render={() => (
             <SideBar
-              bg="gray.900"
-              color="white"
+              bg="white"
+              color="black"
               navItems={NAV_ITEMS}
-              hoverColor="gray.700"
-              accentColor="cyan.500"
+              hoverColor="brand.50"
+              accentColor="brand.500"
             >
               {PRIVATE_ROUTES.map((route) => {
                 return <PrivateRoute key={route.path} {...route} />

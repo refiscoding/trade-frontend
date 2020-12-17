@@ -1,6 +1,7 @@
 import {
   Flex,
   IconButton,
+  Image,
   Menu,
   MenuButton,
   MenuDivider,
@@ -20,6 +21,7 @@ import { useAuthContext } from '../../context/AuthProvider/index'
 import { Text } from '../../typography'
 import Breadcrumbs from '../Breadcrumbs'
 import SideBarButton from '../SideBar/SideBarButton'
+import { images } from '../../theme'
 
 type HeaderProps = RouteComponentProps &
   ColorProps & {
@@ -76,39 +78,17 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
 
   const handleLogout = () => {
     logout && logout()
-    history.push('/')
+    history.push('/dashboard')
   }
 
   return (
     <HeaderCont pr={4} pl={drawerOpen ? 'calc(186px + 1rem)' : '1rem'} {...rest}>
-      <BreadCrumbCont>
-        <Breadcrumbs />
-      </BreadCrumbCont>
       {isTabletOrMobile && <SideBarButton color="black" open={drawerOpen} onClick={toggleDrawer} />}
-      <Flex flexDirection="row">
-        <Flex flexDirection="row" justifyContent="center" alignItems="center">
-          <Text mb={0} mr={4} fontWeight="bold">
-            {user?.email}
-          </Text>
-          <Menu>
-            {/* 
-            // @ts-ignore */}
-            <MenuButton icon="settings" as={IconButton} variantColor="brand" size="sm">
-              Profile
-            </MenuButton>
-            <MenuList mr={3} mt={3}>
-              <MenuGroup title="Account">
-                <MenuItem onClick={() => history.push('profile')}>My Account</MenuItem>
-                <MenuItem onClick={handleLogout}>Logout</MenuItem>
-              </MenuGroup>
-              <MenuDivider />
-              <MenuGroup title="Help">
-                <MenuItem>Docs</MenuItem>
-                <MenuItem>FAQ</MenuItem>
-              </MenuGroup>
-            </MenuList>
-          </Menu>
-        </Flex>
+      <Flex width="50%" align="center" justify="center">
+        <Image mr={5} width="100%" height="auto" src={images['TradeFedFullLogo']} />
+      </Flex>
+      <Flex>
+        <Image width={30} height={30} src={images['shoppingCart']} />
       </Flex>
     </HeaderCont>
   )

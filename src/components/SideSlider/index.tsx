@@ -3,7 +3,6 @@ import styled from '@emotion/styled'
 import { Variants } from 'framer-motion'
 import * as React from 'react'
 import { MotionFlex } from '..'
-import Version from '../Version'
 
 const PanelWrapper = styled(MotionFlex)`
   top: 0;
@@ -54,7 +53,6 @@ const SideSlider: React.FC<FlexProps> = ({ children, justify }) => {
     >
       <Flex flexDir="column" width="100%" minHeight="100%" justify={justify}>
         {children}
-        <Version />
       </Flex>
     </PanelWrapper>
   )

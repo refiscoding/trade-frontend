@@ -1,4 +1,4 @@
-import { Button, Flex } from '@chakra-ui/core'
+import { Button, Flex, Image } from "@chakra-ui/core";
 import { Form, Formik, FormikProps } from 'formik'
 import * as React from 'react'
 import { Link, useHistory } from 'react-router-dom'
@@ -10,6 +10,7 @@ import { PageWrap } from '../../layouts'
 import { images, theme } from '../../theme'
 import { H3, Text } from '../../typography'
 import { formatError } from '../../utils'
+import { Mail } from "react-feather";
 
 type RegisterProps = {}
 
@@ -53,13 +54,17 @@ const Register: React.FC<RegisterProps> = () => {
       title="Register"
       align="center"
       justify="center"
-      backgroundSize="cover"
-      bgImage={`url(${images.bg})`}
     >
+      <Flex width="100%" align="center" justify="center" mt={4} mb={4}>
+        <Image
+          width="90%"
+          src={images['TradeFedFullLogo']}
+        />
+      </Flex>
       <SideSlider>
-        <Flex width="100%">
-          <H3 textAlign="left" mb={4}>
-            Register
+        <Flex width="100%" align="center" justify="center" mb={4}>
+          <H3 textAlign="left">
+            Create an account
           </H3>
         </Flex>
         <Formik
@@ -85,14 +90,8 @@ const Register: React.FC<RegisterProps> = () => {
         >
           {({ isSubmitting, status }: FormikProps<RegisterValues>) => (
             <Form style={{ width: '100%' }}>
-              <ConnectedFormGroup name="username" label="Username" placeholder="Username" />
-              <ConnectedFormGroup name="email" label="Email" placeholder="Email" type="email" />
-              <ConnectedPasswordGroup name="password" label="Password" placeholder="Password" />
-              <ConnectedPasswordGroup
-                name="confirmPassword"
-                label="Confirm Password"
-                placeholder="Confirm Password"
-              />
+              <ConnectedFormGroup icon={Mail} name="email" placeholder="Email" type="email" />
+              <ConnectedPasswordGroup name="password" placeholder="Password" />
               {status && (
                 <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
                   <Text textAlign="right" color="red.500">
@@ -107,12 +106,31 @@ const Register: React.FC<RegisterProps> = () => {
                 variantColor="brand"
                 isLoading={isSubmitting}
               >
-                SUBMIT
+                SIGN UP
               </Button>
-              <Flex mt={4} align="center" justify="center">
+              <Flex mb={2} mt={4} align="center" justify="center" flexDirection="column">
+                <Text my={4} fontSize="14px">
+                  Or continue with social media
+                </Text>
+                <Flex width="100%" justifyContent="space-evenly" my={5}>
+                  <Image
+                    mb={6}
+                    src={images['Facebook']}
+                  />
+                  <Image
+                    mb={6}
+                    src={images['LinkedIn']}
+                  />
+                  <Image
+                    mb={6}
+                    src={images['GooglePlus']}
+                  />
+                </Flex>
+              </Flex>
+              <Flex mb={2} mt={4} align="center" justify="center">
                 <Text>
-                  Already signed up?{' '}
-                  <Link style={{ color: theme.colors.blue[500] }} to="/">
+                  Already have an account? {' '}
+                  <Link style={{ fontWeight: 600 }} to="/login">
                     Login
                   </Link>{' '}
                 </Text>

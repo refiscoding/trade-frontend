@@ -21,7 +21,6 @@ PageWrap.defaultProps = {
   p: 4,
   flex: 1,
   pt: 'calc(64px + 1rem)',
-  bg: 'gray.100',
   height: '100%',
   flexDir: 'column',
   minHeight: '100vh',

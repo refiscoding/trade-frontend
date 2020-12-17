@@ -1,20 +1,18 @@
-import { Button, Flex, theme } from '@chakra-ui/core'
+import { Button, Flex, Image } from '@chakra-ui/core'
 import { Form, Formik, FormikProps } from 'formik'
 import { LocationDescriptorObject } from 'history'
 import * as React from 'react'
 import { Link, useHistory, useLocation } from 'react-router-dom'
 import * as Yup from 'yup'
+import { Mail } from 'react-feather'
+
 import { MotionFlex, SideSlider } from '../../components'
-import {
-  ConnectedCheckbox,
-  ConnectedFormGroup,
-  ConnectedPasswordGroup
-} from '../../components/FormElements'
+import { ConnectedFormGroup, ConnectedPasswordGroup } from '../../components/FormElements'
 import { useAuthContext } from '../../context/AuthProvider'
 import { PageWrap } from '../../layouts'
-import { images } from '../../theme'
 import { H3, Text } from '../../typography'
 import { formatError } from '../../utils'
+import { images } from '../../theme'
 
 const LoginFormValidation = Yup.object().shape({
   email: Yup.string()
@@ -40,7 +38,7 @@ const Login: React.FC<LoginProps> = () => {
 
   React.useEffect(() => {
     if (isAuthenticated) {
-      let to: LocationDescriptorObject = { pathname: '/auth/user-management' }
+      let to: LocationDescriptorObject = { pathname: '/dashboard' }
       if (location.state?.redirectTo) {
         to = { pathname: location.state.redirectTo.pathname }
       }
@@ -50,19 +48,16 @@ const Login: React.FC<LoginProps> = () => {
   }, [isAuthenticated])
 
   return (
-    <PageWrap
-      align="center"
-      title="Login"
-      backgroundSize="cover"
-      bgImage={`url(${images.bg})`}
-      justify="center"
-      pt={0}
-    >
+    <PageWrap align="center" title="Login" justify="center" pt={0} color="colors.white">
+      <Flex width="100%" align="center" justify="center" mt={4} mb={4}>
+        <Image
+          width="90%"
+          src={images['TradeFedFullLogo']}
+        />
+      </Flex>
       <SideSlider>
-        <Flex width="100%">
-          <H3 textAlign="left" mb={4}>
-            Login
-          </H3>
+        <Flex width="100%" align="center" justify="center" mb={4}>
+          <H3 fontSize="20px">Login To Your Account</H3>
         </Flex>
         <Formik
           validationSchema={LoginFormValidation}
@@ -86,9 +81,8 @@ const Login: React.FC<LoginProps> = () => {
         >
           {({ isSubmitting, status }: FormikProps<InitialValues>) => (
             <Form style={{ width: '100%' }}>
-              <ConnectedFormGroup name="email" label="Email" placeholder="Email" />
-              <ConnectedPasswordGroup name="password" label="Password" placeholder="Password" />
-              <ConnectedCheckbox mb={1} name="rememberMe" label="Remember Me" />
+              <ConnectedFormGroup icon={Mail} name="email" placeholder="Email" />
+              <ConnectedPasswordGroup mb={4} name="password" placeholder="Password" />
               {status && (
                 <MotionFlex
                   animate={{ opacity: 1 }}
@@ -102,27 +96,32 @@ const Login: React.FC<LoginProps> = () => {
                   </Text>
                 </MotionFlex>
               )}
-              <Button
-                mt={4}
-                width="100%"
-                type="submit"
-                variantColor="brand"
-                isLoading={isSubmitting}
-              >
-                SUBMIT
+              <Button mt={4} width="100%" type="submit" variantColor="brand" isLoading={isSubmitting}>
+                LOGIN
               </Button>
-              <Flex mb={2} mt={4} align="center" justify="center">
+              <Flex mb={2} mt={3} align="center" justify="center" flexDirection="column">
+                <Text fontSize="14px">
+                  Or continue with social media
+                </Text>
+                <Flex width="100%" justifyContent="space-evenly" my={5}>
+                  <Image
+                    src={images['Facebook']}
+                  />
+                  <Image
+                    src={images['LinkedIn']}
+                  />
+                  <Image
+                    src={images['GooglePlus']}
+                  />
+                </Flex>
+              </Flex>
+              <Flex mt={4} align="center" justify="center">
                 <Text>
-                  Already have an account?{' '}
-                  <Link style={{ color: theme.colors.blue[500] }} to="/register">
+                  Don’t have an account yet?{' '}
+                  <Link style={{ fontWeight: 600 }} to="/register">
                     Sign Up
                   </Link>{' '}
                 </Text>
-              </Flex>
-              <Flex mb={2} align="center" justify="center">
-                <Link style={{ color: theme.colors.blue[500] }} to="/forgot-password">
-                  Forgot Password
-                </Link>{' '}
               </Flex>
             </Form>
           )}
