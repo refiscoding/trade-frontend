@@ -7,31 +7,25 @@ import { MotionFlex, SideSlider } from '../../components'
 import { ConnectedFormGroup, ConnectedPasswordGroup } from '../../components/FormElements'
 import { useAuthContext } from '../../context/AuthProvider'
 import { PageWrap } from '../../layouts'
-import { images, theme } from '../../theme'
+import { images } from '../../theme'
 import { H3, Text } from '../../typography'
 import { formatError } from '../../utils'
-import { Mail } from "react-feather";
+import { Mail } from 'react-feather'
 
 type RegisterProps = {}
 
 const RegisterFormValidation = Yup.object().shape({
-  username: Yup.string().required('A username is required'),
   email: Yup.string()
     .email('Please enter a valid email address')
     .required('An email address is required'),
   password: Yup.string()
     .min(8, 'Password has to be longer than 8 characters')
-    .required('A password is required'),
-  confirmPassword: Yup.string()
-    .required('Confirm your password')
-    .oneOf([Yup.ref('password')], 'Password does not match')
+    .required('A password is required')
 })
 
 type RegisterValues = {
-  username: string
   email: string
   password: string
-  confirmPassword: string
 }
 
 const Register: React.FC<RegisterProps> = () => {
@@ -70,17 +64,15 @@ const Register: React.FC<RegisterProps> = () => {
         <Formik
           validationSchema={RegisterFormValidation}
           initialValues={{
-            username: '',
             email: '',
-            password: '',
-            confirmPassword: ''
+            password: ''
           }}
-          onSubmit={async ({ username, email, password }, { setStatus, setSubmitting }) => {
+          onSubmit={async ({ email, password }, { setStatus, setSubmitting }) => {
             setStatus(null)
             try {
               setSubmitting(true)
               if (register) {
-                await register(username, email, password)
+                await register(email, password)
               }
               setSubmitting(false)
             } catch (error) {
@@ -129,7 +121,7 @@ const Register: React.FC<RegisterProps> = () => {
               </Flex>
               <Flex mb={2} mt={4} align="center" justify="center">
                 <Text>
-                  Already have an account? {' '}
+                  Already have an account?{' '}
                   <Link style={{ fontWeight: 600 }} to="/login">
                     Login
                   </Link>{' '}

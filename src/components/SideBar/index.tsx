@@ -1,15 +1,13 @@
-import { Avatar, Flex } from '@chakra-ui/core'
+import { Flex } from '@chakra-ui/core'
 import { AnimatePresence, motion, useAnimation, Variants } from 'framer-motion'
 import * as React from 'react'
 import { useMediaQuery } from 'react-responsive'
-import { ColorProps, get } from 'styled-system'
+import { ColorProps } from 'styled-system'
 import { useAppContext } from '../../context/AppProvider'
-import { useAuthContext } from '../../context/AuthProvider/index'
 import { NavItem } from '../../constants/navItems'
-import { images, theme } from '../../theme'
+import { images } from '../../theme'
 import { Text } from '../../typography'
 import Header from '../Header'
-import MotionFlex from '../MotionFlex'
 import SideBarButton from './SideBarButton'
 import SideBarItem from './SideBarItem'
 import { MenuCont, Overlay, RenderWrapper } from './styles'
@@ -39,7 +37,6 @@ const SideBar: React.FC<SideBarProps> = ({
 }) => {
   const { drawerOpen, toggleDrawer } = useAppContext()
 
-  const { user } = useAuthContext()
 
   const controls = useAnimation()
 

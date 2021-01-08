@@ -1,4 +1,3 @@
-import { Button, Flex, Image } from '@chakra-ui/core'
 import { Form, Formik } from 'formik'
 import * as React from 'react'
 import { Search } from "react-feather";

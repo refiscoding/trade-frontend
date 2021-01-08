@@ -16,6 +16,8 @@ const ConfirmEmail = lazy(() => import('../containers/ConfirmEmail'))
 const ForgotPassword = lazy(() => import('../containers/ForgotPassword'))
 const ResetPassword = lazy(() => import('../containers/ResetPassword'))
 const Home = lazy(() => import('../containers/HomePage'))
+const Redirect = lazy(() => import('../containers/Redirect'))
+
 
 const PRIVATE_ROUTES: PrivateRouteObject[] = [
   {
@@ -64,6 +66,12 @@ const PUBLIC_ROUTES = [
     title: 'Reset Password',
     path: '/reset-password',
     component: ResetPassword
+  },
+  {
+    exact: true,
+    title: '/connect/:provider/redirect',
+    path: '/login',
+    component: Redirect
   }
 ]
 

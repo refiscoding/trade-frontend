@@ -1,11 +1,10 @@
-import { Flex, Image } from "@chakra-ui/core";
+import { Flex } from "@chakra-ui/core";
 import { AnimatePresence } from 'framer-motion'
 import * as React from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { useAppContext } from '../../../context/AppProvider'
 import { Text } from '../../../typography'
 import { MenuItem, Tooltip } from './styles'
-import { images } from "../../../theme";
 
 type SideBarItemProps = {
   title: string
@@ -13,7 +12,7 @@ type SideBarItemProps = {
   color: string
   hoverColor: string
   accentColor: string
-  icon: string
+  Icon: React.FC
   tooltipColor?: string
   tooltipBg?: string
   closeOnNavigate?: boolean
@@ -23,7 +22,7 @@ const SideBarItem: React.FC<SideBarItemProps> = ({
   accentColor,
   color,
   hoverColor,
-  icon,
+  Icon,
   title,
   to,
   tooltipColor,
@@ -72,10 +71,7 @@ const SideBarItem: React.FC<SideBarItemProps> = ({
         className="sidebar-nav-item-wrapper"
       >
         <Flex className="icon-wrap" mx={3}>
-          {
-            // @ts-ignore
-            <Image width={25} height={25} src={images[icon]} />
-          }
+            <Icon />
         </Flex>
         <AnimatePresence>
           {drawerOpen && (

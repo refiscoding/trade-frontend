@@ -1,7 +1,10 @@
+import { Bell, Briefcase, HelpCircle, Home, Star, User, Users } from 'react-feather'
+import React from 'react'
+
 export type NavItem = {
   to: string
   title: string
-  icon: string
+  Icon: React.FC
   subMenu?: Array<{ to: string; title: string }>
 }
 
@@ -9,36 +12,36 @@ export const NAV_ITEMS: NavItem[] = [
   {
     to: `/dashboard`,
     title: 'Home',
-    icon: 'home'
+    Icon: Home
   },
   {
     to: `/`,
     title: 'Become a Seller',
-    icon: 'briefcase'
+    Icon: Briefcase
   },
   {
     to: `/profile`,
     title: 'My Account',
-    icon: 'user'
+    Icon: User
   },
   {
     to: `/`,
     title: 'My Wish List',
-    icon: 'star'
+    Icon: Star
   },
   {
     to: `/`,
     title: 'Notifications',
-    icon: 'bell'
+    Icon: Bell
   },
   {
     to: `/`,
     title: 'About Us',
-    icon: 'users'
+    Icon: Users
   },
   {
     to: `/`,
     title: 'Support',
-    icon: 'help'
+    Icon: HelpCircle
   }
 ]

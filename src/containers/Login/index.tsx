@@ -50,10 +50,7 @@ const Login: React.FC<LoginProps> = () => {
   return (
     <PageWrap align="center" title="Login" justify="center" pt={0} color="colors.white">
       <Flex width="100%" align="center" justify="center" mt={4} mb={4}>
-        <Image
-          width="90%"
-          src={images['TradeFedFullLogo']}
-        />
+        <Image width="90%" src={images['TradeFedFullLogo']} />
       </Flex>
       <SideSlider>
         <Flex width="100%" align="center" justify="center" mb={4}>
@@ -96,23 +93,25 @@ const Login: React.FC<LoginProps> = () => {
                   </Text>
                 </MotionFlex>
               )}
-              <Button mt={4} width="100%" type="submit" variantColor="brand" isLoading={isSubmitting}>
+              <Button
+                mt={4}
+                width="100%"
+                type="submit"
+                variantColor="brand"
+                isLoading={isSubmitting}
+              >
                 LOGIN
               </Button>
               <Flex mb={2} mt={3} align="center" justify="center" flexDirection="column">
-                <Text fontSize="14px">
-                  Or continue with social media
-                </Text>
+                <Text fontSize="14px">Or continue with social media</Text>
                 <Flex width="100%" justifyContent="space-evenly" my={5}>
-                  <Image
-                    src={images['Facebook']}
-                  />
-                  <Image
-                    src={images['LinkedIn']}
-                  />
-                  <Image
-                    src={images['GooglePlus']}
-                  />
+                  <a href={`${process.env.REACT_APP_API_HOST}/connect/facebook`}>
+                    <Image src={images['Facebook']} />
+                  </a>
+                  <Image src={images['LinkedIn']} />
+                  <a href={`${process.env.REACT_APP_API_HOST}/connect/google`}>
+                    <Image src={images['GooglePlus']} />
+                  </a>
                 </Flex>
               </Flex>
               <Flex mt={4} align="center" justify="center">
