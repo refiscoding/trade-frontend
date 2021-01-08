@@ -61,7 +61,7 @@ const register = async (
 
 const providerAuth = async (provider: string): Promise<AxiosResponse<StrapiLoginPayload>> => {
   try {
-    return await axios.get(BASE + `/connect/${provider}`)
+    return await axios.get(BASE + `/connect/${provider}//callback`)
   } catch (error) {
     return Promise.reject(error)
   }
