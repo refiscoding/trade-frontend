@@ -1,7 +1,7 @@
 import { IToast } from '@chakra-ui/core'
 import { UploadFile } from '../generated/graphql'
 
-export const APP_NAME = 'Core React Boilerplate'
+export const APP_NAME = 'TradeFed'
 
 export const STRAPI_USER_STORAGE_KEY = 'strapi-user'
 
@@ -47,3 +47,5 @@ export const EMPTY_FILE: UploadFile = {
   url: '',
   provider: ''
 }
+
+export { NAV_ITEMS } from './navItems'

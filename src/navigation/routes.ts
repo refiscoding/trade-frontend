@@ -9,25 +9,27 @@ export interface PrivateRouteObject extends RouteProps {
   title: string
 }
 
-const Users = lazy(() => import('../containers/UserManagement'))
 const Profile = lazy(() => import('../containers/Profile'))
 const Login = lazy(() => import('../containers/Login'))
 const Register = lazy(() => import('../containers/Register'))
 const ConfirmEmail = lazy(() => import('../containers/ConfirmEmail'))
 const ForgotPassword = lazy(() => import('../containers/ForgotPassword'))
 const ResetPassword = lazy(() => import('../containers/ResetPassword'))
+const Home = lazy(() => import('../containers/HomePage'))
+const Redirect = lazy(() => import('../containers/Redirect'))
+
 
 const PRIVATE_ROUTES: PrivateRouteObject[] = [
   {
     exact: false,
-    path: '/auth/user-management',
-    breadcrumb: 'User Management',
-    component: Users,
-    title: 'User Management'
+    path: '/dashboard',
+    breadcrumb: 'Home',
+    component: Home,
+    title: 'Dashboard'
   },
   {
     exact: false,
-    path: '/auth/profile',
+    path: '/profile',
     breadcrumb: 'My Profile',
     component: Profile,
     title: 'My Profile'
@@ -38,7 +40,7 @@ const PUBLIC_ROUTES = [
   {
     exact: true,
     title: 'Login',
-    path: '/',
+    path: '/login',
     component: Login
   },
   {
@@ -64,6 +66,12 @@ const PUBLIC_ROUTES = [
     title: 'Reset Password',
     path: '/reset-password',
     component: ResetPassword
+  },
+  {
+    exact: true,
+    title: '/connect/:provider/redirect',
+    path: '/login',
+    component: Redirect
   }
 ]
 

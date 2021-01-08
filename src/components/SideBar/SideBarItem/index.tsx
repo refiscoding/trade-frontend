@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/core'
+import { Flex } from "@chakra-ui/core";
 import { AnimatePresence } from 'framer-motion'
 import * as React from 'react'
 import { useMediaQuery } from 'react-responsive'
@@ -12,7 +12,7 @@ type SideBarItemProps = {
   color: string
   hoverColor: string
   accentColor: string
-  icon: React.ReactNode
+  Icon: React.FC
   tooltipColor?: string
   tooltipBg?: string
   closeOnNavigate?: boolean
@@ -22,7 +22,7 @@ const SideBarItem: React.FC<SideBarItemProps> = ({
   accentColor,
   color,
   hoverColor,
-  icon,
+  Icon,
   title,
   to,
   tooltipColor,
@@ -48,11 +48,12 @@ const SideBarItem: React.FC<SideBarItemProps> = ({
     }
   }
 
+
   return (
     <MenuItem
       to={to}
       color={color}
-      bg={accentColor}
+      hoverAccent={accentColor}
       variants={variants}
       hovercolor={hoverColor}
       onClick={() => {
@@ -69,7 +70,9 @@ const SideBarItem: React.FC<SideBarItemProps> = ({
         justifyContent="center"
         className="sidebar-nav-item-wrapper"
       >
-        <Flex className="icon-wrap">{icon}</Flex>
+        <Flex className="icon-wrap" mx={3}>
+            <Icon />
+        </Flex>
         <AnimatePresence>
           {drawerOpen && (
             <Text

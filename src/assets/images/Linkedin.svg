@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="58px" height="58px" viewBox="0 0 58 58" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Linkedin</title>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Button/Social-Media-2" transform="translate(-138.000000, 5.000000)">
+            <g id="Linkedin" transform="translate(138.000000, -5.000000)">
+                <circle id="Oval-1-Copy-5" fill="#0976B4" cx="29" cy="29" r="29"></circle>
+                <path d="M17.5009357,22 C19.4333898,22 21,20.4347911 21,18.5018813 C21,16.5672612 19.4333898,15 17.5009357,15 C15.5666102,15 14,16.5672612 14,18.5018813 C14,20.4347911 15.5666102,22 17.5009357,22" id="Fill-182" fill="#FFFFFF"></path>
+                <polygon id="Fill-183" fill="#FFFFFF" points="15 43 21 43 21 24 15 24"></polygon>
+                <path d="M30.3425909,31.9907397 C30.3425909,29.8784288 31.3367274,27.812804 33.7138182,27.812804 C36.0909091,27.812804 36.6753982,29.8784288 36.6753982,31.9402424 L36.6753982,42 L43,42 L43,31.5289595 C43,24.2541747 38.7223726,23 36.0909091,23 C33.4616547,23 32.0114778,23.8940242 30.3425909,26.060326 L30.3425909,23.58056 L24,23.58056 L24,42 L30.3425909,42 L30.3425909,31.9907397 Z" id="Fill-184" fill="#FFFFFF"></path>
+            </g>
+        </g>
+    </g>
+</svg>

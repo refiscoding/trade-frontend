@@ -31,6 +31,7 @@ const ConnectedFormGroup: React.FC<ConnectedFormGroupProps> = ({ label, type, ..
         <InputGroup size="md">
           <Input
             focusBorderColor="accent.500"
+            borderColor={meta.touched ? (meta.error ? 'red.500' : 'success.400') : 'brand.200'}
             type={show ? 'text' : type}
             {...field}
             {...rest}
