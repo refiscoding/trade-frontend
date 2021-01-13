@@ -11,7 +11,7 @@ type AuthProviderProps = {
   isAuthenticated: boolean
   user: UsersPermissionsUser
   register: (email: string, password: string) => Promise<void>
-  providerAuth: (provider: string) => Promise<void>
+  providerAuth: (provider: string, token: string) => Promise<void>
   login: (email: string, password: string, rememberMe: boolean) => Promise<void>
   setUser: React.Dispatch<React.SetStateAction<UsersPermissionsUser | undefined>>
 }
@@ -84,9 +84,9 @@ const AuthProvider: React.FC = ({ children }) => {
     }
   }
 
-  const providerAuth = async (provider: string) => {
+  const providerAuth = async (provider: string, token: string) => {
     try {
-      const { data } = await strapiHelpers.providerAuth(provider)
+      const { data } = await strapiHelpers.providerAuth(provider, token)
       persistUser(data)
     } catch (error) {
       throw error
@@ -95,7 +95,16 @@ const AuthProvider: React.FC = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ login, register, logout, providerAuth, isAuthenticated, isAuthenticating, user, setUser }}
+      value={{
+        login,
+        register,
+        logout,
+        providerAuth,
+        isAuthenticated,
+        isAuthenticating,
+        user,
+        setUser
+      }}
     >
       {children}
     </AuthContext.Provider>

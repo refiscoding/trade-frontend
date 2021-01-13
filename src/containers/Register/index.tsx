@@ -1,4 +1,4 @@
-import { Button, Flex, Image } from "@chakra-ui/core";
+import { Button, Flex, Image } from '@chakra-ui/core'
 import { Form, Formik, FormikProps } from 'formik'
 import * as React from 'react'
 import { Link, useHistory } from 'react-router-dom'
@@ -28,6 +28,8 @@ type RegisterValues = {
   password: string
 }
 
+const baseUrl = process.env.REACT_APP_API_HOST
+
 const Register: React.FC<RegisterProps> = () => {
   const { register, user, logout } = useAuthContext()
   const history = useHistory()
@@ -43,23 +45,13 @@ const Register: React.FC<RegisterProps> = () => {
   }, [user])
 
   return (
-    <PageWrap
-      pt={0}
-      title="Register"
-      align="center"
-      justify="center"
-    >
+    <PageWrap pt={0} title="Register" align="center" justify="center">
       <Flex width="100%" align="center" justify="center" mt={4} mb={4}>
-        <Image
-          width="90%"
-          src={images['TradeFedFullLogo']}
-        />
+        <Image width="90%" src={images['TradeFedFullLogo']} />
       </Flex>
       <SideSlider>
         <Flex width="100%" align="center" justify="center" mb={4}>
-          <H3 textAlign="left">
-            Create an account
-          </H3>
+          <H3 textAlign="left">Create an account</H3>
         </Flex>
         <Formik
           validationSchema={RegisterFormValidation}
@@ -105,18 +97,15 @@ const Register: React.FC<RegisterProps> = () => {
                   Or continue with social media
                 </Text>
                 <Flex width="100%" justifyContent="space-evenly" my={5}>
-                  <Image
-                    mb={6}
-                    src={images['Facebook']}
-                  />
-                  <Image
-                    mb={6}
-                    src={images['LinkedIn']}
-                  />
-                  <Image
-                    mb={6}
-                    src={images['GooglePlus']}
-                  />
+                  <a href={`${baseUrl}/connect/facebook`}>
+                    <Image src={images['Facebook']} />
+                  </a>
+                  <a href={`${baseUrl}/connect/linkedin`}>
+                    <Image src={images['LinkedIn']} />
+                  </a>
+                  <a href={`${baseUrl}/connect/google`}>
+                    <Image src={images['GooglePlus']} />
+                  </a>
                 </Flex>
               </Flex>
               <Flex mb={2} mt={4} align="center" justify="center">

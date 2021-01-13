@@ -71,6 +71,8 @@ const PUBLIC_ROUTES = [
     exact: true,
     title: '/connect/:provider/redirect',
     path: '/login',
+    title: 'Provider Auth',
+    path: '/connect/:provider/redirect',
     component: Redirect
   }
 ]
