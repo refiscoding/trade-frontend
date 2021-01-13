@@ -59,9 +59,12 @@ const register = async (
   }
 }
 
-const providerAuth = async (provider: string): Promise<AxiosResponse<StrapiLoginPayload>> => {
+const providerAuth = async (
+  provider: string,
+  token: string
+): Promise<AxiosResponse<StrapiLoginPayload>> => {
   try {
-    return await axios.get(BASE + `/connect/${provider}/callback`)
+    return await axios.get(BASE + `/auth/${provider}/callback${token}`)
   } catch (error) {
     return Promise.reject(error)
   }

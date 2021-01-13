@@ -23,6 +23,8 @@ const LoginFormValidation = Yup.object().shape({
     .required('A password is required')
 })
 
+const baseUrl = process.env.REACT_APP_API_HOST
+
 type LoginProps = {}
 
 type InitialValues = {
@@ -105,11 +107,13 @@ const Login: React.FC<LoginProps> = () => {
               <Flex mb={2} mt={3} align="center" justify="center" flexDirection="column">
                 <Text fontSize="14px">Or continue with social media</Text>
                 <Flex width="100%" justifyContent="space-evenly" my={5}>
-                  <a href={`${process.env.REACT_APP_API_HOST}/connect/facebook`}>
+                  <a href={`${baseUrl}/connect/facebook`}>
                     <Image src={images['Facebook']} />
                   </a>
-                  <Image src={images['LinkedIn']} />
-                  <a href={`${process.env.REACT_APP_API_HOST}/connect/google`}>
+                  <a href={`${baseUrl}/connect/linkedin`}>
+                    <Image src={images['LinkedIn']} />
+                  </a>
+                  <a href={`${baseUrl}/connect/google`}>
                     <Image src={images['GooglePlus']} />
                   </a>
                 </Flex>
