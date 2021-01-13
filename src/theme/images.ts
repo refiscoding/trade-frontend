@@ -7,4 +7,7 @@ export default {
   LinkedIn: require('../assets/images/Linkedin.svg'),
   GooglePlus: require('../assets/images/GooglePlus.svg'),
   TradeFedFullLogo: require('../assets/images/tradeFed-full-logo.png'),
+  MailBox: require('../assets/images/mailbox.svg'),
+  OnboardingDetails: require('../assets/images/onboading-details.svg'),
+  PoweredByGoogle: require('../assets/images/powered_by_google.png')
 }
