@@ -10,6 +10,8 @@ import { useUpdateSelfMutation, useCategoryQuery } from '../../generated/graphql
 import { formatError } from '../../utils'
 import { useHistory } from 'react-router-dom'
 import { useAuthContext } from '../../context/AuthProvider'
+import { useToast } from '@chakra-ui/core'
+import { SUCCESS_TOAST } from '../../constants'
 
 const src =
   `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&libraries=places` ||
@@ -32,6 +34,7 @@ const Onboarding: React.FC = () => {
   const history = useHistory()
   const [active, setACtive] = React.useState(0)
   const [userDetails, setUserdetails] = React.useState(userDetailsInitialValues)
+  const toast = useToast()
 
   const { data } = useCategoryQuery({
     onError: (err: any) => formatError(err)
@@ -57,7 +60,10 @@ const Onboarding: React.FC = () => {
 
     if (active === 2) {
       updateSelf({ variables: { input: { ...userDetails } } }).then(() => {
-        console.log('User onboarded!')
+        toast({
+          description: 'Successfully added your details!',
+          ...SUCCESS_TOAST
+        })
       })
     }
   }

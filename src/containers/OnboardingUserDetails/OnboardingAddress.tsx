@@ -1,4 +1,4 @@
-import { Button, Flex, Image } from '@chakra-ui/core'
+import { Button, Flex, Image, useToast } from "@chakra-ui/core";
 import { Form, Formik, FormikProps } from 'formik'
 import * as React from 'react'
 import * as Yup from 'yup'
@@ -10,6 +10,7 @@ import { images } from '../../theme'
 import { H3, Text } from '../../typography'
 import { formatError } from '../../utils'
 import { useState } from 'react'
+import { ERROR_TOAST } from '../../constants'
 
 type AddressProps = {
   handleUserDetails: (details: any) => void
@@ -52,6 +53,7 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails }) => {
     debounce: 300
   })
   const resultsStatus = status
+  const toast = useToast()
 
   const handleInput = (e: any) => {
     setValue(e.target.value)
@@ -76,7 +78,11 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails }) => {
         })
       })
       .catch((error) => {
-        console.log('Error: ', error)
+        console.log('Error:', error)
+        toast({
+          description: 'Something went wrong while updating your address',
+          ...ERROR_TOAST
+        })
       })
   }
 
