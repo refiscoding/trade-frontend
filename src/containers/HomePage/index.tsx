@@ -1,17 +1,28 @@
 import { Form, Formik } from 'formik'
 import * as React from 'react'
-import { Search } from "react-feather";
+import { Search } from 'react-feather'
 
 import { ConnectedFormGroup } from '../../components/FormElements'
 import { PageWrap } from '../../layouts'
-import { formatError } from "../../utils";
-
+import { formatError } from '../../utils'
+import { useAuthContext } from '../../context/AuthProvider'
+import { useHistory } from 'react-router-dom'
 
 type InitialValues = {
   search: string
 }
 
 const Home: React.FC = () => {
+  const { user, isAuthenticated } = useAuthContext()
+  const history = useHistory()
+
+  React.useEffect(() => {
+    if (isAuthenticated && !user?.profileCompleted) {
+      history.push('/user-onboarding-intro')
+    }
+    // eslint-disable-next-line
+  }, [user, isAuthenticated])
+
   return (
     <PageWrap align="center" title="Dashboard" justifyContent="center" color="colors.white">
       <Formik

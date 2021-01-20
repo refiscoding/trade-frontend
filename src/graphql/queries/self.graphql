@@ -1,0 +1,6 @@
+# import '/fragments/user.graphql'
+query Self {
+  self {
+    ...user
+  }
+}

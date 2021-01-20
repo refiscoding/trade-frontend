@@ -12,8 +12,8 @@ export const SpacerLine = styled(MotionFlex)`
 `
 
 export const Square = styled.div`
-  width: 40px;
-  height: 40px;
+  width: 100%;
+  height: 10px;
   display: flex;
   position: relative;
   align-items: center;
@@ -22,19 +22,8 @@ export const Square = styled.div`
 
 export const OuterCircle = styled<'div', ColorProps>('div')`
   ${color};
-  width: 38px;
-  height: 38px;
-  display: flex;
-  border-radius: 19px;
-  align-items: center;
-  justify-content: center;
-`
-
-export const InnerCircle = styled<'div', ColorProps>('div')`
-  ${color};
-  width: 36px;
-  height: 36px;
-  border-radius: 18px;
+  width: 100%;
+  height: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
