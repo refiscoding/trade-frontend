@@ -15,13 +15,14 @@ const Redirect: React.FC = () => {
 
   React.useEffect(() => {
     providerAuth && providerAuth(params.provider, location.search)
-  }, [])
+    // eslint-disable-next-line
+  }, [location])
 
   React.useEffect(() => {
     if (user?.confirmed) {
       history.push('/dashboard')
     }
-  }, [user])
+  }, [user, history])
 
   return (
     <PageWrap align="center" title="Auth Redirect" justifyContent="center" color="colors.white" />

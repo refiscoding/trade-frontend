@@ -9,5 +9,6 @@ export default {
   TradeFedFullLogo: require('../assets/images/tradeFed-full-logo.png'),
   MailBox: require('../assets/images/mailbox.svg'),
   OnboardingDetails: require('../assets/images/onboading-details.svg'),
-  PoweredByGoogle: require('../assets/images/powered_by_google.png')
+  PoweredByGoogle: require('../assets/images/powered_by_google.png'),
+  onboardingIntro: require('../assets/images/onboarding-intro.svg')
 }

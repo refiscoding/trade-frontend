@@ -18,6 +18,8 @@ const ResetPassword = lazy(() => import('../containers/ResetPassword'))
 const Home = lazy(() => import('../containers/HomePage'))
 const Redirect = lazy(() => import('../containers/Redirect'))
 const UserDetails = lazy(() => import('../containers/OnboardingUserDetails'))
+const onBoardingIntro = lazy(() => import('../containers/OnboardingUserDetails/OnboardingIntro'))
+
 
 
 const PRIVATE_ROUTES: PrivateRouteObject[] = [
@@ -78,6 +80,12 @@ const PUBLIC_ROUTES = [
     exact: false,
     path: '/user-onboarding-details',
     component: UserDetails,
+    title: 'Profile Details'
+  },
+  {
+    exact: false,
+    path: '/user-onboarding-intro',
+    component: onBoardingIntro,
     title: 'Profile Details'
   }
 ]

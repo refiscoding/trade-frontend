@@ -18,7 +18,7 @@ const Home: React.FC = () => {
 
   React.useEffect(() => {
     if (isAuthenticated && !user?.profileCompleted) {
-      history.push('/user-onboarding-details')
+      history.push('/user-onboarding-intro')
     }
     // eslint-disable-next-line
   }, [user, isAuthenticated])

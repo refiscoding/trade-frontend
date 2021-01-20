@@ -4,13 +4,15 @@ import { Helmet } from 'react-helmet'
 
 type PageWrapProps = FlexProps & {
   title: string
+  script?: string
 }
 
-const PageWrap: React.FC<PageWrapProps> = ({ children, title, ...rest }) => {
+const PageWrap: React.FC<PageWrapProps> = ({ children, title, script, ...rest }) => {
   return (
     <>
       <Helmet>
         <title>{title}</title>
+        <script src={script} />
       </Helmet>
       <Flex {...rest}>{children}</Flex>
     </>

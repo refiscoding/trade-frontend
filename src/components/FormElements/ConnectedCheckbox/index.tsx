@@ -1,4 +1,4 @@
-import { Checkbox, CheckboxProps, Flex, Icon } from '@chakra-ui/core'
+import { Checkbox, CheckboxProps, Flex } from '@chakra-ui/core'
 import { useField } from 'formik'
 import * as React from 'react'
 import { Text } from '../../../typography'

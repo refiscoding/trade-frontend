@@ -1,11 +1,12 @@
-query Users($sort: String, $limit: Int, $start: Int, $where: JSON) {
-  users(sort: $sort, limit: $limit, start: $start, where: $where) {
+# import '/fragments/uploadFile.graphql'
+fragment user on UsersPermissionsUser {
   id
   created_at
   updated_at
   username
   email
   confirmed
+  provider
   phoneNumber
   firstName
   lastName
@@ -18,4 +19,5 @@ query Users($sort: String, $limit: Int, $start: Int, $where: JSON) {
   }
   idNumber
   profileCompleted
-}}
+  isSeller
+}
