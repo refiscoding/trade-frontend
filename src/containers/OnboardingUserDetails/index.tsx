@@ -11,7 +11,7 @@ import { formatError } from '../../utils'
 import { useHistory } from 'react-router-dom'
 import { useAuthContext } from '../../context/AuthProvider'
 import { useToast } from '@chakra-ui/core'
-import { SUCCESS_TOAST } from '../../constants'
+import { ERROR_TOAST, SUCCESS_TOAST } from "../../constants";
 
 const src =
   `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&libraries=places` ||
@@ -43,28 +43,27 @@ const Onboarding: React.FC = () => {
   const categories = get(data, 'categories', [])
 
   const [updateSelf] = useUpdateSelfMutation({
-    onError: (err: any) => formatError(err),
+    onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
     onCompleted: async ({ updateSelf }) => {
       if (updateSelf?.profileCompleted && setUser) {
         setUser(updateSelf)
+        toast({
+          description: 'Successfully added your details!',
+          ...SUCCESS_TOAST
+        })
         history.push('/dashboard')
       }
     }
   })
 
-  const handleUserDetails = (details: any) => {
+  const handleUserDetails = async (details: any) => {
     if (active <= 1) {
       setACtive(active + 1)
     }
     setUserdetails({ ...userDetails, ...details })
 
     if (active === 2) {
-      updateSelf({ variables: { input: { ...userDetails } } }).then(() => {
-        toast({
-          description: 'Successfully added your details!',
-          ...SUCCESS_TOAST
-        })
-      })
+      await updateSelf({ variables: { input: { ...userDetails } } })
     }
   }
 
