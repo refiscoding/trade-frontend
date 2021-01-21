@@ -14,8 +14,7 @@ import { useCategoryQuery } from '../../generated/graphql'
 import { get } from 'lodash'
 import { Card } from '../../components'
 import CardFooter from '../../components/Card/CardFooter'
-import { motion } from 'framer-motion'
-import Footer from "../../components/Footer";
+import Footer from '../../components/Footer'
 
 type InitialValues = {
   search: string

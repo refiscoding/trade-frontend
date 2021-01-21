@@ -1,8 +1,6 @@
 import { Flex, Image, Text } from '@chakra-ui/core'
 import * as React from 'react'
 import { ColorProps } from 'styled-system'
-import { Facebook, Instagram, Twitter } from 'react-feather'
-import { Card } from '../index'
 import images from '../../theme/images'
 
 type FooterProps = ColorProps & {}
