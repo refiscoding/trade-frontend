@@ -11,5 +11,8 @@ export default {
   OnboardingDetails: require('../assets/images/onboading-details.svg'),
   PoweredByGoogle: require('../assets/images/powered_by_google.png'),
   onboardingIntro: require('../assets/images/onboarding-intro.svg'),
-  heroImg: require('../assets/images/hero-img.png')
+  heroImg: require('../assets/images/hero-img.png'),
+  FacebookFooter: require('../assets/images/facebook.png'),
+  TwitterFooter: require('../assets/images/twitter.png'),
+  InstagramFooter: require('../assets/images/instagram.png')
 }
