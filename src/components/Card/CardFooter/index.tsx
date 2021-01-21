@@ -6,7 +6,7 @@ type CardFooterProps = FlexProps
 
 const CardFooter: React.FC<CardFooterProps> = ({ children, ...rest }) => {
   return (
-    <Flex borderTopWidth="1px" {...rest}>
+    <Flex {...rest}>
       {children}
     </Flex>
   )
@@ -15,7 +15,6 @@ const CardFooter: React.FC<CardFooterProps> = ({ children, ...rest }) => {
 export default CardFooter
 
 CardFooter.defaultProps = {
-  p: 4,
   bg: 'white',
   roundedBottomLeft: 4,
   roundedBottomRight: 4,

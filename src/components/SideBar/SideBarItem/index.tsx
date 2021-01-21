@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/core";
+import { Flex } from '@chakra-ui/core'
 import { AnimatePresence } from 'framer-motion'
 import * as React from 'react'
 import { useMediaQuery } from 'react-responsive'
@@ -48,7 +48,6 @@ const SideBarItem: React.FC<SideBarItemProps> = ({
     }
   }
 
-
   return (
     <MenuItem
       to={to}
@@ -71,7 +70,7 @@ const SideBarItem: React.FC<SideBarItemProps> = ({
         className="sidebar-nav-item-wrapper"
       >
         <Flex className="icon-wrap" mx={3}>
-            <Icon />
+          <Icon />
         </Flex>
         <AnimatePresence>
           {drawerOpen && (

@@ -5,7 +5,8 @@ import {
   Icon,
   Input,
   InputGroup,
-  InputRightElement
+  InputRightElement,
+  InputLeftElement
 } from '@chakra-ui/core'
 import { InputProps } from '@chakra-ui/core/dist/Input'
 import { useField } from 'formik'
@@ -18,21 +19,22 @@ export type ConnectedFormGroupProps = LabelProps &
     label?: string
     name: string
     icon?: React.FC
-    flexDirection?: string
+    iconPosition?: string
   }
 
 const ConnectedFormGroup: React.FC<ConnectedFormGroupProps> = ({
   label,
   icon,
-  flexDirection,
+  iconPosition,
   ...rest
 }) => {
   const [field, meta] = useField(rest.name)
+
   return (
     <Flex flexDirection="column" width="100%" mr={rest.mr} ml={rest.ml} mt={rest.mt} mb={rest.mb}>
       <FormControl>
         {label && <FormLabel htmlFor={field.name}>{label}</FormLabel>}
-        <InputGroup size="md" flexDirection={flexDirection || 'initial'}>
+        <InputGroup size="md" flexDirection="row-reverse">
           <Input
             borderColor={meta.touched ? (meta.error ? 'red.500' : 'success.400') : 'brand.200'}
             focusBorderColor="accent.500"
@@ -40,18 +42,30 @@ const ConnectedFormGroup: React.FC<ConnectedFormGroupProps> = ({
             id={field.name}
             {...rest}
           />
-          {icon && (
-            <InputRightElement>
-              <Icon
-                size="20px"
-                onClick={() => {
-                  return
-                }}
-                as={icon}
-                color={'primary.400'}
-              />
-            </InputRightElement>
-          )}
+          {icon &&
+            (iconPosition === 'left' ? (
+              <InputLeftElement>
+                <Icon
+                  size="20px"
+                  onClick={() => {
+                    return
+                  }}
+                  as={icon}
+                  color={'primary.400'}
+                />
+              </InputLeftElement>
+            ) : (
+              <InputRightElement>
+                <Icon
+                  size="20px"
+                  onClick={() => {
+                    return
+                  }}
+                  as={icon}
+                  color={'primary.400'}
+                />
+              </InputRightElement>
+            ))}
         </InputGroup>
         {meta.touched && meta.error ? (
           <Text color="red.500" textAlign="right">

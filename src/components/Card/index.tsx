@@ -28,9 +28,12 @@ Card.defaultProps = {
   bg: 'white',
   width: 'auto',
   rounded: 'md',
-  borderWidth: '1px',
   onClick: () => false,
-  flexDirection: 'column'
+  flexDirection: 'column',
+  roundedTopLeft: 4,
+  roundedTopRight: 4,
+  overflow: 'hidden',
+  boxShadow: '0 2px 4px 0 rgba(0,0,0,0.17)'
 }
 
 export default Card

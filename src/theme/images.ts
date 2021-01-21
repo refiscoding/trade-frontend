@@ -10,5 +10,6 @@ export default {
   MailBox: require('../assets/images/mailbox.svg'),
   OnboardingDetails: require('../assets/images/onboading-details.svg'),
   PoweredByGoogle: require('../assets/images/powered_by_google.png'),
-  onboardingIntro: require('../assets/images/onboarding-intro.svg')
+  onboardingIntro: require('../assets/images/onboarding-intro.svg'),
+  heroImg: require('../assets/images/hero-img.png')
 }
