@@ -2,6 +2,7 @@ import { Flex, Image, Text } from '@chakra-ui/core'
 import * as React from 'react'
 import { ColorProps } from 'styled-system'
 import images from '../../theme/images'
+import moment from "moment";
 
 type FooterProps = ColorProps & {}
 
@@ -29,6 +30,7 @@ const footerItems = [
 ]
 
 const Footer: React.FC<FooterProps> = () => {
+  const currentYear = moment().format('YYYY')
   return (
     <Flex
       width="100vw"
@@ -56,7 +58,7 @@ const Footer: React.FC<FooterProps> = () => {
         T’s & C’s for Buyers and Sellers
       </Text>
       <Text m={2} color="brand.100" fontSize="10px">
-        © 2020 TradeFed. All rights reserved
+        {`© ${currentYear} TradeFed. All rights reserved`}
       </Text>
     </Flex>
   )
