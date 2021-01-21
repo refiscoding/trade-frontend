@@ -36,8 +36,6 @@ const Home: React.FC = () => {
     // eslint-disable-next-line
   }, [user, isAuthenticated])
 
-  console.log('>>>>>>>>>   ', categories)
-
   return (
     <PageWrap title="Dashboard" color="colors.white">
       <Flex width="100%" height="40px" justifyContent="space-between">
