@@ -51,6 +51,7 @@ const register = async (
 ): Promise<AxiosResponse<StrapiLoginPayload>> => {
   try {
     return await axios.post(BASE + '/auth/local/register', {
+      username: email,
       email,
       password
     })
