@@ -1,20 +1,23 @@
 import { Form, Formik } from 'formik'
 import * as React from 'react'
 import { Filter, Search } from 'react-feather'
+import { sortBy, reverse, slice } from 'lodash'
 
 import { ConnectedFormGroup } from '../../components/FormElements'
 import { PageWrap } from '../../layouts'
 import { formatError } from '../../utils'
 import { useAuthContext } from '../../context/AuthProvider'
 import { useHistory } from 'react-router-dom'
-import { Flex, Image, Text } from '@chakra-ui/core'
+import { Flex, useToast } from '@chakra-ui/core'
 import { images } from '../../theme'
 import Hero from '../../components/Hero'
-import { useCategoryQuery } from '../../generated/graphql'
+import { useCategoryQuery, useProductQuery } from '../../generated/graphql'
 import { get } from 'lodash'
-import { Card } from '../../components'
-import CardFooter from '../../components/Card/CardFooter'
 import Footer from '../../components/Footer'
+import { ERROR_TOAST } from '../../constants'
+import ProductCard from '../../components/Card/ProductCard'
+import CategoryCard from '../../components/Card/CategoryCard'
+import Section from '../../components/Section'
 
 type InitialValues = {
   search: string
@@ -23,11 +26,29 @@ type InitialValues = {
 const Home: React.FC = () => {
   const { user, isAuthenticated } = useAuthContext()
   const history = useHistory()
+  const toast = useToast()
+
   const { data } = useCategoryQuery({
-    onError: (err: any) => formatError(err)
+    onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST })
+  })
+
+  const { data: productData } = useProductQuery({
+    onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST })
   })
 
   const categories: any = get(data, 'categories', [])
+  const products: any = get(productData, 'products', [])
+  const deals: any = slice(
+    reverse(
+      sortBy(products, [
+        function (product) {
+          return product?.discount?.discountPercentage
+        }
+      ])
+    ),
+    0,
+    3
+  )
 
   React.useEffect(() => {
     if (isAuthenticated && !user?.profileCompleted) {
@@ -81,27 +102,17 @@ const Home: React.FC = () => {
         </Flex>
       </Flex>
       <Hero image={images.heroImg} header="HOLIDAY DASH" caption="Shop early deals" />
-      <Flex width="100%" flexDirection="column">
-        <Text fontSize="18px" fontWeight={600}>
-          Product Categories
-        </Text>
-        <Flex width="100%" flexWrap="wrap" justifyContent="space-evenly">
-          {categories !== null &&
-            categories.map((category: any, i: number) => (
-              <Card m={2} key={i} width="45%" height="130px">
-                <Image
-                  mr={5}
-                  width="100%"
-                  height="100px"
-                  src={`${process.env.REACT_APP_API_HOST}${category.categoryImage.url}`}
-                />
-                <CardFooter bg="white" height="30px" alignItems="center" justifyContent="center">
-                  <Text fontSize="12px">{category.name}</Text>
-                </CardFooter>
-              </Card>
-            ))}
-        </Flex>
-      </Flex>
+      <Section title="Product Categories" borderBottomWidth={10}>
+        {categories &&
+          categories.map((category: any) => <CategoryCard key={category.id} category={category} />)}
+      </Section>
+      <Section title="Today’s Best Deals" borderBottomWidth={10}>
+        {deals && deals.map((product: any) => <ProductCard key={product.id} product={product} />)}
+      </Section>
+      <Section title="Deals For You">
+        {products &&
+          products.map((product: any) => <ProductCard key={product.id} product={product} />)}
+      </Section>
       <Footer />
     </PageWrap>
   )
