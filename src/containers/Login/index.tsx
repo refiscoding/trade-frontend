@@ -40,7 +40,7 @@ const Login: React.FC<LoginProps> = () => {
 
   React.useEffect(() => {
     if (isAuthenticated) {
-      let to: LocationDescriptorObject = { pathname: '/dashboard' }
+      let to: LocationDescriptorObject = { pathname: '/' }
       if (location.state?.redirectTo) {
         to = { pathname: location.state.redirectTo.pathname }
       }
