@@ -14,5 +14,6 @@ export default {
   heroImg: require('../assets/images/hero-img.png'),
   FacebookFooter: require('../assets/images/facebook.png'),
   TwitterFooter: require('../assets/images/twitter.png'),
-  InstagramFooter: require('../assets/images/instagram.png')
+  InstagramFooter: require('../assets/images/instagram.png'),
+  sellerAprroval: require('../assets/images/seller-approval.svg')
 }

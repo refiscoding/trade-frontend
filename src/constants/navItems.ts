@@ -10,12 +10,12 @@ export type NavItem = {
 
 export const NAV_ITEMS: NavItem[] = [
   {
-    to: `/dashboard`,
+    to: `/`,
     title: 'Home',
     Icon: Home
   },
   {
-    to: `/`,
+    to: `/apply-seller`,
     title: 'Become a Seller',
     Icon: Briefcase
   },
@@ -40,7 +40,7 @@ export const NAV_ITEMS: NavItem[] = [
     Icon: Users
   },
   {
-    to: `/`,
+    to: `/login`,
     title: 'Support',
     Icon: HelpCircle
   }
