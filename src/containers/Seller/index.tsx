@@ -1,0 +1,207 @@
+import * as React from 'react'
+import { get } from 'lodash'
+
+import { PageWrap } from '../../layouts'
+import { MotionFlex } from '../../components'
+import {
+  useUpdateSelfMutation,
+  useCategoryQuery,
+  useCreateMyBusinessMutation,
+  // eslint-disable-next-line @typescript-eslint/camelcase
+  Enum_Business_Businesstype
+} from '../../generated/graphql'
+import { formatError } from '../../utils'
+import { useHistory } from 'react-router-dom'
+import { useAuthContext } from '../../context/AuthProvider'
+import { Button, Flex, useToast } from '@chakra-ui/core'
+import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
+import { Form, Formik, FormikProps } from 'formik'
+import { H3, Text } from '../../typography'
+import * as Yup from 'yup'
+import PersonalInfo from './personalInfo'
+import BusinessInfo from './businessInfo'
+
+const SellerFormValidation = Yup.object().shape({
+  firstName: Yup.string().required('A first name is required'),
+  lastName: Yup.string().required('A last name is required'),
+  email: Yup.string().email('Please enter a valid email address').required('An email is required'),
+  idNumber: Yup.string().required('An ID number is required'),
+  phoneNumber: Yup.string().required('A phone number is required'),
+  name: Yup.string().required('A business name is required'),
+  category: Yup.string().required('A business category is required'),
+  isVatRegistered: Yup.boolean().required('Is vat rgistered is required'),
+  vatNumber: Yup.string().required('A vat number is required'),
+  uniqueProducts: Yup.string().required('Number of unique products is required'),
+  products: Yup.string().required('Products are required'),
+  hasPhysicalStore: Yup.string().required('Has a physical store is required'),
+  isRetailSupplier: Yup.string().required('Are you a retail supplier is required'),
+  businessType: Yup.string().required('A business type is required'),
+  carryStock: Yup.string().required('Do you carry stock is required'),
+  revenue: Yup.string().required('A revenue range is required')
+})
+
+type SellerValues = {
+  firstName: string
+  lastName: string
+  email: string
+  idNumber: string
+  name: string
+  category: string
+  isVatRegistered: string
+  phoneNumber?: string
+  revenue: string
+  vatNumber: string
+  uniqueProducts: string
+  products: string
+  hasPhysicalStore: string
+  isRetailSupplier: string
+  // eslint-disable-next-line @typescript-eslint/camelcase
+  businessType?: Enum_Business_Businesstype
+  carryStock: string
+}
+
+const initialValues = {
+  name: '',
+  category: '',
+  isVatRegistered: '',
+  vatNumber: '',
+  revenue: '',
+  uniqueProducts: '',
+  products: '',
+  hasPhysicalStore: '',
+  isRetailSupplier: '',
+  carryStock: ''
+}
+
+const valuesMapper = (value: string): boolean => {
+  return value === 'true'
+}
+
+const Seller: React.FC = () => {
+  const { user, setUser } = useAuthContext()
+  const history = useHistory()
+  const toast = useToast()
+  const { data } = useCategoryQuery({
+    onError: (err: any) => formatError(err)
+  })
+  const autofillDetails = {
+    ...initialValues,
+    firstName: user?.firstName || '',
+    lastName: user?.lastName || '',
+    email: user?.email || '',
+    idNumber: user?.idNumber || '',
+    phoneNumber: user?.phoneNumber || ''
+  }
+
+  const categories: any = get(data, 'categories', [])
+
+  const mappedCategories = categories.map((category: any) => ({
+    label: category.name,
+    value: category.id
+  }))
+
+  const [updateSelf] = useUpdateSelfMutation({
+    onError: (err: any) => formatError(err),
+    onCompleted: async ({ updateSelf }) => {
+      if (updateSelf?.profileCompleted && setUser) {
+        setUser(updateSelf)
+        if (updateSelf?.isSeller === 'pending') {
+          history.push('/seller-approval')
+        }
+      }
+    }
+  })
+
+  const [createMyBusiness] = useCreateMyBusinessMutation({
+    onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
+    onCompleted: async () => {
+      toast({ description: 'Business details updated!', ...SUCCESS_TOAST })
+    }
+  })
+
+  const handleSubmit = async (values: SellerValues) => {
+    const {
+      name,
+      category,
+      vatNumber,
+      uniqueProducts,
+      products,
+      hasPhysicalStore,
+      isRetailSupplier,
+      businessType,
+      revenue,
+      isVatRegistered,
+      firstName,
+      lastName,
+      email,
+      idNumber,
+      phoneNumber
+    } = values
+
+    const businessValues = {
+      name,
+      category,
+      isVatRegistered: valuesMapper(isVatRegistered),
+      vatNumber,
+      uniqueProducts: uniqueProducts,
+      products,
+      revenue,
+      hasPhysicalStore: valuesMapper(hasPhysicalStore),
+      isRetailSupplier: valuesMapper(isRetailSupplier),
+      businessType: businessType
+    }
+    const userDetails = {
+      firstName,
+      lastName,
+      email,
+      idNumber,
+      phoneNumber
+    }
+    await createMyBusiness({ variables: { input: businessValues } })
+    await updateSelf({ variables: { input: { ...userDetails } } })
+  }
+
+  return (
+    <PageWrap pt={0} title="Seller Details" mt={10}>
+      <Flex width="100%" my={4} flexDirection="column">
+        <H3 textAlign="left">Apply to sell on TradeFed.</H3>
+        <Text textAlign="left" fontSize="14px">
+          To continue to be a seller, you need to go through a credit check process as well.
+        </Text>
+      </Flex>
+      <Formik
+        validationSchema={SellerFormValidation}
+        initialValues={autofillDetails}
+        onSubmit={async (items, { setStatus, setSubmitting }) => {
+          setStatus(null)
+          try {
+            setSubmitting(true)
+            await handleSubmit(items)
+            setSubmitting(false)
+          } catch (error) {
+            setStatus(formatError(error))
+          }
+        }}
+      >
+        {({ isSubmitting, status }: FormikProps<SellerValues>) => (
+          <Form style={{ width: '100%' }}>
+            <PersonalInfo />
+            <BusinessInfo categories={mappedCategories} />
+            {status && (
+              <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
+                <Text textAlign="right" color="red.500">
+                  {status}
+                </Text>
+              </MotionFlex>
+            )}
+            <Button mt={4} width="100%" type="submit" variantColor="brand" isLoading={isSubmitting}>
+              SUBMIT
+            </Button>
+          </Form>
+        )}
+      </Formik>
+    </PageWrap>
+  )
+}
+
+export default Seller

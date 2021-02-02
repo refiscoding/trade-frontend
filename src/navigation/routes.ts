@@ -19,23 +19,38 @@ const Home = lazy(() => import('../containers/HomePage'))
 const Redirect = lazy(() => import('../containers/Redirect'))
 const UserDetails = lazy(() => import('../containers/OnboardingUserDetails'))
 const onBoardingIntro = lazy(() => import('../containers/OnboardingUserDetails/OnboardingIntro'))
-
+const Seller = lazy(() => import('../containers/Seller'))
+const SellerApproval = lazy(() => import('../containers/Seller/seller-approval'))
 
 
 const PRIVATE_ROUTES: PrivateRouteObject[] = [
   {
-    exact: false,
-    path: '/dashboard',
-    breadcrumb: 'Home',
-    component: Home,
-    title: 'Dashboard'
-  },
-  {
-    exact: false,
+    exact: true,
     path: '/profile',
     breadcrumb: 'My Profile',
     component: Profile,
     title: 'My Profile'
+  },
+  {
+    exact: false,
+    path: '/apply-seller',
+    breadcrumb: 'Apply Seller',
+    component: Seller,
+    title: 'Apply Seller'
+  },
+  {
+    exact: false,
+    path: '/seller-approval',
+    breadcrumb: 'Apply Seller',
+    component: SellerApproval,
+    title: 'Apply Seller'
+  },
+  {
+    exact: true,
+    path: '/',
+    breadcrumb: 'Home',
+    component: Home,
+    title: 'Home'
   }
 ]
 
