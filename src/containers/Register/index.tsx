@@ -36,7 +36,7 @@ const Register: React.FC<RegisterProps> = () => {
 
   React.useEffect(() => {
     if (user?.confirmed) {
-      history.push('/auth/user-management')
+      history.push('/')
     } else if (user) {
       history.push('/confirm-email')
       logout && logout()

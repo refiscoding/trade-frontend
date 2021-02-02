@@ -20,7 +20,7 @@ const Redirect: React.FC = () => {
 
   React.useEffect(() => {
     if (user?.confirmed) {
-      history.push('/dashboard')
+      history.push('/')
     }
   }, [user, history])
 

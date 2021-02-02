@@ -10,8 +10,8 @@ import { NAV_ITEMS } from '../constants'
 
 interface RouteType extends RouteProps {
   component: any
+  title: string
 }
-
 
 const PrivateRoute = ({ component: Component, ...rest }: RouteType) => {
   const { isAuthenticating, isAuthenticated } = useAuthContext()
@@ -25,6 +25,10 @@ const PrivateRoute = ({ component: Component, ...rest }: RouteType) => {
       {...rest}
       render={(props) =>
         isAuthenticated ? (
+          <Suspense fallback={<FillLoader color="black" />}>
+            <Component {...rest} />
+          </Suspense>
+        ) : rest.path === '/' ? (
           <Suspense fallback={<FillLoader color="black" />}>
             <Component {...rest} />
           </Suspense>
