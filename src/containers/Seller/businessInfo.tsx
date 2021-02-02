@@ -47,7 +47,7 @@ const BusinessInfo: React.FC<businessTypes> = ({ categories }) => {
         <ConnectedFormGroup label="Company Name*" name="name" type="text" />
         <ConnectedSelect label="Category* " name="category" options={categories} />
         <FormLabel htmlFor="isVatRegistered">Are you VAT registered?*</FormLabel>
-        {options.map((item: any, i: number) => (
+        {options.map((item: Options, i: number) => (
           <Flex key={i} alignItems="center">
             <Field key={i} type="radio" name="isVatRegistered" value={item.value} />
             <Text ml={2}>{item.label}</Text>
@@ -74,21 +74,21 @@ const BusinessInfo: React.FC<businessTypes> = ({ categories }) => {
         <ConnectedNumberInput label="Number of unique products*" name="uniqueProducts" />
         <ConnectedTextArea label="What products do you sell?* " name="products" />
         <FormLabel htmlFor="carryStock">Do you carry stock?*</FormLabel>
-        {options.map((item: any, i: number) => (
+        {options.map((item: Options, i: number) => (
           <Flex key={i} alignItems="center">
             <Field key={i} type="radio" name="carryStock" value={item.value} />
             <Text ml={2}>{item.label}</Text>
           </Flex>
         ))}
         <FormLabel htmlFor="hasPhysicalStore">Do you have a physical store?* </FormLabel>
-        {options.map((item: any, i: number) => (
+        {options.map((item: Options, i: number) => (
           <Flex key={i} alignItems="center">
             <Field key={i} type="radio" name="hasPhysicalStore" value={item.value} />
             <Text ml={2}>{item.label}</Text>
           </Flex>
         ))}
         <FormLabel htmlFor="isRetailSupplier">Are you a supplier to retail outlets?* </FormLabel>
-        {options.map((item: any, i: number) => (
+        {options.map((item: Options, i: number) => (
           <Flex key={i} alignItems="center">
             <Field key={i} type="radio" name="isRetailSupplier" value={item.value} />
             <Text ml={2}>{item.label}</Text>
