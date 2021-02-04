@@ -45,3 +45,9 @@ export const NAV_ITEMS: NavItem[] = [
     Icon: HelpCircle
   }
 ]
+
+export const SELLER_NAV_ITEM: NavItem = {
+  to: `/product-management`,
+  title: 'Product Management',
+  Icon: Briefcase
+}

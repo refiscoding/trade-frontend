@@ -4,13 +4,14 @@ import * as React from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { ColorProps } from 'styled-system'
 import { useAppContext } from '../../context/AppProvider'
-import { NavItem } from '../../constants/navItems'
+import { NavItem, SELLER_NAV_ITEM } from '../../constants/navItems'
 import { images } from '../../theme'
 import { Text } from '../../typography'
 import Header from '../Header'
 import SideBarButton from './SideBarButton'
 import SideBarItem from './SideBarItem'
 import { MenuCont, Overlay, RenderWrapper } from './styles'
+import { useAuthContext } from '../../context/AuthProvider'
 
 type SideBarProps = ColorProps & {
   accentColor: string
@@ -36,7 +37,7 @@ const SideBar: React.FC<SideBarProps> = ({
   closeOnNavigate
 }) => {
   const { drawerOpen, toggleDrawer } = useAppContext()
-
+  const { user } = useAuthContext()
 
   const controls = useAnimation()
 
@@ -49,6 +50,14 @@ const SideBar: React.FC<SideBarProps> = ({
       controls.start('closed')
     }
   }, [isTabletOrMobile, drawerOpen, controls])
+
+  const handleNavItems = () => {
+    const updatedNavItems = navItems
+    if (user?.isSeller === 'approved') {
+      updatedNavItems[1] = SELLER_NAV_ITEM
+    }
+    return updatedNavItems
+  }
 
   const variants: Variants = {
     open: {
@@ -118,7 +127,7 @@ const SideBar: React.FC<SideBarProps> = ({
             </AnimatePresence>
           </Flex>
         </Flex>
-        {navItems.map((props) => (
+        {(handleNavItems() as NavItem[]).map((props) => (
           <SideBarItem
             color={color}
             key={props.title}
