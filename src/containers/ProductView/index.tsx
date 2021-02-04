@@ -57,10 +57,10 @@ const ProductView: React.FC<ProductProps> = () => {
       <Flex ml="1rem" flexDirection="column">
         <Flex flexDirection="column">
           <Text my={2} fontSize="18px" fontWeight={600}>
-            {product.name}
+            {product?.name}
           </Text>
           <Text fontSize="10px" maxHeight="60%" overflow="hidden">
-            {product.shortDescription}
+            {product?.shortDescription}
           </Text>
           <Text mt={4} mb={1} fontSize="12px">
             Retail: {`${product?.price?.currency} ${product?.price?.retailPricePerUnit}`}
