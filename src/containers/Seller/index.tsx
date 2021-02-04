@@ -20,6 +20,7 @@ import { H3, Text } from '../../typography'
 import * as Yup from 'yup'
 import PersonalInfo from './personalInfo'
 import BusinessInfo from './businessInfo'
+import { useEffect } from 'react'
 
 const SellerFormValidation = Yup.object().shape({
   firstName: Yup.string().required('A first name is required'),
@@ -92,6 +93,12 @@ const Seller: React.FC = () => {
     idNumber: user?.idNumber || '',
     phoneNumber: user?.phoneNumber || ''
   }
+
+  useEffect(() => {
+    if (user?.isSeller === 'pending') {
+      history.push('/seller-approval')
+    }
+  }, [history, user])
 
   const categories: any = get(data, 'categories', [])
 

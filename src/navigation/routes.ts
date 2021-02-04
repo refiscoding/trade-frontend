@@ -21,7 +21,7 @@ const UserDetails = lazy(() => import('../containers/OnboardingUserDetails'))
 const onBoardingIntro = lazy(() => import('../containers/OnboardingUserDetails/OnboardingIntro'))
 const Seller = lazy(() => import('../containers/Seller'))
 const SellerApproval = lazy(() => import('../containers/Seller/seller-approval'))
-
+const ProductManagement = lazy(() => import('../containers/ProductManagement'))
 
 const PRIVATE_ROUTES: PrivateRouteObject[] = [
   {
@@ -37,6 +37,13 @@ const PRIVATE_ROUTES: PrivateRouteObject[] = [
     breadcrumb: 'Apply Seller',
     component: Seller,
     title: 'Apply Seller'
+  },
+  {
+    exact: false,
+    path: '/product-management',
+    breadcrumb: 'Product Management',
+    component: ProductManagement,
+    title: 'Product Management'
   },
   {
     exact: false,
