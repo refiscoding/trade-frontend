@@ -4,14 +4,14 @@ import * as React from 'react'
 const Section: React.FC<FlexProps> = ({ children, ...rest }) => {
   return (
     <Flex
-      p="1rem"
+      p={rest.p || '1rem'}
       ml="-1rem"
       width="100vw"
       flexDirection="column"
       my={4}
       borderBottomColor="accent.600"
       borderBottomWidth={rest.borderBottomWidth || 0}
-      pb={5}
+      pb={rest.pb || 5}
     >
       <Text mb={2} fontSize="18px" fontWeight={600}>
         {rest.title}

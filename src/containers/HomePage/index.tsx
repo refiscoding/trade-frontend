@@ -57,6 +57,10 @@ const Home: React.FC = () => {
     // eslint-disable-next-line
   }, [user, isAuthenticated])
 
+  const navigateToProduct = (id: string) => {
+    history.push(`/product/${id}`)
+  }
+
   return (
     <PageWrap title="Dashboard" color="colors.white">
       <Flex width="100%" height="40px" justifyContent="space-between">
@@ -107,11 +111,16 @@ const Home: React.FC = () => {
           categories.map((category: any) => <CategoryCard key={category.id} category={category} />)}
       </Section>
       <Section title="Today’s Best Deals" borderBottomWidth={10}>
-        {deals && deals.map((product: any) => <ProductCard key={product.id} product={product} />)}
+        {deals &&
+          deals.map((product: any) => (
+            <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
+          ))}
       </Section>
       <Section title="Deals For You">
         {products &&
-          products.map((product: any) => <ProductCard key={product.id} product={product} />)}
+          products.map((product: any) => (
+            <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
+          ))}
       </Section>
       <Footer />
     </PageWrap>
