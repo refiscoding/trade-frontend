@@ -1,0 +1,5 @@
+# import '/fragments/product.graphql'
+query Product($sort: String, $limit: Int, $start: Int, $where: JSON) {
+    products(sort: $sort, limit: $limit, start: $start, where: $where) {
+        ...product
+    }}

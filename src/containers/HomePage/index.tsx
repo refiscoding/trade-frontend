@@ -11,7 +11,7 @@ import { useHistory } from 'react-router-dom'
 import { Flex, useToast } from '@chakra-ui/core'
 import { images } from '../../theme'
 import Hero from '../../components/Hero'
-import { useCategoryQuery, useProductQuery } from '../../generated/graphql'
+import { Category, Product, useCategoryQuery, useProductQuery } from '../../generated/graphql'
 import { get } from 'lodash'
 import Footer from '../../components/Footer'
 import { ERROR_TOAST } from '../../constants'
@@ -36,16 +36,10 @@ const Home: React.FC = () => {
     onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST })
   })
 
-  const categories: any = get(data, 'categories', [])
-  const products: any = get(productData, 'products', [])
-  const deals: any = slice(
-    reverse(
-      sortBy(products, [
-        function (product) {
-          return product?.discount?.discountPercentage
-        }
-      ])
-    ),
+  const categories = get(data, 'categories', null) as Category[]
+  const products = get(productData, 'products', null) as Product[]
+  const deals: Product[] = slice(
+    reverse(sortBy(products, [(product) => product?.discount?.discountPercentage])),
     0,
     3
   )
@@ -56,6 +50,10 @@ const Home: React.FC = () => {
     }
     // eslint-disable-next-line
   }, [user, isAuthenticated])
+
+  const navigateToProduct = (id: string) => {
+    history.push(`/product/${id}`)
+  }
 
   return (
     <PageWrap title="Dashboard" color="colors.white">
@@ -103,15 +101,19 @@ const Home: React.FC = () => {
       </Flex>
       <Hero image={images.heroImg} header="HOLIDAY DASH" caption="Shop early deals" />
       <Section title="Product Categories" borderBottomWidth={10}>
-        {categories &&
-          categories.map((category: any) => <CategoryCard key={category.id} category={category} />)}
+        {categories?.map((category: Category) => (
+          <CategoryCard key={category.id} category={category} />
+        ))}
       </Section>
       <Section title="Today’s Best Deals" borderBottomWidth={10}>
-        {deals && deals.map((product: any) => <ProductCard key={product.id} product={product} />)}
+        {deals?.map((product: Product) => (
+          <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
+        ))}
       </Section>
       <Section title="Deals For You">
-        {products &&
-          products.map((product: any) => <ProductCard key={product.id} product={product} />)}
+        {products?.map((product: Product) => (
+          <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
+        ))}
       </Section>
       <Footer />
     </PageWrap>

@@ -1,0 +1,39 @@
+# import '/fragments/uploadFile.graphql'
+fragment product on Product {
+    id
+    name
+    description
+    shortDescription
+    tags
+    price {
+        currency
+        retailPricePerUnit
+        pricePerUnit
+    }
+    availableUnits
+    packaging
+    size {
+        height
+        weight
+        productLength
+        width
+    }
+    features
+    variants {
+        variants
+        quantity
+    }
+    discount {
+        discountPercentage
+    }
+    categories {
+        id
+        name
+    }
+    coverImage {
+        ...uploadFile
+    }
+    productImages {
+        ...uploadFile
+    }
+}

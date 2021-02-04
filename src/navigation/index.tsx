@@ -1,4 +1,5 @@
 import React, { Suspense } from 'react'
+import { includes } from 'lodash'
 import { Redirect, Route, RouteProps, Switch } from 'react-router'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { FillLoader } from '../components'
@@ -12,6 +13,8 @@ interface RouteType extends RouteProps {
   component: any
   title: string
 }
+
+const exemptedRoutes: string[] = ['/', '/product/:id']
 
 const PrivateRoute = ({ component: Component, ...rest }: RouteType) => {
   const { isAuthenticating, isAuthenticated } = useAuthContext()
@@ -28,7 +31,7 @@ const PrivateRoute = ({ component: Component, ...rest }: RouteType) => {
           <Suspense fallback={<FillLoader color="black" />}>
             <Component {...rest} />
           </Suspense>
-        ) : rest.path === '/' ? (
+        ) : includes(exemptedRoutes, rest?.path) ? (
           <Suspense fallback={<FillLoader color="black" />}>
             <Component {...rest} />
           </Suspense>

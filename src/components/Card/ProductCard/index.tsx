@@ -7,11 +7,19 @@ import { Product } from '../../../generated/graphql'
 
 type ProductCardProps = FlexProps & {
   product: Product
+  handleClick: (id: string) => void
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, handleClick }) => {
   return (
-    <Card m={2} width="100%" height="150px" flexDirection="row">
+    <Card
+      m={2}
+      width="100%"
+      height="150px"
+      flexDirection="row"
+      onClick={() => handleClick(product.id)}
+      cursor="pointer"
+    >
       <Flex width="50%" position="relative">
         <Image
           mr={5}
