@@ -20,7 +20,7 @@ const ProductView: React.FC<ProductProps> = () => {
     onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST })
   })
 
-  const product = (get(data, 'findProduct', []) as Product) || null
+  const product = get(data, 'findProduct', []) as Product
 
   return (
     <PageWrap alignItems="center" title="Product" bg="white">
