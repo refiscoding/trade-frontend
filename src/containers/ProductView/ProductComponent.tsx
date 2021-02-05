@@ -1,6 +1,5 @@
 import * as React from 'react'
 
-import { PageWrap } from '../../layouts'
 import { Flex, Image, Text } from '@chakra-ui/core'
 import Section from '../../components/Section'
 
@@ -10,7 +9,7 @@ type ProductProps = {
 
 const ProductComponent: React.FC<ProductProps> = ({ product }) => {
   return (
-    <PageWrap alignItems="center" title="Product" bg="white">
+    <React.Fragment>
       <Flex mt="-1rem" width="100vw" height="250px" position="relative">
         <Image
           mr={5}
@@ -80,7 +79,7 @@ const ProductComponent: React.FC<ProductProps> = ({ product }) => {
           </Flex>
         </Section>
       </Flex>
-    </PageWrap>
+    </React.Fragment>
   )
 }
 

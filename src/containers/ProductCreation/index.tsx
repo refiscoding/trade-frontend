@@ -160,7 +160,9 @@ const ProductCreation: React.FC = () => {
             <Stepper activeStep={active}>
               <ProductInfo values={values} categories={mappedCategories} />
               <ProductDetails values={values} />
-              <ProductComponent product={mapProducts(values)} />
+              <Flex ml="-1rem">
+                <ProductComponent product={mapProducts(values)} />
+              </Flex>
             </Stepper>
             {status && (
               <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">

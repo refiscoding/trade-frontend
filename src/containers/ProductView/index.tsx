@@ -2,7 +2,7 @@ import * as React from 'react'
 import { get } from 'lodash'
 
 import { PageWrap } from '../../layouts'
-import { useToast } from '@chakra-ui/core'
+import { Flex, useToast } from '@chakra-ui/core'
 import { useParams } from 'react-router-dom'
 import { useFindProductQuery, Product } from '../../generated/graphql'
 import { ERROR_TOAST } from '../../constants'
@@ -21,9 +21,11 @@ const ProductView: React.FC = () => {
   const product = get(data, 'findProduct', null) as Product
 
   return (
-    <PageWrap title="Product">
+    <PageWrap alignItems="center" title="Product" bg="white">
       <ProductComponent product={product} />
-      <Footer />
+      <Flex ml="1rem">
+        <Footer />
+      </Flex>
     </PageWrap>
   )
 }
