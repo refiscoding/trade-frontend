@@ -9,7 +9,7 @@ import {
 import { H3, Text } from '../../typography'
 import ConnectedSelect from '../../components/FormElements/ConnectedSelect'
 
-type Options = {
+export type Options = {
   label: string
   value: string
 }
