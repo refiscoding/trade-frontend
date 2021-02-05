@@ -28,7 +28,6 @@ fragment product on Product {
     }
     categories {
         id
-        name
     }
     coverImage {
         ...uploadFile
