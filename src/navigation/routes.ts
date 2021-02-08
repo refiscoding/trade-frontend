@@ -23,6 +23,7 @@ const Seller = lazy(() => import('../containers/Seller'))
 const SellerApproval = lazy(() => import('../containers/Seller/seller-approval'))
 const ProductView = lazy(() => import('../containers/ProductView'))
 const ProductManagement = lazy(() => import('../containers/ProductManagement'))
+const ProductCreation = lazy(() => import('../containers/ProductCreation'))
 
 const PRIVATE_ROUTES: PrivateRouteObject[] = [
   {
@@ -59,6 +60,13 @@ const PRIVATE_ROUTES: PrivateRouteObject[] = [
     breadcrumb: 'Product',
     component: ProductView,
     title: 'Product'
+  },
+  {
+    exact: false,
+    path: '/add-product',
+    breadcrumb: 'Product Creation',
+    component: ProductCreation,
+    title: 'Product Creation'
   },
   {
     exact: true,

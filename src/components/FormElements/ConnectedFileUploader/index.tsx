@@ -203,13 +203,15 @@ const FileUploader: React.FC<FileUploaderProps> = ({
           )
         })}
       <Flex mt={!!label ? 0 : 2} justifyContent="flex-end" width="100%" flexDirection="row">
-        <AddFileButton
-          isDisabled={isDisabled}
-          htmlFor={name}
-          mr={stateFiles && stateFiles.length > 0 ? 4 : 0}
-        >
-          <Text>{placeholder}</Text>
-        </AddFileButton>
+        {stateFiles && stateFiles.length > 0 && !isMulti ? null : (
+          <AddFileButton
+            isDisabled={isDisabled}
+            htmlFor={name}
+            mr={stateFiles && stateFiles.length > 0 ? 4 : 0}
+          >
+            <Text>{placeholder}</Text>
+          </AddFileButton>
+        )}
         {stateFiles && stateFiles.length > 0 && (
           <Button isLoading={uploading} flex={1} onClick={() => handleUpload()}>
             <Text>Upload</Text>
