@@ -18,6 +18,7 @@ type ProductInfoTpes = {
   values: ProductValues
 }
 
+//TO-DO: change this to come from backend
 const packagingItems = [
   {
     label: 'Per Pack of Items',
