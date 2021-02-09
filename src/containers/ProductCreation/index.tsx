@@ -3,10 +3,11 @@ import { get } from 'lodash'
 
 import { PageWrap } from '../../layouts'
 import { MotionFlex, Stepper } from '../../components'
-import { Category, useCategoryQuery } from '../../generated/graphql'
+// eslint-disable-next-line
+import { Category, Enum_Product_Packaging, Enum_Componentproductvariantsvariants_Variants, useCategoryQuery, useAddProductMutation } from '../../generated/graphql'
 import { formatError } from '../../utils'
 import { Button, Flex, useToast } from '@chakra-ui/core'
-import { ERROR_TOAST } from '../../constants'
+import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
 import { H3, Text } from '../../typography'
 import { Form, Formik, FormikProps } from 'formik'
 import ProductInfo from './productInfo'
@@ -42,11 +43,13 @@ export type ProductValues = {
   pricePerUnit: string
   retailPricePerUnit: string
   availableUnits: string
-  packaging: string
+  // eslint-disable-next-line
+  packaging?: Enum_Product_Packaging
   itemsPerPackage: string
   description: string
   features: string[]
-  variations: string
+  // eslint-disable-next-line
+  variations?: Enum_Componentproductvariantsvariants_Variants
   height: string
   length: string
   width: string
@@ -61,11 +64,9 @@ const initialValues = {
   pricePerUnit: '',
   retailPricePerUnit: '',
   availableUnits: '',
-  packaging: '',
   itemsPerPackage: '',
   description: '',
   features: [''],
-  variations: '',
   height: '',
   length: '',
   width: '',
@@ -87,6 +88,13 @@ const ProductCreation: React.FC = () => {
     value: category.id
   })) as Options[]
 
+  const [AddProduct] = useAddProductMutation({
+    onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
+    onCompleted: async () => {
+      toast({ description: 'Business details updated!', ...SUCCESS_TOAST })
+    }
+  })
+
   const handleNextButton = () => {
     if (active === 0) {
       setACtive(1)
@@ -99,31 +107,25 @@ const ProductCreation: React.FC = () => {
     }
   }
 
-  const handleSubmitButton = () => {
-    if (active === 1) {
-      setACtive(2)
-    }
-  }
-
   const mapProducts = (values: ProductValues) => {
     const tags = values?.tags?.split(',')
     return {
       name: values.name,
       shortDescription: values.shortDescription,
       description: values.description,
-      tag: [...tags],
+      tags: [...tags],
       price: {
         currency: 'R',
-        retailPricePerUnit: values.retailPricePerUnit,
-        pricePerUnit: values.pricePerUnit
+        retailPricePerUnit: parseInt(values.retailPricePerUnit),
+        pricePerUnit: parseInt(values.pricePerUnit)
       },
-      availableUnits: values.availableUnits,
+      availableUnits: parseInt(values.availableUnits),
       packaging: values.packaging,
       size: {
-        height: values.height,
-        productLength: values.length,
-        width: values.width,
-        weight: values.weight
+        height: parseInt(values.height),
+        productLength: parseInt(values.length),
+        width: parseInt(values.width),
+        weight: parseInt(values.weight)
       },
       features: [...values.features],
       variants: {
@@ -131,6 +133,18 @@ const ProductCreation: React.FC = () => {
         quantity: 0
       },
       categories: [...values.category]
+    }
+  }
+
+  const handleSubmitButton = (items: ProductValues) => {
+    if (active === 1) {
+      setACtive(2)
+    }
+    if (active === 2) {
+      const postProduct = async () => {
+        await AddProduct({ variables: { input: mapProducts(items) } })
+      }
+      postProduct()
     }
   }
 
@@ -148,7 +162,7 @@ const ProductCreation: React.FC = () => {
           setStatus(null)
           try {
             setSubmitting(true)
-            handleSubmitButton()
+            handleSubmitButton(items)
             setSubmitting(false)
           } catch (error) {
             setStatus(formatError(error))
