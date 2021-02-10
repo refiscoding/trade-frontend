@@ -3,8 +3,13 @@ import { get } from 'lodash'
 
 import { PageWrap } from '../../layouts'
 import { MotionFlex, Stepper } from '../../components'
-// eslint-disable-next-line
-import { Category, Enum_Product_Packaging, Enum_Componentproductvariantsvariants_Variants, useCategoryQuery, useAddProductMutation } from '../../generated/graphql'
+import {
+  Category,
+  Enum_Product_Packaging as packagingEnum,
+  Enum_Componentproductvariantsvariants_Variants as variantsEnum,
+  useCategoryQuery,
+  useAddProductMutation
+} from '../../generated/graphql'
 import { formatError } from '../../utils'
 import { Button, Flex, useToast } from '@chakra-ui/core'
 import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
@@ -43,13 +48,11 @@ export type ProductValues = {
   pricePerUnit: string
   retailPricePerUnit: string
   availableUnits: string
-  // eslint-disable-next-line
-  packaging?: Enum_Product_Packaging
+  packaging?: packagingEnum
   itemsPerPackage: string
   description: string
   features: string[]
-  // eslint-disable-next-line
-  variations?: Enum_Componentproductvariantsvariants_Variants
+  variations?: variantsEnum
   height: string
   length: string
   width: string
@@ -91,7 +94,7 @@ const ProductCreation: React.FC = () => {
   const [AddProduct] = useAddProductMutation({
     onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
     onCompleted: async () => {
-      toast({ description: 'Business details updated!', ...SUCCESS_TOAST })
+      toast({ description: 'Product details updated!', ...SUCCESS_TOAST })
     }
   })
 
