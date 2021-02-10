@@ -1,25 +1,17 @@
 import {
   Flex,
-  IconButton,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuGroup,
-  MenuItem,
-  MenuList
+  Image
 } from '@chakra-ui/core'
 import styled from '@emotion/styled'
 import { motion } from 'framer-motion'
 import * as React from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { RouteComponentProps, withRouter } from 'react-router'
-import { useHistory } from 'react-router-dom'
 import { color, ColorProps, space, SpaceProps } from 'styled-system'
 import { useAppContext } from '../../context/AppProvider'
-import { useAuthContext } from '../../context/AuthProvider/index'
-import { Text } from '../../typography'
-import Breadcrumbs from '../Breadcrumbs'
 import SideBarButton from '../SideBar/SideBarButton'
+import { images } from '../../theme'
+import { ShoppingCart } from 'react-feather'
 
 type HeaderProps = RouteComponentProps &
   ColorProps & {
@@ -57,58 +49,18 @@ const HeaderCont = styled(motion.div)<HeaderContProps>`
   transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 `
 
-const BreadCrumbCont = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  @media screen and (max-width: 40em) {
-    display: none;
-  }
-`
-
 const Header: React.FC<HeaderProps> = ({ ...rest }) => {
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
-  const history = useHistory()
   const { drawerOpen, toggleDrawer } = useAppContext()
-
-  const { user, logout } = useAuthContext()
-
-  const handleLogout = () => {
-    logout && logout()
-    history.push('/')
-  }
 
   return (
     <HeaderCont pr={4} pl={drawerOpen ? 'calc(186px + 1rem)' : '1rem'} {...rest}>
-      <BreadCrumbCont>
-        <Breadcrumbs />
-      </BreadCrumbCont>
       {isTabletOrMobile && <SideBarButton color="black" open={drawerOpen} onClick={toggleDrawer} />}
-      <Flex flexDirection="row">
-        <Flex flexDirection="row" justifyContent="center" alignItems="center">
-          <Text mb={0} mr={4} fontWeight="bold">
-            {user?.email}
-          </Text>
-          <Menu>
-            {/* 
-            // @ts-ignore */}
-            <MenuButton icon="settings" as={IconButton} variantColor="brand" size="sm">
-              Profile
-            </MenuButton>
-            <MenuList mr={3} mt={3}>
-              <MenuGroup title="Account">
-                <MenuItem onClick={() => history.push('profile')}>My Account</MenuItem>
-                <MenuItem onClick={handleLogout}>Logout</MenuItem>
-              </MenuGroup>
-              <MenuDivider />
-              <MenuGroup title="Help">
-                <MenuItem>Docs</MenuItem>
-                <MenuItem>FAQ</MenuItem>
-              </MenuGroup>
-            </MenuList>
-          </Menu>
-        </Flex>
+      <Flex width="50%" align="center" justify="center">
+        <Image mr={5} width="100%" height="auto" src={images['TradeFedFullLogo']} />
+      </Flex>
+      <Flex>
+        <ShoppingCart />
       </Flex>
     </HeaderCont>
   )

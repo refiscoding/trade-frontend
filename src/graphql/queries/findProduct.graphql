@@ -1,0 +1,5 @@
+# import '/fragments/product.graphql'
+query FindProduct($id: ID!) {
+    findProduct(id: $id) {
+        ...product
+    }}

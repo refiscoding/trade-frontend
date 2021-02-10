@@ -1,0 +1,23 @@
+# import '/fragments/uploadFile.graphql'
+fragment user on UsersPermissionsUser {
+  id
+  created_at
+  updated_at
+  username
+  email
+  confirmed
+  provider
+  phoneNumber
+  firstName
+  lastName
+  address {
+    id
+    lat
+    lng
+    address
+    postalCode
+  }
+  idNumber
+  profileCompleted
+  isSeller
+}

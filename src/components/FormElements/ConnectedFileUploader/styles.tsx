@@ -48,7 +48,8 @@ export const AddFileButton = styled(Button)<any>`
 AddFileButton.defaultProps = {
   as: 'label',
   leftIcon: 'plus-square',
-  variant: 'outline'
+  bg: 'transparent',
+  justifyContent: 'flex-start'
 }
 
 type PlaceholderProps = ColorProps & {

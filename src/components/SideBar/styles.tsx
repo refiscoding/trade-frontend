@@ -16,7 +16,7 @@ export const MenuCont = styled(MotionFlex)<{ iconOffset?: number }>`
   position: fixed;
   max-width: 100%;
   min-height: 100vh;
-  width: 250px;
+  width: 300px;
   z-index: 1299;
   & .sidebar-menu-icon {
     font-size: 21px;
@@ -38,5 +38,5 @@ export const Overlay = styled(MotionFlex)`
   bottom: 0;
   z-index: 1295;
   position: fixed;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 1);
 `

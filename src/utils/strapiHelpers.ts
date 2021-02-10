@@ -46,16 +46,26 @@ const login = async (
 }
 
 const register = async (
-  username: string,
   email: string,
   password: string
 ): Promise<AxiosResponse<StrapiLoginPayload>> => {
   try {
     return await axios.post(BASE + '/auth/local/register', {
-      username,
+      username: email,
       email,
       password
     })
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}
+
+const providerAuth = async (
+  provider: string,
+  token: string
+): Promise<AxiosResponse<StrapiLoginPayload>> => {
+  try {
+    return await axios.get(BASE + `/auth/${provider}/callback${token}`)
   } catch (error) {
     return Promise.reject(error)
   }
@@ -80,4 +90,4 @@ const upload = async (
   }
 }
 
-export default { forgotPassword, resetPassword, login, register, upload }
+export default { forgotPassword, resetPassword, login, register, providerAuth, upload }

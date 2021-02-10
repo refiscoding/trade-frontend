@@ -4,13 +4,15 @@ import { Helmet } from 'react-helmet'
 
 type PageWrapProps = FlexProps & {
   title: string
+  script?: string
 }
 
-const PageWrap: React.FC<PageWrapProps> = ({ children, title, ...rest }) => {
+const PageWrap: React.FC<PageWrapProps> = ({ children, title, script, ...rest }) => {
   return (
     <>
       <Helmet>
         <title>{title}</title>
+        <script src={script} />
       </Helmet>
       <Flex {...rest}>{children}</Flex>
     </>
@@ -21,7 +23,6 @@ PageWrap.defaultProps = {
   p: 4,
   flex: 1,
   pt: 'calc(64px + 1rem)',
-  bg: 'gray.100',
   height: '100%',
   flexDir: 'column',
   minHeight: '100vh',
