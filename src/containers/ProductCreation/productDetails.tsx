@@ -18,7 +18,7 @@ type ProductDetailsTypes = {
 }
 
 const options: Options[] = [
-  { label: 'Per Colour', value: 'colour' },
+  { label: 'Per Colour', value: 'color' },
   { label: 'Per Size', value: 'size' }
 ]
 

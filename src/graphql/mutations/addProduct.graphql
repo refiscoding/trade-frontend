@@ -1,0 +1,6 @@
+# import '/fragments/product.graphql'
+mutation AddProduct($input: ProductInput) {
+  AddProduct(input: $input) {
+    ...product
+  }
+}
