@@ -27,6 +27,7 @@ type FileUploaderProps = SpaceProps & {
   onUpload?: (id: string | string[]) => void
   isMulti?: boolean
   isDisabled?: boolean
+  setImages?: (value: any[]) => void
 }
 
 type ProgressObject = {
@@ -44,6 +45,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
   label,
   isMulti,
   isDisabled,
+  setImages,
   ...rest
 }) => {
   const [stateFiles, setStateFiles] = React.useState<File[]>([])
@@ -73,9 +75,10 @@ const FileUploader: React.FC<FileUploaderProps> = ({
   const toast = useToast()
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files
+    const files = (e.target.files as unknown) as File[]
     if (files) {
       setStateFiles((prevFiles) => prevFiles?.concat(Array.from(files)))
+      setImages && setImages(files)
     }
   }
 

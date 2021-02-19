@@ -15,7 +15,9 @@ const ProductComponent: React.FC<ProductProps> = ({ product }) => {
           mr={5}
           width="100%"
           height="100%"
-          src={`${process.env.REACT_APP_API_HOST}${product?.coverImage?.url}`}
+          src={`${product?.coverImage?.preview ? '' : process.env.REACT_APP_API_HOST}${
+            product?.coverImage?.url
+          }`}
         />
         {product?.discount?.discountPercentage && product?.discount?.discountPercentage > 0 ? (
           <Flex
@@ -58,7 +60,9 @@ const ProductComponent: React.FC<ProductProps> = ({ product }) => {
           >{`${product?.price?.currency} ${product?.price?.pricePerUnit}`}</Text>
         </Flex>
         <Section p="0 1rem" pb="0px" title="About This Product">
-          <Text fontSize="12px">{product?.description}</Text>
+          <Flex width="100%" alignSelf="flex-start">
+            <Text fontSize="12px">{product?.description}</Text>
+          </Flex>
         </Section>
         <Section title="Product Features" p="0 1rem" pb="0px">
           <Flex ml="1rem" width="100%" as="ul" flexDirection="column" alignSelf="flex-start">
