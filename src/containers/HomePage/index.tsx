@@ -55,6 +55,10 @@ const Home: React.FC = () => {
     history.push(`/product/${id}`)
   }
 
+  const handleFilter = () => {
+    history.push(`/product-filter`)
+  }
+
   return (
     <PageWrap title="Dashboard" color="colors.white">
       <Flex width="100%" height="40px" justifyContent="space-between">
@@ -95,6 +99,7 @@ const Home: React.FC = () => {
           alignItems="center"
           justifyContent="center"
           width="15%"
+          onClick={() => handleFilter()}
         >
           <Filter fontSize={10} />
         </Flex>
