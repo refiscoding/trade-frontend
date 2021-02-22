@@ -2,7 +2,7 @@ import { Form, Formik } from 'formik'
 import * as React from 'react'
 import { Filter, Search } from 'react-feather'
 import { sortBy, reverse, slice } from 'lodash'
-
+import { ApolloError } from 'apollo-client'
 import { ConnectedFormGroup } from '../../components/FormElements'
 import { PageWrap } from '../../layouts'
 import { formatError } from '../../utils'
@@ -29,11 +29,11 @@ const Home: React.FC = () => {
   const toast = useToast()
 
   const { data } = useCategoryQuery({
-    onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST })
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
   })
 
   const { data: productData } = useProductQuery({
-    onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST })
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
   })
 
   const categories = get(data, 'categories', null) as Category[]
@@ -53,6 +53,10 @@ const Home: React.FC = () => {
 
   const navigateToProduct = (id: string) => {
     history.push(`/product/${id}`)
+  }
+
+  const handleFilter = () => {
+    history.push(`/product-filter`)
   }
 
   return (
@@ -95,6 +99,7 @@ const Home: React.FC = () => {
           alignItems="center"
           justifyContent="center"
           width="15%"
+          onClick={() => handleFilter()}
         >
           <Filter fontSize={10} />
         </Flex>
