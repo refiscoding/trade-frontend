@@ -10,11 +10,12 @@ import {
 import { Text } from '../../typography'
 import { Options } from '../Seller/businessInfo'
 import { Field, FieldArray } from 'formik'
-import { PlusSquare } from 'react-feather'
+import { File, PlusSquare } from 'react-feather'
 import { ProductValues } from './index'
 
 type ProductDetailsTypes = {
   values: ProductValues
+  setImage: (value: File[]) => void
 }
 
 const options: Options[] = [
@@ -22,12 +23,17 @@ const options: Options[] = [
   { label: 'Per Size', value: 'size' }
 ]
 
-const ProductDetails: React.FC<ProductDetailsTypes> = ({ values }) => {
+const ProductDetails: React.FC<ProductDetailsTypes> = ({ values, setImage }) => {
   return (
     <Flex flexDirection="column">
       <FormLabel htmlFor="packaging">Add Product Images (0/5)</FormLabel>
-      <ConnectedFileUploader placeholder="Cover Image" name="coverImage" />
-      <ConnectedFileUploader isMulti placeholder="Add Another Image" name="productImages" />
+      <ConnectedFileUploader placeholder="Cover Image" name="coverImage" setImages={setImage} />
+      <ConnectedFileUploader
+        isMulti
+        placeholder="Add Another Image"
+        name="productImages"
+        setImages={setImage}
+      />
       <ConnectedTextArea label="Product Description" name="description" />
       <FormLabel htmlFor="features">List Product Features</FormLabel>
       <FieldArray

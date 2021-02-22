@@ -20,6 +20,8 @@ import ProductDetails from './productDetails'
 import { Options } from '../Seller/businessInfo'
 import * as Yup from 'yup'
 import ProductComponent from '../ProductView/ProductComponent'
+import { useHistory } from 'react-router-dom'
+import { File } from 'react-feather'
 
 const ProductFormValidation = Yup.object().shape({
   name: Yup.string().required('A name is required'),
@@ -78,7 +80,9 @@ const initialValues = {
 
 const ProductCreation: React.FC = () => {
   const [active, setACtive] = React.useState(0)
+  const [imageValue, setImage] = React.useState<File[]>([])
   const toast = useToast()
+  const history = useHistory()
 
   const { data } = useCategoryQuery({
     onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST })
@@ -95,8 +99,13 @@ const ProductCreation: React.FC = () => {
     onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
     onCompleted: async () => {
       toast({ description: 'Product details updated!', ...SUCCESS_TOAST })
+      history.push('/product-management')
     }
   })
+
+  const handleImage = (value: File[]) => {
+    setImage((prevFiles) => prevFiles?.concat(Array.from(value)))
+  }
 
   const handleNextButton = () => {
     if (active === 0) {
@@ -176,9 +185,17 @@ const ProductCreation: React.FC = () => {
           <Form style={{ width: '100%' }}>
             <Stepper activeStep={active}>
               <ProductInfo values={values} categories={mappedCategories} />
-              <ProductDetails values={values} />
-              <Flex ml="-1rem">
-                <ProductComponent product={mapProducts(values)} />
+              <ProductDetails values={values} setImage={handleImage} />
+              <Flex ml="-1rem" flexDirection="column">
+                <ProductComponent
+                  product={{
+                    ...mapProducts(values),
+                    coverImage: {
+                      preview: true,
+                      url: imageValue.length > 0 ? window.URL.createObjectURL(imageValue[0]) : ''
+                    }
+                  }}
+                />
               </Flex>
             </Stepper>
             {status && (
