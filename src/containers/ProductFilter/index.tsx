@@ -14,6 +14,7 @@ import * as Yup from 'yup'
 import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
 import { PlusSquare } from 'react-feather'
 import { useHistory } from 'react-router-dom'
+import { ApolloError } from 'apollo-client'
 
 const ProductFormValidation = Yup.object().shape({
   minPrice: Yup.string(),
@@ -41,7 +42,7 @@ const ProductCreation: React.FC = () => {
   const history = useHistory()
 
   const { data } = useCategoryQuery({
-    onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST })
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
   })
 
   const categories = get(data, 'categories', null) as Category[]
