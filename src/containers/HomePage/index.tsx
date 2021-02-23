@@ -1,13 +1,13 @@
 import { Form, Formik } from 'formik'
 import * as React from 'react'
 import { Filter, Search } from 'react-feather'
-import { sortBy, reverse, slice } from 'lodash'
+import { sortBy, reverse, slice, every } from 'lodash'
 import { ApolloError } from 'apollo-client'
 import { ConnectedFormGroup } from '../../components/FormElements'
 import { PageWrap } from '../../layouts'
 import { formatError } from '../../utils'
 import { useAuthContext } from '../../context/AuthProvider'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { Flex, useToast } from '@chakra-ui/core'
 import { images } from '../../theme'
 import Hero from '../../components/Hero'
@@ -23,16 +23,47 @@ type InitialValues = {
   search: string
 }
 
+type filterParams = {
+  minPrice: string
+  maxPrice: string
+  category: string[]
+}
+
 const Home: React.FC = () => {
   const { user, isAuthenticated } = useAuthContext()
   const history = useHistory()
   const toast = useToast()
+  const filters = useLocation().search
+  const [query, setQuery] = React.useState<filterParams>()
+  const [isFiltered, setIsFiltered] = React.useState<boolean>(false)
+
+  React.useEffect(() => {
+    const params = new URLSearchParams(filters)
+    const productFilters = {
+      minPrice: params.get('minPrice'),
+      maxPrice: params.get('maxPrice'),
+      category: params.get('category')?.split(',')
+    } as filterParams
+    if (every(productFilters)) {
+      setQuery(productFilters)
+      setIsFiltered(true)
+      return
+    }
+    setIsFiltered(false)
+  }, [filters])
 
   const { data } = useCategoryQuery({
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
   })
 
   const { data: productData } = useProductQuery({
+    variables: {
+      where: {
+        productPrice_gt: parseInt(query?.minPrice || '0'),
+        productPrice_lt: parseInt(query?.maxPrice || '10000'),
+        categories_contains: query?.category
+      }
+    },
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
   })
 
@@ -60,7 +91,7 @@ const Home: React.FC = () => {
   }
 
   return (
-    <PageWrap title="Dashboard" color="colors.white">
+    <PageWrap title="Dashboard" color="colors.white" position="relative">
       <Flex width="100%" height="40px" justifyContent="space-between">
         <Formik
           initialValues={{
@@ -104,22 +135,32 @@ const Home: React.FC = () => {
           <Filter fontSize={10} />
         </Flex>
       </Flex>
-      <Hero image={images.heroImg} header="HOLIDAY DASH" caption="Shop early deals" />
-      <Section title="Product Categories" borderBottomWidth={10}>
-        {categories?.map((category: Category) => (
-          <CategoryCard key={category.id} category={category} />
-        ))}
-      </Section>
-      <Section title="Today’s Best Deals" borderBottomWidth={10}>
-        {deals?.map((product: Product) => (
-          <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
-        ))}
-      </Section>
-      <Section title="Deals For You">
-        {products?.map((product: Product) => (
-          <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
-        ))}
-      </Section>
+      {isFiltered ? (
+        <Section title="All filtered items" borderBottomWidth={10}>
+          {products?.map((product: Product) => (
+            <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
+          ))}
+        </Section>
+      ) : (
+        <React.Fragment>
+          <Hero image={images.heroImg} header="HOLIDAY DASH" caption="Shop early deals" />
+          <Section title="Product Categories" borderBottomWidth={10}>
+            {categories?.map((category: Category) => (
+              <CategoryCard key={category.id} category={category} />
+            ))}
+          </Section>
+          <Section title="Today’s Best Deals" borderBottomWidth={10}>
+            {deals?.map((product: Product) => (
+              <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
+            ))}
+          </Section>
+          <Section title="Deals For You">
+            {products?.map((product: Product) => (
+              <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
+            ))}
+          </Section>
+        </React.Fragment>
+      )}
       <Footer />
     </PageWrap>
   )
