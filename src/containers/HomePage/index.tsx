@@ -1,14 +1,14 @@
 import { Form, Formik } from 'formik'
 import * as React from 'react'
 import { Filter, Search } from 'react-feather'
-import { sortBy, reverse, slice, every } from 'lodash'
+import { sortBy, reverse, slice, some } from 'lodash'
 import { ApolloError } from 'apollo-client'
 import { ConnectedFormGroup } from '../../components/FormElements'
 import { PageWrap } from '../../layouts'
 import { formatError } from '../../utils'
 import { useAuthContext } from '../../context/AuthProvider'
 import { useHistory, useLocation } from 'react-router-dom'
-import { Flex, useToast } from '@chakra-ui/core'
+import { Flex, useToast, Text } from '@chakra-ui/core'
 import { images } from '../../theme'
 import Hero from '../../components/Hero'
 import { Category, Product, useCategoryQuery, useProductQuery } from '../../generated/graphql'
@@ -44,7 +44,7 @@ const Home: React.FC = () => {
       maxPrice: params.get('maxPrice'),
       category: params.get('category')?.split(',')
     } as filterParams
-    if (every(productFilters)) {
+    if (some(productFilters)) {
       setQuery(productFilters)
       setIsFiltered(true)
       return
@@ -58,7 +58,7 @@ const Home: React.FC = () => {
 
   const { data: productData } = useProductQuery({
     variables: {
-      where: {
+      where: isFiltered && {
         productPrice_gt: parseInt(query?.minPrice || '0'),
         productPrice_lt: parseInt(query?.maxPrice || '10000'),
         categories_contains: query?.category
@@ -91,76 +91,87 @@ const Home: React.FC = () => {
   }
 
   return (
-    <PageWrap title="Dashboard" color="colors.white" position="relative">
-      <Flex width="100%" height="40px" justifyContent="space-between">
-        <Formik
-          initialValues={{
-            search: ''
-          }}
-          onSubmit={async ({ search }, { setSubmitting, setStatus }) => {
-            setStatus(null)
-            try {
-              setSubmitting(true)
-              const search = () => {
-                return
+    <PageWrap
+      title="Dashboard"
+      color="colors.white"
+      justifyContent="space-between"
+      minHeight="100vh"
+    >
+      <Flex flexDirection="column" width="100%">
+        <Flex width="100%" height="40px" justifyContent="space-between">
+          <Formik
+            initialValues={{
+              search: ''
+            }}
+            onSubmit={async ({ search }, { setSubmitting, setStatus }) => {
+              setStatus(null)
+              try {
+                setSubmitting(true)
+                const search = () => {
+                  return
+                }
+                search()
+                setSubmitting(false)
+              } catch (error) {
+                setStatus(formatError(error))
               }
-              search()
-              setSubmitting(false)
-            } catch (error) {
-              setStatus(formatError(error))
-            }
-          }}
-        >
-          <Form style={{ width: '80%' }}>
-            <ConnectedFormGroup
-              icon={Search}
-              name="search"
-              placeholder="Search for products, brands..."
-              fontSize={12}
-              paddingLeft="40px"
-              borderColor="transparent"
-              bg="accent.600"
-              iconPosition="left"
-            />
-          </Form>
-        </Formik>
-        <Flex
-          borderRadius={4}
-          bg="accent.600"
-          alignItems="center"
-          justifyContent="center"
-          width="15%"
-          onClick={() => handleFilter()}
-        >
-          <Filter fontSize={10} />
+            }}
+          >
+            <Form style={{ width: '80%' }}>
+              <ConnectedFormGroup
+                icon={Search}
+                name="search"
+                placeholder="Search for products, brands..."
+                fontSize={12}
+                paddingLeft="40px"
+                borderColor="transparent"
+                bg="accent.600"
+                iconPosition="left"
+              />
+            </Form>
+          </Formik>
+          <Flex
+            borderRadius={4}
+            bg="accent.600"
+            alignItems="center"
+            justifyContent="center"
+            width="15%"
+            onClick={() => handleFilter()}
+          >
+            <Filter fontSize={10} />
+          </Flex>
         </Flex>
+        {isFiltered ? (
+          <Section title="All filtered items" borderBottomWidth={10}>
+            {products?.length > 0 ? (
+              products?.map((product: Product) => (
+                <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
+              ))
+            ) : (
+              <Text> No products matching the selected filters </Text>
+            )}
+          </Section>
+        ) : (
+          <React.Fragment>
+            <Hero image={images.heroImg} header="HOLIDAY DASH" caption="Shop early deals" />
+            <Section title="Product Categories" borderBottomWidth={10}>
+              {categories?.map((category: Category) => (
+                <CategoryCard key={category.id} category={category} />
+              ))}
+            </Section>
+            <Section title="Today’s Best Deals" borderBottomWidth={10}>
+              {deals?.map((product: Product) => (
+                <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
+              ))}
+            </Section>
+            <Section title="Deals For You">
+              {products?.map((product: Product) => (
+                <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
+              ))}
+            </Section>
+          </React.Fragment>
+        )}
       </Flex>
-      {isFiltered ? (
-        <Section title="All filtered items" borderBottomWidth={10}>
-          {products?.map((product: Product) => (
-            <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
-          ))}
-        </Section>
-      ) : (
-        <React.Fragment>
-          <Hero image={images.heroImg} header="HOLIDAY DASH" caption="Shop early deals" />
-          <Section title="Product Categories" borderBottomWidth={10}>
-            {categories?.map((category: Category) => (
-              <CategoryCard key={category.id} category={category} />
-            ))}
-          </Section>
-          <Section title="Today’s Best Deals" borderBottomWidth={10}>
-            {deals?.map((product: Product) => (
-              <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
-            ))}
-          </Section>
-          <Section title="Deals For You">
-            {products?.map((product: Product) => (
-              <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
-            ))}
-          </Section>
-        </React.Fragment>
-      )}
       <Footer />
     </PageWrap>
   )
