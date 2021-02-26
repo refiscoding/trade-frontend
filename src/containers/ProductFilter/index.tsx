@@ -37,7 +37,7 @@ const initialValues = {
   country: ''
 }
 
-const ProductCreation: React.FC = () => {
+const ProductFilter: React.FC = () => {
   const toast = useToast()
   const history = useHistory()
 
@@ -54,6 +54,11 @@ const ProductCreation: React.FC = () => {
 
   const handleClearFilters = () => {
     history.push(`/`)
+  }
+
+  const handleSelectFilters = (values: ProductValues) => {
+    const { minPrice, maxPrice, category } = values
+    history.push(`/?minPrice=${minPrice}&maxPrice=${maxPrice}&category=${category}`)
   }
 
   return (
@@ -73,13 +78,14 @@ const ProductCreation: React.FC = () => {
           setStatus(null)
           try {
             setSubmitting(true)
+            await handleSelectFilters(items)
             setSubmitting(false)
           } catch (error) {
             setStatus(formatError(error))
           }
         }}
       >
-        {({ status, values }: FormikProps<ProductValues>) => (
+        {({ isSubmitting, status, values }: FormikProps<ProductValues>) => (
           <Form style={{ width: '100%' }}>
             <ConnectedFormGroup label="Min Price" name="minPrice" type="text" />
             <ConnectedFormGroup label="Max Price" name="maxPrice" type="text" />
@@ -113,7 +119,7 @@ const ProductCreation: React.FC = () => {
                 </Text>
               </MotionFlex>
             )}
-            <Button mt={4} width="100%" type="button">
+            <Button mt={4} width="100%" type="submit" variantColor="brand" isLoading={isSubmitting}>
               APPLY
             </Button>
           </Form>
@@ -123,4 +129,4 @@ const ProductCreation: React.FC = () => {
   )
 }
 
-export default ProductCreation
+export default ProductFilter

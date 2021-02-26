@@ -133,6 +133,7 @@ const ProductCreation: React.FC = () => {
       },
       availableUnits: parseInt(values.availableUnits),
       packaging: values.packaging,
+      productPrice: parseInt(values.pricePerUnit),
       size: {
         height: parseInt(values.height),
         productLength: parseInt(values.length),

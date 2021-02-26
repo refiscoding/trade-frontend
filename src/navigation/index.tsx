@@ -14,7 +14,7 @@ interface RouteType extends RouteProps {
   title: string
 }
 
-const exemptedRoutes: string[] = ['/', '/product/:id']
+const exemptedRoutes: string[] = ['/', '/product/:id', '/product-filter']
 
 const PrivateRoute = ({ component: Component, ...rest }: RouteType) => {
   const { isAuthenticating, isAuthenticated } = useAuthContext()

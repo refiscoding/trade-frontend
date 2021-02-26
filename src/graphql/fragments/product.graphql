@@ -12,6 +12,7 @@ fragment product on Product {
     }
     availableUnits
     packaging
+    productPrice
     size {
         height
         weight
