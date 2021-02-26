@@ -16,5 +16,7 @@ export default {
   TwitterFooter: require('../assets/images/twitter.png'),
   InstagramFooter: require('../assets/images/instagram.png'),
   sellerAprroval: require('../assets/images/seller-approval.svg'),
-  filesIcon: require('../assets/images/files.svg')
+  filesIcon: require('../assets/images/files.svg'),
+  emptyWishlist: require('../assets/images/empty_wishlist.svg'),
+  deleteItems: require('../assets/images/deleteItems.svg')
 }

@@ -25,7 +25,7 @@ export const NAV_ITEMS: NavItem[] = [
     Icon: User
   },
   {
-    to: `/`,
+    to: `/wishlist`,
     title: 'My Wish List',
     Icon: Star
   },

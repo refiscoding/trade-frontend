@@ -1,0 +1,46 @@
+mutation removeProductsFromWishlist($input: RemoveProductFromWishlistInput!) {
+    removeProductsFromWishlist(input: $input) {
+      payload {
+       wishlist {
+        owner {
+          id
+          email
+          username
+        }
+        products {
+          id
+          name
+        }
+      }
+      removedItems {
+        id
+        name
+      }
+        missingItems
+      }
+    error
+  }
+}
+
+mutation addProductToWishlist($input: AddProductToWishlistInput!) {
+    addProductToWishlist(input: $input) {
+      payload {
+        id
+        owner {
+          username
+          email
+        }
+        products {
+          name
+          shortDescription
+          price {
+            currency
+            retailPricePerUnit
+            pricePerUnit
+          }
+        }
+      }
+    error
+  }
+}
+
