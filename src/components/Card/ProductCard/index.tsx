@@ -16,8 +16,6 @@ type ProductCardProps = FlexProps & {
 };
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, handleClick, isWishlist, editing }) => {
-  const [productToRemove, setProductToRemove] = React.useState<number | string>();
-  const [previousToRemove, setPreviousToRemove] = React.useState<number | string>();
 
   const handleRadioPressed = (newProduct: string) => {
     console.log("NEW PRODUCT", newProduct);

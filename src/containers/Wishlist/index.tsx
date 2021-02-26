@@ -25,7 +25,7 @@ const WishlistPage: React.FC = () => {
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
   });
 
-  const [removeProductsFromWishlist, { data: removalResponse, loading: removalLoading }] = useRemoveProductsFromWishlistMutation({
+  const [removeProductsFromWishlist] = useRemoveProductsFromWishlistMutation({
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
     onCompleted: ({ removeProductsFromWishlist }) => {
       const itemsRemoved = removeProductsFromWishlist?.payload?.removedItems?.length;
@@ -72,7 +72,8 @@ const WishlistPage: React.FC = () => {
     setShowDeleteItemsModal(false);
   };
   const handleModalDeleteButtonClicked = async () => {
-    const res = await removeProductsFromWishlist({
+    // TODO: This is setup for another ticket
+    await removeProductsFromWishlist({
         variables: {
           input: {
             productsToRemove: ['4']
