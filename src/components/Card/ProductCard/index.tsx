@@ -14,11 +14,29 @@ type ProductCardProps = FlexProps & {
   isWishlist?: Boolean
   editing?: Boolean
 };
+type ProductRemovalValues = {
+  id: string,
+  checked: boolean | undefined,
+};
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, handleClick, isWishlist, editing }) => {
-
-  const handleRadioPressed = (newProduct: string) => {
-    console.log("NEW PRODUCT", newProduct);
+  const handleRadioPressed = (newProduct: string, checked: boolean) => {
+    let productsToRemove: ProductRemovalValues[] = [];
+    const data = {
+      id: newProduct,
+      checked
+    };
+    const existingProducts = localStorage.getItem("remove_from_wishlist");
+    if(!existingProducts){
+      productsToRemove.push(data);
+      localStorage.setItem("remove_from_wishlist", JSON.stringify(productsToRemove, null, 2));
+    } else {
+      const existingProductsObj = JSON.parse(existingProducts);
+      const existingProductsObjWithoutCurrent = existingProductsObj.filter((product: ProductRemovalValues) => !(product.id === newProduct));
+      localStorage.removeItem("remove_from_wishlist");
+      const updatedArray = [...existingProductsObjWithoutCurrent, {...data}];
+      localStorage.setItem("remove_from_wishlist", JSON.stringify(updatedArray, null, 2));
+    };
   };
   return (
       <Flex width="100%" justifyContent="space-between" alignItems="center">
@@ -27,7 +45,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleClick, isWishl
               name={product?.id} 
               value={product?.id} 
               size="md" 
-              onChange={(event) => handleRadioPressed(event?.target?.value)}
+              onChange={(event) => handleRadioPressed(event?.target?.value, event?.target?.checked)}
             />) 
           }
           <Card
@@ -89,7 +107,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleClick, isWishl
           </CardFooter>
         </Card>
       </Flex>
-  )
-}
+  );
+};
 
-export default ProductCard
+export default ProductCard;

@@ -10,9 +10,8 @@ type DeleteItemsButtonProps = FlexProps & {
 };
 
 const DeleteItemsButton: React.FC<DeleteItemsButtonProps> = ({ handleDeleteButtonClicked }) => {
-  // TODO: Have it dull until a user selects at least one product -> change color based on flag
   return (
-    <Grid onClick={() => handleDeleteButtonClicked()} templateRows="25px 1fr" justifyItems="center" mt={5}>
+    <Grid onClick={handleDeleteButtonClicked} templateRows="25px 1fr" justifyItems="center" mt={5}>
       <Trash2 color="#6A6A6A" />
       <Text color="#6A6A6A" textAlign="center"> Remove Items</Text>
     </Grid>
