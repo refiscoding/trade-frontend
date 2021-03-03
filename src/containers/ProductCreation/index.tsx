@@ -196,6 +196,7 @@ const ProductCreation: React.FC = () => {
                       url: imageValue.length > 0 ? window.URL.createObjectURL(imageValue[0]) : ''
                     }
                   }}
+                  setShowAddToCartModal={() => {}}
                 />
               </Flex>
             </Stepper>

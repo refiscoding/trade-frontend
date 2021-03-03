@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useHistory } from 'react-router';
 import { ApolloError } from "apollo-client";
-import { Flex, Image, Text, Button, useToast } from '@chakra-ui/core';
+import { Flex, Image, Text, Button, useToast, Grid } from '@chakra-ui/core';
 
 import Section from '../../components/Section';
 import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants/index';
@@ -9,9 +9,10 @@ import { useAddProductToWishlistMutation } from "../../generated/graphql";
 
 type ProductProps = {
   product?: any
+  setShowAddToCartModal: () => void
 };
 
-const ProductComponent: React.FC<ProductProps> = ({ product }) => {
+const ProductComponent: React.FC<ProductProps> = ({ product, setShowAddToCartModal }) => {
   const toast = useToast();
   const history = useHistory();
   const [addProductToWishlist] = useAddProductToWishlistMutation({
@@ -28,11 +29,14 @@ const ProductComponent: React.FC<ProductProps> = ({ product }) => {
     await addProductToWishlist({ variables: { input: { productToAdd: id } } });
     window.location.href = '/wishlist';
   };
+  const handleAddToCartClicked = async (id: string) => {
+    // TODO: Add 'id' to cart then shown modal
+    setShowAddToCartModal();
+  };
   return (
     <React.Fragment>
       <Flex mt="-1rem" width="100vw" height="250px" position="relative">
         <Image
-          mr={5}
           width="100%"
           height="100%"
           src={`${product?.coverImage?.preview ? '' : process.env.REACT_APP_API_HOST}${
@@ -102,11 +106,18 @@ const ProductComponent: React.FC<ProductProps> = ({ product }) => {
             ))}
           </Flex>
         </Section>
-        <Section p="0 1rem" pb="0px">
-          <Button mt={4} width="100%" variantColor="brand" onClick={() => handleAddToWishlistClicked(product?.id)}>
-              ADD TO WISHLIST
+        <Grid gridTemplateColumns="200px 200px">
+          <Button justifySelf="start" mt={4} width="90%" onClick={() => handleAddToWishlistClicked(product?.id)}>
+              <Text fontSize="12px">
+                ADD TO WISHLIST
+              </Text>
           </Button>
-        </Section>
+          <Button mt={4} width="90%" variantColor="brand" onClick={() => handleAddToCartClicked(product?.id)}>
+              <Text fontSize="12px">
+                ADD TO CART
+              </Text>
+          </Button>
+        </Grid>
       </Flex>
     </React.Fragment>
   )
