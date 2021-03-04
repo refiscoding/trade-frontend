@@ -65,6 +65,7 @@ const Navigation = () => (
               navItems={NAV_ITEMS}
               hoverColor="brand.50"
               accentColor="brand.500"
+              closeOnNavigate
             >
               {PRIVATE_ROUTES.map((route) => {
                 return <PrivateRoute key={route.path} {...route} />
