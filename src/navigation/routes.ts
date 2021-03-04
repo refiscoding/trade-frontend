@@ -26,6 +26,7 @@ const ProductManagement = lazy(() => import('../containers/ProductManagement'))
 const ProductCreation = lazy(() => import('../containers/ProductCreation'))
 const ProductFilter = lazy(() => import('../containers/ProductFilter'))
 const Wishlist = lazy(() => import('../containers/Wishlist'))
+const CategoryView = lazy(() => import('../containers/CategoryView'))
 
 const PRIVATE_ROUTES: PrivateRouteObject[] = [
   {
@@ -69,6 +70,13 @@ const PRIVATE_ROUTES: PrivateRouteObject[] = [
     breadcrumb: 'Product',
     component: ProductView,
     title: 'Product'
+  },
+  {
+    exact: false,
+    path: '/category/:id',
+    breadcrumb: 'Category',
+    component: CategoryView,
+    title: 'Category'
   },
   {
     exact: false,

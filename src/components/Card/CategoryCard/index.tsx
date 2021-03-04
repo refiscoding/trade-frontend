@@ -7,11 +7,12 @@ import { Category } from '../../../generated/graphql'
 
 type CategoryCardProps = FlexProps & {
   category: Category
+  handleClick: (id: string) => void
 }
 
-const CategoryCard: React.FC<CategoryCardProps> = ({ category }) => {
+const CategoryCard: React.FC<CategoryCardProps> = ({ category, handleClick }) => {
   return (
-    <Card m={2} width="45%" height="130px">
+    <Card m={2} width="45%" height="130px" onClick={() => handleClick(category.id)}>
       <Image
         mr={5}
         width="100%"

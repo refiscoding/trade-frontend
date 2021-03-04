@@ -86,6 +86,10 @@ const Home: React.FC = () => {
     history.push(`/product/${id}`)
   }
 
+  const navigateToCategory = (id: string) => {
+    history.push(`/category/${id}`)
+  }
+
   const handleFilter = () => {
     history.push(`/product-filter`)
   }
@@ -156,7 +160,11 @@ const Home: React.FC = () => {
             <Hero image={images.heroImg} header="HOLIDAY DASH" caption="Shop early deals" />
             <Section title="Product Categories" borderBottomWidth={10}>
               {categories?.map((category: Category) => (
-                <CategoryCard key={category.id} category={category} />
+                <CategoryCard
+                  key={category.id}
+                  category={category}
+                  handleClick={navigateToCategory}
+                />
               ))}
             </Section>
             <Section title="Today’s Best Deals" borderBottomWidth={10}>
