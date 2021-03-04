@@ -11,13 +11,8 @@ import { H3, H5 } from '../../typography'
 type ProfileProps = {}
 
 const Profile: React.FC<ProfileProps> = () => {
-  const { user, logout } = useAuthContext()
+  const { user } = useAuthContext()
   const history = useHistory()
-
-  const handleLogout = () => {
-    logout && logout()
-    history.push('/')
-  }
 
   const initials = `${user?.firstName?.[0]}${user?.lastName?.[0]}`
   const joinDate = moment(user?.created_at).format('DD/MM/YYYY')
@@ -29,6 +24,10 @@ const Profile: React.FC<ProfileProps> = () => {
       return
     }
     history.push('/apply-seller')
+  }
+
+  const navigateToDetails = () => {
+    history.push('/profile-details')
   }
 
   return (
@@ -60,6 +59,7 @@ const Profile: React.FC<ProfileProps> = () => {
         width="100%"
         justify="space-between"
         alignItems="center"
+        onClick={() => navigateToDetails()}
       >
         <Flex width="80%">
           <Text fontSize={12}>Personal Information & Preference</Text>
