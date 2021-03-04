@@ -1,6 +1,6 @@
 import { Flex, Text } from '@chakra-ui/core'
 import * as React from 'react'
-import { ChevronRight } from 'react-feather'
+import { ChevronRight, Facebook, Instagram, Twitter } from 'react-feather'
 
 import { PageWrap } from '../../layouts'
 import Section from '../../components/Section'
@@ -61,6 +61,41 @@ const AboutUs: React.FC = () => {
           <span onClick={() => history.push('/register')}>here</span>.
         </Text>
       </Section>
+      <Flex mt={5} width="60%" alignSelf="center" justifyContent="space-around">
+        <Flex
+          justifyContent="center"
+          alignItems="center"
+          height="40px"
+          width="40px"
+          borderRadius="50%"
+          border="3px solid"
+          borderColor="black"
+        >
+          <Facebook fill="black" />
+        </Flex>
+        <Flex
+          justifyContent="center"
+          alignItems="center"
+          height="40px"
+          width="40px"
+          borderRadius="50%"
+          border="3px solid"
+          borderColor="black"
+        >
+          <Twitter fill="black" />
+        </Flex>
+        <Flex
+          justifyContent="center"
+          alignItems="center"
+          height="40px"
+          width="40px"
+          borderRadius="50%"
+          border="3px solid"
+          borderColor="black"
+        >
+          <Instagram strokeWidth="3px" stroke="black" />
+        </Flex>
+      </Flex>
     </PageWrap>
   )
 }
