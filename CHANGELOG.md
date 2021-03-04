@@ -1,3 +1,10 @@
+# 1.0.0 (2021-03-03)
+
+
+### Bug Fixes
+
+* **wishlist:** fix corner case ([2b744a8](http://bitbucket.org/sovtech/tradefed-frontend/commits/2b744a87baf75054f56c44fa335cf965affaf45c))
+
 # 1.0.0 (2020-08-13)
 
 

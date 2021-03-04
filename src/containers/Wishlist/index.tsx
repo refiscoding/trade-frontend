@@ -58,6 +58,8 @@ const WishlistPage: React.FC = () => {
   });
 
   const products = get(userWishlist, 'findOneWishlist.payload.products', null) as Product[];
+  const noWishlist = userWishlist?.findOneWishlist?.payload;
+
   const emptyWishlistProducts = products?.length < 1;
   const numberOfWishlistProducts = products?.length;
 
@@ -119,7 +121,7 @@ const WishlistPage: React.FC = () => {
         { 
           loading
           ? (<Spinner /> )
-          : emptyWishlistProducts
+          : emptyWishlistProducts || !noWishlist
             ? (<EmptyStateComponent />)
             : (
             <React.Fragment>
