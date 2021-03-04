@@ -1,16 +1,55 @@
-import { Button, Flex, Text } from '@chakra-ui/core'
+import { Button, Flex, Text, useToast } from '@chakra-ui/core'
 import * as React from 'react'
 
 import { useAuthContext } from '../../context/AuthProvider'
 import { PageWrap } from '../../layouts'
 import { H3 } from '../../typography'
+import ProfileDetailsView from './profilePreview'
+import ProfileDetailForm, { profileValues } from './profileDetailsForm'
+import { Category, useCategoryQuery, useUpdateSelfMutation } from '../../generated/graphql'
+import { formatError } from '../../utils'
+import { get } from 'lodash'
+import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
 
 type ProfileProps = {}
 
 const ProfileDetails: React.FC<ProfileProps> = () => {
-  const { user } = useAuthContext()
+  const { user, setUser } = useAuthContext()
+  const [isEditing, setIsEditing] = React.useState<boolean>(false)
+  const toast = useToast()
+
+  const { data } = useCategoryQuery({
+    onError: (err: any) => formatError(err)
+  })
+
+  const categories = get(data, 'categories', null) as Category[]
 
   const initials = `${user?.firstName?.[0]}${user?.lastName?.[0]}`
+  const userCategories = user?.categories?.map((category) => `${category?.id}`)
+  const initialValues = {
+    firstName: user?.firstName,
+    lastName: user?.lastName,
+    email: user?.email,
+    categories: userCategories
+  } as profileValues
+
+  const [updateSelf] = useUpdateSelfMutation({
+    onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
+    onCompleted: async ({ updateSelf }) => {
+      if (updateSelf && setUser) {
+        setUser(updateSelf)
+        toast({
+          description: 'Successfully added your details!',
+          ...SUCCESS_TOAST
+        })
+        setIsEditing(false)
+      }
+    }
+  })
+
+  const handleUserDetails = async (values: profileValues) => {
+    await updateSelf({ variables: { input: { ...values } } })
+  }
 
   return (
     <PageWrap title="My Account" height="100vh" justifyContent="space-between">
@@ -44,65 +83,27 @@ const ProfileDetails: React.FC<ProfileProps> = () => {
             </Text>
           </Flex>
         </Flex>
-
-        <Flex
-          mt={5}
-          pl={5}
-          borderBottom="1px solid"
-          borderTop="1px solid"
-          borderColor="brand.50"
-          width="100%"
-          flexDirection="column"
-        >
-          <Flex height="40px" width="100%" alignItems="center">
-            <Flex width="30%">
-              <Text fontSize={12} fontWeight="bold">
-                Name
-              </Text>
-            </Flex>
-            <Flex width="70%" pl={5} pb={2} borderBottom="1px solid" borderColor="brand.50">
-              <Text fontSize={12}>{user?.firstName}</Text>
-            </Flex>
-          </Flex>
-          <Flex height="40px" width="100%" alignItems="center">
-            <Flex width="30%">
-              <Text fontSize={12} fontWeight="bold">
-                Lastname
-              </Text>
-            </Flex>
-            <Flex width="70%" pl={5} pb={2} borderBottom="1px solid" borderColor="brand.50">
-              <Text fontSize={12}>{user?.lastName}</Text>
-            </Flex>
-          </Flex>
-          <Flex height="40px" width="100%" alignItems="center">
-            <Flex width="30%">
-              <Text fontSize={12} fontWeight="bold">
-                Email
-              </Text>
-            </Flex>
-            <Flex width="70%" pl={5} pb={2} borderBottom="1px solid" borderColor="brand.50">
-              <Text fontSize={12}>{user?.email}</Text>
-            </Flex>
-          </Flex>
-          <Flex height="40px" width="100%" alignItems="flex-start">
-            <Flex width="30%">
-              <Text fontSize={12} fontWeight="bold">
-                Interests
-              </Text>
-            </Flex>
-            <Flex width="70%" pl={5} pb={2} flexDirection="column">
-              {user?.categories?.map((category) => (
-                <Text key={category?.id} fontSize={12}>
-                  {category?.name}
-                </Text>
-              ))}
-            </Flex>
-          </Flex>
-        </Flex>
+        {isEditing ? (
+          <ProfileDetailForm
+            handleUserDetails={handleUserDetails}
+            categories={categories}
+            initialValues={initialValues}
+          />
+        ) : (
+          <ProfileDetailsView user={user} />
+        )}
       </Flex>
-      <Button onClick={() => {}} mb={5} width="100%" type="button" variantColor="brand">
-        EDIT INFO
-      </Button>
+      {!isEditing && (
+        <Button
+          onClick={() => setIsEditing(true)}
+          mb={5}
+          width="100%"
+          type="button"
+          variantColor="brand"
+        >
+          EDIT INFO
+        </Button>
+      )}
     </PageWrap>
   )
 }
