@@ -8,7 +8,7 @@ const Section: React.FC<FlexProps> = ({ children, ...rest }) => {
       ml="-1rem"
       width="100vw"
       flexDirection="column"
-      my={4}
+      my={rest.my || 4}
       borderBottomColor="accent.600"
       borderBottomWidth={rest.borderBottomWidth || 0}
       pb={rest.pb || 5}
