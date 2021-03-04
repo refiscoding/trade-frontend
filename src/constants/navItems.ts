@@ -35,7 +35,7 @@ export const NAV_ITEMS: NavItem[] = [
     Icon: Bell
   },
   {
-    to: `/`,
+    to: '/about-us',
     title: 'About Us',
     Icon: Users
   },
