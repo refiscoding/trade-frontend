@@ -31,6 +31,10 @@ const Profile: React.FC<ProfileProps> = () => {
     history.push('/apply-seller')
   }
 
+  const navigateToDetails = () => {
+    history.push('/profile-details')
+  }
+
   return (
     <PageWrap title="My Account">
       <Flex mt={3}>
@@ -60,6 +64,7 @@ const Profile: React.FC<ProfileProps> = () => {
         width="100%"
         justify="space-between"
         alignItems="center"
+        onClick={() => navigateToDetails()}
       >
         <Flex width="80%">
           <Text fontSize={12}>Personal Information & Preference</Text>
