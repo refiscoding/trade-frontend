@@ -1,23 +1,17 @@
-import { Button, Flex, useToast } from '@chakra-ui/core'
-import { Formik } from 'formik'
+import { Flex, Text } from '@chakra-ui/core'
 import * as React from 'react'
 import { useHistory } from 'react-router-dom'
-import { Card } from '../../components'
-import CardFooter from '../../components/Card/CardFooter'
-import { ConnectedFormGroup, ConnectedImageUploader } from '../../components/FormElements'
-import { Col, Row } from '../../components/ResponsiveGrid'
-import { EMPTY_FILE, ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
+import moment from 'moment'
+import { ChevronRight } from 'react-feather'
+
 import { useAuthContext } from '../../context/AuthProvider'
 import { PageWrap } from '../../layouts'
 import { H3, H5 } from '../../typography'
-import strapiHelpers from '../../utils/strapiHelpers'
 
 type ProfileProps = {}
 
 const Profile: React.FC<ProfileProps> = () => {
   const { user, logout } = useAuthContext()
-  const [passwordLoading, setPasswordLoading] = React.useState(false)
-  const toast = useToast()
   const history = useHistory()
 
   const handleLogout = () => {
@@ -25,90 +19,84 @@ const Profile: React.FC<ProfileProps> = () => {
     history.push('/')
   }
 
-  const handleUpdatePassword = async () => {
-    setPasswordLoading(true)
-    try {
-      await strapiHelpers.forgotPassword(user?.email || '')
-      setPasswordLoading(false)
-      toast({ description: 'Email sent. Please check your inbox.', ...SUCCESS_TOAST })
-    } catch (error) {
-      toast({ description: 'Something went wrong!', ...ERROR_TOAST })
-      setPasswordLoading(false)
+  const initials = `${user?.firstName?.[0]}${user?.lastName?.[0]}`
+  const joinDate = moment(user?.created_at).format('DD/MM/YYYY')
+  const isSellerApproved = user?.isSeller === 'approved'
+
+  const handleBecomeSeller = () => {
+    if (isSellerApproved) {
+      history.push('/product-management')
+      return
     }
+    history.push('/apply-seller')
   }
 
   return (
     <PageWrap title="My Account">
-      <Formik
-        onSubmit={(values) => {
-          // handle update mutation here once backend is configured
-          console.log(values)
-        }}
-        initialValues={{ profilePicture: EMPTY_FILE, username: user?.username, email: user?.email }}
+      <Flex mt={3}>
+        <Flex
+          bg="brand.500"
+          borderRadius="50%"
+          width="70px"
+          height="70px"
+          justify="center"
+          align="center"
+        >
+          <H3 fontSize="2.5rem" color="white">
+            {initials}
+          </H3>
+        </Flex>
+        <Flex pl={5} flexDir="column" justify="center" align="flex-start">
+          <H3 fontWeight="bold">{`${user?.firstName}  ${user?.lastName}`}</H3>
+          <H5 fontSize={14} color="brand.300">{`Buyer since ${joinDate}`}</H5>
+        </Flex>
+      </Flex>
+      <Flex
+        mt={5}
+        pl={5}
+        height="50px"
+        borderRadius="10px"
+        boxShadow="0 2px 4px 0 rgba(0,0,0,0.25)"
+        width="100%"
+        justify="space-between"
+        alignItems="center"
       >
-        {() => {
-          return (
-            <Card width="100%">
-              <Row>
-                <Col md={4}>
-                  <ConnectedImageUploader ml={4} mt={4} mr={[4, 4, 0]} name="profilePicture" />
-                  <Flex pt={3} pl={5} flexDir="column" justify="center" align="flex-start">
-                    <H3 mb={1} fontWeight="bold">
-                      {user?.username}
-                    </H3>
-                    <H5>{user?.email}</H5>
-                  </Flex>
-                </Col>
-                <Col md={8}>
-                  <Flex
-                    pr={4}
-                    my={4}
-                    height="100%"
-                    pl={[4, 4, 0]}
-                    align="center"
-                    flexDir="column"
-                    justify="flex-start"
-                  >
-                    <ConnectedFormGroup
-                      name="firstName"
-                      label="First Name"
-                      placeholder="First Name"
-                    />
-                    <ConnectedFormGroup name="lastName" label="Last Name" placeholder="Last Name" />
-                    <ConnectedFormGroup
-                      name="cellNumber"
-                      label="Cell Number"
-                      placeholder="Cell Number"
-                    />
-                    <ConnectedFormGroup name="username" isDisabled label="Username" />
-                    <ConnectedFormGroup name="email" isDisabled label="Email" />
-                  </Flex>
-                </Col>
-              </Row>
-              <CardFooter width="100%" justify="space-between" flexDirection="row">
-                <Button onClick={handleLogout} type="button" variant="outline" variantColor="gray">
-                  Logout
-                </Button>
-                <Flex>
-                  <Button
-                    mr={4}
-                    type="button"
-                    variant="outline"
-                    variantColor="gray"
-                    isLoading={passwordLoading}
-                    onClick={handleUpdatePassword}
-                  >
-                    Update Password
-                  </Button>
-                  <Button type="submit" variantColor="brand">
-                    Update Details
-                  </Button>
-                </Flex>
-              </CardFooter>
-            </Card>
-          )
-        }}
-      </Formik>
+        <Flex width="80%">
+          <Text fontSize={12}>Personal Information & Preference</Text>
+        </Flex>
+        <ChevronRight />
+      </Flex>
+      <Flex
+        mt={5}
+        pl={5}
+        height="50px"
+        borderRadius="10px"
+        boxShadow="0 2px 4px 0 rgba(0,0,0,0.25)"
+        width="100%"
+        justify="space-between"
+        alignItems="center"
+      >
+        <Flex width="80%">
+          <Text fontSize={12}>My Order History</Text>
+        </Flex>
+        <ChevronRight />
+      </Flex>
+      <Flex
+        mt={5}
+        pl={5}
+        height="50px"
+        borderRadius="10px"
+        boxShadow="0 2px 4px 0 rgba(0,0,0,0.25)"
+        width="100%"
+        justify="space-between"
+        alignItems="center"
+        onClick={() => handleBecomeSeller()}
+      >
+        <Flex width="80%">
+          <Text fontSize={12}>{isSellerApproved ? 'Product Management' : 'Become a Seller'}</Text>
+        </Flex>
+        <ChevronRight />
+      </Flex>
     </PageWrap>
   )
 }
