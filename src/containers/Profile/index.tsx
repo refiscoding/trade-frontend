@@ -11,13 +11,8 @@ import { H3, H5 } from '../../typography'
 type ProfileProps = {}
 
 const Profile: React.FC<ProfileProps> = () => {
-  const { user, logout } = useAuthContext()
+  const { user } = useAuthContext()
   const history = useHistory()
-
-  const handleLogout = () => {
-    logout && logout()
-    history.push('/')
-  }
 
   const initials = `${user?.firstName?.[0]}${user?.lastName?.[0]}`
   const joinDate = moment(user?.created_at).format('DD/MM/YYYY')
