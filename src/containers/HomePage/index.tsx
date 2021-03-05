@@ -108,7 +108,7 @@ const Home: React.FC = () => {
     return <ProductCard product={hit} handleClick={navigateToProduct} />
   }
 
-  const index = `uat_TRADEFED`
+  const index = `prod_TRADEFED`
 
   return (
     <PageWrap
