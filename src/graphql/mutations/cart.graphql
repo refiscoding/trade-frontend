@@ -1,0 +1,53 @@
+mutation addProductToCart($input: AddProductToCartInput!) {
+    addProductToCart(input: $input) {
+      payload {
+        id
+        owner {
+          username
+          email
+        }
+        productsQuantities {
+          quantity
+          product {
+            name
+            shortDescription
+            price {
+                currency
+                retailPricePerUnit
+                pricePerUnit
+            }
+          }
+        }
+        total
+      }
+    error
+  }
+}
+mutation removeProductsFromCart($input: RemoveProductFromCartInput!) {
+    removeProductsFromCart(input: $input) {
+      payload {
+       cart {
+        owner {
+          id
+          email
+          username
+        }
+        productsQuantities {
+          quantity
+          product {
+            id
+            name
+          }
+        }
+        total
+      }
+      removedItems {
+        id
+        name
+      }
+        missingItems
+      }
+    error
+  }
+}
+

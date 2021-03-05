@@ -1,0 +1,19 @@
+# import '/fragments/product.graphql'
+query fetchUsersCart {
+  findCart {
+    payload {
+        owner {
+            email
+            username
+        }
+        productsQuantities {
+            quantity
+            product {
+                ...product
+            }
+        }
+        total
+    }
+    error
+  }
+}
