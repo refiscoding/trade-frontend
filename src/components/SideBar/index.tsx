@@ -4,7 +4,7 @@ import * as React from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { ColorProps } from 'styled-system'
 import { useAppContext } from '../../context/AppProvider'
-import { NavItem, SELLER_NAV_ITEM } from '../../constants/navItems'
+import { NavItem, SELLER_NAV_ITEM, AUTH_NAV_ITEMS, LOGOUT_NAV_ITEM } from '../../constants/navItems'
 import { images } from '../../theme'
 import { Text } from '../../typography'
 import Header from '../Header'
@@ -12,6 +12,7 @@ import SideBarButton from './SideBarButton'
 import SideBarItem from './SideBarItem'
 import { MenuCont, Overlay, RenderWrapper } from './styles'
 import { useAuthContext } from '../../context/AuthProvider'
+import { useHistory } from 'react-router'
 
 type SideBarProps = ColorProps & {
   accentColor: string
@@ -37,7 +38,8 @@ const SideBar: React.FC<SideBarProps> = ({
   closeOnNavigate
 }) => {
   const { drawerOpen, toggleDrawer } = useAppContext()
-  const { user } = useAuthContext()
+  const { user, isAuthenticated, logout } = useAuthContext()
+  const history = useHistory()
 
   const controls = useAnimation()
 
@@ -75,6 +77,16 @@ const SideBar: React.FC<SideBarProps> = ({
       }
     }
   }
+
+  const handleAuth = () => {
+    if(!isAuthenticated) {
+      return
+    }
+    logout && logout()
+    history.push('/')
+  }
+
+  const authSection = isAuthenticated ? LOGOUT_NAV_ITEM : AUTH_NAV_ITEMS
 
   return (
     <>
@@ -139,6 +151,21 @@ const SideBar: React.FC<SideBarProps> = ({
             {...props}
           />
         ))}
+        <Flex flexDirection="column" mt={10} width="100%">
+          {(authSection as NavItem[]).map((props) => (
+            <SideBarItem
+              handleClick={handleAuth}
+              color={color}
+              key={props.title}
+              hoverColor={hoverColor}
+              accentColor={accentColor}
+              tooltipColor={tooltipColor}
+              tooltipBg={tooltipBg}
+              closeOnNavigate={closeOnNavigate}
+              {...props}
+            />
+          ))}
+        </Flex>
       </MenuCont>
       <RenderWrapper
         className="render-wrapper"

@@ -24,10 +24,7 @@ type filterParams = {
   category: string[]
 }
 
-const searchClient = algoliasearch(
-  process.env.REACT_APP_ALGOLIA_APP_ID || '',
-  process.env.REACT_APP_ALGOLIA_API_KEY || ''
-)
+const searchClient = algoliasearch('2N40VPJHPF', 'b8ae7ec3addb45676ff50ed2d56ca001')
 
 const Home: React.FC = () => {
   const { user, isAuthenticated } = useAuthContext()
