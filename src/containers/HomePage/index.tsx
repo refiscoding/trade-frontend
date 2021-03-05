@@ -111,7 +111,7 @@ const Home: React.FC = () => {
     return <ProductCard product={hit} handleClick={navigateToProduct} />
   }
 
-  const index = `${process.env.REACT_APP_STAGE}_TRADEFED`
+  const index = `uat_TRADEFED`
 
   return (
     <PageWrap
