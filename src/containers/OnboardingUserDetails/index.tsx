@@ -51,7 +51,7 @@ const Onboarding: React.FC = () => {
           description: 'Successfully added your details!',
           ...SUCCESS_TOAST
         })
-        history.push('/dashboard')
+        history.push('/')
       }
     }
   })

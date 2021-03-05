@@ -2,8 +2,7 @@ import * as React from 'react';
 import { get } from "lodash";
 import { ApolloError } from 'apollo-client';
 import { useHistory } from 'react-router-dom';
-import { FlexProps } from '@chakra-ui/core/dist/Flex';
-import { useToast, Spinner, Flex, Button } from '@chakra-ui/core';
+import { useToast, Spinner, Flex, Button, FlexProps } from '@chakra-ui/core';
 
 import EmptyStateComponent from "./NoWishlist";
 import DeleteItemsModal from "./DeleteItemsModal";
@@ -122,7 +121,7 @@ const WishlistPage: React.FC = () => {
           loading
           ? (<Spinner /> )
           : emptyWishlistProducts || !noWishlist
-            ? (<EmptyStateComponent />)
+            ? (<EmptyStateComponent isCart={false} />)
             : (
             <React.Fragment>
               <WishlistPageHeader onClick={handleEditWishlistClicked} editing={editing} />

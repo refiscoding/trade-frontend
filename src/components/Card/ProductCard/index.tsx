@@ -12,6 +12,7 @@ type ProductCardProps = FlexProps & {
   product: Product
   handleClick: (id: string) => void
   isWishlist?: Boolean
+  isCart?: Boolean
   editing?: Boolean
 };
 type ProductRemovalValues = {
@@ -19,7 +20,7 @@ type ProductRemovalValues = {
   checked: boolean | undefined,
 };
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, handleClick, isWishlist, editing }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, handleClick, isWishlist, isCart, editing }) => {
   const handleRadioPressed = (newProduct: string, checked: boolean) => {
     let productsToRemove: ProductRemovalValues[] = [];
     const data = {
@@ -40,7 +41,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleClick, isWishl
   };
   return (
       <Flex width="100%" justifyContent="space-between" alignItems="center">
-          { isWishlist && editing && (
+          { (isCart || isWishlist) && editing && (
             <Checkbox 
               name={product?.id} 
               value={product?.id} 
@@ -73,7 +74,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleClick, isWishl
                 bg="accent.700"
                 flexDirection="column"
                 top={0}
-                right={0}
+                right={5}
               >
                 <Text color="white" fontSize="14px">
                   Save
@@ -103,6 +104,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, handleClick, isWishl
             </Text>
             {
               isWishlist && (<AddToWishlistButton addToWishlist={false} editing={editing}/>)
+            }
+            {
+              isCart && (<AddToWishlistButton addToWishlist editing={editing}/>)
             }
           </CardFooter>
         </Card>

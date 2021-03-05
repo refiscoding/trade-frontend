@@ -29,6 +29,8 @@ const Wishlist = lazy(() => import('../containers/Wishlist'))
 const CategoryView = lazy(() => import('../containers/CategoryView'))
 const ProfileDetails = lazy(() => import('../containers/ProfileDetails'))
 const AboutUs = lazy(() => import('../containers/AboutUs'))
+const Cart = lazy(() => import('../containers/Cart'))
+const Checkout = lazy(() => import('../containers/Checkout'))
 
 const PRIVATE_ROUTES: PrivateRouteObject[] = [
   {
@@ -107,6 +109,20 @@ const PRIVATE_ROUTES: PrivateRouteObject[] = [
     breadcrumb: 'My Wishlist',
     component: Wishlist,
     title: 'My Wishlist'
+  },
+  {
+    exact: false,
+    path: '/cart',
+    breadcrumb: 'My Cart',
+    component: Cart,
+    title: 'My Cart'
+  },
+  {
+    exact: false,
+    path: '/checkout',
+    breadcrumb: 'Checkout',
+    component: Checkout,
+    title: 'Checkout'
   },
   {
     exact: true,

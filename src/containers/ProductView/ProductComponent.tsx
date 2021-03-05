@@ -5,7 +5,7 @@ import { Flex, Image, Text, Button, useToast, Grid } from '@chakra-ui/core';
 
 import Section from '../../components/Section';
 import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants/index';
-import { useAddProductToWishlistMutation } from "../../generated/graphql";
+import { useAddProductToWishlistMutation, useAddProductToCartMutation } from "../../generated/graphql";
 
 type ProductProps = {
   product?: any
@@ -24,14 +24,23 @@ const ProductComponent: React.FC<ProductProps> = ({ product, setShowAddToCartMod
       })
       history.push("/wishlist");
     }
-  })
+  });
+  const [addProductToCart, { loading }] = useAddProductToCartMutation({
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
+    onCompleted: async () => {
+      toast({
+        description: 'Item successfully added to your cart!',
+        ...SUCCESS_TOAST
+      })
+    }
+  });
   const handleAddToWishlistClicked = async (id: string) => {
     await addProductToWishlist({ variables: { input: { productToAdd: id } } });
     window.location.href = '/wishlist';
   };
   const handleAddToCartClicked = async (id: string) => {
-    // TODO: Add 'id' to cart then shown modal
-    setShowAddToCartModal();
+    await addProductToCart({ variables: { input: { productToAdd: id } } });
+    !loading && setShowAddToCartModal();
   };
   return (
     <React.Fragment>
