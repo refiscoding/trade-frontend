@@ -22,7 +22,6 @@ import { H5, Text } from '../../typography'
 import Card from '../Card'
 import BottomSection from '../Card/CardFooter'
 import EmptyListHandler from '../EmptyListHandler'
-import SearchBar from '../SearchBar'
 import { StyledTable, TableCell, TableHead, TableIconButton, TableRow } from './styles'
 
 // use declaration merging to extend types, example file:
@@ -102,7 +101,6 @@ const Table = <D extends {}>({
         </Flex>
         <Flex align="center">
           {isLoading && <Spinner color="brand.300" />}
-          {!!onSearch && <SearchBar onSearch={onSearch} />}
           {tableActions && tableActions()}
         </Flex>
       </Flex>

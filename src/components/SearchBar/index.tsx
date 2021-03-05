@@ -1,39 +1,56 @@
-import { Input, InputGroup, InputRightElement, Spinner } from '@chakra-ui/core'
+import { Flex } from '@chakra-ui/core'
 import { InputProps } from '@chakra-ui/core/dist/Input'
-import React, { ChangeEvent, FC, useEffect, useState } from 'react'
-import { useDebounce } from '../../hooks'
+import React, { FC } from 'react'
+import { Filter, Search } from 'react-feather'
+import { connectSearchBox } from 'react-instantsearch-dom'
+import { Form, Formik } from 'formik'
+import { ConnectedFormGroup } from '../FormElements'
 
 type SearchBarProps = InputProps & {
-  onSearch: (text: string) => void
-  isLoading?: boolean
+  handleSearch: (value: string) => void
+  handleReset: () => void
+  handleFilter: () => void
 }
 
-const SearchBar: FC<SearchBarProps> = ({ onSearch, isLoading, ...rest }) => {
-  const [searchTerm, setSearchTerm] = useState<string | undefined>()
-
-  const debouncedSearchTerm = useDebounce(searchTerm, 1000)
-
-  useEffect(() => {
-    if (onSearch) {
-      onSearch(debouncedSearchTerm)
-    }
-  }, [debouncedSearchTerm, onSearch])
+const SearchBar: FC<SearchBarProps> = ({ handleSearch, handleReset, handleFilter }) => {
+  const SearchBox = connectSearchBox(({ refine, currentRefinement }) => (
+    <Formik initialValues={{ search: '' }} onSubmit={() => {}}>
+      <Form style={{ width: '80%' }}>
+        <ConnectedFormGroup
+          icon={Search}
+          name="search"
+          placeholder="Search for products, categories..."
+          fontSize={12}
+          paddingLeft="40px"
+          borderColor="transparent"
+          bg="accent.600"
+          iconPosition="left"
+          onChange={(e: any) => {
+            handleSearch(e.target.value)
+            refine(e.target.value)
+          }}
+          onReset={handleReset}
+          value={currentRefinement}
+        />
+      </Form>
+    </Formik>
+  ))
 
   return (
-    <InputGroup>
-      <Input
-        {...rest}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
-      />
-      <InputRightElement>{isLoading && <Spinner />}</InputRightElement>
-    </InputGroup>
+    <Flex width="100%" height="40px" alignItems="center" justifyContent="space-between">
+      <SearchBox />
+      <Flex
+        borderRadius={4}
+        bg="accent.600"
+        alignItems="center"
+        justifyContent="center"
+        width="15%"
+        onClick={() => handleFilter()}
+      >
+        <Filter fontSize={10} />
+      </Flex>
+    </Flex>
   )
 }
 
 export default SearchBar
-
-SearchBar.defaultProps = {
-  width: '220px',
-  type: 'text',
-  placeholder: 'Search...'
-}
