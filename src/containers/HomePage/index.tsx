@@ -25,8 +25,8 @@ type filterParams = {
 }
 
 const searchClient = algoliasearch(
-  process.env.ALGOLIA_APP_ID || '',
-  process.env.ALGOLIA_API_KEY || ''
+  process.env.REACT_APP_ALGOLIA_APP_ID || '',
+  process.env.REACT_APP_ALGOLIA_API_KEY || ''
 )
 
 const Home: React.FC = () => {
