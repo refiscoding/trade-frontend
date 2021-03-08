@@ -10,7 +10,7 @@ import DeleteItemsButton from "./DeleteItemsButton";
 import ProductCard from "../../components/Card/ProductCard";
 
 import { ERROR_TOAST, SUCCESS_TOAST } from "../../constants";
-import { useFetchUsersWhishlistQuery, useRemoveProductsFromWishlistMutation, Product } from "../../generated/graphql";
+import { useFetchUsersWhishlistQuery, useRemoveProductsFromWishlistMutation, Product, Scalars, useFromWishlistToCartMutation } from "../../generated/graphql";
 
 import { PageWrap } from '../../layouts';
 import { H3, Text } from "../../typography";
@@ -55,6 +55,16 @@ const WishlistPage: React.FC = () => {
     },
     awaitRefetchQueries: true
   });
+  const [fromWishlistToCart, { loading: movingLoading }] = useFromWishlistToCartMutation({
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
+    onCompleted: ({ fromWishlistToCart }) => {
+      const itemMoved = fromWishlistToCart?.payload?.product?.name;
+      const message = `Successfully moved "${itemMoved}" to your cart`;
+      toast({ description: message, ...SUCCESS_TOAST })
+      refetch();
+    },
+    awaitRefetchQueries: true
+  });
 
   const products = get(userWishlist, 'findOneWishlist.payload.products', null) as Product[];
   const noWishlist = userWishlist?.findOneWishlist?.payload;
@@ -64,7 +74,15 @@ const WishlistPage: React.FC = () => {
 
   const handleWishlistProductClickedEditing = (id: string) => {
   };
-  const handleWishlistProductClickedNormal = (id: string) => {
+  const handleWishlistProductClickedNormal = async (id: Scalars['ID']) => {
+    const itemToRemove = {
+      itemToMove: [id]
+    };
+    await fromWishlistToCart({
+      variables: {
+        input: itemToRemove
+      }
+    });
   };
   const handleEditWishlistClicked = () => {
     setEditing(!editing);
@@ -118,7 +136,7 @@ const WishlistPage: React.FC = () => {
         mt={setContainerMargin(numberOfWishlistProducts)}
     >
         { 
-          loading
+          loading || movingLoading
           ? (<Spinner /> )
           : emptyWishlistProducts || !noWishlist
             ? (<EmptyStateComponent isCart={false} />)

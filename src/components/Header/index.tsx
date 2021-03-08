@@ -6,7 +6,7 @@ import styled from '@emotion/styled'
 import { motion } from 'framer-motion'
 import * as React from 'react'
 import { useMediaQuery } from 'react-responsive'
-import { RouteComponentProps, withRouter } from 'react-router'
+import { RouteComponentProps, withRouter, useHistory } from 'react-router'
 import { color, ColorProps, space, SpaceProps } from 'styled-system'
 import { useAppContext } from '../../context/AppProvider'
 import SideBarButton from '../SideBar/SideBarButton'
@@ -50,8 +50,12 @@ const HeaderCont = styled(motion.div)<HeaderContProps>`
 `
 
 const Header: React.FC<HeaderProps> = ({ ...rest }) => {
-  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
-  const { drawerOpen, toggleDrawer } = useAppContext()
+  const history = useHistory();
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' });
+  const { drawerOpen, toggleDrawer } = useAppContext();
+  const handleCartIconClicked = () => {
+    history.push("/cart");
+  };
 
   return (
     <HeaderCont pr={4} pl={drawerOpen ? 'calc(186px + 1rem)' : '1rem'} {...rest}>
@@ -60,7 +64,7 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
         <Image mr={5} width="100%" height="auto" src={images['TradeFedFullLogo']} />
       </Flex>
       <Flex>
-        <ShoppingCart />
+        <ShoppingCart onClick={handleCartIconClicked} />
       </Flex>
     </HeaderCont>
   )

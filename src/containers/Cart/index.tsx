@@ -12,7 +12,7 @@ import DeleteItemsButton from "../Wishlist/DeleteItemsButton";
 import { PageWrap } from '../../layouts';
 import { H3, Text } from "../../typography";
 import { ERROR_TOAST, SUCCESS_TOAST } from "../../constants";
-import { Product, useFetchUsersCartQuery, useRemoveProductsFromCartMutation } from "../../generated/graphql";
+import { Product, useFetchUsersCartQuery, useRemoveProductsFromCartMutation, useFromCartToWishlistMutation, Scalars } from "../../generated/graphql";
 
 type CartProduct = {
     quantity: number
@@ -74,6 +74,16 @@ const CartPage: React.FC = () => {
         },
         awaitRefetchQueries: true
     });
+    const [fromWishlistToCart, { loading: movingLoading }] = useFromCartToWishlistMutation({
+        onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
+        onCompleted: ({ fromCartToWishlist }) => {
+          const itemMoved = fromCartToWishlist?.payload?.product?.name;
+          const message = `Successfully moved "${itemMoved}" to your wishlist`;
+          toast({ description: message, ...SUCCESS_TOAST })
+          refetch();
+        },
+        awaitRefetchQueries: true
+      });
     const products = get(userCart, 'findCart.payload.productsQuantities', null) as CartProduct[];
     const noCart = get(userCart, 'findCart.payload', null);
     const productsOnly = products?.map((entry: CartProduct) => entry.product);
@@ -82,7 +92,16 @@ const CartPage: React.FC = () => {
 
 
     const handleCartProductClickedEditing = (id: string) => {};
-    const handleCartProductClickedNormal = (id: string) => {};
+    const handleCartProductClickedNormal = async (id: Scalars['ID']) => {
+        const productToRemove = {
+            productToMove: [id]
+        };
+        await fromWishlistToCart({
+            variables: {
+                input: productToRemove
+            }
+        });
+    };
     const setContainerMargin = (numOfProducts: Number) => {
         let mt;
         if(numOfProducts === 1){
@@ -133,7 +152,7 @@ const CartPage: React.FC = () => {
             mt={setContainerMargin(numberOfCartProducts)}
             >
                 {
-                    loading
+                    loading || movingLoading
                     ? (<Spinner />)
                     : emptyCartProducts || !noCart
                         ? (< EmptyStateComponent isCart />)
