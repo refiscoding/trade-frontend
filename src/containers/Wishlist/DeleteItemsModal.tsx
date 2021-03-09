@@ -9,9 +9,10 @@ import { Text } from "../../typography";
 type DeleteItemsModalProps = FlexProps & {
     handleCancelButtonClicked: () => void
     handleDeleteButtonClicked: () => void
+    isCart?: boolean
 };
 
-const DeleteItemsModal: React.FC<DeleteItemsModalProps> = ({ handleCancelButtonClicked, handleDeleteButtonClicked }) => {
+const DeleteItemsModal: React.FC<DeleteItemsModalProps> = ({ handleCancelButtonClicked, handleDeleteButtonClicked, isCart }) => {
     return(
       <ModalWrap
           title="Delete Items"
@@ -22,7 +23,7 @@ const DeleteItemsModal: React.FC<DeleteItemsModalProps> = ({ handleCancelButtonC
             <Grid gridTemplateRows="repeat(1fr, 2)" justifyItems="center" padding={5}>
                 <Image src={images?.deleteItems} />
                 <Text mt={4} fontSize="14px" textAlign="center">
-                    You are about to delete these items in your wish list? Once they are removed, you’ll have to re-add them to your wish list manually.
+                    {`You are about to delete these items in your ${isCart ? 'cart' : 'wish list'}? Once they are removed, you’ll have to re-add them to your ${isCart ? 'cart' : 'wish list'} manually.`}
                 </Text>  
             </Grid>
             <Grid gridTemplateColumns="repeat(2, 1fr)" gap="10px" padding={5}>

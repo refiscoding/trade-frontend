@@ -20,4 +20,8 @@ fragment user on UsersPermissionsUser {
   idNumber
   profileCompleted
   isSeller
+  categories {
+    id
+    name
+  }
 }

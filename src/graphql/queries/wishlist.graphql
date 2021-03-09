@@ -1,13 +1,14 @@
 # import '/fragments/product.graphql'
+# import '/fragments/user.graphql'
+
 query fetchUsersWhishlist {
     findOneWishlist {
       payload {
         owner {
-            email
-            username
+          ...user
         }
         products {
-            ...product
+          ...product
         }
       }
     error

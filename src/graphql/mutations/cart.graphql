@@ -1,0 +1,76 @@
+# import '/fragments/product.graphql'
+# import '/fragments/user.graphql'
+
+mutation addProductToCart($input: AddProductToCartInput!) {
+    addProductToCart(input: $input) {
+      payload {
+        id
+        owner {
+          ...user
+        }
+        productsQuantities {
+          quantity
+          product {
+            ...product
+          }
+        }
+        total
+      }
+    error
+  }
+}
+mutation removeProductsFromCart($input: RemoveProductFromCartInput!) {
+    removeProductsFromCart(input: $input) {
+      payload {
+       cart {
+        owner {
+          ...user
+        }
+        productsQuantities {
+          quantity
+          product {
+            ...product
+          }
+        }
+        total
+      }
+      removedItems {
+        ...product
+      }
+        missingItems
+      }
+    error
+  }
+}
+mutation fromCartToWishlist($input: FromCartToWishlistInput!) {
+    fromCartToWishlist(input: $input) {
+    	payload {
+        product {
+          ...product
+        }
+        cart {
+          owner {
+            ...user
+          }
+          productsQuantities {
+            quantity
+            product {
+              ...product
+            }
+          }
+          total
+        }
+        wishlist {
+          owner {
+            ...user
+          }
+          products {
+            ...product
+          }
+        }
+      }
+    error
+  }
+}
+
+

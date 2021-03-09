@@ -14,7 +14,13 @@ interface RouteType extends RouteProps {
   title: string
 }
 
-const exemptedRoutes: string[] = ['/', '/product/:id', '/product-filter']
+const exemptedRoutes: string[] = [
+  '/',
+  '/product/:id',
+  '/product-filter',
+  '/category/:id',
+  '/about-us'
+]
 
 const PrivateRoute = ({ component: Component, ...rest }: RouteType) => {
   const { isAuthenticating, isAuthenticated } = useAuthContext()
@@ -65,6 +71,7 @@ const Navigation = () => (
               navItems={NAV_ITEMS}
               hoverColor="brand.50"
               accentColor="brand.500"
+              closeOnNavigate
             >
               {PRIVATE_ROUTES.map((route) => {
                 return <PrivateRoute key={route.path} {...route} />

@@ -2,35 +2,37 @@ import { Flex, Image, Text } from '@chakra-ui/core'
 import * as React from 'react'
 import { ColorProps } from 'styled-system'
 import images from '../../theme/images'
-import moment from "moment";
+import moment from 'moment'
+import { useHistory } from 'react-router'
 
 type FooterProps = ColorProps & {}
 
 const footerItems = [
   {
     title: 'Home',
-    url: '/dashboard'
+    url: '/'
   },
   {
     title: 'My Account',
-    url: '/dashboard'
+    url: '/profile'
   },
   {
     title: 'My Wish List',
-    url: '/dashboard'
+    url: '/wishlist'
   },
   {
     title: 'About Us',
-    url: '/dashboard'
+    url: '/about-us'
   },
   {
     title: 'Support',
-    url: '/dashboard'
+    url: '/'
   }
 ]
 
 const Footer: React.FC<FooterProps> = () => {
   const currentYear = moment().format('YYYY')
+  const history = useHistory()
   return (
     <Flex
       width="100vw"
@@ -49,7 +51,14 @@ const Footer: React.FC<FooterProps> = () => {
       </Flex>
       <Flex m={2} justifyContent="space-evenly">
         {footerItems.map((item, i) => (
-          <Text mx={2} color="white" fontSize="10px" textTransform="uppercase" key={i}>
+          <Text
+            onClick={() => history.push(item.url)}
+            mx={2}
+            color="white"
+            fontSize="10px"
+            textTransform="uppercase"
+            key={i}
+          >
             {item.title}
           </Text>
         ))}
