@@ -111,7 +111,6 @@ const Home: React.FC = () => {
           <Hero
             headerColor="white"
             headerMargin="4.5rem"
-            imageUrl
             image={category?.categoryImage?.url}
             header={category?.name}
           />

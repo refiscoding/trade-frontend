@@ -8,28 +8,19 @@ type HeroProps = ColorProps & {
   image?: string
   caption?: string
   header?: string | null
-  imageUrl?: boolean
   headerMargin?: string
   headerColor?: string
 }
 
-const Hero: React.FC<HeroProps> = ({
-  image,
-  caption,
-  headerColor,
-  headerMargin,
-  imageUrl,
-  header
-}) => {
+const Hero: React.FC<HeroProps> = ({ image, caption, headerColor, headerMargin, header }) => {
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
-  const imageLink = imageUrl ? `${process.env.REACT_APP_API_HOST}${image}` : image
   return (
     <Flex
       width="100vw"
       minHeight={isTabletOrMobile ? '200px' : '400px'}
       flexDirection="column"
       alignItems="center"
-      backgroundImage={`url(${imageLink})`}
+      backgroundImage={`url(${image})`}
       backgroundPosition="center"
       backgroundSize={isTabletOrMobile ? 'contain' : 'cover'}
       backgroundRepeat="no-repeat"
