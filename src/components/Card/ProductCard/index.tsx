@@ -66,11 +66,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         cursor="pointer"
       >
         <Flex width="160px" position="relative">
-          <Image
-            width="100%"
-            height="100%"
-            src={`${process.env.REACT_APP_API_HOST}${product.coverImage?.url}`}
-          />
+          <Image width="100%" height="100%" src={product.coverImage?.url} />
           {product?.discount?.discountPercentage && product?.discount?.discountPercentage > 0 ? (
             <Flex
               alignItems="center"
