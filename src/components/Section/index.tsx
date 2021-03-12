@@ -12,6 +12,7 @@ const Section: React.FC<FlexProps> = ({ children, ...rest }) => {
       borderBottomColor="accent.600"
       borderBottomWidth={rest.borderBottomWidth || 0}
       pb={rest.pb || 5}
+      maxWidth={rest.maxWidth}
     >
       <Text mb={2} fontSize="18px" fontWeight={600}>
         {rest.title}
