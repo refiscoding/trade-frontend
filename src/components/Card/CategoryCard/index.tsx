@@ -24,7 +24,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category, handleClick }) =>
         mr={5}
         width="100%"
         height={isTabletOrMobile ? '100px' : '150px'}
-        src={`${process.env.REACT_APP_API_HOST}${category.categoryImage?.url}`}
+        src={category.categoryImage?.url}
       />
       <CardFooter bg="white" height="30px" alignItems="center" justifyContent="center">
         <Text fontSize="12px">{category.name}</Text>
