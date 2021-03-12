@@ -16,6 +16,7 @@ type SideBarItemProps = {
   tooltipColor?: string
   tooltipBg?: string
   closeOnNavigate?: boolean
+  handleClick?: () => void
 }
 
 const SideBarItem: React.FC<SideBarItemProps> = ({
@@ -27,7 +28,8 @@ const SideBarItem: React.FC<SideBarItemProps> = ({
   to,
   tooltipColor,
   tooltipBg,
-  closeOnNavigate
+  closeOnNavigate,
+  handleClick
 }) => {
   const { drawerOpen, toggleDrawer } = useAppContext()
 
@@ -59,6 +61,7 @@ const SideBarItem: React.FC<SideBarItemProps> = ({
         if (closeOnNavigate && drawerOpen) {
           toggleDrawer()
         }
+        handleClick && handleClick()
       }}
       accentcolor={accentColor}
       activeClassName="active-nav-link"
