@@ -2,6 +2,7 @@ import { Flex } from '@chakra-ui/core'
 import * as React from 'react'
 import { ColorProps } from 'styled-system'
 import { Text } from '../../typography'
+import { useMediaQuery } from 'react-responsive'
 
 type HeroProps = ColorProps & {
   image?: string
@@ -12,17 +13,25 @@ type HeroProps = ColorProps & {
   headerColor?: string
 }
 
-const Hero: React.FC<HeroProps> = ({ image, caption, headerColor, headerMargin, imageUrl, header }) => {
+const Hero: React.FC<HeroProps> = ({
+  image,
+  caption,
+  headerColor,
+  headerMargin,
+  imageUrl,
+  header
+}) => {
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   const imageLink = imageUrl ? `${process.env.REACT_APP_API_HOST}${image}` : image
   return (
     <Flex
       width="100vw"
-      minHeight="200px"
+      minHeight={isTabletOrMobile ? '200px' : '400px'}
       flexDirection="column"
       alignItems="center"
       backgroundImage={`url(${imageLink})`}
       backgroundPosition="center"
-      backgroundSize="contain"
+      backgroundSize={isTabletOrMobile ? 'contain' : 'cover'}
       backgroundRepeat="no-repeat"
       my={2}
       ml="-1rem"

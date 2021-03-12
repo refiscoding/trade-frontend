@@ -1,7 +1,4 @@
-import {
-  Flex,
-  Image
-} from '@chakra-ui/core'
+import { Flex, Image } from '@chakra-ui/core'
 import styled from '@emotion/styled'
 import { motion } from 'framer-motion'
 import * as React from 'react'
@@ -42,6 +39,7 @@ const HeaderCont = styled(motion.div)<HeaderContProps>`
   box-sizing: border-box;
   border-bottom-width: 1px;
   justify-content: space-between;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.17);
   left: ${(props) => (props.open ? '250px' : '64px')};
   @media screen and (max-width: 40em) {
     left: 0;
@@ -50,18 +48,23 @@ const HeaderCont = styled(motion.div)<HeaderContProps>`
 `
 
 const Header: React.FC<HeaderProps> = ({ ...rest }) => {
-  const history = useHistory();
-  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' });
-  const { drawerOpen, toggleDrawer } = useAppContext();
+  const history = useHistory()
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
+  const { drawerOpen, toggleDrawer } = useAppContext()
   const handleCartIconClicked = () => {
-    history.push("/cart");
-  };
+    history.push('/cart')
+  }
 
   return (
     <HeaderCont pr={4} pl={drawerOpen ? 'calc(186px + 1rem)' : '1rem'} {...rest}>
       {isTabletOrMobile && <SideBarButton color="black" open={drawerOpen} onClick={toggleDrawer} />}
-      <Flex width="50%" align="center" justify="center">
-        <Image mr={5} width="100%" height="auto" src={images['TradeFedFullLogo']} />
+      <Flex
+        width={isTabletOrMobile ? '50%' : '40%'}
+        align="center"
+        justifyContent={isTabletOrMobile ? 'center' : 'flex-start'}
+        pl={5}
+      >
+        <Image mr={5} width={isTabletOrMobile ? '100%' : '40%'} src={images['TradeFedFullLogo']} />
       </Flex>
       <Flex>
         <ShoppingCart onClick={handleCartIconClicked} />
