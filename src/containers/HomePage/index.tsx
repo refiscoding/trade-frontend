@@ -17,6 +17,7 @@ import Section from '../../components/Section'
 import { Hits, InstantSearch, Stats } from 'react-instantsearch-dom'
 import algoliasearch from 'algoliasearch/lite'
 import { SearchBar } from '../../components'
+import { useMediaQuery } from 'react-responsive'
 
 type filterParams = {
   minPrice: string
@@ -24,7 +25,10 @@ type filterParams = {
   category: string[]
 }
 
-const searchClient = algoliasearch('2N40VPJHPF', 'b8ae7ec3addb45676ff50ed2d56ca001')
+const searchClient = algoliasearch(
+  process.env.REACT_APP_ALGOLIA_APP_ID || '',
+  process.env.REACT_APP_ALGOLIA_API_KEY || ''
+)
 
 const Home: React.FC = () => {
   const { user, isAuthenticated } = useAuthContext()
@@ -34,6 +38,7 @@ const Home: React.FC = () => {
   const [query, setQuery] = React.useState<filterParams>()
   const [isFiltered, setIsFiltered] = React.useState<boolean>(false)
   const [isSearching, setIsSearching] = React.useState<boolean>(false)
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
 
   React.useEffect(() => {
     const params = new URLSearchParams(filters)
@@ -108,7 +113,7 @@ const Home: React.FC = () => {
     return <ProductCard product={hit} handleClick={navigateToProduct} />
   }
 
-  const index = `prod_TRADEFED`
+  const index = `${process.env.REACT_APP_STAGE}_TRADEFED`
 
   return (
     <PageWrap
@@ -118,14 +123,14 @@ const Home: React.FC = () => {
       minHeight="100vh"
     >
       <InstantSearch indexName={index} searchClient={searchClient}>
-        <Flex flexDirection="column" width="100%">
+        <Flex flexDirection="column" width="100%" alignItems="center">
           <SearchBar
             handleFilter={handleFilter}
             handleSearch={handleSearch}
             handleReset={handleReset}
           />
           {isFiltered ? (
-            <Section title="All filtered items" borderBottomWidth={10}>
+            <Section title="All filtered items" borderBottomWidth={10} maxWidth={'1100px'}>
               {products?.length > 0 ? (
                 products?.map((product: Product) => (
                   <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
@@ -135,14 +140,18 @@ const Home: React.FC = () => {
               )}
             </Section>
           ) : isSearching ? (
-            <Section title="">
+            <Section title="" maxWidth={'1100px'}>
               <Stats />
               <Hits hitComponent={ProductDisplay} />
             </Section>
           ) : (
             <React.Fragment>
-              <Hero image={images.heroImg} header="HOLIDAY DASH" caption="Shop early deals" />
-              <Section title="Product Categories" borderBottomWidth={10}>
+              <Hero
+                image={isTabletOrMobile ? images.heroImg : images.heroImgLarge}
+                header="HOLIDAY DASH"
+                caption="Shop early deals"
+              />
+              <Section title="Product Categories" borderBottomWidth={10} maxWidth={'1100px'}>
                 {categories?.map((category: Category) => (
                   <CategoryCard
                     key={category.id}
@@ -151,12 +160,12 @@ const Home: React.FC = () => {
                   />
                 ))}
               </Section>
-              <Section title="Today’s Best Deals" borderBottomWidth={10}>
+              <Section title="Today’s Best Deals" borderBottomWidth={10} maxWidth={'1100px'}>
                 {deals?.map((product: Product) => (
                   <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
                 ))}
               </Section>
-              <Section title="Deals For You">
+              <Section title="Deals For You" maxWidth={'1100px'}>
                 {products?.map((product: Product) => (
                   <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
                 ))}
