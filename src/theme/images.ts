@@ -19,5 +19,6 @@ export default {
   sellerAprroval: require('../assets/images/seller-approval.svg'),
   filesIcon: require('../assets/images/files.svg'),
   emptyWishlist: require('../assets/images/empty_wishlist.svg'),
-  deleteItems: require('../assets/images/deleteItems.svg')
+  deleteItems: require('../assets/images/deleteItems.svg'),
+  signUpPageBanner: require('../assets/images/signUpBanner.jpg'),
 }

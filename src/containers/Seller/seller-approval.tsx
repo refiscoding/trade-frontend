@@ -17,7 +17,11 @@ const OnboardinIntro: React.FC = () => {
       <InfoPage
         image={images.sellerAprroval}
         header="Waiting for approval… "
-        caption="You’r application has been sent through to TradeFed. You’ll receive an email notification once you’re approved. This can take up to 10 working days. "
+        caption={`
+          Your application has been sent through to TradeFed. 
+          You’ll receive an email notification once you’re approved. 
+          This can take up to 10 working days.
+        `}
         action={() => history.push('/profile')}
         actionText="CONTINUE"
       />
