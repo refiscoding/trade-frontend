@@ -22,9 +22,7 @@ const CartModalProductComponent: React.FC<CartModalProductComponentProps> = ({ p
                 height="100%"
                 borderBottomLeftRadius={3}
                 borderTopLeftRadius={3}
-                src={`${product?.coverImage?.preview ? '' : process.env.REACT_APP_API_HOST}${
-                    product?.coverImage?.url
-                }`}
+                src={product?.coverImage?.url}
             />
             <Grid gridTemplateRows="25px 1fr" padding={2}>
                 <Text fontSize="14px" fontWeight="bold">{ product?.name }</Text>  

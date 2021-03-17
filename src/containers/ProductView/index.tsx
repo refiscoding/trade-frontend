@@ -1,16 +1,18 @@
-import * as React from 'react'
+import * as React from 'react';
 import { get } from 'lodash'
+import { useParams } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
+import { Flex, useToast } from '@chakra-ui/core';
 
 
 import { PageWrap } from '../../layouts'
-import { Flex, useToast } from '@chakra-ui/core'
-import { useParams } from 'react-router-dom'
-import { useFindProductQuery, Product } from '../../generated/graphql'
-import { ERROR_TOAST } from '../../constants'
 import Footer from '../../components/Footer'
-import ProductComponent from './ProductComponent'
+import { ERROR_TOAST } from '../../constants'
 import AddToCartModal from "./AddToCartModal";
+import ProductComponent from './ProductComponent'
+import { useFindProductQuery, Product } from '../../generated/graphql'
+
+import { theme } from "../../theme";
 
 const ProductView: React.FC = () => {
   const { id } = useParams()
@@ -40,7 +42,7 @@ const ProductView: React.FC = () => {
   };
 
   return (
-    <PageWrap alignItems="center" title="Product" bg="white">
+    <PageWrap alignItems="center" title="Product" bg={theme.colors.background}>
       <ProductComponent product={product} setShowAddToCartModal={setShowAddCartModal}/>
       <Flex ml="1rem">
         <Footer />
