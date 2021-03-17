@@ -10,8 +10,9 @@ import { useUpdateSelfMutation, useCategoryQuery } from '../../generated/graphql
 import { formatError } from '../../utils'
 import { useHistory } from 'react-router-dom'
 import { useAuthContext } from '../../context/AuthProvider'
-import { useToast } from '@chakra-ui/core'
+import {Flex, useToast} from '@chakra-ui/core'
 import { ERROR_TOAST, SUCCESS_TOAST } from "../../constants";
+import {useMediaQuery} from "react-responsive";
 
 const src =
   `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&libraries=places` ||
@@ -35,6 +36,8 @@ const Onboarding: React.FC = () => {
   const [active, setACtive] = React.useState(0)
   const [userDetails, setUserdetails] = React.useState(userDetailsInitialValues)
   const toast = useToast()
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
+
 
   const { data } = useCategoryQuery({
     onError: (err: any) => formatError(err)
@@ -68,12 +71,14 @@ const Onboarding: React.FC = () => {
   }
 
   return (
-    <PageWrap pt={0} script={src} title="Onboarding Details" mt={10}>
-      <Stepper activeStep={active}>
-        <OnboardingUserNames handleUserDetails={handleUserDetails} />
-        <OnboardingAddress handleUserDetails={handleUserDetails} />
-        <OnboardingCategories categories={categories} handleUserDetails={handleUserDetails} />
-      </Stepper>
+    <PageWrap pt={0} script={src} title="Onboarding Details" mt={10} width="100%">
+      <Flex width={isTabletOrMobile ? '100%' : '40%'} flexDirection="column" alignSelf="center">
+        <Stepper activeStep={active}>
+          <OnboardingUserNames handleUserDetails={handleUserDetails} />
+          <OnboardingAddress handleUserDetails={handleUserDetails} />
+          <OnboardingCategories categories={categories} handleUserDetails={handleUserDetails} />
+        </Stepper>
+      </Flex>
     </PageWrap>
   )
 }

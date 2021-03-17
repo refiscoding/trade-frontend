@@ -21,4 +21,5 @@ export default {
   emptyWishlist: require('../assets/images/empty_wishlist.svg'),
   deleteItems: require('../assets/images/deleteItems.svg'),
   signUpPageBanner: require('../assets/images/signUpBanner.jpg'),
+  loginPageBanner: require('../assets/images/login-banner.jpg')
 }

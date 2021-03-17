@@ -13,6 +13,7 @@ import { PageWrap } from '../../layouts'
 import { H3, Text } from '../../typography'
 import { formatError } from '../../utils'
 import { images } from '../../theme'
+import {useMediaQuery} from "react-responsive";
 
 const LoginFormValidation = Yup.object().shape({
   email: Yup.string()
@@ -37,6 +38,7 @@ const Login: React.FC<LoginProps> = () => {
 
   const history = useHistory()
   const location = useLocation<{ email?: string; redirectTo?: LocationDescriptorObject }>()
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
 
   React.useEffect(() => {
     if (isAuthenticated) {
@@ -49,12 +51,21 @@ const Login: React.FC<LoginProps> = () => {
     // eslint-disable-next-line
   }, [isAuthenticated])
 
+  const logoWidth = !isTabletOrMobile ? "50%" : "100%" ;
+  const logoMarginBottom = !isTabletOrMobile ? 5 : 10 ;
+  const logoMarginLeft = !isTabletOrMobile ? 70 : 0 ;
+
   return (
-    <PageWrap align="center" title="Login" justify="center" pt={0} color="colors.white">
-      <Flex width="100%" align="center" justify="center" mt={4} mb={4}>
-        <Image width="90%" src={images['TradeFedFullLogo']} />
-      </Flex>
+    <PageWrap align="center" title="Login" justify="center" pt={0} >
+      {
+        !isTabletOrMobile && (
+            <Flex width="100%">
+              <Image width="100%" height="100%" src={images['loginPageBanner']} />
+            </Flex>
+        )
+      }
       <SideSlider>
+        <Image justifySelf="center" width={logoWidth} mb={logoMarginBottom} src={images['TradeFedFullLogo']} ml={logoMarginLeft}/>
         <Flex width="100%" align="center" justify="center" mb={4}>
           <H3 fontSize="20px">Login To Your Account</H3>
         </Flex>

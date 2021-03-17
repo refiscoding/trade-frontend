@@ -53,7 +53,7 @@ const BusinessInfo: React.FC<businessTypes> = ({ categories }) => {
             <Text ml={2}>{item.label}</Text>
           </Flex>
         ))}
-        <ConnectedFormGroup label="Vat Number*" name="vatNumber" type="text" />
+        <ConnectedFormGroup mt={3} label="Vat Number*" name="vatNumber" type="text" />
         <FormLabel htmlFor="revenue">Monthly Revenue*</FormLabel>
         {revenue.map((item: string, i: number) => (
           <Flex key={i} alignItems="center">
@@ -62,6 +62,7 @@ const BusinessInfo: React.FC<businessTypes> = ({ categories }) => {
           </Flex>
         ))}
         <ConnectedFormGroup
+          mt={3}
           label="Business Registration Number*"
           name="registrationNumber"
           type="text"
@@ -80,21 +81,21 @@ const BusinessInfo: React.FC<businessTypes> = ({ categories }) => {
             <Text ml={2}>{item.label}</Text>
           </Flex>
         ))}
-        <FormLabel htmlFor="hasPhysicalStore">Do you have a physical store?* </FormLabel>
+        <FormLabel mt={3} htmlFor="hasPhysicalStore">Do you have a physical store?* </FormLabel>
         {options.map((item: Options, i: number) => (
           <Flex key={i} alignItems="center">
             <Field key={i} type="radio" name="hasPhysicalStore" value={item.value} />
             <Text ml={2}>{item.label}</Text>
           </Flex>
         ))}
-        <FormLabel htmlFor="isRetailSupplier">Are you a supplier to retail outlets?* </FormLabel>
+        <FormLabel mt={3} htmlFor="isRetailSupplier">Are you a supplier to retail outlets?* </FormLabel>
         {options.map((item: Options, i: number) => (
           <Flex key={i} alignItems="center">
             <Field key={i} type="radio" name="isRetailSupplier" value={item.value} />
             <Text ml={2}>{item.label}</Text>
           </Flex>
         ))}
-        <FormLabel htmlFor="businessType">I am a…*</FormLabel>
+        <FormLabel mt={3} htmlFor="businessType">I am a…*</FormLabel>
         {businessTypes.map((item: any, i: number) => (
           <Flex key={i} alignItems="center">
             <Field key={i} type="radio" name="businessType" value={item.value} />
