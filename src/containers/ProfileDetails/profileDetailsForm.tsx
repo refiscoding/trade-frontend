@@ -51,7 +51,7 @@ const ProfileDetailForm: React.FC<formProps> = ({
         {({ isSubmitting }: FormikProps<profileValues>) => (
           <Form style={{ width: '100%' }}>
             <ConnectedFormGroup label="Your first name?" name="firstName" type="text" />
-            <ConnectedFormGroup label="WYour last name?" name="lastName" type="text" />
+            <ConnectedFormGroup label="Your last name?" name="lastName" type="text" />
             <ConnectedFormGroup label="Your Email Address?" name="email" type="text" />
             {categories?.map((item: any, i: number) => (
               <ConnectedCheckbox key={i} name="categories" label={item.name} value={item.id} />

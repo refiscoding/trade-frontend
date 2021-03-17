@@ -21,12 +21,13 @@ import * as Yup from 'yup'
 import PersonalInfo from './personalInfo'
 import BusinessInfo from './businessInfo'
 import { useEffect } from 'react'
+import {useMediaQuery} from "react-responsive";
 
 const SellerFormValidation = Yup.object().shape({
   firstName: Yup.string().required('A first name is required'),
   lastName: Yup.string().required('A last name is required'),
   email: Yup.string().email('Please enter a valid email address').required('An email is required'),
-  idNumber: Yup.string().required('An ID number is required'),
+  idNumber: Yup.string().required('An ID number is required').length(13),
   phoneNumber: Yup.string().required('A phone number is required'),
   name: Yup.string().required('A business name is required'),
   category: Yup.string().required('A business category is required'),
@@ -82,6 +83,7 @@ const Seller: React.FC = () => {
   const { user, setUser } = useAuthContext()
   const history = useHistory()
   const toast = useToast()
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   const { data } = useCategoryQuery({
     onError: (err: any) => formatError(err)
   })
@@ -169,7 +171,7 @@ const Seller: React.FC = () => {
   }
 
   return (
-    <PageWrap pt={0} title="Seller Details" mt={10}>
+    <PageWrap pt={0} title="Seller Details" mt={10} width={isTabletOrMobile ? '100%' : '40%'} alignSelf="center">
       <Flex width="100%" my={4} flexDirection="column">
         <H3 textAlign="left">Apply to sell on TradeFed.</H3>
         <Text textAlign="left" fontSize="14px">
