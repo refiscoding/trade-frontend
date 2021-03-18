@@ -5,16 +5,18 @@ import { ChevronRight, Facebook, Instagram, Twitter } from 'react-feather'
 import { PageWrap } from '../../layouts'
 import Section from '../../components/Section'
 import { useHistory } from 'react-router'
+import {useMediaQuery} from "react-responsive";
 
 const AboutUs: React.FC = () => {
   const history = useHistory()
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   const handleLinks = () => {
     window.location.href = 'https://tradefed.co.za/about-us'
   }
 
   return (
-    <PageWrap title="About Us">
-      <Section my={1} title="About Us">
+    <PageWrap title="About Us" alignSelf="center" width={isTabletOrMobile ? '100%' : '40%'}>
+      <Section my={1} title="About Us" bg="transparent" width="100%" >
         <Flex
           pl={5}
           height="50px"
@@ -47,7 +49,7 @@ const AboutUs: React.FC = () => {
           <ChevronRight />
         </Flex>
       </Section>
-      <Section my={1} title="What is TradeFed all about? ">
+      <Section my={1} title="What is TradeFed all about? " bg="transparent" width="100%">
         <Text fontSize={14}>
           TradeFed is a B2B (Business to Business) as well as a B2C (Business to Customer) platform.
           We focus on selling products in bulk at an affordable price that benefits both the sellers

@@ -40,7 +40,6 @@ const Footer: React.FC<FooterProps> = () => {
       flexDirection="column"
       bg="accent.800"
       mt={10}
-      ml="-1rem"
       mb="-1rem"
       alignItems="center"
     >
