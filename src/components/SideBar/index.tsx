@@ -68,8 +68,8 @@ const SideBar: React.FC<SideBarProps> = ({
       transition: { staggerChildren: 0.05, delayChildren: 0.05, stiffness: 10, damping: 5 }
     },
     closed: {
-      x: isTabletOrMobile ? -250 : 0,
-      width: isTabletOrMobile ? 250 : 64,
+      x: -250,
+      width: 250,
       transition: {
         stiffness: 80,
         staggerDirection: -1,
@@ -99,7 +99,6 @@ const SideBar: React.FC<SideBarProps> = ({
         // Calculate offset based on icon size
         iconOffset={(64 - 20) / 2}
         justifyContent="flex-start"
-        pt={5}
         initial={{ width: drawerOpen ? 300 : 64 }}
       >
         <Flex
@@ -115,7 +114,7 @@ const SideBar: React.FC<SideBarProps> = ({
           <Flex flex={1} mr={4}>
             <AnimatePresence>
               {drawerOpen && (
-                <Flex flexDirection="column">
+                <Flex flexDirection="column" pt={5}>
                   <motion.img
                     width="100%"
                     height="auto"
@@ -169,7 +168,7 @@ const SideBar: React.FC<SideBarProps> = ({
       </MenuCont>
       <RenderWrapper
         className="render-wrapper"
-        pl={isTabletOrMobile ? 0 : drawerOpen ? '250px' : '64px'}
+        pl={isTabletOrMobile ? 0 : drawerOpen ? '250px' : 4}
       >
         <Header />
         {children}

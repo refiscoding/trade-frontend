@@ -10,12 +10,11 @@ import Hero from '../../components/Hero'
 import { Category, Product, useCategoryQuery, useProductQuery } from '../../generated/graphql'
 import { get } from 'lodash'
 import Footer from '../../components/Footer'
-import { ERROR_TOAST } from '../../constants'
+import {ERROR_TOAST, SEARCH_INDEX, searchClient} from '../../constants'
 import ProductCard from '../../components/Card/ProductCard'
 import CategoryCard from '../../components/Card/CategoryCard'
 import Section from '../../components/Section'
 import { Hits, InstantSearch, Stats } from 'react-instantsearch-dom'
-import algoliasearch from 'algoliasearch/lite'
 import { SearchBar } from '../../components'
 import { useMediaQuery } from 'react-responsive'
 
@@ -24,11 +23,6 @@ type filterParams = {
   maxPrice: string
   category: string[]
 }
-
-const searchClient = algoliasearch(
-  process.env.REACT_APP_ALGOLIA_APP_ID || '',
-  process.env.REACT_APP_ALGOLIA_API_KEY || ''
-)
 
 const Home: React.FC = () => {
   const { user, isAuthenticated } = useAuthContext()
@@ -113,8 +107,6 @@ const Home: React.FC = () => {
     return <ProductCard product={hit} handleClick={navigateToProduct} />
   }
 
-  const index = `${process.env.REACT_APP_STAGE}_TRADEFED`
-
   return (
     <PageWrap
       title="Dashboard"
@@ -122,13 +114,16 @@ const Home: React.FC = () => {
       justifyContent="space-between"
       minHeight="100vh"
     >
-      <InstantSearch indexName={index} searchClient={searchClient}>
+      <InstantSearch indexName={SEARCH_INDEX} searchClient={searchClient}>
         <Flex flexDirection="column" width="100%" alignItems="center">
-          <SearchBar
-            handleFilter={handleFilter}
-            handleSearch={handleSearch}
-            handleReset={handleReset}
-          />
+          {
+            isTabletOrMobile &&
+            <SearchBar
+              handleFilter={handleFilter}
+              handleSearch={handleSearch}
+              handleReset={handleReset}
+            />
+          }
           {isFiltered ? (
             <Section title="All filtered items" borderBottomWidth={10} maxWidth={'1100px'}>
               {products?.length > 0 ? (

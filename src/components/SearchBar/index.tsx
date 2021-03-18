@@ -5,7 +5,6 @@ import { Filter, Search } from 'react-feather'
 import { connectSearchBox } from 'react-instantsearch-dom'
 import { Form, Formik } from 'formik'
 import { ConnectedFormGroup } from '../FormElements'
-import { useMediaQuery } from 'react-responsive'
 
 type SearchBarProps = InputProps & {
   handleSearch: (value: string) => void
@@ -14,11 +13,9 @@ type SearchBarProps = InputProps & {
 }
 
 const SearchBar: FC<SearchBarProps> = ({ handleSearch, handleReset, handleFilter }) => {
-  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
-
   const SearchBox = connectSearchBox(({ refine, currentRefinement }) => (
     <Formik initialValues={{ search: '' }} onSubmit={() => {}}>
-      <Form style={{ width: isTabletOrMobile ? '80%' : '95%' }}>
+      <Form style={{ width: '80%' }}>
         <ConnectedFormGroup
           icon={Search}
           name="search"
@@ -34,6 +31,7 @@ const SearchBar: FC<SearchBarProps> = ({ handleSearch, handleReset, handleFilter
           }}
           onReset={handleReset}
           value={currentRefinement}
+          mb={0}
         />
       </Form>
     </Formik>
@@ -49,7 +47,6 @@ const SearchBar: FC<SearchBarProps> = ({ handleSearch, handleReset, handleFilter
         justifyContent="center"
         width="50px"
         height="40px"
-        mb="1rem"
         onClick={() => handleFilter()}
       >
         <Filter fontSize={10} />
