@@ -74,6 +74,10 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
     history.push('/apply-seller')
   }
 
+  const handleFilter = () => {
+    history.push(`/product-filter`)
+  }
+
   return (
     <HeaderCont pr={4} pl={drawerOpen ? 'calc(186px + 1rem)' : '1rem'} {...rest}>
         <InstantSearch indexName={SEARCH_INDEX} searchClient={searchClient}>
@@ -110,7 +114,7 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
             </Flex>
             <Flex width="65%" mr={4}>
               <SearchBar
-                handleFilter={() => {}}
+                handleFilter={() => handleFilter()}
                 handleSearch={() => {}}
                 handleReset={() => {}}
               />

@@ -57,6 +57,7 @@ const Footer: React.FC<FooterProps> = () => {
             fontSize="10px"
             textTransform="uppercase"
             key={i}
+            cursor="pointer"
           >
             {item.title}
           </Text>
