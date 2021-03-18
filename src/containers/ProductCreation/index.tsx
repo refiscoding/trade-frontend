@@ -22,6 +22,7 @@ import * as Yup from 'yup'
 import ProductComponent from '../ProductView/ProductComponent'
 import { useHistory } from 'react-router-dom'
 import { File } from 'react-feather'
+import {useMediaQuery} from "react-responsive";
 
 const ProductFormValidation = Yup.object().shape({
   name: Yup.string().required('A name is required'),
@@ -83,6 +84,7 @@ const ProductCreation: React.FC = () => {
   const [imageValue, setImage] = React.useState<File[]>([])
   const toast = useToast()
   const history = useHistory()
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
 
   const { data } = useCategoryQuery({
     onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST })
@@ -162,7 +164,7 @@ const ProductCreation: React.FC = () => {
   }
 
   return (
-    <PageWrap title="Add Product">
+    <PageWrap title="Add Product" alignSelf="center" width={isTabletOrMobile ? '100%' : '40%'}>
       <Flex width="100%" mb={4} flexDirection="column">
         <H3 textAlign="left" fontSize={18} fontWeight={600}>
           Add Basic Product Information

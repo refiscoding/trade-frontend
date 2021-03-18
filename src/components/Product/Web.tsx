@@ -23,11 +23,11 @@ const ProductComponent: React.FC<ProductProps> = (
   const coverImage = product?.coverImage?.url;
   return (
     <React.Fragment>
-      <Flex mb={3} backgroundColor="white" borderRadius={3}>
+      <Flex mb={3} backgroundColor="white" borderRadius={3} width="80%">
         <Grid gridTemplateColumns="1fr 1fr">
           <Grid gridTemplateColumns="550px 150px" height={435} columnGap={3} >
             <Image
-              mt={5}
+              m={5}
               width="100%"
               height="400px"
               src={coverImage}
@@ -54,7 +54,7 @@ const ProductComponent: React.FC<ProductProps> = (
                 </Text>
               </Flex>
             ) : null}
-            <Grid gridTemplateRows="90px 90px 90px 90px" rowGap={3} mt={6} overflowY="scroll">
+            <Grid gridTemplateRows="90px 90px 90px 90px" rowGap={3} ml={5} mt={6} overflowY="scroll">
               {
                 productImages?.length
                 ? (
@@ -129,7 +129,7 @@ const ProductComponent: React.FC<ProductProps> = (
           </Grid>
         </Grid>
       </Flex>
-      <Grid gridTemplateRows="1fr 1fr" backgroundColor="white" borderRadius={3} padding={10} fontSize="12px" width="100%">
+      <Grid gridTemplateRows="1fr 1fr" backgroundColor="white" borderRadius={3} padding={10} fontSize="12px" width="80%">
         <div>
           <Text fontSize="17px" fontWeight={600}>
             About This Product
@@ -188,8 +188,8 @@ const ProductComponent: React.FC<ProductProps> = (
         </Flex>
         </Grid>
       </Grid>
-      <Flex ml={5} mt={3} width="100%" flexDirection="column">
-        <Section title="Deals You Might Be Interested In" maxWidth={'1100px'}>
+      <Flex ml={5} mt={3} width="100%" flexDirection="column" alignItems="center" >
+        <Section title="Deals You Might Be Interested In">
           {deals?.map((product: Product) => (
             <ProductCard key={product.id} product={product} handleClick={() => {}} />
           ))}

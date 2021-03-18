@@ -40,7 +40,6 @@ const Footer: React.FC<FooterProps> = () => {
       flexDirection="column"
       bg="accent.800"
       mt={10}
-      ml="-1rem"
       mb="-1rem"
       alignItems="center"
     >
@@ -58,6 +57,7 @@ const Footer: React.FC<FooterProps> = () => {
             fontSize="10px"
             textTransform="uppercase"
             key={i}
+            cursor="pointer"
           >
             {item.title}
           </Text>

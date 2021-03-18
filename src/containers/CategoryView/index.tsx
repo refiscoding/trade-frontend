@@ -1,11 +1,7 @@
-import { Form, Formik } from 'formik'
 import * as React from 'react'
-import { Filter, Search } from 'react-feather'
 import { sortBy, reverse, slice } from 'lodash'
 import { ApolloError } from 'apollo-client'
-import { ConnectedFormGroup } from '../../components/FormElements'
 import { PageWrap } from '../../layouts'
-import { formatError } from '../../utils'
 import { useHistory, useParams } from 'react-router-dom'
 import { Flex, useToast } from '@chakra-ui/core'
 import Hero from '../../components/Hero'
@@ -52,10 +48,6 @@ const Home: React.FC = () => {
     history.push(`/product/${id}`)
   }
 
-  const handleFilter = () => {
-    history.push(`/product-filter`)
-  }
-
   return (
     <PageWrap
       title="Dashboard"
@@ -63,58 +55,16 @@ const Home: React.FC = () => {
       justifyContent="space-between"
       minHeight="100vh"
     >
-      <Flex flexDirection="column" width="100%">
-        <Flex width="100%" height="40px" justifyContent="space-between">
-          <Formik
-            initialValues={{
-              search: ''
-            }}
-            onSubmit={async ({ search }, { setSubmitting, setStatus }) => {
-              setStatus(null)
-              try {
-                setSubmitting(true)
-                const search = () => {
-                  return
-                }
-                search()
-                setSubmitting(false)
-              } catch (error) {
-                setStatus(formatError(error))
-              }
-            }}
-          >
-            <Form style={{ width: '80%' }}>
-              <ConnectedFormGroup
-                icon={Search}
-                name="search"
-                placeholder="Search for products, brands..."
-                fontSize={12}
-                paddingLeft="40px"
-                borderColor="transparent"
-                bg="accent.600"
-                iconPosition="left"
-              />
-            </Form>
-          </Formik>
-          <Flex
-            borderRadius={4}
-            bg="accent.600"
-            alignItems="center"
-            justifyContent="center"
-            width="15%"
-            onClick={() => handleFilter()}
-          >
-            <Filter fontSize={10} />
-          </Flex>
-        </Flex>
+      <Flex flexDirection="column" alignItems="center" width="100%">
         <React.Fragment>
           <Hero
+            isCategory
             headerColor="white"
             headerMargin="4.5rem"
             image={category?.categoryImage?.url}
             header={category?.name}
           />
-          <Section title="Today’s Best Deals" borderBottomWidth={10}>
+          <Section title="Today’s Best Deals" >
             {deals?.map((product: Product) => (
               <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
             ))}
