@@ -12,7 +12,7 @@ import { FieldArray, Form, Formik, FormikProps } from 'formik'
 import { Options } from '../Seller/businessInfo'
 import * as Yup from 'yup'
 import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
-import { PlusSquare } from 'react-feather'
+import {PlusSquare, XCircle} from 'react-feather'
 import { useHistory } from 'react-router-dom'
 import { ApolloError } from 'apollo-client'
 import { useMediaQuery } from 'react-responsive'
@@ -113,8 +113,15 @@ const ProductFilter: React.FC = () => {
                 return (
                   <Flex flexDirection="column">
                     {userCategories?.map((category: string, index: number) => (
-                      <Flex key={index}>
-                        <ConnectedSelect name={`category.[${index}]`} options={mappedCategories} />
+                      <Flex key={index} alignItems="center">
+                        <ConnectedSelect placeholder="Select a category" name={`category.[${index}]`} options={mappedCategories} />
+                        <Flex
+                          ml={2}
+                          mb={4}
+                          onClick={() => arrayHelpers.remove(index)} // remove a friend from the list
+                        >
+                          <XCircle />
+                        </Flex>
                       </Flex>
                     ))}
                     <Flex onClick={() => arrayHelpers.push('')} mb={2} alignItems="center">

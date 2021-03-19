@@ -84,7 +84,7 @@ const ProductComponent: React.FC<ProductProps> = (
             <Text fontSize="20px" fontWeight={600}>
               { product?.name }
             </Text>
-            <Text fontSize="12px" fontWeight={400}>
+            <Text fontSize="12px" fontWeight={400} maxHeight="70px" overflow="hidden">
               { product?.shortDescription }
             </Text>
               <VerifiedBadge />
@@ -194,7 +194,7 @@ const ProductComponent: React.FC<ProductProps> = (
             <ProductCard key={product.id} product={product} handleClick={() => {}} />
           ))}
         </Section>
-        <Button width="100%" variantColor="brand">
+        <Button width="80%" variantColor="brand">
           <Text fontSize="12px">
             VIEW MORE
           </Text>

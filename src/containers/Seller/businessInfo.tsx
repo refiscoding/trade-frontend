@@ -45,7 +45,7 @@ const BusinessInfo: React.FC<businessTypes> = ({ categories }) => {
           Information about your business
         </H3>
         <ConnectedFormGroup label="Company Name*" name="name" type="text" />
-        <ConnectedSelect label="Category* " name="category" options={categories} />
+        <ConnectedSelect placeholder="Select a category" label="Category* " name="category" options={categories} />
         <FormLabel htmlFor="isVatRegistered">Are you VAT registered?*</FormLabel>
         {options.map((item: Options, i: number) => (
           <Flex key={i} alignItems="center">

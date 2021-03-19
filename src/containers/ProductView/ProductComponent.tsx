@@ -18,7 +18,7 @@ const ProductComponent: React.FC<ProductProps> = ({ product, setShowAddToCartMod
   const toast = useToast();
   const history = useHistory();
   const isWebViewport = useMediaQuery({
-    query: "(min-width: 40em)"
+    query: "(min-width: 75em)"
   });
   const [addProductToWishlist] = useAddProductToWishlistMutation({
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),

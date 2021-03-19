@@ -10,7 +10,7 @@ import {
 import { Options } from '../Seller/businessInfo'
 import { Field, FieldArray } from 'formik'
 import { Text } from '../../typography'
-import { PlusSquare } from 'react-feather'
+import {PlusSquare, XCircle} from 'react-feather'
 import { ProductValues } from './index'
 
 type ProductInfoTpes = {
@@ -43,7 +43,7 @@ const ProductInfo: React.FC<ProductInfoTpes> = ({ categories, values }) => {
     <Flex flexDirection="column">
       <ConnectedFormGroup label="Product Name" name="name" type="text" />
       <ConnectedTextArea label="Small Product Description" name="shortDescription" />
-      <FormLabel htmlFor="features">List Product Features</FormLabel>
+      <FormLabel htmlFor="category">List Product Category</FormLabel>
       <FieldArray
         name="category"
         render={(arrayHelpers) => {
@@ -51,8 +51,15 @@ const ProductInfo: React.FC<ProductInfoTpes> = ({ categories, values }) => {
           return (
             <Flex flexDirection="column">
               {userCategories?.map((category: string, index: number) => (
-                <Flex key={index}>
-                  <ConnectedSelect name={`category.[${index}]`} options={categories} />
+                <Flex key={index} alignItems="center">
+                  <ConnectedSelect placeholder="Select a category" name={`category.[${index}]`} options={categories} />
+                  <Flex
+                    ml={2}
+                    mb={4}
+                    onClick={() => arrayHelpers.remove(index)}
+                  >
+                    <XCircle />
+                  </Flex>
                 </Flex>
               ))}
               <Flex onClick={() => arrayHelpers.push('')} mb={2} alignItems="center">
