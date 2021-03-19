@@ -118,7 +118,7 @@ const ProductFilter: React.FC = () => {
                         <Flex
                           ml={2}
                           mb={4}
-                          onClick={() => arrayHelpers.remove(index)} // remove a friend from the list
+                          onClick={() => arrayHelpers.remove(index)}
                         >
                           <XCircle />
                         </Flex>
