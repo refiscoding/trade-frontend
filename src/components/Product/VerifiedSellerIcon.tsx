@@ -20,7 +20,7 @@ const VerifiedBadgeIcon = () => (
 const VerifiedBadge = () => (
     <Popover closeOnEsc closeOnBlur placement="top-start" trigger="hover">
         <PopoverTrigger>
-            <Grid gridTemplateColumns="28px 1fr">
+            <Grid mt={2} gridTemplateColumns="28px 1fr">
                 <VerifiedBadgeIcon />
                 <Text fontSize="12px" fontWeight={600} color="#63C035" mt={1}>
                     Verified Seller

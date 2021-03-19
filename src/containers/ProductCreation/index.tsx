@@ -189,7 +189,7 @@ const ProductCreation: React.FC = () => {
             <Stepper activeStep={active}>
               <ProductInfo values={values} categories={mappedCategories} />
               <ProductDetails values={values} setImage={handleImage} />
-              <Flex ml="-1rem" flexDirection="column">
+              <Flex position="relative" left="-80%" flexDirection="column" alignItems="center" width="100vw">
                 <ProductComponent
                   product={{
                     ...mapProducts(values),
