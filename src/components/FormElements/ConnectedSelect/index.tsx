@@ -22,7 +22,7 @@ const ConnectedSelect: React.FC<ConnectedSelectProps> = ({ label, options, ...re
     <Flex flexDirection="column" width="100%" mr={rest.mr} ml={rest.ml} mt={rest.mt} mb={rest.mb}>
       <FormControl>
         {label && <FormLabel htmlFor={field.name}>{label}</FormLabel>}
-        <Select focusBorderColor="accent.500" {...field} id={field.name} {...rest}>
+        <Select placeholder={rest.placeholder} focusBorderColor="accent.500" {...field} id={field.name} {...rest}>
           {options.map(({ label, value }) => (
             <option key={value} value={value}>
               {label}

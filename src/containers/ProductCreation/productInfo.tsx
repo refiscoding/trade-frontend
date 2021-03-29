@@ -10,12 +10,13 @@ import {
 import { Options } from '../Seller/businessInfo'
 import { Field, FieldArray } from 'formik'
 import { Text } from '../../typography'
-import { PlusSquare } from 'react-feather'
+import {PlusSquare, XCircle} from 'react-feather'
 import { ProductValues } from './index'
 
-type ProductInfoTpes = {
+type ProductInfoTypes = {
   categories: Options[]
   values: ProductValues
+  handleSetTags: (tags: string[]) => void
 }
 
 //TO-DO: change this to come from backend
@@ -36,14 +37,14 @@ const packagingItems = [
     label: 'Per Kg',
     value: 'kg'
   }
-]
+];
 
-const ProductInfo: React.FC<ProductInfoTpes> = ({ categories, values }) => {
+const ProductInfo: React.FC<ProductInfoTypes> = ({ categories, values, handleSetTags }) => {
   return (
     <Flex flexDirection="column">
       <ConnectedFormGroup label="Product Name" name="name" type="text" />
-      <ConnectedTextArea label="Small Product Description" name="shortDescription" />
-      <FormLabel htmlFor="features">List Product Features</FormLabel>
+      <ConnectedTextArea label="Short Product Description" name="shortDescription" handleSetTags={() => {}}/>
+      <FormLabel htmlFor="category">List Product Category</FormLabel>
       <FieldArray
         name="category"
         render={(arrayHelpers) => {
@@ -51,8 +52,15 @@ const ProductInfo: React.FC<ProductInfoTpes> = ({ categories, values }) => {
           return (
             <Flex flexDirection="column">
               {userCategories?.map((category: string, index: number) => (
-                <Flex key={index}>
-                  <ConnectedSelect name={`category.[${index}]`} options={categories} />
+                <Flex key={index} alignItems="center">
+                  <ConnectedSelect placeholder="Select a category" name={`category.[${index}]`} options={categories} />
+                  <Flex
+                    ml={2}
+                    mb={4}
+                    onClick={() => arrayHelpers.remove(index)}
+                  >
+                    <XCircle />
+                  </Flex>
                 </Flex>
               ))}
               <Flex onClick={() => arrayHelpers.push('')} mb={2} alignItems="center">
@@ -65,7 +73,7 @@ const ProductInfo: React.FC<ProductInfoTpes> = ({ categories, values }) => {
           )
         }}
       />
-      <ConnectedTextArea label="Add Tags" name="tags" />
+      <ConnectedTextArea label="Add Tags" name="tags" hasTags handleSetTags={handleSetTags}/>
       <ConnectedNumberInput label="Price per Unit" name="pricePerUnit" unit="R" />
       <ConnectedNumberInput label="Retail Price per Unit" name="retailPricePerUnit" unit="R" />
       <ConnectedFormGroup

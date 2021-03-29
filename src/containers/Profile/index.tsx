@@ -7,13 +7,14 @@ import { ChevronRight } from 'react-feather'
 import { useAuthContext } from '../../context/AuthProvider'
 import { PageWrap } from '../../layouts'
 import { H3, H5 } from '../../typography'
+import {useMediaQuery} from "react-responsive";
 
 type ProfileProps = {}
 
 const Profile: React.FC<ProfileProps> = () => {
   const { user } = useAuthContext()
   const history = useHistory()
-
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   const initials = `${user?.firstName?.[0]}${user?.lastName?.[0]}`
   const joinDate = moment(user?.created_at).format('DD/MM/YYYY')
   const isSellerApproved = user?.isSeller === 'approved'
@@ -31,7 +32,7 @@ const Profile: React.FC<ProfileProps> = () => {
   }
 
   return (
-    <PageWrap title="My Account">
+    <PageWrap title="My Account" width={isTabletOrMobile ? '100%' : '40%'} alignSelf="center">
       <Flex mt={3}>
         <Flex
           bg="brand.500"

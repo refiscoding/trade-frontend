@@ -25,6 +25,9 @@ ReactDOM.render(
                 * {
                   font-family: ${theme.fonts.body};
                 }
+                body {
+                  background: ${theme.colors.background};
+                }
               `}
             />
             <App />

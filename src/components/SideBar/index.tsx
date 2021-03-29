@@ -4,7 +4,7 @@ import * as React from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { ColorProps } from 'styled-system'
 import { useAppContext } from '../../context/AppProvider'
-import { NavItem, SELLER_NAV_ITEM } from '../../constants/navItems'
+import { NavItem, SELLER_NAV_ITEM, AUTH_NAV_ITEMS, LOGOUT_NAV_ITEM } from '../../constants/navItems'
 import { images } from '../../theme'
 import { Text } from '../../typography'
 import Header from '../Header'
@@ -12,6 +12,7 @@ import SideBarButton from './SideBarButton'
 import SideBarItem from './SideBarItem'
 import { MenuCont, Overlay, RenderWrapper } from './styles'
 import { useAuthContext } from '../../context/AuthProvider'
+import { useHistory } from 'react-router'
 
 type SideBarProps = ColorProps & {
   accentColor: string
@@ -37,7 +38,8 @@ const SideBar: React.FC<SideBarProps> = ({
   closeOnNavigate
 }) => {
   const { drawerOpen, toggleDrawer } = useAppContext()
-  const { user } = useAuthContext()
+  const { user, isAuthenticated, logout } = useAuthContext()
+  const history = useHistory()
 
   const controls = useAnimation()
 
@@ -66,8 +68,8 @@ const SideBar: React.FC<SideBarProps> = ({
       transition: { staggerChildren: 0.05, delayChildren: 0.05, stiffness: 10, damping: 5 }
     },
     closed: {
-      x: isTabletOrMobile ? -250 : 0,
-      width: isTabletOrMobile ? 250 : 64,
+      x: -250,
+      width: 250,
       transition: {
         stiffness: 80,
         staggerDirection: -1,
@@ -75,6 +77,16 @@ const SideBar: React.FC<SideBarProps> = ({
       }
     }
   }
+
+  const handleAuth = () => {
+    if(!isAuthenticated) {
+      return
+    }
+    logout && logout()
+    history.push('/')
+  }
+
+  const authSection = isAuthenticated ? LOGOUT_NAV_ITEM : AUTH_NAV_ITEMS
 
   return (
     <>
@@ -87,7 +99,6 @@ const SideBar: React.FC<SideBarProps> = ({
         // Calculate offset based on icon size
         iconOffset={(64 - 20) / 2}
         justifyContent="flex-start"
-        pt={5}
         initial={{ width: drawerOpen ? 300 : 64 }}
       >
         <Flex
@@ -103,7 +114,7 @@ const SideBar: React.FC<SideBarProps> = ({
           <Flex flex={1} mr={4}>
             <AnimatePresence>
               {drawerOpen && (
-                <Flex flexDirection="column">
+                <Flex flexDirection="column" pt={5}>
                   <motion.img
                     width="100%"
                     height="auto"
@@ -139,10 +150,25 @@ const SideBar: React.FC<SideBarProps> = ({
             {...props}
           />
         ))}
+        <Flex flexDirection="column" mt={10} width="100%">
+          {(authSection as NavItem[]).map((props) => (
+            <SideBarItem
+              handleClick={handleAuth}
+              color={color}
+              key={props.title}
+              hoverColor={hoverColor}
+              accentColor={accentColor}
+              tooltipColor={tooltipColor}
+              tooltipBg={tooltipBg}
+              closeOnNavigate={closeOnNavigate}
+              {...props}
+            />
+          ))}
+        </Flex>
       </MenuCont>
       <RenderWrapper
         className="render-wrapper"
-        pl={isTabletOrMobile ? 0 : drawerOpen ? '250px' : '64px'}
+        pl={isTabletOrMobile ? 0 : drawerOpen ? '250px' : 4}
       >
         <Header />
         {children}

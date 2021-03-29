@@ -5,16 +5,17 @@ import { PageWrap } from '../../layouts'
 import { MotionFlex } from '../../components'
 import { Category, useCategoryQuery } from '../../generated/graphql'
 import { formatError } from '../../utils'
-import { Button, Flex, FormLabel, useToast } from '@chakra-ui/core'
+import { Button, Flex, Text, FormLabel, useToast } from '@chakra-ui/core'
 import { ERROR_TOAST } from '../../constants'
-import { H3, Text } from '../../typography'
+import { H3 } from '../../typography'
 import { FieldArray, Form, Formik, FormikProps } from 'formik'
 import { Options } from '../Seller/businessInfo'
 import * as Yup from 'yup'
 import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
-import { PlusSquare } from 'react-feather'
+import {PlusSquare, XCircle} from 'react-feather'
 import { useHistory } from 'react-router-dom'
 import { ApolloError } from 'apollo-client'
+import { useMediaQuery } from 'react-responsive'
 
 const ProductFormValidation = Yup.object().shape({
   minPrice: Yup.string(),
@@ -40,7 +41,7 @@ const initialValues = {
 const ProductFilter: React.FC = () => {
   const toast = useToast()
   const history = useHistory()
-
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   const { data } = useCategoryQuery({
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
   })
@@ -62,12 +63,17 @@ const ProductFilter: React.FC = () => {
   }
 
   return (
-    <PageWrap title="Add Product">
+    <PageWrap title="Add Product" alignSelf="center" width={isTabletOrMobile ? '100%' : '40%'}>
       <Flex width="100%" mb={4} justifyContent="space-between">
         <H3 textAlign="left" fontSize={18} fontWeight={600}>
           Filtering Options
         </H3>
-        <Text onClick={() => handleClearFilters()} fontSize={12} color="blue">
+        <Text
+          color="accent.500"
+          textDecoration="underline"
+          fontSize="12px"
+          onClick={() => handleClearFilters()}
+        >
           Clear Filters
         </Text>
       </Flex>
@@ -87,8 +93,18 @@ const ProductFilter: React.FC = () => {
       >
         {({ isSubmitting, status, values }: FormikProps<ProductValues>) => (
           <Form style={{ width: '100%' }}>
-            <ConnectedFormGroup label="Min Price" name="minPrice" type="text" />
-            <ConnectedFormGroup label="Max Price" name="maxPrice" type="text" />
+            <ConnectedFormGroup
+              label="Min Price"
+              placeholder="Select and option..."
+              name="minPrice"
+              type="text"
+            />
+            <ConnectedFormGroup
+              label="Max Price"
+              placeholder="Select and option..."
+              name="maxPrice"
+              type="text"
+            />
             <FormLabel htmlFor="category">Select Category</FormLabel>
             <FieldArray
               name="category"
@@ -97,8 +113,15 @@ const ProductFilter: React.FC = () => {
                 return (
                   <Flex flexDirection="column">
                     {userCategories?.map((category: string, index: number) => (
-                      <Flex key={index}>
-                        <ConnectedSelect name={`category.[${index}]`} options={mappedCategories} />
+                      <Flex key={index} alignItems="center">
+                        <ConnectedSelect placeholder="Select a category" name={`category.[${index}]`} options={mappedCategories} />
+                        <Flex
+                          ml={2}
+                          mb={4}
+                          onClick={() => arrayHelpers.remove(index)}
+                        >
+                          <XCircle />
+                        </Flex>
                       </Flex>
                     ))}
                     <Flex onClick={() => arrayHelpers.push('')} mb={2} alignItems="center">
@@ -111,7 +134,12 @@ const ProductFilter: React.FC = () => {
                 )
               }}
             />
-            <ConnectedFormGroup label="Select Country" name="country" type="text" />
+            <ConnectedFormGroup
+              label="Select Country"
+              placeholder="Select and option..."
+              name="country"
+              type="text"
+            />
             {status && (
               <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
                 <Text textAlign="right" color="red.500">

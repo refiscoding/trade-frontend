@@ -31,6 +31,7 @@ const SearchBar: FC<SearchBarProps> = ({ handleSearch, handleReset, handleFilter
           }}
           onReset={handleReset}
           value={currentRefinement}
+          mb={0}
         />
       </Form>
     </Formik>
@@ -44,7 +45,8 @@ const SearchBar: FC<SearchBarProps> = ({ handleSearch, handleReset, handleFilter
         bg="accent.600"
         alignItems="center"
         justifyContent="center"
-        width="15%"
+        width="50px"
+        height="40px"
         onClick={() => handleFilter()}
       >
         <Filter fontSize={10} />

@@ -1,4 +1,4 @@
-import { Button, Flex, Image, useToast } from "@chakra-ui/core";
+import { Button, Flex, useToast } from "@chakra-ui/core";
 import { Form, Formik, FormikProps } from 'formik'
 import * as React from 'react'
 import * as Yup from 'yup'
@@ -6,7 +6,6 @@ import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocom
 
 import { MotionFlex } from '../../components'
 import { ConnectedFormGroup } from '../../components/FormElements'
-import { images } from '../../theme'
 import { H3, Text } from '../../typography'
 import { formatError } from '../../utils'
 import { useState } from 'react'
@@ -145,7 +144,6 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails }) => {
                 onChange={handleInput}
               />
               {resultsStatus === 'OK' && <Flex flexDirection="column">{renderSuggestions()}</Flex>}
-              <Image mb={2} alignSelf="flex-end" width="40%" src={images['PoweredByGoogle']} />
             </Flex>
             <ConnectedFormGroup
               label="Complex / Building (Optional)"

@@ -4,6 +4,7 @@ import * as React from 'react'
 import CardFooter from '../CardFooter'
 import { Card } from '../../index'
 import { Category } from '../../../generated/graphql'
+import { useMediaQuery } from 'react-responsive'
 
 type CategoryCardProps = FlexProps & {
   category: Category
@@ -11,13 +12,19 @@ type CategoryCardProps = FlexProps & {
 }
 
 const CategoryCard: React.FC<CategoryCardProps> = ({ category, handleClick }) => {
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   return (
-    <Card m={2} width="45%" height="130px" onClick={() => handleClick(category.id)}>
+    <Card
+      m={2}
+      width={isTabletOrMobile ? '150px' : '250px'}
+      height={isTabletOrMobile ? '130px' : '180px'}
+      onClick={() => handleClick(category.id)}
+    >
       <Image
         mr={5}
         width="100%"
-        height="100px"
-        src={`${process.env.REACT_APP_API_HOST}${category.categoryImage?.url}`}
+        height={isTabletOrMobile ? '100px' : '150px'}
+        src={category.categoryImage?.url}
       />
       <CardFooter bg="white" height="30px" alignItems="center" justifyContent="center">
         <Text fontSize="12px">{category.name}</Text>

@@ -1,6 +1,5 @@
 export default {
   bg: require('../assets/images/core-bg.jpg'),
-  sovtechLogo: require('../assets/images/sovtech-small.png'),
   404: require('../assets/images/404.svg'),
   noData: require('../assets/images/no-data.png'),
   Facebook: require('../assets/images/Facebook.svg'),
@@ -12,11 +11,14 @@ export default {
   PoweredByGoogle: require('../assets/images/powered_by_google.png'),
   onboardingIntro: require('../assets/images/onboarding-intro.svg'),
   heroImg: require('../assets/images/hero-img.png'),
+  heroImgLarge: require('../assets/images/hero-L.png'),
   FacebookFooter: require('../assets/images/facebook.png'),
   TwitterFooter: require('../assets/images/twitter.png'),
   InstagramFooter: require('../assets/images/instagram.png'),
   sellerAprroval: require('../assets/images/seller-approval.svg'),
   filesIcon: require('../assets/images/files.svg'),
   emptyWishlist: require('../assets/images/empty_wishlist.svg'),
-  deleteItems: require('../assets/images/deleteItems.svg')
+  deleteItems: require('../assets/images/deleteItems.svg'),
+  signUpPageBanner: require('../assets/images/signUpBanner.jpg'),
+  loginPageBanner: require('../assets/images/login-banner.jpg')
 }

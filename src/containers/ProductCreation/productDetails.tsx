@@ -10,7 +10,7 @@ import {
 import { Text } from '../../typography'
 import { Options } from '../Seller/businessInfo'
 import { Field, FieldArray } from 'formik'
-import { File, PlusSquare } from 'react-feather'
+import {File, PlusSquare, XCircle} from 'react-feather'
 import { ProductValues } from './index'
 
 type ProductDetailsTypes = {
@@ -34,7 +34,7 @@ const ProductDetails: React.FC<ProductDetailsTypes> = ({ values, setImage }) => 
         name="productImages"
         setImages={setImage}
       />
-      <ConnectedTextArea label="Product Description" name="description" />
+      <ConnectedTextArea label="Product Description" name="description" handleSetTags={() => {}}/>
       <FormLabel htmlFor="features">List Product Features</FormLabel>
       <FieldArray
         name="features"
@@ -43,8 +43,15 @@ const ProductDetails: React.FC<ProductDetailsTypes> = ({ values, setImage }) => 
           return (
             <Flex flexDirection="column">
               {features?.map((feature: string, index: number) => (
-                <Flex key={index}>
+                <Flex key={index} alignItems="center">
                   <ConnectedFormGroup name={`features.[${index}]`} type="text" />
+                  <Flex
+                    ml={2}
+                    mb={4}
+                    onClick={() => arrayHelpers.remove(index)}
+                  >
+                    <XCircle />
+                  </Flex>
                 </Flex>
               ))}
               <Flex onClick={() => arrayHelpers.push('')} mb={2} alignItems="center">

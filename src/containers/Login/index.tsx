@@ -1,18 +1,19 @@
-import { Button, Flex, Image } from '@chakra-ui/core'
+import * as Yup from 'yup'
+import * as React from 'react'
+import { Mail } from 'react-feather'
+import { useMediaQuery } from "react-responsive";
 import { Form, Formik, FormikProps } from 'formik'
 import { LocationDescriptorObject } from 'history'
-import * as React from 'react'
+import { Button, Flex, Image, Checkbox, Grid } from '@chakra-ui/core'
 import { Link, useHistory, useLocation } from 'react-router-dom'
-import * as Yup from 'yup'
-import { Mail } from 'react-feather'
 
-import { MotionFlex, SideSlider } from '../../components'
-import { ConnectedFormGroup, ConnectedPasswordGroup } from '../../components/FormElements'
-import { useAuthContext } from '../../context/AuthProvider'
-import { PageWrap } from '../../layouts'
-import { H3, Text } from '../../typography'
-import { formatError } from '../../utils'
 import { images } from '../../theme'
+import { PageWrap } from '../../layouts'
+import { formatError } from '../../utils'
+import { H3, Text } from '../../typography'
+import { MotionFlex, SideSlider } from '../../components'
+import { useAuthContext } from '../../context/AuthProvider'
+import { ConnectedFormGroup, ConnectedPasswordGroup } from '../../components/FormElements'
 
 const LoginFormValidation = Yup.object().shape({
   email: Yup.string()
@@ -34,9 +35,11 @@ type InitialValues = {
 
 const Login: React.FC<LoginProps> = () => {
   const { login, isAuthenticated } = useAuthContext()
+  const [rememberMeChecked, setRememberMeChecked] = React.useState<boolean>(false);
 
   const history = useHistory()
   const location = useLocation<{ email?: string; redirectTo?: LocationDescriptorObject }>()
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
 
   React.useEffect(() => {
     if (isAuthenticated) {
@@ -49,12 +52,27 @@ const Login: React.FC<LoginProps> = () => {
     // eslint-disable-next-line
   }, [isAuthenticated])
 
+  const logoWidth = !isTabletOrMobile ? "50%" : "100%" ;
+  const logoMarginBottom = !isTabletOrMobile ? 5 : 10 ;
+  const logoMarginLeft = !isTabletOrMobile ? 70 : 0 ;
+
+  const handleRememberMeClicked = () => {
+    setRememberMeChecked(!rememberMeChecked);
+  };
+
+  const rememberMeContainer = isTabletOrMobile ? "170px 165px" : "145px 165px";
+
   return (
-    <PageWrap align="center" title="Login" justify="center" pt={0} color="colors.white">
-      <Flex width="100%" align="center" justify="center" mt={4} mb={4}>
-        <Image width="90%" src={images['TradeFedFullLogo']} />
-      </Flex>
+    <PageWrap align="center" title="Login" justify="center" pt={0} >
+      {
+        !isTabletOrMobile && (
+            <Flex width="100%">
+              <Image width="100%" height="100%" src={images['loginPageBanner']} />
+            </Flex>
+        )
+      }
       <SideSlider>
+        <Image justifySelf="center" width={logoWidth} mb={logoMarginBottom} src={images['TradeFedFullLogo']} ml={logoMarginLeft}/>
         <Flex width="100%" align="center" justify="center" mb={4}>
           <H3 fontSize="20px">Login To Your Account</H3>
         </Flex>
@@ -70,7 +88,7 @@ const Login: React.FC<LoginProps> = () => {
             try {
               setSubmitting(true)
               if (login) {
-                await login(email, password, rememberMe)
+                await login(email, password, rememberMeChecked)
               }
               setSubmitting(false)
             } catch (error) {
@@ -95,6 +113,23 @@ const Login: React.FC<LoginProps> = () => {
                   </Text>
                 </MotionFlex>
               )}
+               <Flex mb={3}>
+                 <Grid gridTemplateColumns={rememberMeContainer}>
+                   <Flex>
+                    <Checkbox name="rememberMe" mr={3} onChange={handleRememberMeClicked}/>
+                      <Flex align="center" justify="center">
+                        <Text>
+                          Remember Me
+                        </Text>
+                      </Flex>
+                   </Flex>
+                   <Flex justifySelf="end">
+                      <a style={{ fontWeight: 600 }} href={`/forgot-password`}>
+                        Forgot Password?
+                      </a>
+                   </Flex>
+                 </Grid>
+              </Flex>
               <Button
                 mt={4}
                 width="100%"

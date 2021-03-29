@@ -1,15 +1,18 @@
-import { Button, Flex, Text, useToast } from '@chakra-ui/core'
 import * as React from 'react'
+import { get } from 'lodash'
+import { useMediaQuery } from "react-responsive";
+import { Button, Flex, Text, useToast } from '@chakra-ui/core';
 
-import { useAuthContext } from '../../context/AuthProvider'
-import { PageWrap } from '../../layouts'
-import { H3 } from '../../typography'
+
 import ProfileDetailsView from './profilePreview'
 import ProfileDetailForm, { profileValues } from './profileDetailsForm'
-import { Category, useCategoryQuery, useUpdateSelfMutation } from '../../generated/graphql'
+
+import { H3 } from '../../typography'
+import { PageWrap } from '../../layouts'
 import { formatError } from '../../utils'
-import { get } from 'lodash'
-import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
+import { useAuthContext } from '../../context/AuthProvider'
+import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants';
+import { Category, useCategoryQuery, useUpdateSelfMutation } from '../../generated/graphql'
 
 type ProfileProps = {}
 
@@ -20,9 +23,9 @@ const ProfileDetails: React.FC<ProfileProps> = () => {
 
   const { data } = useCategoryQuery({
     onError: (err: any) => formatError(err)
-  })
+  });
 
-  const categories = get(data, 'categories', null) as Category[]
+  const categories = get(data, 'categories', null) as Category[];
 
   const initials = `${user?.firstName?.[0]}${user?.lastName?.[0]}`
   const userCategories = user?.categories?.map((category) => `${category?.id}`)
@@ -30,7 +33,10 @@ const ProfileDetails: React.FC<ProfileProps> = () => {
     firstName: user?.firstName,
     lastName: user?.lastName,
     email: user?.email,
-    categories: userCategories
+    categories: userCategories,
+    phoneNumber: user?.phoneNumber,
+    idNumber: user?.idNumber,
+    // address: user?.address?.address,
   } as profileValues
 
   const [updateSelf] = useUpdateSelfMutation({
@@ -45,11 +51,18 @@ const ProfileDetails: React.FC<ProfileProps> = () => {
         setIsEditing(false)
       }
     }
-  })
+  });
 
+  const isWebViewport = useMediaQuery({
+      query: "(min-width: 40em)"
+  });
   const handleUserDetails = async (values: profileValues) => {
     await updateSelf({ variables: { input: { ...values } } })
   }
+
+  const handleChangeProfilePicture = () => {
+    console.log("TODO: Support Profile Image Upload");
+  };
 
   return (
     <PageWrap title="My Account" height="100vh" justifyContent="space-between">
@@ -71,6 +84,7 @@ const ProfileDetails: React.FC<ProfileProps> = () => {
               height="70px"
               justify="center"
               align="center"
+              onClick={handleChangeProfilePicture}
             >
               <H3 fontSize="2.5rem" color="white">
                 {initials}
@@ -78,7 +92,7 @@ const ProfileDetails: React.FC<ProfileProps> = () => {
             </Flex>
           </Flex>
           <Flex mt={4} pl={5} flexDir="column" justify="center" align="flex-start">
-            <Text color="accent.500" textDecoration="underline" fontSize="12px">
+            <Text color="accent.500" textDecoration="underline" fontSize="12px" onClick={handleChangeProfilePicture}>
               Change Profile Picture
             </Text>
           </Flex>
@@ -96,10 +110,11 @@ const ProfileDetails: React.FC<ProfileProps> = () => {
       {!isEditing && (
         <Button
           onClick={() => setIsEditing(true)}
-          mb={5}
-          width="100%"
+          p={5}
+          width={isWebViewport ? "40%" : "100%"}
           type="button"
           variantColor="brand"
+          alignSelf="center"
         >
           EDIT INFO
         </Button>

@@ -21,7 +21,7 @@ import { Options } from '../Seller/businessInfo'
 import * as Yup from 'yup'
 import ProductComponent from '../ProductView/ProductComponent'
 import { useHistory } from 'react-router-dom'
-import { File } from 'react-feather'
+import {useMediaQuery} from "react-responsive";
 
 const ProductFormValidation = Yup.object().shape({
   name: Yup.string().required('A name is required'),
@@ -80,9 +80,11 @@ const initialValues = {
 
 const ProductCreation: React.FC = () => {
   const [active, setACtive] = React.useState(0)
-  const [imageValue, setImage] = React.useState<File[]>([])
+  const [imageValue, setImage] = React.useState<File[]>([]);
+  const [tags, setTags] = React.useState<Array<string>>([]);
   const toast = useToast()
   const history = useHistory()
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
 
   const { data } = useCategoryQuery({
     onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST })
@@ -117,10 +119,12 @@ const ProductCreation: React.FC = () => {
     if (active === 2) {
       setACtive(1)
     }
-  }
+  };
+  const handleSetTags = (tags: string[]) => {
+    setTags(tags);
+  };
 
   const mapProducts = (values: ProductValues) => {
-    const tags = values?.tags?.split(',')
     return {
       name: values.name,
       shortDescription: values.shortDescription,
@@ -162,7 +166,7 @@ const ProductCreation: React.FC = () => {
   }
 
   return (
-    <PageWrap title="Add Product">
+    <PageWrap title="Add Product" alignSelf="center" width={isTabletOrMobile ? '100%' : '40%'}>
       <Flex width="100%" mb={4} flexDirection="column">
         <H3 textAlign="left" fontSize={18} fontWeight={600}>
           Add Basic Product Information
@@ -185,9 +189,9 @@ const ProductCreation: React.FC = () => {
         {({ isSubmitting, status, values }: FormikProps<ProductValues>) => (
           <Form style={{ width: '100%' }}>
             <Stepper activeStep={active}>
-              <ProductInfo values={values} categories={mappedCategories} />
+              <ProductInfo values={values} categories={mappedCategories} handleSetTags={handleSetTags}/>
               <ProductDetails values={values} setImage={handleImage} />
-              <Flex ml="-1rem" flexDirection="column">
+              <Flex position="relative" left="-80%" flexDirection="column" alignItems="center" width="100vw">
                 <ProductComponent
                   product={{
                     ...mapProducts(values),
