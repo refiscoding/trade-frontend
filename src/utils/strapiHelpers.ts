@@ -3,6 +3,7 @@ import { fetchJwt } from '.'
 import { UploadFile, UsersPermissionsUser } from '../generated/graphql'
 
 const BASE = process.env.REACT_APP_API_HOST || ''
+const CLIENT_BASE = window.location.origin || '';
 
 export type StrapiLoginPayload = {
   jwt: string
@@ -12,8 +13,9 @@ export type StrapiLoginPayload = {
 const forgotPassword = async (email: string): Promise<AxiosResponse<any>> => {
   try {
     return await axios.post(BASE + '/auth/forgot-password', {
-      email
-    })
+      email,
+      url: `${CLIENT_BASE}/reset-password`
+    });
   } catch (error) {
     return Promise.reject(error)
   }
