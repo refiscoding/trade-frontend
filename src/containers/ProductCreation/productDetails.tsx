@@ -34,7 +34,7 @@ const ProductDetails: React.FC<ProductDetailsTypes> = ({ values, setImage }) => 
         name="productImages"
         setImages={setImage}
       />
-      <ConnectedTextArea label="Product Description" name="description" />
+      <ConnectedTextArea label="Product Description" name="description" handleSetTags={() => {}}/>
       <FormLabel htmlFor="features">List Product Features</FormLabel>
       <FieldArray
         name="features"

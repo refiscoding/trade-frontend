@@ -13,9 +13,10 @@ import { Text } from '../../typography'
 import {PlusSquare, XCircle} from 'react-feather'
 import { ProductValues } from './index'
 
-type ProductInfoTpes = {
+type ProductInfoTypes = {
   categories: Options[]
   values: ProductValues
+  handleSetTags: (tags: string[]) => void
 }
 
 //TO-DO: change this to come from backend
@@ -36,13 +37,13 @@ const packagingItems = [
     label: 'Per Kg',
     value: 'kg'
   }
-]
+];
 
-const ProductInfo: React.FC<ProductInfoTpes> = ({ categories, values }) => {
+const ProductInfo: React.FC<ProductInfoTypes> = ({ categories, values, handleSetTags }) => {
   return (
     <Flex flexDirection="column">
       <ConnectedFormGroup label="Product Name" name="name" type="text" />
-      <ConnectedTextArea label="Small Product Description" name="shortDescription" />
+      <ConnectedTextArea label="Short Product Description" name="shortDescription" handleSetTags={() => {}}/>
       <FormLabel htmlFor="category">List Product Category</FormLabel>
       <FieldArray
         name="category"
@@ -72,7 +73,7 @@ const ProductInfo: React.FC<ProductInfoTpes> = ({ categories, values }) => {
           )
         }}
       />
-      <ConnectedTextArea label="Add Tags" name="tags" />
+      <ConnectedTextArea label="Add Tags" name="tags" hasTags handleSetTags={handleSetTags}/>
       <ConnectedNumberInput label="Price per Unit" name="pricePerUnit" unit="R" />
       <ConnectedNumberInput label="Retail Price per Unit" name="retailPricePerUnit" unit="R" />
       <ConnectedFormGroup

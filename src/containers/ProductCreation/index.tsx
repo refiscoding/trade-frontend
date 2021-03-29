@@ -21,7 +21,6 @@ import { Options } from '../Seller/businessInfo'
 import * as Yup from 'yup'
 import ProductComponent from '../ProductView/ProductComponent'
 import { useHistory } from 'react-router-dom'
-import { File } from 'react-feather'
 import {useMediaQuery} from "react-responsive";
 
 const ProductFormValidation = Yup.object().shape({
@@ -81,7 +80,8 @@ const initialValues = {
 
 const ProductCreation: React.FC = () => {
   const [active, setACtive] = React.useState(0)
-  const [imageValue, setImage] = React.useState<File[]>([])
+  const [imageValue, setImage] = React.useState<File[]>([]);
+  const [tags, setTags] = React.useState<Array<string>>([]);
   const toast = useToast()
   const history = useHistory()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
@@ -119,10 +119,12 @@ const ProductCreation: React.FC = () => {
     if (active === 2) {
       setACtive(1)
     }
-  }
+  };
+  const handleSetTags = (tags: string[]) => {
+    setTags(tags);
+  };
 
   const mapProducts = (values: ProductValues) => {
-    const tags = values?.tags?.split(',')
     return {
       name: values.name,
       shortDescription: values.shortDescription,
@@ -187,7 +189,7 @@ const ProductCreation: React.FC = () => {
         {({ isSubmitting, status, values }: FormikProps<ProductValues>) => (
           <Form style={{ width: '100%' }}>
             <Stepper activeStep={active}>
-              <ProductInfo values={values} categories={mappedCategories} />
+              <ProductInfo values={values} categories={mappedCategories} handleSetTags={handleSetTags}/>
               <ProductDetails values={values} setImage={handleImage} />
               <Flex position="relative" left="-80%" flexDirection="column" alignItems="center" width="100vw">
                 <ProductComponent

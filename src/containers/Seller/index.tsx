@@ -24,23 +24,34 @@ import { useEffect } from 'react'
 import {useMediaQuery} from "react-responsive";
 
 const SellerFormValidation = Yup.object().shape({
-  firstName: Yup.string().required('A first name is required'),
-  lastName: Yup.string().required('A last name is required'),
+  firstName: Yup.string().required('First Name is required'),
+  lastName: Yup.string().required('Last Name is required'),
   email: Yup.string().email('Please enter a valid email address').required('An email is required'),
-  idNumber: Yup.string().required('An ID number is required').length(13),
-  phoneNumber: Yup.string().required('A phone number is required'),
-  name: Yup.string().required('A business name is required'),
-  category: Yup.string().required('A business category is required'),
-  isVatRegistered: Yup.boolean().required('Is vat rgistered is required'),
-  vatNumber: Yup.string().required('A vat number is required'),
-  uniqueProducts: Yup.string().required('Number of unique products is required'),
-  products: Yup.string().required('Products are required'),
-  hasPhysicalStore: Yup.string().required('Has a physical store is required'),
-  isRetailSupplier: Yup.string().required('Are you a retail supplier is required'),
-  businessType: Yup.string().required('A business type is required'),
-  carryStock: Yup.string().required('Do you carry stock is required'),
-  revenue: Yup.string().required('A revenue range is required')
-})
+  idNumber: Yup.string().required('ID Number is required').length(13),
+  phoneNumber: Yup.string().required('Phone Number is required'),
+  name: Yup.string().required('Business Name is required'),
+  category: Yup.string().required('Business Category is required'),
+  isVatRegistered: Yup.boolean().required('VAT Registration Status is required'),
+  vatNumber: Yup.string().required('VAT Number is required'),
+  uniqueProducts: Yup.string().required('Number of Unique Products is required'),
+  products: Yup.string().required('Product Description is required'),
+  hasPhysicalStore: Yup.string().required('Physical Presence is required'),
+  isRetailSupplier: Yup.string().required('Retail Supplier Status is required'),
+  businessType: Yup.string().required('Business Type is required'),
+  carryStock: Yup.string().required('Stock Carriage Status is required'),
+  revenue: Yup.string().required('Revenue Range is required'),
+  registrationNumber: Yup.string().required('Registration Number is required'),
+});
+
+export type ErrorsObject = {
+  isVatRegistered?: string | undefined
+  businessType?: string | undefined
+  carryStock?: string | undefined
+  hasPhysicalStore?: string | undefined
+  isRetailSupplier?: string | undefined
+  revenue?: string | undefined
+  registrationNumber?: string | undefined
+};
 
 type SellerValues = {
   firstName: string
@@ -60,6 +71,7 @@ type SellerValues = {
   // eslint-disable-next-line @typescript-eslint/camelcase
   businessType?: Enum_Business_Businesstype
   carryStock: string
+  errors?: ErrorsObject
 }
 
 const initialValues = {
@@ -192,22 +204,24 @@ const Seller: React.FC = () => {
           }
         }}
       >
-        {({ isSubmitting, status }: FormikProps<SellerValues>) => (
-          <Form style={{ width: '100%' }}>
-            <PersonalInfo />
-            <BusinessInfo categories={mappedCategories} />
-            {status && (
-              <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
-                <Text textAlign="right" color="red.500">
-                  {status}
-                </Text>
-              </MotionFlex>
-            )}
-            <Button mt={4} width="100%" type="submit" variantColor="brand" isLoading={isSubmitting}>
-              SUBMIT
-            </Button>
-          </Form>
-        )}
+        {({ isSubmitting, status, errors }: FormikProps<SellerValues>) => {
+          return (
+            <Form style={{ width: '100%' }}>
+              <PersonalInfo />
+              <BusinessInfo categories={mappedCategories} errors={errors} />
+              {status && (
+                <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
+                  <Text textAlign="right" color="red.500">
+                    {status}
+                  </Text>
+                </MotionFlex>
+              )}
+              <Button mt={4} width="100%" type="submit" variantColor="brand" isLoading={isSubmitting}>
+                SUBMIT
+              </Button>
+            </Form>
+          )}
+        }
       </Formik>
     </PageWrap>
   )

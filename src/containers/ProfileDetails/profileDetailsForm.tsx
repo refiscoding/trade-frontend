@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { Button, Flex } from '@chakra-ui/core'
+import { Button, Flex } from '@chakra-ui/core';
+import { useMediaQuery } from "react-responsive";
 
 import { ConnectedCheckbox, ConnectedFormGroup } from '../../components/FormElements'
 import { Form, Formik, FormikProps } from 'formik'
@@ -25,15 +26,22 @@ type formProps = {
   categories?: Category[]
   handleUserDetails?: (values: profileValues) => void
   initialValues: profileValues
-}
+};
 
 const ProfileDetailForm: React.FC<formProps> = ({
   categories,
   handleUserDetails,
   initialValues
 }) => {
+  const isWebViewport = useMediaQuery({
+    query: "(min-width: 40em)"
+  });
+  const styles = {
+    width: isWebViewport ? "35%" : "100%",
+    justifySelf: isWebViewport ? "center" : "",
+  };
   return (
-    <Flex flexDirection="column">
+    <Flex flexDirection="column" width={styles.width} alignSelf={styles.justifySelf}>
       <Formik
         validationSchema={DetailsValidation}
         initialValues={initialValues}
@@ -50,9 +58,12 @@ const ProfileDetailForm: React.FC<formProps> = ({
       >
         {({ isSubmitting }: FormikProps<profileValues>) => (
           <Form style={{ width: '100%' }}>
-            <ConnectedFormGroup label="Your first name?" name="firstName" type="text" />
-            <ConnectedFormGroup label="Your last name?" name="lastName" type="text" />
-            <ConnectedFormGroup label="Your Email Address?" name="email" type="text" />
+            <ConnectedFormGroup label="Your First Name?" name="firstName" type="text" />
+            <ConnectedFormGroup label="Your Last Name?" name="lastName" type="text" />
+            <ConnectedFormGroup label="Your Email Address?" name="email" type="text" isDisabled={true} />
+            <ConnectedFormGroup label="Your Phone Number?" name="phoneNumber" type="text" />
+            <ConnectedFormGroup label="Your ID Number?" name="idNumber" type="text" />
+            {/* <ConnectedFormGroup label="Your Address?" name="address" type="text" /> */}
             {categories?.map((item: any, i: number) => (
               <ConnectedCheckbox key={i} name="categories" label={item.name} value={item.id} />
             ))}
