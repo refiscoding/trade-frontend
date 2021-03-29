@@ -1,3 +1,10 @@
+# [1.1.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.0.0...v1.1.0) (2021-03-29)
+
+
+### Features
+
+* **profile:** update user profile details ([9526caf](http://bitbucket.org/sovtech/tradefed-frontend/commits/9526cafbed72c7840bfc7bdc32579960e5edd6db))
+
 # 1.0.0 (2021-03-03)
 
 
