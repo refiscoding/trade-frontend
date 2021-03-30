@@ -8,6 +8,7 @@ import { theme } from "../../theme";
 import { Product } from "../../generated/graphql";
 import { VerifiedBadge }from "../../components/Product";
 import { ProductProps } from "./props";
+import {useHistory} from "react-router-dom";
 
 const ProductComponent: React.FC<ProductProps> = (
     { 
@@ -16,9 +17,15 @@ const ProductComponent: React.FC<ProductProps> = (
         handleAddToCartClicked,
         deals,
         productPackaging,
-        productImages
+        productImages,
+        isPreview
   }) => {
     // TODO: Replace line 103 this with ConnectedSelect component
+  const history = useHistory()
+
+  const navigateToProduct = (id: string) => {
+    history.push(`/product/${id}`)
+  }
 
   const coverImage = product?.coverImage?.url;
   const hasProductImages =  productImages?.length > 0
@@ -179,18 +186,20 @@ const ProductComponent: React.FC<ProductProps> = (
         </Flex>
         </Grid>
       </Grid>
-      <Flex ml={5} mt={3} width="100%" flexDirection="column" alignItems="center" >
-        <Section title="Deals You Might Be Interested In">
-          {deals?.map((product: Product) => (
-            <ProductCard key={product.id} product={product} handleClick={() => {}} />
-          ))}
-        </Section>
-        <Button width="80%" variantColor="brand">
-          <Text fontSize="12px">
-            VIEW MORE
-          </Text>
-        </Button>
+      {isPreview &&
+        <Flex ml={5} mt={3} width="100%" flexDirection="column" alignItems="center">
+          <Section title="Deals You Might Be Interested In">
+            {deals?.map((product: Product) => (
+              <ProductCard key={product.id} product={product} handleClick={navigateToProduct}/>
+            ))}
+          </Section>
+          <Button width="80%" variantColor="brand">
+            <Text fontSize="12px">
+              VIEW MORE
+            </Text>
+          </Button>
       </Flex>
+      }
     </React.Fragment>
   )
 }

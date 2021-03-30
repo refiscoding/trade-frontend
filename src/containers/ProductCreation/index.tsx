@@ -115,7 +115,7 @@ const ProductCreation: React.FC = () => {
     onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
     onCompleted: async () => {
       toast({ description: 'Product details updated!', ...SUCCESS_TOAST })
-      history.push('/product-management')
+      history.push('/upload-product-success')
     }
   })
 

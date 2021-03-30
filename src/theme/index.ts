@@ -21,7 +21,7 @@ const theme = {
       600: '#8c8c8c'
     },
     accent: {
-      50: '#fff7db',
+      50: '#ffffff',
       100: '#ffe5ae',
       200: '#EDF2F7',
       300: '#fbc44e',
@@ -33,7 +33,7 @@ const theme = {
       900: '#1d1000'
     },
     success: {
-      50: '#e3fbee',
+      50: '##ffffff',
       100: '#c3ebd7',
       200: '#a0dcbf',
       300: '#7ccda7',
