@@ -8,6 +8,7 @@ import { theme } from "../../theme";
 import { Product } from "../../generated/graphql";
 import { VerifiedBadge }from "../../components/Product";
 import { ProductProps } from "./props";
+import {useHistory} from "react-router-dom";
 
 const ProductComponent: React.FC<ProductProps> = (
     { 
@@ -20,6 +21,11 @@ const ProductComponent: React.FC<ProductProps> = (
         isPreview
   }) => {
     // TODO: Replace line 103 this with ConnectedSelect component
+  const history = useHistory()
+
+  const navigateToProduct = (id: string) => {
+    history.push(`/product/${id}`)
+  }
 
   const coverImage = product?.coverImage?.url;
   return (
@@ -193,8 +199,7 @@ const ProductComponent: React.FC<ProductProps> = (
         <Flex ml={5} mt={3} width="100%" flexDirection="column" alignItems="center">
           <Section title="Deals You Might Be Interested In">
             {deals?.map((product: Product) => (
-              <ProductCard key={product.id} product={product} handleClick={() => {
-              }}/>
+              <ProductCard key={product.id} product={product} handleClick={navigateToProduct}/>
             ))}
           </Section>
           <Button width="80%" variantColor="brand">
