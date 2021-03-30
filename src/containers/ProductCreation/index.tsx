@@ -144,8 +144,8 @@ const ProductCreation: React.FC = () => {
     }
   }
 
-  const handleImages = (value: File[]) => {
-    setImages((prevFiles) => prevFiles?.concat(Array.from(value)))
+  const handleImages = (imageFiles: File[]) => {
+    setImages((prevFiles) => prevFiles?.concat(Array.from(imageFiles)))
   }
 
   const handleNextButton = () => {
