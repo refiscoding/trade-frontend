@@ -7,4 +7,5 @@ export type ProductProps = {
     handleAddToCartClicked: (id: string) => Promise<void>
     productPackaging: string
     productImages: string[]
+    isPreview: boolean
 };
