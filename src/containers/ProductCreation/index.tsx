@@ -92,7 +92,7 @@ const initialValues = {
 
 const ProductCreation: React.FC = () => {
   const [active, setACtive] = React.useState(0)
-  const [imageValue, setImage] = React.useState<File[]>([]);
+  const [imageValues, setImages] = React.useState<File[]>([]);
   const [tags, setTags] = React.useState<Array<string>>([]);
   const [uploadProgress, setUploadProgress] = React.useState<UploadProgress>({})
   const [uploaded, setUploaded] = useState<UploadFile[]>()
@@ -129,13 +129,14 @@ const ProductCreation: React.FC = () => {
   }
 
   const handleUpload = async () => {
-    const promises = imageValue.map((file) => strapiHelpers.upload(file, progress))
+    const promises = imageValues.map((file) => strapiHelpers.upload(file, progress))
     try {
       const uploadArr = await Promise.all(promises)
       const uploads = uploadArr.map((upload) => upload.data[0])
-      setImage([])
+      setImages([])
       setUploaded(uploads)
     } catch (e) {
+      console.log("Upload Exception; ", e)
       toast({
         description: 'Something went wrong while uploading your file.',
         ...ERROR_TOAST
@@ -143,8 +144,8 @@ const ProductCreation: React.FC = () => {
     }
   }
 
-  const handleImage = (value: File[]) => {
-    setImage((prevFiles) => prevFiles?.concat(Array.from(value)))
+  const handleImages = (value: File[]) => {
+    setImages((prevFiles) => prevFiles?.concat(Array.from(value)))
   }
 
   const handleNextButton = () => {
@@ -233,7 +234,7 @@ const ProductCreation: React.FC = () => {
           <Form style={{ width: '100%' }}>
             <Stepper activeStep={active}>
               <ProductInfo values={values} categories={mappedCategories} handleSetTags={handleSetTags}/>
-              <ProductDetails values={values} setImage={handleImage} />
+              <ProductDetails values={values} setImage={handleImages} />
               <Flex
                 position="relative"
                 left={isTabletOrMobile ? 0 : "-80%"}
@@ -246,7 +247,7 @@ const ProductCreation: React.FC = () => {
                     ...mapProducts(values),
                     coverImage: {
                       preview: true,
-                      url: imageValue.length > 0 ? window.URL.createObjectURL(imageValue[0]) : ''
+                      url: imageValues.length > 0 ? window.URL.createObjectURL(imageValues[0]) : ''
                     }
                   }}
                   setShowAddToCartModal={() => {}}
