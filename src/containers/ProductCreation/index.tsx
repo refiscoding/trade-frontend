@@ -129,7 +129,7 @@ const ProductCreation: React.FC = () => {
   }
 
   const handleUpload = async () => {
-    const promises = imageValue.map((file) => strapiHelpers.upload(file))
+    const promises = imageValue.map((file) => strapiHelpers.upload(file, progress))
     try {
       const uploadArr = await Promise.all(promises)
       const uploads = uploadArr.map((upload) => upload.data[0])
