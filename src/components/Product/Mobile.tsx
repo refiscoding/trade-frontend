@@ -8,6 +8,7 @@ import { theme } from "../../theme";
 import { ProductProps } from "./props";
 import { Product } from "../../generated/graphql";
 import { VerifiedBadge }from "../../components/Product";
+import {useHistory} from "react-router-dom";
 
 const ProductComponentMobile: React.FC<ProductProps> = (
   { product,
@@ -18,6 +19,11 @@ const ProductComponentMobile: React.FC<ProductProps> = (
     isPreview
   }) => {
     // TODO: Replace line 77 this with ConnectedSelect component
+  const history = useHistory()
+
+  const navigateToProduct = (id: string) => {
+    history.push(`/product/${id}`)
+  }
 
   return (
     <React.Fragment>
@@ -50,7 +56,7 @@ const ProductComponentMobile: React.FC<ProductProps> = (
           </Flex>
         ) : null}
       </Flex>
-      <Flex flexDirection="column" width="414px" p={5} pt={0} background="#ffffff" mb={2}>
+      <Flex flexDirection="column" width="414px" p={5} pt={0} background="accent.50" mb={2}>
         <Text my={2} fontSize="18px" fontWeight={600}>
           {product?.name}
         </Text>
@@ -157,8 +163,7 @@ const ProductComponentMobile: React.FC<ProductProps> = (
         <Flex flexDirection="column" width="414px" background="#ffffff" p={5} pt={0}>
           <Section title="Deals You Might Be Interested In" width="100%">
             {deals?.slice(0, 2)?.map((product: Product) => (
-              <ProductCard key={product.id} product={product} handleClick={() => {
-              }}/>
+              <ProductCard key={product.id} product={product} handleClick={navigateToProduct}/>
             ))}
           </Section>
           <Button width="100%" variantColor="brand">
