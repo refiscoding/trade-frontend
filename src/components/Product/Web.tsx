@@ -28,6 +28,7 @@ const ProductComponent: React.FC<ProductProps> = (
   }
 
   const coverImage = product?.coverImage?.url;
+  const hasProductImages =  productImages?.length > 0
   return (
     <React.Fragment>
       <Flex mb={3} backgroundColor="white" borderRadius={3} width="80%">
@@ -61,31 +62,21 @@ const ProductComponent: React.FC<ProductProps> = (
                 </Text>
               </Flex>
             ) : null}
-            <Grid gridTemplateRows="90px 90px 90px 90px" rowGap={3} ml={5} mt={6} overflowY="scroll">
-              {
-                productImages?.length
-                ? (
-                  productImages?.map((product: string | undefined) => (
-                    <Image
-                      key={product}
-                      width="90%"
-                      height="90px"
-                      src={product}
-                    />
-                  ))
-                )
-                : (
-                  [1,2,3,4]?.map((product: number) => (
-                    <Image
-                      key={product}
-                      width="90%"
-                      height="90px"
-                      src={coverImage}
-                    />
-                  ))
-                )
+            {  hasProductImages
+                && (
+                  <Grid gridTemplateRows="90px 90px 90px 90px" rowGap={3} ml={5} mt={6} overflowY="scroll">
+                  {
+                    productImages?.map((product: string | undefined) => (
+                      <Image
+                        key={product}
+                        width="90%"
+                        height="90px"
+                        src={product}
+                      />
+                    ))
               }
-            </Grid>
+            </Grid>)
+            }
           </Grid>
           <Grid gridTemplateRows="40px 50px 35px 30px 50px 40px 80px 1fr" padding={5} pt={10}>
             <Text fontSize="20px" fontWeight={600}>
@@ -121,18 +112,18 @@ const ProductComponent: React.FC<ProductProps> = (
                 <option value="10+">10+</option>
               </Select>
             </Flex>
-            <Grid gridTemplateColumns="200px 200px">
-              <Button justifySelf="start" mt={4} width="90%" onClick={() => handleAddToWishlistClicked(product?.id)} border={`1px solid ${theme.colors.brand[500]}`} background="white">
+            <Flex flexWrap="wrap" >
+              <Button justifySelf="start" width="150px" mt={4} mr={2}  onClick={() => handleAddToWishlistClicked(product?.id)} border={`1px solid ${theme.colors.brand[500]}`} background="white">
                   <Text fontSize="12px">
                     ADD TO WISHLIST
                   </Text>
               </Button>
-              <Button mt={4} width="90%" variantColor="brand" onClick={() => handleAddToCartClicked(product?.id)}>
+              <Button mt={4} variantColor="brand" width="150px" onClick={() => handleAddToCartClicked(product?.id)}>
                   <Text fontSize="12px">
                     ADD TO CART
                   </Text>
               </Button>
-            </Grid>
+            </Flex>
           </Grid>
         </Grid>
       </Flex>
