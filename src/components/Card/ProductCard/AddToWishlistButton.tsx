@@ -10,19 +10,19 @@ type WishlistButtonProps = FlexProps & {
 
 const AddToWishlistButton: React.FC<WishlistButtonProps> = ({ addToWishlist, editing }) => (
     <Flex
-      position="relative"
+      position="absolute"
       alignItems="center"
       justifyContent="center"
       width="60px"
       height="35px"
-      padding="5px"
       bg={`${ addToWishlist ? "#313130" : "#355EC0"}`}
       flexDirection="column"
-      top="0px"
-      left={`${editing ? "116px" : "123px"}`}
+      bottom="8px"
+      right="8px"
       borderTopLeftRadius={10}
+      borderBottomRightRadius={4}
     >
-      <Flex width="100%" mb={4} mt={4} justifyContent="space-between" alignItems="center">
+      <Flex width="100%" p={2} mb={4} mt={4} justifyContent="space-between" alignItems="center">
         <Plus color="white" />
         {
           addToWishlist 

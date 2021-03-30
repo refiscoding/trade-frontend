@@ -25,7 +25,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
   handleClick,
   isWishlist,
   isCart,
-  editing
+  editing,
+  ...rest
 }) => {
   const handleRadioPressed = (newProduct: string, checked: boolean) => {
     const productsToRemove: ProductRemovalValues[] = []
@@ -48,7 +49,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
     }
   }
   return (
-    <Flex width="320px" justifyContent="space-between" alignItems="center">
+    <Flex width={rest.width || "320px"} justifyContent="space-between" alignItems="center" position="relative">
       {(isCart || isWishlist) && editing && (
         <Checkbox
           name={product?.id}
@@ -88,7 +89,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             </Flex>
           ) : null}
         </Flex>
-        <CardFooter paddingLeft={2} width="160px" bg="white" height="100%" justifyContent="center">
+        <CardFooter paddingLeft={2} width={rest.width ? "60%" : "160px"} bg="white" height="100%" justifyContent="center">
           <Text my={2} fontSize="14px" fontWeight={600}>
             {product.name}
           </Text>
