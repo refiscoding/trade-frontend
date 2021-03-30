@@ -28,6 +28,8 @@ type FileUploaderProps = SpaceProps & {
   isMulti?: boolean
   isDisabled?: boolean
   setImages?: (value: any[]) => void
+  isImage?: boolean
+  showUploadButton?: boolean
 }
 
 type ProgressObject = {
@@ -46,6 +48,8 @@ const FileUploader: React.FC<FileUploaderProps> = ({
   isMulti,
   isDisabled,
   setImages,
+  isImage,
+  showUploadButton,
   ...rest
 }) => {
   const [stateFiles, setStateFiles] = React.useState<File[]>([])
@@ -185,7 +189,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
                 ) : (
                   <File color={theme.colors.brand[300]} />
                 )}
-                <Text ml={4} isTruncated>
+                <Text ml={4} maxWidth="180px" isTruncated>
                   {file.name}
                 </Text>
               </Flex>
@@ -215,7 +219,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
             <Text>{placeholder}</Text>
           </AddFileButton>
         )}
-        {stateFiles && stateFiles.length > 0 && (
+        {showUploadButton && stateFiles && stateFiles.length > 0 && (
           <Button isLoading={uploading} flex={1} onClick={() => handleUpload()}>
             <Text>Upload</Text>
           </Button>
@@ -225,6 +229,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
         disabled={isDisabled}
         onChange={onChange}
         type="file"
+        accept={isImage ? "image/png, image/jpeg" : ""}
         multiple={isMulti}
         name={name}
         id={name}

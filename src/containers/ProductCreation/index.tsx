@@ -8,7 +8,7 @@ import {
   Enum_Product_Packaging as packagingEnum,
   Enum_Componentproductvariantsvariants_Variants as variantsEnum,
   useCategoryQuery,
-  useAddProductMutation
+  useAddProductMutation, UploadFile
 } from '../../generated/graphql'
 import { formatError } from '../../utils'
 import { Button, Flex, useToast } from '@chakra-ui/core'
@@ -22,6 +22,18 @@ import * as Yup from 'yup'
 import ProductComponent from '../ProductView/ProductComponent'
 import { useHistory } from 'react-router-dom'
 import {useMediaQuery} from "react-responsive";
+import strapiHelpers from "../../utils/strapiHelpers";
+import {File} from "react-feather";
+import {useState} from "react";
+
+type ProgressObject = {
+  state: string
+  percentage: number
+}
+
+type UploadProgress = {
+  [key: string]: ProgressObject
+}
 
 const ProductFormValidation = Yup.object().shape({
   name: Yup.string().required('A name is required'),
@@ -82,6 +94,8 @@ const ProductCreation: React.FC = () => {
   const [active, setACtive] = React.useState(0)
   const [imageValue, setImage] = React.useState<File[]>([]);
   const [tags, setTags] = React.useState<Array<string>>([]);
+  const [uploadProgress, setUploadProgress] = React.useState<UploadProgress>({})
+  const [uploaded, setUploaded] = useState<UploadFile[]>()
   const toast = useToast()
   const history = useHistory()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
@@ -105,6 +119,30 @@ const ProductCreation: React.FC = () => {
     }
   })
 
+  const progress = ({ loaded, total }: ProgressEvent, file: File): void => {
+    const copy = { ...uploadProgress }
+    copy[file.name] = {
+      state: 'pending',
+      percentage: Math.round((loaded * 100) / total)
+    }
+    setUploadProgress((prevProgress) => ({ ...prevProgress, ...copy }))
+  }
+
+  const handleUpload = async () => {
+    const promises = imageValue.map((file) => strapiHelpers.upload(file))
+    try {
+      const uploadArr = await Promise.all(promises)
+      const uploads = uploadArr.map((upload) => upload.data[0])
+      setImage([])
+      setUploaded(uploads)
+    } catch (e) {
+      toast({
+        description: 'Something went wrong while uploading your file.',
+        ...ERROR_TOAST
+      })
+    }
+  }
+
   const handleImage = (value: File[]) => {
     setImage((prevFiles) => prevFiles?.concat(Array.from(value)))
   }
@@ -125,10 +163,14 @@ const ProductCreation: React.FC = () => {
   };
 
   const mapProducts = (values: ProductValues) => {
+    const coverImage = uploaded && uploaded.length > 0 ? uploaded[0].id : ''
+    const productImages = uploaded && uploaded.length > 1 ? uploaded.slice(1).map((image: UploadFile) => image.id) : []
     return {
       name: values.name,
       shortDescription: values.shortDescription,
       description: values.description,
+      coverImage: coverImage,
+      productImages: productImages,
       tags: [...tags],
       price: {
         currency: 'R',
@@ -156,6 +198,7 @@ const ProductCreation: React.FC = () => {
   const handleSubmitButton = (items: ProductValues) => {
     if (active === 1) {
       setACtive(2)
+      handleUpload()
     }
     if (active === 2) {
       const postProduct = async () => {
@@ -191,7 +234,13 @@ const ProductCreation: React.FC = () => {
             <Stepper activeStep={active}>
               <ProductInfo values={values} categories={mappedCategories} handleSetTags={handleSetTags}/>
               <ProductDetails values={values} setImage={handleImage} />
-              <Flex position="relative" left="-80%" flexDirection="column" alignItems="center" width="100vw">
+              <Flex
+                position="relative"
+                left={isTabletOrMobile ? 0 : "-80%"}
+                flexDirection="column"
+                alignItems="center"
+                width={isTabletOrMobile ? "100%" : "100vw"}
+              >
                 <ProductComponent
                   product={{
                     ...mapProducts(values),
