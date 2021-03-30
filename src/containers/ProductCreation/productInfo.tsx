@@ -36,8 +36,23 @@ const packagingItems = [
   {
     label: 'Per Kg',
     value: 'kg'
-  }
+  },
+  {
+    label: 'Per Item',
+    value: 'item'
+  },
 ];
+
+const currency = [
+  {
+    label: 'ZAR',
+    value: 'ZAR'
+  },
+  {
+    label: '$',
+    value: 'USD'
+  },
+]
 
 const ProductInfo: React.FC<ProductInfoTypes> = ({ categories, values, handleSetTags }) => {
   return (
@@ -74,8 +89,8 @@ const ProductInfo: React.FC<ProductInfoTypes> = ({ categories, values, handleSet
         }}
       />
       <ConnectedTextArea label="Add Tags" name="tags" hasTags handleSetTags={handleSetTags}/>
-      <ConnectedNumberInput label="Price per Unit" name="pricePerUnit" unit="R" />
-      <ConnectedNumberInput label="Retail Price per Unit" name="retailPricePerUnit" unit="R" />
+      <ConnectedNumberInput label="Price per Unit" name="pricePerUnit" unit={currency} />
+      <ConnectedNumberInput label="Retail Price per Unit" name="retailPricePerUnit" unit={currency} />
       <ConnectedFormGroup
         label="How Many Units available to sell?"
         name="availableUnits"
@@ -88,7 +103,7 @@ const ProductInfo: React.FC<ProductInfoTypes> = ({ categories, values, handleSet
           <Text ml={2}>{item.label}</Text>
         </Flex>
       ))}
-      <ConnectedFormGroup label="How Many Items Are in a pack" name="itemsPerPackage" type="text" />
+      <ConnectedFormGroup label="How many items are in a pack?" name="itemsPerPackage" type="text" />
     </Flex>
   )
 }
