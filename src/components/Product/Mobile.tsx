@@ -160,7 +160,7 @@ const ProductComponentMobile: React.FC<ProductProps> = (
         </Flex>
       </Flex>
       {isPreview &&
-        <Flex flexDirection="column" width="414px" background="#ffffff" p={5} pt={0}>
+        <Flex flexDirection="column" width="414px" background="accent.50" p={5} pt={0}>
           <Section title="Deals You Might Be Interested In" width="100%">
             {deals?.slice(0, 2)?.map((product: Product) => (
               <ProductCard key={product.id} product={product} handleClick={navigateToProduct}/>
