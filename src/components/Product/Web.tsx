@@ -34,34 +34,40 @@ const ProductComponent: React.FC<ProductProps> = (
       <Flex mb={3} backgroundColor="white" borderRadius={3} width="80%">
         <Grid gridTemplateColumns="1fr 1fr">
           <Grid gridTemplateColumns="550px 150px" height={435} columnGap={3} >
-            <Image
+            <Flex
               m={5}
-              width="100%"
+              width="550px"
               height="400px"
-              src={coverImage}
-            />
-            {product?.discount?.discountPercentage && product?.discount?.discountPercentage > 0 ? (
-              <Flex
-                alignItems="center"
-                justifyContent="center"
-                width="70px"
-                height="70px"
-                position="absolute"
-                bg="accent.700"
-                flexDirection="column"
-                top="6.2rem"
-                right="58%"
-                borderBottomLeftRadius={2}
-                borderBottomRightRadius={2}
-              >
-                <Text color="white" fontSize="14px">
-                  Save
-                </Text>
-                <Text color="white" fontSize="14px" fontWeight={600}>
-                  {`${product?.discount?.discountPercentage}%`}
-                </Text>
-              </Flex>
-            ) : null}
+            >
+              <Image
+                width="100%"
+                height="100%"
+                src={coverImage}
+                objectFit="contain"
+              />
+              {product?.discount?.discountPercentage && product?.discount?.discountPercentage > 0 ? (
+                <Flex
+                  alignItems="center"
+                  justifyContent="center"
+                  width="70px"
+                  height="70px"
+                  position="absolute"
+                  bg="accent.700"
+                  flexDirection="column"
+                  top="6.2rem"
+                  right="58%"
+                  borderBottomLeftRadius={2}
+                  borderBottomRightRadius={2}
+                >
+                  <Text color="white" fontSize="14px">
+                    Save
+                  </Text>
+                  <Text color="white" fontSize="14px" fontWeight={600}>
+                    {`${product?.discount?.discountPercentage}%`}
+                  </Text>
+                </Flex>
+              ) : null}
+            </Flex>
             {  hasProductImages
                 && (
                   <Grid gridTemplateRows="90px 90px 90px 90px" rowGap={3} ml={5} mt={6} overflowY="scroll">

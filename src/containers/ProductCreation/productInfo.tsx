@@ -37,11 +37,7 @@ const packagingItems = [
   {
     label: 'Per Kg',
     value: 'kg'
-  },
-  {
-    label: 'Per Item',
-    value: 'item'
-  },
+  }
 ];
 
 const currency = [
