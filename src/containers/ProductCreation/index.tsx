@@ -88,7 +88,6 @@ export type ImageByType = {
 
 const ProductCreation: React.FC = () => {
   const [active, setActive] = React.useState(0)
-  const [imageValues, setImages] = React.useState<File[]>([]);
   const [imagebyType, setImageBytype] = React.useState<ImageByType>();
   const [tags, setTags] = React.useState<Array<string>>([]);
   const [uploading, setUploading] = React.useState(false)
@@ -142,7 +141,11 @@ const ProductCreation: React.FC = () => {
   const handleImages = (imageFiles: File[], type: string, pop?: boolean) => {
     const imagesArray = Array.from(imageFiles)
     if(pop) {
-      setImages(imageFiles)
+      if(type === 'multi'){
+        setImageBytype({...imagebyType, productImages: imagesArray})
+      } else {
+        setImageBytype({...imagebyType, coverImage: imagesArray[0]})
+      }
       return;
     }
     if(type === 'multi'){
@@ -152,7 +155,6 @@ const ProductCreation: React.FC = () => {
     } else {
       setImageBytype({...imagebyType, coverImage: imagesArray[0]})
     }
-    setImages((prevFiles) => prevFiles?.concat(imagesArray))
   }
 
   const handleNextButton = () => {
@@ -214,7 +216,6 @@ const ProductCreation: React.FC = () => {
               coverImage: coverImage,
               productImages: productImages
         } } })
-        setImages([])
       }
       postProduct()
     }
