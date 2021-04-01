@@ -37,7 +37,7 @@ const dimensionUnits = [
 ]
 
 const ProductDetails: React.FC<ProductDetailsTypes> = ({ values, setImage, imageValues }) => {
-  const coverArray = [imageValues?.coverImage] as File[] | undefined
+  const coverArray = imageValues?.coverImage ? [imageValues?.coverImage] as File[] : undefined
   return (
     <Flex flexDirection="column">
       <FormLabel htmlFor="packaging">Add Product Images (0/5)</FormLabel>
