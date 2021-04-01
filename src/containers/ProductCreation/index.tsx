@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { get } from 'lodash'
+import { get, isEmpty } from 'lodash'
 
 import { PageWrap } from '../../layouts'
 import { MotionFlex, Stepper } from '../../components'
@@ -24,20 +24,11 @@ import { useHistory } from 'react-router-dom'
 import {useMediaQuery} from "react-responsive";
 import strapiHelpers from "../../utils/strapiHelpers";
 import {File} from "react-feather";
-import {useState} from "react";
-
-type ProgressObject = {
-  state: string
-  percentage: number
-}
-
-type UploadProgress = {
-  [key: string]: ProgressObject
-}
+import {AxiosResponse} from "axios";
 
 const ProductFormValidation = Yup.object().shape({
   name: Yup.string().required('A name is required'),
-  shortDescription: Yup.string().required('A short description is required'),
+  shortDescription: Yup.string().required('A short description is required').max(200),
   category: Yup.array().of(Yup.string()),
   tags: Yup.string(),
   pricePerUnit: Yup.string().required('A price per unit is required'),
@@ -90,12 +81,17 @@ const initialValues = {
   weight: ''
 }
 
+export type ImageByType = {
+  productImages?: File[],
+  coverImage?: File
+}
+
 const ProductCreation: React.FC = () => {
-  const [active, setACtive] = React.useState(0)
+  const [active, setActive] = React.useState(0)
   const [imageValues, setImages] = React.useState<File[]>([]);
+  const [imagebyType, setImageBytype] = React.useState<ImageByType>();
   const [tags, setTags] = React.useState<Array<string>>([]);
-  const [uploadProgress, setUploadProgress] = React.useState<UploadProgress>({})
-  const [uploaded, setUploaded] = useState<UploadFile[]>()
+  const [uploading, setUploading] = React.useState(false)
   const toast = useToast()
   const history = useHistory()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
@@ -119,44 +115,55 @@ const ProductCreation: React.FC = () => {
     }
   })
 
-  const progress = ({ loaded, total }: ProgressEvent, file: File): void => {
-    const copy = { ...uploadProgress }
-    copy[file.name] = {
-      state: 'pending',
-      percentage: Math.round((loaded * 100) / total)
-    }
-    setUploadProgress((prevProgress) => ({ ...prevProgress, ...copy }))
-  }
-
   const handleUpload = async () => {
-    const promises = imageValues.map((file) => strapiHelpers.upload(file, progress))
+    const imagesArray = (imagebyType?.productImages && [...imagebyType.productImages]) || []
+    const productImages = (imagesArray.map((file: File) => strapiHelpers.upload(file))) || []
+    setUploading(true)
     try {
-      const uploadArr = await Promise.all(promises)
-      const uploads = uploadArr.map((upload) => upload.data[0])
-      setImages([])
-      setUploaded(uploads)
+      const coverImage = imagebyType?.coverImage && await strapiHelpers.upload(imagebyType.coverImage) as AxiosResponse
+      const uploadArr = await Promise.all(productImages)
+      const uploads = uploadArr.map((upload:AxiosResponse) => upload.data[0])
+      setUploading(false)
+      return {
+        coverImage: coverImage?.data[0],
+        productImages: uploads
+      }
     } catch (e) {
+      setUploading(false)
       console.log("Upload Exception; ", e)
       toast({
         description: 'Something went wrong while uploading your file.',
         ...ERROR_TOAST
       })
+      return false
     }
   }
 
-  const handleImages = (imageFiles: File[]) => {
-    setImages((prevFiles) => prevFiles?.concat(Array.from(imageFiles)))
+  const handleImages = (imageFiles: File[], type: string, pop?: boolean) => {
+    const imagesArray = Array.from(imageFiles)
+    if(pop) {
+      setImages(imageFiles)
+      return;
+    }
+    if(type === 'multi'){
+      setImageBytype((prevState?: ImageByType) =>
+        ({...imagebyType, productImages: prevState?.productImages ? [...prevState.productImages, ...imagesArray] : imagesArray}
+        ))
+    } else {
+      setImageBytype({...imagebyType, coverImage: imagesArray[0]})
+    }
+    setImages((prevFiles) => prevFiles?.concat(imagesArray))
   }
 
   const handleNextButton = () => {
     if (active === 0) {
-      setACtive(1)
+      setActive(1)
     }
     if (active === 1) {
-      setACtive(0)
+      setActive(0)
     }
     if (active === 2) {
-      setACtive(1)
+      setActive(1)
     }
   };
   const handleSetTags = (tags: string[]) => {
@@ -164,14 +171,10 @@ const ProductCreation: React.FC = () => {
   };
 
   const mapProducts = (values: ProductValues) => {
-    const coverImage = uploaded && uploaded.length > 0 ? uploaded[0].id : ''
-    const productImages = uploaded && uploaded.length > 1 ? uploaded.slice(1).map((image: UploadFile) => image.id) : []
     return {
       name: values.name,
       shortDescription: values.shortDescription,
       description: values.description,
-      coverImage: coverImage,
-      productImages: productImages,
       tags: [...tags],
       price: {
         currency: 'R',
@@ -198,12 +201,20 @@ const ProductCreation: React.FC = () => {
 
   const handleSubmitButton = (items: ProductValues) => {
     if (active === 1) {
-      setACtive(2)
-      handleUpload()
+      setActive(2)
     }
     if (active === 2) {
       const postProduct = async () => {
-        await AddProduct({ variables: { input: mapProducts(items) } })
+        const uploadedData = await handleUpload()
+        console.log(uploadedData && uploadedData?.coverImage)
+        const coverImage = (uploadedData && uploadedData?.coverImage?.id) || ''
+        const productImages = (uploadedData && uploadedData.productImages.map((image: UploadFile) => image.id) )|| []
+        await AddProduct({ variables: { input: {
+              ...mapProducts(items),
+              coverImage: coverImage,
+              productImages: productImages
+        } } })
+        setImages([])
       }
       postProduct()
     }
@@ -230,11 +241,11 @@ const ProductCreation: React.FC = () => {
           }
         }}
       >
-        {({ isSubmitting, status, values }: FormikProps<ProductValues>) => (
+        {({ isSubmitting, status, values, errors}: FormikProps<ProductValues>) => (
           <Form style={{ width: '100%' }}>
             <Stepper activeStep={active}>
-              <ProductInfo values={values} categories={mappedCategories} handleSetTags={handleSetTags}/>
-              <ProductDetails values={values} setImage={handleImages} />
+              <ProductInfo packagingError={errors?.packaging} values={values} categories={mappedCategories} handleSetTags={handleSetTags}/>
+              <ProductDetails imageValues={imagebyType} values={values} setImage={handleImages} />
               <Flex
                 position="relative"
                 left={isTabletOrMobile ? 0 : "-80%"}
@@ -247,8 +258,9 @@ const ProductCreation: React.FC = () => {
                     ...mapProducts(values),
                     coverImage: {
                       preview: true,
-                      url: imageValues.length > 0 ? window.URL.createObjectURL(imageValues[0]) : ''
-                    }
+                      url: imagebyType?.coverImage ? window.URL.createObjectURL(imagebyType?.coverImage) : ''
+                    },
+                    productImages: imagebyType?.productImages?.map((file: any) => ({url: window.URL.createObjectURL(file)}))
                   }}
                   setShowAddToCartModal={() => {}}
                 />
@@ -263,6 +275,7 @@ const ProductCreation: React.FC = () => {
             )}
             <Flex>
               <Button
+                isDisabled={uploading}
                 mt={4}
                 width="100%"
                 type="button"
@@ -274,6 +287,7 @@ const ProductCreation: React.FC = () => {
               </Button>
               {active > 0 && (
                 <Button
+                  isDisabled={!isEmpty(errors) || uploading}
                   mt={4}
                   mx={2}
                   width="100%"

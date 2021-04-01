@@ -17,6 +17,7 @@ type ProductInfoTypes = {
   categories: Options[]
   values: ProductValues
   handleSetTags: (tags: string[]) => void
+  packagingError?: string
 }
 
 //TO-DO: change this to come from backend
@@ -54,7 +55,7 @@ const currency = [
   },
 ]
 
-const ProductInfo: React.FC<ProductInfoTypes> = ({ categories, values, handleSetTags }) => {
+const ProductInfo: React.FC<ProductInfoTypes> = ({ categories, values, handleSetTags, packagingError }) => {
   return (
     <Flex flexDirection="column">
       <ConnectedFormGroup label="Product Name" name="name" type="text" />
@@ -103,6 +104,9 @@ const ProductInfo: React.FC<ProductInfoTypes> = ({ categories, values, handleSet
           <Text ml={2}>{item.label}</Text>
         </Flex>
       ))}
+      {
+        packagingError && <Text color="red.500">{ packagingError }</Text>
+      }
       <ConnectedFormGroup label="How many items are in a pack?" name="itemsPerPackage" type="text" />
     </Flex>
   )
