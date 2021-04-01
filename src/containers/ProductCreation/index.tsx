@@ -208,7 +208,6 @@ const ProductCreation: React.FC = () => {
     if (active === 2) {
       const postProduct = async () => {
         const uploadedData = await handleUpload()
-        console.log(uploadedData && uploadedData?.coverImage)
         const coverImage = (uploadedData && uploadedData?.coverImage?.id) || ''
         const productImages = (uploadedData && uploadedData.productImages.map((image: UploadFile) => image.id) )|| []
         await AddProduct({ variables: { input: {
