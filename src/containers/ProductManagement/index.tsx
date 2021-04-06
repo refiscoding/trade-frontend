@@ -25,7 +25,7 @@ const ProductManagement: React.FC<ProductManagementProps> = () => {
   const history = useHistory()
 
   return (
-    <PageWrap alignItems="center" title="Product Management" bg="brand.600">
+    <PageWrap alignItems="center" title="Product Management" >
       {productManagementItems.map((item, key) => (
         <ProductManagementCard key={key} caption={item.caption} title={item.title} />
       ))}

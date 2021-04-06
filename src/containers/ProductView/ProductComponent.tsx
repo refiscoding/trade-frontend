@@ -59,6 +59,7 @@ const ProductComponent: React.FC<ProductProps> = ({ product, setShowAddToCartMod
   const productPackagingType = (product?.packaging?.split("per")) ?? [];
   const productPackaging = productPackagingType?.length > 1 ? "pack" : product?.packaging;
   const productImages = product?.productImages?.map((image: UploadFile) => image?.url);
+  const isPreview =  !product?.coverImage?.preview
 
   return (
     <React.Fragment>
@@ -66,12 +67,13 @@ const ProductComponent: React.FC<ProductProps> = ({ product, setShowAddToCartMod
         isWebViewport
         ? (
           <ProductWeb
-            product={product}
+              product={product}
               handleAddToWishlistClicked={handleAddToWishlistClicked}
               handleAddToCartClicked={handleAddToCartClicked}
               deals={deals}
               productPackaging={productPackaging}
               productImages={productImages}
+              isPreview={isPreview}
           />
         )
         : (
@@ -82,6 +84,7 @@ const ProductComponent: React.FC<ProductProps> = ({ product, setShowAddToCartMod
               deals={deals}
               productPackaging={productPackaging}
               productImages={productImages}
+              isPreview={isPreview}
             />
           )
       }

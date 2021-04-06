@@ -11,11 +11,13 @@ import {
 import { useField } from 'formik'
 import * as React from 'react'
 import { Text } from '../../../typography'
+import {ConnectedSelect} from "../index";
+import {OptionType} from "../ConnectedSelect";
 
 type ConnectedNumberInputProps = NumberInputProps & {
   label?: string
   name: string
-  unit?: string
+  unit?: string | OptionType[]
 }
 
 const ConnectedNumberInput: React.FC<ConnectedNumberInputProps> = ({
@@ -30,7 +32,13 @@ const ConnectedNumberInput: React.FC<ConnectedNumberInputProps> = ({
       <FormControl>
         {label && <FormLabel htmlFor={field.name}>{label}</FormLabel>}
         <InputGroup width="100%">
-          {!!unit && <InputLeftAddon>{unit}</InputLeftAddon>}
+          {!!unit &&
+            <InputLeftAddon>
+              {typeof unit === 'string'
+                ? unit
+                : <ConnectedSelect bg="accent.200" focusBorderColor="accent.200" border={0} ml={0} mr={0} mb={0} name="unit" options={unit} /> }
+            </InputLeftAddon>
+          }
           <NumberInput {...rest} precision={precision} step={0.01} width="100%">
             <NumberInputField
               {...field}
