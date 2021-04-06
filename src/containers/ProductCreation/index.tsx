@@ -24,20 +24,7 @@ import { useHistory } from 'react-router-dom'
 import {useMediaQuery} from "react-responsive";
 import strapiHelpers from "../../utils/strapiHelpers";
 import {File} from "react-feather";
-<<<<<<< HEAD
-import {AxiosResponse} from "axios";
-=======
-import {useState} from "react";
-
-type ProgressObject = {
-  state: string
-  percentage: number
-}
-
-type UploadProgress = {
-  [key: string]: ProgressObject
-}
->>>>>>> master
+import { AxiosResponse } from "axios";
 
 const ProductFormValidation = Yup.object().shape({
   name: Yup.string().required('A name is required'),
@@ -186,14 +173,10 @@ const ProductCreation: React.FC = () => {
   };
 
   const mapProducts = (values: ProductValues) => {
-    const coverImage = uploaded && uploaded.length > 0 ? uploaded[0].id : ''
-    const productImages = uploaded && uploaded.length > 1 ? uploaded.slice(1).map((image: UploadFile) => image.id) : []
     return {
       name: values.name,
       shortDescription: values.shortDescription,
       description: values.description,
-      coverImage: coverImage,
-      productImages: productImages,
       tags: [...tags],
       price: {
         currency: 'R',
