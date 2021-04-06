@@ -17,19 +17,20 @@ import { UploadFile } from '../../../generated/graphql'
 import { theme } from '../../../theme'
 import strapiHelpers from '../../../utils/strapiHelpers'
 import { AddFileButton, FileWrapper, HiddenInput, Wrapper } from './styles'
-import {useState} from "react";
-import {ReactNode} from "react";
+import { useState } from "react";
+import { ReactNode } from "react";
+import { max } from 'lodash'
 
 const { colors } = theme
 
 type FileUploaderProps = SpaceProps & {
   name: string
-  placeholder?: string
+  placeholder?: string | ReactNode
   label?: string
   onUpload?: (id: string | string[]) => void
   isMulti?: boolean
   isDisabled?: boolean
-  setImages?: (value: any[]) => void
+  setImages?: (value: any[], type: string, pop?: boolean) => void
   isImage?: boolean
   showUploadButton?: boolean
   imageValues?: File[]
@@ -68,7 +69,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
 }) => {
   const [stateFiles, setStateFiles] = React.useState<File[]>(imageValues || [])
   const [uploading, setUploading] = React.useState(false)
-  const [{ value }, meta, helpers] = useField<UploadFile | UploadFile[]>(name)
+  const [{ value }, meta] = useField<UploadFile | UploadFile[]>(name)
   const [uploadProgress, setUploadProgress] = React.useState<UploadProgress>({})
   const [fieldError, setFieldError] = useState<string>()
 
