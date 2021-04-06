@@ -169,17 +169,14 @@ const ProductComponent: React.FC<ProductProps> = (
               Product Specification
             </Text>
             {
-              product?.features?.length
+              product?.size
               ? (
-                <ul style={{ marginLeft: 15 }}>
-                  {
-                    product?.features?.map((feature: string) => (
-                      <li key={feature}>
-                        <Text fontSize="12px">{ feature }</Text>
-                      </li>
-                    ))
-                  }
-                </ul>
+                  <Flex flexDirection="column">
+                    <Text fontSize="12px">Height : {product.size?.height}</Text>
+                    <Text fontSize="12px">Width : {product.size?.width}</Text>
+                    <Text fontSize="12px">Length : {product.size?.productLength}</Text>
+                    <Text fontSize="12px">Weight : {product.size?.weight}</Text>
+                  </Flex>
               )
               : (<Text>No Specifications Set</Text>)
             }

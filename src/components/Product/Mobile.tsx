@@ -135,19 +135,16 @@ const ProductComponentMobile: React.FC<ProductProps> = (
         <Section title="Product Specifications" p="0 1rem" pb="0px">
           <Flex ml="1rem" width="100%" as="ul" flexDirection="column" alignSelf="flex-start">
             {
-              product?.features?.length
-              ? (
-                <ul style={{ marginLeft: 15 }}>
-                  {
-                    product?.features?.map((feature: string) => (
-                      <li key={feature}>
-                        <Text fontSize="12px">{ feature }</Text>
-                      </li>
-                    ))
-                  }
-                </ul>
-              )
-              : (<Text fontSize="12px" ml={"-1rem"}>No Specifications Set</Text>)
+              product?.size
+                ? (
+                  <Flex flexDirection="column">
+                    <Text fontSize="12px">Height : {product.size?.height}</Text>
+                    <Text fontSize="12px">Width : {product.size?.width}</Text>
+                    <Text fontSize="12px">Length : {product.size?.productLength}</Text>
+                    <Text fontSize="12px">Weight : {product.size?.weight}</Text>
+                  </Flex>
+                )
+                : (<Text>No Specifications Set</Text>)
             }
           </Flex> 
         </Section>
