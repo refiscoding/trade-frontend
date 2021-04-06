@@ -11,11 +11,12 @@ import { Text } from '../../typography'
 import { Options } from '../Seller/businessInfo'
 import { Field, FieldArray } from 'formik'
 import {File, PlusSquare, XCircle} from 'react-feather'
-import { ProductValues } from './index'
+import {ImageByType, ProductValues} from './index'
 
 type ProductDetailsTypes = {
   values: ProductValues
-  setImage: (value: File[]) => void
+  setImage: (value: File[], type: string) => void
+  imageValues?: ImageByType
 }
 
 const options: Options[] = [
@@ -35,14 +36,16 @@ const dimensionUnits = [
   { label: 'ft', value: 'ft' },
 ]
 
-const ProductDetails: React.FC<ProductDetailsTypes> = ({ values, setImage }) => {
+const ProductDetails: React.FC<ProductDetailsTypes> = ({ values, setImage, imageValues }) => {
+  const coverArray = imageValues?.coverImage ? [imageValues?.coverImage] as File[] : undefined
   return (
     <Flex flexDirection="column">
       <FormLabel htmlFor="packaging">Add Product Images (0/5)</FormLabel>
-      <ConnectedFileUploader isImage placeholder="Cover Image" name="coverImage" setImages={setImage} />
+      <ConnectedFileUploader isImage imageValues={coverArray} placeholder="Cover Image" name="coverImage" setImages={setImage} />
       <ConnectedFileUploader
         isImage
         isMulti
+        imageValues={imageValues?.productImages}
         placeholder="Add Another Image"
         name="productImages"
         setImages={setImage}
