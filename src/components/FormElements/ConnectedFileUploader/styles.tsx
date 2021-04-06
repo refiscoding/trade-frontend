@@ -47,7 +47,6 @@ export const AddFileButton = styled(Button)<any>`
 
 AddFileButton.defaultProps = {
   as: 'label',
-  leftIcon: 'plus-square',
   bg: 'transparent',
   justifyContent: 'flex-start'
 }

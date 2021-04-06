@@ -1,21 +1,5 @@
+# import '/fragments/user.graphql'
 query Users($sort: String, $limit: Int, $start: Int, $where: JSON) {
   users(sort: $sort, limit: $limit, start: $start, where: $where) {
-  id
-  created_at
-  updated_at
-  username
-  email
-  confirmed
-  phoneNumber
-  firstName
-  lastName
-  address {
-    id
-    lat
-    lng
-    address
-    postalCode
-  }
-  idNumber
-  profileCompleted
+  ...user
 }}

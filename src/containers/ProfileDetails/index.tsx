@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { get } from 'lodash'
 import { useMediaQuery } from "react-responsive";
-import { Button, Flex, Text, useToast } from '@chakra-ui/core';
+import {Button, Flex, Image, Text, useToast} from '@chakra-ui/core';
 
 
 import ProfileDetailsView from './profilePreview'
@@ -13,6 +13,10 @@ import { formatError } from '../../utils'
 import { useAuthContext } from '../../context/AuthProvider'
 import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants';
 import { Category, useCategoryQuery, useUpdateSelfMutation } from '../../generated/graphql'
+import {ConnectedFileUploader} from "../../components/FormElements";
+import {Form, Formik } from "formik";
+import {ArrowLeft} from "react-feather";
+import {useHistory} from "react-router-dom";
 
 type ProfileProps = {}
 
@@ -20,6 +24,7 @@ const ProfileDetails: React.FC<ProfileProps> = () => {
   const { user, setUser } = useAuthContext()
   const [isEditing, setIsEditing] = React.useState<boolean>(false)
   const toast = useToast()
+  const history = useHistory()
 
   const { data } = useCategoryQuery({
     onError: (err: any) => formatError(err)
@@ -56,17 +61,23 @@ const ProfileDetails: React.FC<ProfileProps> = () => {
   const isWebViewport = useMediaQuery({
       query: "(min-width: 40em)"
   });
+
   const handleUserDetails = async (values: profileValues) => {
     await updateSelf({ variables: { input: { ...values } } })
   }
 
-  const handleChangeProfilePicture = () => {
-    console.log("TODO: Support Profile Image Upload");
+  const handleChangeProfilePicture = (id: string | string[]) => {
+    const profileId = id as string
+    const updateProfile = async () => {
+      await updateSelf({ variables: { input: { profilePicture: profileId } } })
+    }
+    updateProfile()
   };
 
   return (
     <PageWrap title="My Account" height="100vh" justifyContent="space-between">
       <Flex flexDirection="column" width="100%">
+        <ArrowLeft size={30} onClick={() => history.goBack()} />
         <Flex mt={3} flexDirection="column" width="100%" alignItems="center">
           <Flex
             borderRadius="50%"
@@ -84,17 +95,52 @@ const ProfileDetails: React.FC<ProfileProps> = () => {
               height="70px"
               justify="center"
               align="center"
-              onClick={handleChangeProfilePicture}
+              overflow="hidden"
             >
-              <H3 fontSize="2.5rem" color="white">
-                {initials}
-              </H3>
+              {
+                user?.profilePicture
+                  ? (
+                    <Image
+                      m={5}
+                      width="100%"
+                      height="100%"
+                      objectFit="cover"
+                      src={user?.profilePicture.url}
+                    />
+                  )
+                  : (
+                    <H3 fontSize="2.5rem" color="white">
+                      {initials}
+                    </H3>
+                  )
+              }
+
             </Flex>
           </Flex>
           <Flex mt={4} pl={5} flexDir="column" justify="center" align="flex-start">
-            <Text color="accent.500" textDecoration="underline" fontSize="12px" onClick={handleChangeProfilePicture}>
-              Change Profile Picture
-            </Text>
+            <Formik
+              validationSchema={{}}
+              initialValues={{}}
+              onSubmit={() => console.log(" submit ")}
+            >
+              {() => (
+                <Form style={{ width: '100%' }}>
+                  <ConnectedFileUploader
+                    isImage
+                    showUploadButton
+                    placeholderIcon
+                    name="profilePhoto"
+                    onUpload={handleChangeProfilePicture}
+                    placeholder={
+                      <Text color="accent.500" textDecoration="underline" fontSize="12px" >
+                        Change Profile Picture
+                      </Text>
+                    }
+                  />
+                </Form>
+              )}
+            </Formik>
+
           </Flex>
         </Flex>
         {isEditing ? (

@@ -1,4 +1,4 @@
-import { Flex, Text } from '@chakra-ui/core'
+import {Flex, Image, Text} from '@chakra-ui/core'
 import * as React from 'react'
 import { useHistory } from 'react-router-dom'
 import moment from 'moment'
@@ -41,10 +41,25 @@ const Profile: React.FC<ProfileProps> = () => {
           height="70px"
           justify="center"
           align="center"
+          overflow="hidden"
         >
-          <H3 fontSize="2.5rem" color="white">
-            {initials}
-          </H3>
+          {
+            user?.profilePicture
+              ? (
+                <Image
+                  m={5}
+                  width="100%"
+                  height="100%"
+                  objectFit="cover"
+                  src={user?.profilePicture.url}
+                />
+              )
+              : (
+                <H3 fontSize="2.5rem" color="white">
+                  {initials}
+                </H3>
+              )
+          }
         </Flex>
         <Flex pl={5} flexDir="column" justify="center" align="flex-start">
           <H3 fontWeight="bold">{`${user?.firstName}  ${user?.lastName}`}</H3>

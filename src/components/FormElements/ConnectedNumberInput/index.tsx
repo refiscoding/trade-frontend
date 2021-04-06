@@ -36,7 +36,7 @@ const ConnectedNumberInput: React.FC<ConnectedNumberInputProps> = ({
             <InputLeftAddon>
               {typeof unit === 'string'
                 ? unit
-                : <ConnectedSelect bg="accent.200" focusBorderColor="accent.200" border={0} ml={0} mr={0} mb={0} name="unit" options={unit} /> }
+                : <ConnectedSelect bg="accent.200" focusBorderColor="accent.200" border={0} ml={0} mr={0} mb={0} name={`${rest.name}Units`} options={unit} /> }
             </InputLeftAddon>
           }
           <NumberInput {...rest} precision={precision} step={0.01} width="100%">
