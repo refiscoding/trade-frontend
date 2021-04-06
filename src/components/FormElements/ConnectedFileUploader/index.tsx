@@ -8,7 +8,6 @@ import {
   Text,
   useToast
 } from '@chakra-ui/core'
-import { max } from 'lodash';
 import { useField } from 'formik'
 import * as React from 'react'
 import { Check, File } from 'react-feather'
@@ -19,6 +18,7 @@ import { theme } from '../../../theme'
 import strapiHelpers from '../../../utils/strapiHelpers'
 import { AddFileButton, FileWrapper, HiddenInput, Wrapper } from './styles'
 import {useState} from "react";
+import {ReactNode} from "react";
 
 const { colors } = theme
 
@@ -29,10 +29,11 @@ type FileUploaderProps = SpaceProps & {
   onUpload?: (id: string | string[]) => void
   isMulti?: boolean
   isDisabled?: boolean
-  setImages?: (value: any[], type: string, pop?: boolean) => void
+  setImages?: (value: any[]) => void
   isImage?: boolean
   showUploadButton?: boolean
   imageValues?: File[]
+  placeholderIcon?: boolean
 }
 
 type ProgressObject = {
@@ -56,11 +57,13 @@ const FileUploader: React.FC<FileUploaderProps> = ({
   placeholder,
   label,
   isMulti,
+  onUpload,
   isDisabled,
   setImages,
   isImage,
   showUploadButton,
   imageValues,
+  placeholderIcon,
   ...rest
 }) => {
   const [stateFiles, setStateFiles] = React.useState<File[]>(imageValues || [])
@@ -118,9 +121,11 @@ const FileUploader: React.FC<FileUploaderProps> = ({
     setUploading(true)
     try {
       const uploadArr = await Promise.all(promises)
-      const uploads = isMulti ? uploadArr.map((upload) => upload.data[0]) : uploadArr[0].data[0]
+      onUpload && onUpload(
+        isMulti
+          ? uploadArr.map((upload) => upload.data[0].id)
+          : uploadArr[0].data[0].id)
       setStateFiles([])
-      helpers.setValue(uploads)
       setUploading(false)
     } catch (e) {
       setUploading(false)
@@ -239,6 +244,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
             isDisabled={isDisabled}
             htmlFor={name}
             mr={stateFiles && stateFiles.length > 0 ? 4 : 0}
+            leftIcon={!placeholderIcon ? 'plus-square' : undefined}
           >
             <Text>{placeholder}</Text>
           </AddFileButton>
