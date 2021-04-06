@@ -23,12 +23,25 @@ const options: Options[] = [
   { label: 'Per Size', value: 'size' }
 ]
 
+const weightUnits = [
+  { label: 'gms', value: 'gms' },
+  { label: 'kgs', value: 'kgs' },
+  { label: 'tonnes', value: 'tonnes' },
+]
+const dimensionUnits = [
+  { label: 'mm', value: 'mm' },
+  { label: 'cm', value: 'cm' },
+  { label: 'inches', value: 'inches' },
+  { label: 'ft', value: 'ft' },
+]
+
 const ProductDetails: React.FC<ProductDetailsTypes> = ({ values, setImage }) => {
   return (
     <Flex flexDirection="column">
       <FormLabel htmlFor="packaging">Add Product Images (0/5)</FormLabel>
-      <ConnectedFileUploader placeholder="Cover Image" name="coverImage" setImages={setImage} />
+      <ConnectedFileUploader isImage placeholder="Cover Image" name="coverImage" setImages={setImage} />
       <ConnectedFileUploader
+        isImage
         isMulti
         placeholder="Add Another Image"
         name="productImages"
@@ -72,10 +85,10 @@ const ProductDetails: React.FC<ProductDetailsTypes> = ({ values, setImage }) => 
           <Text ml={2}>{item.label}</Text>
         </Flex>
       ))}
-      <ConnectedNumberInput label="Product Height" name="height" unit="mm" />
-      <ConnectedNumberInput label="Product Length" name="length" unit="mm" />
-      <ConnectedNumberInput label="Product Width" name="width" unit="mm" />
-      <ConnectedNumberInput label="Product Weight" name="weight" unit="Kg" />
+      <ConnectedNumberInput label="Product Height" name="height" unit={dimensionUnits} />
+      <ConnectedNumberInput label="Product Length" name="length" unit={dimensionUnits} />
+      <ConnectedNumberInput label="Product Width" name="width" unit={dimensionUnits} />
+      <ConnectedNumberInput label="Product Weight" name="weight" unit={weightUnits} />
     </Flex>
   )
 }

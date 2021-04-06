@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { get } from "lodash";
+import {get } from "lodash";
 import { ApolloError } from 'apollo-client';
 import { useHistory } from 'react-router-dom';
-import { useToast, Spinner, Flex, Button, FlexProps } from '@chakra-ui/core';
+import { useToast, Spinner, Flex, Button, Text, FlexProps } from '@chakra-ui/core';
 
 import EmptyStateComponent from "./NoWishlist";
 import DeleteItemsModal from "./DeleteItemsModal";
@@ -10,25 +10,39 @@ import DeleteItemsButton from "./DeleteItemsButton";
 import ProductCard from "../../components/Card/ProductCard";
 
 import { ERROR_TOAST, SUCCESS_TOAST } from "../../constants";
-import { useFetchUsersWhishlistQuery, useRemoveProductsFromWishlistMutation, Product, Scalars, useFromWishlistToCartMutation } from "../../generated/graphql";
+import {
+  useFetchUsersWhishlistQuery,
+  useRemoveProductsFromWishlistMutation,
+  Product,
+  Scalars,
+  useFromWishlistToCartMutation,
+  useProductQuery
+} from "../../generated/graphql";
 
 import { PageWrap } from '../../layouts';
-import { H3, Text } from "../../typography";
+import { H3 } from "../../typography";
+import Section from "../../components/Section";
+import {useMediaQuery} from "react-responsive";
 
 type WishlistPageHeaderProps = FlexProps & {
   onClick: () => void
   editing: boolean | undefined
+  isTabletOrMobile: boolean
 };
 type ProductRemovalValues = {
   id: string,
   checked: boolean | undefined,
 };
 
-const WishlistPageHeader: React.FC<WishlistPageHeaderProps> = ({ onClick, editing }) => {
+const WishlistPageHeader: React.FC<WishlistPageHeaderProps> = ({ onClick, editing, isTabletOrMobile }) => {
   return(
-    <Flex width="100%" mb={4} justifyContent="space-between">
+    <Flex width="100%" ml={isTabletOrMobile ? 0 : 5} mb={4} justifyContent="space-between">
       <H3 textAlign="left" fontSize={18} fontWeight={600}>My Wishlist</H3>
-      <Text onClick={onClick} fontSize={12} color="blue">{ editing ? 'Done' : 'Edit' }</Text>
+      <Text onClick={onClick}
+            color="accent.500"
+            textDecoration="underline"
+            cursor="pointer"
+            fontSize="12px">{ editing ? 'Done' : 'Edit' }</Text>
     </Flex>
   );
 };
@@ -38,6 +52,7 @@ const WishlistPage: React.FC = () => {
   const history = useHistory();
   const [editing, setEditing] = React.useState<boolean | undefined>();
   const [showDeleteItemsModal, setShowDeleteItemsModal] = React.useState<boolean | undefined>();
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   
   const { data: userWishlist, loading, refetch } = useFetchUsersWhishlistQuery({
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
@@ -69,8 +84,27 @@ const WishlistPage: React.FC = () => {
   const products = get(userWishlist, 'findOneWishlist.payload.products', null) as Product[];
   const noWishlist = userWishlist?.findOneWishlist?.payload;
 
+  const { data: discountData } = useProductQuery({
+    variables: {
+      limit: 3,
+      where: {
+        productPrice_lt: 30,
+      }
+    },
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
+  });
+  const discountDeals = get(discountData, 'products', null) as Product[]
+
+  const { data: productData } = useProductQuery({
+    variables: {
+      limit: 3,
+    },
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
+  });
+  const deals = get(productData, 'products', null) as Product[]
+
+
   const emptyWishlistProducts = products?.length < 1;
-  const numberOfWishlistProducts = products?.length;
 
   const handleWishlistProductClickedEditing = (id: string) => {
   };
@@ -88,19 +122,6 @@ const WishlistPage: React.FC = () => {
     setEditing(!editing);
   };
 
-  const setContainerMargin = (numOfProducts: Number) => {
-    let mt;
-    if(numOfProducts === 1){
-      mt = "-320px";
-    } else if(numOfProducts === 2){
-      mt = "-160px";
-    } else if(numOfProducts === 3){
-      mt = "0px";
-    } else if(numOfProducts > 2){
-      mt = "60px";
-    }
-    return mt;
-  };
   const handleHomeButtonClicked = () => {
     history.push("/");
   };
@@ -126,51 +147,73 @@ const WishlistPage: React.FC = () => {
     };
   };
 
+  const navigateToProduct = (id: string) => {
+    history.push(`/product/${id}`)
+  }
+
   return (
     <PageWrap
         title="My Wishlist"
-        align="center"
-        backgroundSize="cover"
-        justify="center"
-        pt={0}
-        mt={setContainerMargin(numberOfWishlistProducts)}
     >
         { 
           loading || movingLoading
-          ? (<Spinner /> )
+          ? (
+              <Flex alignSelf="center" justifyContent="center" width="100%" alignItems="center">
+                <Spinner />
+              </Flex>
+            )
           : emptyWishlistProducts || !noWishlist
             ? (<EmptyStateComponent isCart={false} />)
             : (
-            <React.Fragment>
-              <WishlistPageHeader onClick={handleEditWishlistClicked} editing={editing} />
-              {
-                products?.map((product: Product) => (
-                    <ProductCard 
-                      key={`${product.id}-${Math.random()}`} 
-                      isWishlist 
-                      product={product} 
-                      handleClick={editing ? handleWishlistProductClickedEditing : handleWishlistProductClickedNormal} 
-                      editing={editing}
-                    />
-                ))
-              }
-              {
-                editing 
-                ? (<DeleteItemsButton handleDeleteButtonClicked={handleDeleteButtonClicked} />)
-                : (
-                  <Button onClick={handleHomeButtonClicked} mt={4} width="100%" type="submit" variantColor="brand">
-                     TAKE ME HOME
-                  </Button>
-                )
-              }
-              {
-                showDeleteItemsModal && <DeleteItemsModal 
-                                          handleCancelButtonClicked={handleCancelButtonClicked} 
-                                          handleDeleteButtonClicked={handleModalDeleteButtonClicked} />
-              }
-            </React.Fragment>
+              <Flex ml={isTabletOrMobile ? 0 : 5} mt={3} alignSelf="center" width={isTabletOrMobile ? "100%" : "80%"} flexDirection="column" alignItems="center">
+                <WishlistPageHeader isTabletOrMobile={isTabletOrMobile} onClick={handleEditWishlistClicked} editing={editing} />
+                {
+                  products?.map((product: Product) => (
+                      <ProductCard
+                        width={isTabletOrMobile ? "100%" : "70%"}
+                        key={`${product.id}-${Math.random()}`}
+                        isWishlist
+                        product={product}
+                        handleClick={editing ? handleWishlistProductClickedEditing : handleWishlistProductClickedNormal}
+                        editing={editing}
+                      />
+                  ))
+                }
+                {
+                  editing
+                  ? (<DeleteItemsButton handleDeleteButtonClicked={handleDeleteButtonClicked} />)
+                  : isTabletOrMobile && (
+                    <Button onClick={handleHomeButtonClicked} mt={4} width="100%" type="submit" variantColor="brand">
+                       TAKE ME HOME
+                    </Button>
+                  )
+                }
+                {
+                  showDeleteItemsModal && <DeleteItemsModal
+                                            handleCancelButtonClicked={handleCancelButtonClicked}
+                                            handleDeleteButtonClicked={handleModalDeleteButtonClicked} />
+                }
+              </Flex>
           )
         }
+      {
+        !isTabletOrMobile &&
+          <Flex ml={5} mt={3} width="100%" flexDirection="column" alignItems="center">
+            <Section title="Today’s Best Deals">
+              {discountDeals?.map((product: Product) => (
+                <ProductCard key={product.id} product={product} handleClick={navigateToProduct}/>
+              ))}
+            </Section>
+            <Section title="Deals For You">
+              {deals?.map((product: Product) => (
+                <ProductCard key={product.id} product={product} handleClick={navigateToProduct}/>
+              ))}
+              <Button mt={4} width="100%" variantColor="brand">
+                VIEW MORE
+              </Button>
+            </Section>
+          </Flex>
+      }
     </PageWrap>
   );
 };
