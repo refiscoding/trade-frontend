@@ -8,6 +8,7 @@ import {
   Text,
   useToast
 } from '@chakra-ui/core'
+import { max } from 'lodash';
 import { useField } from 'formik'
 import * as React from 'react'
 import { Check, File } from 'react-feather'
@@ -17,6 +18,7 @@ import { UploadFile } from '../../../generated/graphql'
 import { theme } from '../../../theme'
 import strapiHelpers from '../../../utils/strapiHelpers'
 import { AddFileButton, FileWrapper, HiddenInput, Wrapper } from './styles'
+import {useState} from "react";
 
 const { colors } = theme
 
@@ -27,9 +29,10 @@ type FileUploaderProps = SpaceProps & {
   onUpload?: (id: string | string[]) => void
   isMulti?: boolean
   isDisabled?: boolean
-  setImages?: (value: any[]) => void
+  setImages?: (value: any[], type: string, pop?: boolean) => void
   isImage?: boolean
   showUploadButton?: boolean
+  imageValues?: File[]
 }
 
 type ProgressObject = {
@@ -41,6 +44,13 @@ type UploadProgress = {
   [key: string]: ProgressObject
 }
 
+function validateSize(files: File[]) {
+  const filesArray = Array.from(files) || []
+  const fileSize = filesArray.map((file) => file.size / 1024 / 1024)
+  const maxNumber = max(fileSize) as number
+  return maxNumber < 2 && maxNumber > 0.100
+}
+
 const FileUploader: React.FC<FileUploaderProps> = ({
   name,
   placeholder,
@@ -50,12 +60,14 @@ const FileUploader: React.FC<FileUploaderProps> = ({
   setImages,
   isImage,
   showUploadButton,
+  imageValues,
   ...rest
 }) => {
-  const [stateFiles, setStateFiles] = React.useState<File[]>([])
+  const [stateFiles, setStateFiles] = React.useState<File[]>(imageValues || [])
   const [uploading, setUploading] = React.useState(false)
   const [{ value }, meta, helpers] = useField<UploadFile | UploadFile[]>(name)
   const [uploadProgress, setUploadProgress] = React.useState<UploadProgress>({})
+  const [fieldError, setFieldError] = useState<string>()
 
   const renderProgress = (fileName: string) => {
     const progress = uploadProgress[fileName]
@@ -80,9 +92,15 @@ const FileUploader: React.FC<FileUploaderProps> = ({
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = (e.target.files as unknown) as File[]
+    const isValidSize = validateSize(files)
     if (files) {
+      if(!isValidSize && isImage) {
+        setFieldError("Image size must be above 100KB and below 2MB")
+        return;
+      }
+      setFieldError(undefined)
       setStateFiles((prevFiles) => prevFiles?.concat(Array.from(files)))
-      setImages && setImages(files)
+      setImages && setImages(files, isMulti ? 'multi' : "single")
     }
   }
 
@@ -128,6 +146,12 @@ const FileUploader: React.FC<FileUploaderProps> = ({
     }
     // eslint-disable-next-line
   }, [value])
+
+  const handleRemove = (file: File) => {
+    const updatedFiles = stateFiles.filter((e) => e.name !== file.name)
+    setStateFiles(updatedFiles)
+    setImages && setImages(updatedFiles, isMulti ? 'multi' : "single", true)
+  }
 
   return (
     <Wrapper mb={4} {...rest}>
@@ -201,7 +225,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
                     size="xs"
                     icon="close"
                     aria-label="Remove File"
-                    onClick={() => setStateFiles(stateFiles.filter((e) => e.name !== file.name))}
+                    onClick={() => handleRemove(file)}
                   />
                 </Flex>
               )}
@@ -235,9 +259,9 @@ const FileUploader: React.FC<FileUploaderProps> = ({
         id={name}
       />
       {/* TODO: Figure out how to make this work with meta.touched condition */}
-      {meta.error ? (
+      {meta.error || fieldError ? (
         <Text color="red.500" textAlign="left">
-          {get(meta.error, 'id', '')}
+          {fieldError || get(meta.error, 'id', '')}
         </Text>
       ) : null}
     </Wrapper>

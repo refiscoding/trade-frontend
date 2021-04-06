@@ -8,7 +8,7 @@ import { theme } from "../../theme";
 import { Product } from "../../generated/graphql";
 import { VerifiedBadge }from "../../components/Product";
 import { ProductProps } from "./props";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const ProductComponent: React.FC<ProductProps> = (
     { 
@@ -34,34 +34,41 @@ const ProductComponent: React.FC<ProductProps> = (
       <Flex mb={3} backgroundColor="white" borderRadius={3} width="80%">
         <Grid gridTemplateColumns="1fr 1fr">
           <Grid gridTemplateColumns="550px 150px" height={435} columnGap={3} >
-            <Image
+            <Flex
               m={5}
-              width="100%"
+              width="550px"
               height="400px"
-              src={coverImage}
-            />
-            {product?.discount?.discountPercentage && product?.discount?.discountPercentage > 0 ? (
-              <Flex
-                alignItems="center"
-                justifyContent="center"
-                width="70px"
-                height="70px"
-                position="absolute"
-                bg="accent.700"
-                flexDirection="column"
-                top="6.2rem"
-                right="58%"
-                borderBottomLeftRadius={2}
-                borderBottomRightRadius={2}
-              >
-                <Text color="white" fontSize="14px">
-                  Save
-                </Text>
-                <Text color="white" fontSize="14px" fontWeight={600}>
-                  {`${product?.discount?.discountPercentage}%`}
-                </Text>
-              </Flex>
-            ) : null}
+              position="relative"
+            >
+              <Image
+                width="100%"
+                height="100%"
+                src={coverImage}
+                objectFit="contain"
+              />
+              {product?.discount?.discountPercentage && product?.discount?.discountPercentage > 0 ? (
+                <Flex
+                  alignItems="center"
+                  justifyContent="center"
+                  width="70px"
+                  height="70px"
+                  position="absolute"
+                  bg="accent.700"
+                  flexDirection="column"
+                  top="0px"
+                  right="30px"
+                  borderBottomLeftRadius={2}
+                  borderBottomRightRadius={2}
+                >
+                  <Text color="white" fontSize="14px">
+                    Save
+                  </Text>
+                  <Text color="white" fontSize="14px" fontWeight={600}>
+                    {`${product?.discount?.discountPercentage}%`}
+                  </Text>
+                </Flex>
+              ) : null}
+            </Flex>
             {  hasProductImages
                 && (
                   <Grid gridTemplateRows="90px 90px 90px 90px" rowGap={3} ml={5} mt={6} overflowY="scroll">
@@ -162,17 +169,14 @@ const ProductComponent: React.FC<ProductProps> = (
               Product Specification
             </Text>
             {
-              product?.features?.length
+              product?.size
               ? (
-                <ul style={{ marginLeft: 15 }}>
-                  {
-                    product?.features?.map((feature: string) => (
-                      <li key={feature}>
-                        <Text fontSize="12px">{ feature }</Text>
-                      </li>
-                    ))
-                  }
-                </ul>
+                  <Flex flexDirection="column">
+                    <Text fontSize="12px">Height : {product.size?.height}</Text>
+                    <Text fontSize="12px">Width : {product.size?.width}</Text>
+                    <Text fontSize="12px">Length : {product.size?.productLength}</Text>
+                    <Text fontSize="12px">Weight : {product.size?.weight}</Text>
+                  </Flex>
               )
               : (<Text>No Specifications Set</Text>)
             }
