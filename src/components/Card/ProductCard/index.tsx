@@ -7,6 +7,7 @@ import CardFooter from '../CardFooter'
 import { Product } from '../../../generated/graphql'
 
 import AddToWishlistButton from './AddToWishlistButton'
+import {QuantitySelectComponent} from "../../../containers/ProductView/AddToCartModal";
 
 type ProductCardProps = FlexProps & {
   product: Product
@@ -14,6 +15,7 @@ type ProductCardProps = FlexProps & {
   isWishlist?: boolean
   isCart?: boolean
   editing?: boolean
+  handleIconClick?: (id: string) => void
 }
 type ProductRemovalValues = {
   id: string
@@ -26,6 +28,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   isWishlist,
   isCart,
   editing,
+  handleIconClick,
   ...rest
 }) => {
   const handleRadioPressed = (newProduct: string, checked: boolean) => {
@@ -63,10 +66,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
         width="100%"
         height="150px"
         flexDirection="row"
-        onClick={() => handleClick(product.id)}
         cursor="pointer"
       >
-        <Flex width="160px" position="relative">
+        <Flex width="160px" position="relative" onClick={() => handleClick(product.id)}>
           <Image width="100%" height="100%" src={product.coverImage?.url} />
           {product?.discount?.discountPercentage && product?.discount?.discountPercentage > 0 ? (
             <Flex
@@ -90,20 +92,26 @@ const ProductCard: React.FC<ProductCardProps> = ({
           ) : null}
         </Flex>
         <CardFooter paddingLeft={2} width={rest.width ? "60%" : "160px"} bg="white" height="100%" justifyContent="center">
-          <Text my={2} fontSize="14px" fontWeight={600}>
+          <Text onClick={() => handleClick(product.id)} my={2} fontSize="14px" fontWeight={600}>
             {product.name}
           </Text>
-          <Text fontSize="10px" maxHeight="60%" overflow="hidden">
+          <Text onClick={() => handleClick(product.id)} fontSize="10px" maxHeight="60%" overflow="hidden">
             {product.shortDescription}
           </Text>
+          {isCart &&  (
+            <Flex alignItems="center" height="25px">
+              <Text fontSize={12} mr={2}>Quantity: </Text>
+              <QuantitySelectComponent noTitle width="100px" height="25px" product={product}/>
+            </Flex>
+            )}
           <Text mt={4} mb={1} fontSize="10px">
             Retail: {`${product?.price?.currency} ${product?.price?.retailPricePerUnit}`}
           </Text>
           <Text mb={2} fontSize="14px" fontWeight={600}>
             {`${product?.price?.currency} ${product?.price?.pricePerUnit}`}
           </Text>
-          {isWishlist && <AddToWishlistButton addToWishlist={false} editing={editing} />}
-          {isCart && <AddToWishlistButton addToWishlist editing={editing} />}
+            {isWishlist && <AddToWishlistButton addToWishlist={false} editing={editing} handleOnClick={() => handleIconClick && handleIconClick(product.id)} />}
+            {isCart && <AddToWishlistButton addToWishlist editing={editing} handleOnClick={() => handleIconClick && handleIconClick(product.id)} />}
         </CardFooter>
       </Card>
     </Flex>

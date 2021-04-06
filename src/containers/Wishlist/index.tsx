@@ -108,6 +108,7 @@ const WishlistPage: React.FC = () => {
 
   const handleWishlistProductClickedEditing = (id: string) => {
   };
+
   const handleWishlistProductClickedNormal = async (id: Scalars['ID']) => {
     const itemToRemove = {
       itemToMove: [id]
@@ -118,6 +119,7 @@ const WishlistPage: React.FC = () => {
       }
     });
   };
+
   const handleEditWishlistClicked = () => {
     setEditing(!editing);
   };
@@ -149,7 +151,11 @@ const WishlistPage: React.FC = () => {
 
   const navigateToProduct = (id: string) => {
     history.push(`/product/${id}`)
-  }
+  };
+
+  React.useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   return (
     <PageWrap
@@ -174,8 +180,9 @@ const WishlistPage: React.FC = () => {
                         key={`${product.id}-${Math.random()}`}
                         isWishlist
                         product={product}
-                        handleClick={editing ? handleWishlistProductClickedEditing : handleWishlistProductClickedNormal}
+                        handleClick={editing ? handleWishlistProductClickedEditing : navigateToProduct}
                         editing={editing}
+                        handleIconClick={handleWishlistProductClickedNormal}
                       />
                   ))
                 }

@@ -12,6 +12,7 @@ type AddToCartModalProps = FlexProps & {
 };
 type CartModalProductComponentProps = FlexProps & {
     product: any
+    noTitle?: boolean
 };
 
 const CartModalProductComponent: React.FC<CartModalProductComponentProps> = ({ product }) => {
@@ -33,7 +34,7 @@ const CartModalProductComponent: React.FC<CartModalProductComponentProps> = ({ p
     );
 };
 
-const QuantitySelectComponent: React.FC<CartModalProductComponentProps> = ({ product }) => {
+export const QuantitySelectComponent: React.FC<CartModalProductComponentProps> = ({ product, noTitle, ...rest }) => {
     const packaging = product?.packaging;
     const units = product?.availableUnits;
     const packagingType = packaging === "perPack" ? "pack" : packaging;
@@ -46,9 +47,9 @@ const QuantitySelectComponent: React.FC<CartModalProductComponentProps> = ({ pro
         }
     };
     return(
-        <Grid gridTemplateRows="30px 1fr">
-            <Text>Quantity: </Text>
-            <Select focusBorderColor="accent.500">
+        <Grid width={rest.width} height={rest.height} gridTemplateRows="30px 1fr">
+            {!noTitle && <Text>Quantity: </Text>}
+            <Select height={rest.height} focusBorderColor="accent.500">
                 { getOptions(units) }
             </Select>
         </Grid>

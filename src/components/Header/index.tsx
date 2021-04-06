@@ -100,6 +100,7 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
                 fontSize="18px"
                 cursor="pointer"
                 onClick={() => handleBecomeSeller()}
+                pr={4}
               >
                 {isSellerApproved ? 'Product Management' : 'Become a Seller'}
               </Text>
