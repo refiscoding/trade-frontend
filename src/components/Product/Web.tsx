@@ -8,7 +8,7 @@ import { theme } from "../../theme";
 import { Product } from "../../generated/graphql";
 import { VerifiedBadge }from "../../components/Product";
 import { ProductProps } from "./props";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const ProductComponent: React.FC<ProductProps> = (
     { 
