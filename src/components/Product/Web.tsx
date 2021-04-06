@@ -38,6 +38,7 @@ const ProductComponent: React.FC<ProductProps> = (
               m={5}
               width="550px"
               height="400px"
+              position="relative"
             >
               <Image
                 width="100%"
@@ -54,8 +55,8 @@ const ProductComponent: React.FC<ProductProps> = (
                   position="absolute"
                   bg="accent.700"
                   flexDirection="column"
-                  top="6.2rem"
-                  right="58%"
+                  top="0px"
+                  right="30px"
                   borderBottomLeftRadius={2}
                   borderBottomRightRadius={2}
                 >
