@@ -160,6 +160,10 @@ const CartPage: React.FC = () => {
     return productQuantity + accumulator;
   }, 0);
 
+  React.useEffect(() => {
+    refetch();
+  }, [refetch]);
+
   return (
     <PageWrap
       title="My Cart"

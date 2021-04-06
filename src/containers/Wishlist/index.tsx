@@ -151,7 +151,11 @@ const WishlistPage: React.FC = () => {
 
   const navigateToProduct = (id: string) => {
     history.push(`/product/${id}`)
-  }
+  };
+
+  React.useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   return (
     <PageWrap
