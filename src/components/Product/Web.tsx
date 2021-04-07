@@ -28,7 +28,8 @@ const ProductComponent: React.FC<ProductProps> = (
   }
 
   const coverImage = product?.coverImage?.url;
-  const hasProductImages =  productImages?.length > 0
+  const hasProductImages =  productImages?.length > 0;
+
   return (
     <React.Fragment>
       <Flex mb={3} backgroundColor="white" borderRadius={3} width="80%">

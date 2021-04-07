@@ -5,7 +5,9 @@ import images from '../../theme/images'
 import moment from 'moment'
 import { useHistory } from 'react-router'
 
-type FooterProps = ColorProps & {}
+type FooterProps = ColorProps & {
+  removePadding?: boolean
+}
 
 const footerItems = [
   {
@@ -30,7 +32,7 @@ const footerItems = [
   }
 ]
 
-const Footer: React.FC<FooterProps> = () => {
+const Footer: React.FC<FooterProps> = ({ removePadding }) => {
   const currentYear = moment().format('YYYY')
   const history = useHistory()
   return (
@@ -42,6 +44,7 @@ const Footer: React.FC<FooterProps> = () => {
       mt={10}
       mb="-1rem"
       alignItems="center"
+      ml={removePadding ? "-16px" : 0 }
     >
       <Flex m={2} mt={4} width="50%" justifyContent="space-evenly">
         <Image width="30px" height="30px" src={images.FacebookFooter} />
