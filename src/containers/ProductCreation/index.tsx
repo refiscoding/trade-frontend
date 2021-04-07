@@ -78,20 +78,6 @@ export const initialValues = {
   weight: ''
 };
 
-export type ImageByType = {
-  productImages?: File[]
-  coverImage?: File
-};
-
-type ProgressObject = {
-  state: string
-  percentage: number
-};
-
-type UploadProgress = {
-  [key: string]: ProgressObject
-};
-
 type PriceItem = {
   currency: string,
   retailPricePerUnit: number,
@@ -136,6 +122,11 @@ export type ProductCreationProps = {
   handleNextButton: () => void
   mapProducts: (values: ProductValues) => MappedProduct
 };
+
+export type ImageByType = {
+  productImages?: File[],
+  coverImage?: File
+}
 
 const ProductCreation: React.FC = () => {
   const toast = useToast();
