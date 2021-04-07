@@ -97,7 +97,7 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
             <Flex width="40%" alignItems="center" justifyContent="space-between" px={5}>
               <Text
                 color="brand.500"
-                fontSize="18px"
+                fontSize="14px"
                 cursor="pointer"
                 onClick={() => handleBecomeSeller()}
                 pr={4}
@@ -106,7 +106,7 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
               </Text>
               <Text
                 color="brand.500"
-                fontSize="18px"
+                fontSize="14px"
                 cursor="pointer"
                 onClick={() => handleMyaccount()}
               >

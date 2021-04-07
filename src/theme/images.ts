@@ -22,4 +22,8 @@ export default {
   signUpPageBanner: require('../assets/images/signUpBanner.jpg'),
   loginPageBanner: require('../assets/images/login-banner.jpg'),
   uploadProductSuccess: require('../assets/images/success-upload.svg'),
+  productInfoStep: require('../assets/images/product_info_step.svg'),
+  productDetailsStep: require('../assets/images/product_details_step.svg'),
+  adPlaceholder: require('../assets/images/ad_placeholder.jpg'),
+  adPlaceholder2: require('../assets/images/ad_placeholder_2.png')
 }

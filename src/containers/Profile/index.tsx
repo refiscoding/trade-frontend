@@ -1,13 +1,14 @@
-import {Flex, Image, Text} from '@chakra-ui/core'
 import * as React from 'react'
-import { useHistory } from 'react-router-dom'
 import moment from 'moment'
-import { ChevronRight } from 'react-feather'
 
-import { useAuthContext } from '../../context/AuthProvider'
+import { ChevronRight } from 'react-feather'
+import { useHistory } from 'react-router-dom'
+import { useMediaQuery } from "react-responsive";
+import { Flex, Image, Text } from '@chakra-ui/core'
+
 import { PageWrap } from '../../layouts'
 import { H3, H5 } from '../../typography'
-import {useMediaQuery} from "react-responsive";
+import { useAuthContext } from '../../context/AuthProvider'
 
 type ProfileProps = {}
 
@@ -76,6 +77,7 @@ const Profile: React.FC<ProfileProps> = () => {
         justify="space-between"
         alignItems="center"
         onClick={() => navigateToDetails()}
+        backgroundColor={"#fff"}
       >
         <Flex width="80%">
           <Text fontSize={12}>Personal Information & Preference</Text>
@@ -91,6 +93,7 @@ const Profile: React.FC<ProfileProps> = () => {
         width="100%"
         justify="space-between"
         alignItems="center"
+        backgroundColor={"#fff"}
       >
         <Flex width="80%">
           <Text fontSize={12}>My Order History</Text>
@@ -107,6 +110,7 @@ const Profile: React.FC<ProfileProps> = () => {
         justify="space-between"
         alignItems="center"
         onClick={() => handleBecomeSeller()}
+        backgroundColor={"#fff"}
       >
         <Flex width="80%">
           <Text fontSize={12}>{isSellerApproved ? 'Product Management' : 'Become a Seller'}</Text>

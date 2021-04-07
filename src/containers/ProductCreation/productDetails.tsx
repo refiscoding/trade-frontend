@@ -1,5 +1,8 @@
 import * as React from 'react'
-import { Flex, FormLabel } from '@chakra-ui/core'
+import { Field, FieldArray } from 'formik'
+import { useMediaQuery } from "react-responsive";
+import { Flex, FormLabel, Grid } from '@chakra-ui/core'
+import { PlusSquare, XCircle, Upload} from 'react-feather'
 
 import {
   ConnectedFormGroup,
@@ -9,9 +12,7 @@ import {
 } from '../../components/FormElements'
 import { Text } from '../../typography'
 import { Options } from '../Seller/businessInfo'
-import { Field, FieldArray } from 'formik'
-import {File, PlusSquare, XCircle} from 'react-feather'
-import {ImageByType, ProductValues} from './index'
+import { ProductValues, ImageByType } from './index'
 
 type ProductDetailsTypes = {
   values: ProductValues
@@ -37,11 +38,40 @@ const dimensionUnits = [
 ]
 
 const ProductDetails: React.FC<ProductDetailsTypes> = ({ values, setImage, imageValues }) => {
-  const coverArray = imageValues?.coverImage ? [imageValues?.coverImage] as File[] : undefined
+  const coverArray = imageValues?.coverImage ? [imageValues?.coverImage] as File[] : undefined;
+  const isWebView = useMediaQuery({ query: '(min-width: 40em)' });
+
+  const imageCount = imageValues?.productImages?.length ? imageValues?.productImages?.length + 1 : 0;
+
   return (
     <Flex flexDirection="column">
-      <FormLabel htmlFor="packaging">Add Product Images (0/5)</FormLabel>
-      <ConnectedFileUploader isImage imageValues={coverArray} placeholder="Cover Image" name="coverImage" setImages={setImage} />
+      <FormLabel htmlFor="packaging">{`Add Product Images (${imageCount}/5)`}</FormLabel>
+      {
+        isWebView
+        ? (
+            <Grid
+              height="160px"
+              width="100%"
+              p={5}
+              border="1px dashed #a7a7a7"
+              borderRadius={5}
+              backgroundColor="#EDF2F7"
+              gridTemplateRows="1fr 1fr"
+              textAlign="center"
+              mb={5}
+            >
+              <Flex justifySelf="center" alignSelf="center" mb={3}>
+                <Upload />
+              </Flex>
+              <Flex justifySelf="center" alignSelf="center">
+                <ConnectedFileUploader imageValues={coverArray} isImage placeholder="Upload Cover Image" name="coverImage" setImages={setImage} />
+              </Flex>
+            </Grid>
+          )
+        : (
+            <ConnectedFileUploader imageValues={coverArray} isImage placeholder="Cover Image" name="coverImage" setImages={setImage} />
+          )
+      }
       <ConnectedFileUploader
         isImage
         isMulti
