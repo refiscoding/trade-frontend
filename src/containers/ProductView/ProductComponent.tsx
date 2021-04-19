@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useHistory } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 import { useToast } from '@chakra-ui/core';
 import { ApolloError } from 'apollo-client'
 import { useMediaQuery } from "react-responsive";
@@ -16,10 +16,12 @@ type ProductProps = {
 
 const ProductComponent: React.FC<ProductProps> = ({ product, setShowAddToCartModal }) => {
   const toast = useToast();
+  const location = useLocation();
   const history = useHistory();
   const isWebViewport = useMediaQuery({
     query: "(min-width: 75em)"
   });
+  const addProductPage = location?.pathname?.split("/")[1] === "add-product";
   const [addProductToWishlist] = useAddProductToWishlistMutation({
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
     onCompleted: async () => {
@@ -49,12 +51,16 @@ const ProductComponent: React.FC<ProductProps> = ({ product, setShowAddToCartMod
     3
   )
   const handleAddToWishlistClicked = async (id: string) => {
-    await addProductToWishlist({ variables: { input: { productToAdd: id } } });
-    window.location.href = '/wishlist';
+    if(!addProductPage){
+      await addProductToWishlist({ variables: { input: { productToAdd: id } } });
+      window.location.href = '/wishlist';
+    };
   };
   const handleAddToCartClicked = async (id: string) => {
-    await addProductToCart({ variables: { input: { productToAdd: id } } });
-    !loading && setShowAddToCartModal();
+    if(!addProductPage){
+      await addProductToCart({ variables: { input: { productToAdd: id } } });
+      !loading && setShowAddToCartModal();
+    };
   };
   const productPackagingType = (product?.packaging?.split("per")) ?? [];
   const productPackaging = productPackagingType?.length > 1 ? "pack" : product?.packaging;

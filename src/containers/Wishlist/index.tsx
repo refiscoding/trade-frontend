@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { useToast, Spinner, Flex, Button, Text, FlexProps } from '@chakra-ui/core';
 
 import EmptyStateComponent from "./NoWishlist";
-import DeleteItemsModal from "./DeleteItemsModal";
+import DeleteItemsModal from "../../components/DeleteItemsModal";
 import DeleteItemsButton from "./DeleteItemsButton";
 import ProductCard from "../../components/Card/ProductCard";
 
