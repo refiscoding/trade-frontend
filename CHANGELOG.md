@@ -1,3 +1,10 @@
+## [1.1.1](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.1.0...v1.1.1) (2021-04-19)
+
+
+### Bug Fixes
+
+* **deployment:** remove unused code ([8700d0c](http://bitbucket.org/sovtech/tradefed-frontend/commits/8700d0cf5e652ca314a8305233b26d1cff9ea1bf))
+
 # [1.1.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.0.0...v1.1.0) (2021-03-29)
 
 
