@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import { isEmpty } from 'lodash';
-import { Info } from "react-feather";
 import { useHistory } from 'react-router-dom';
 import { Form, Formik, FormikProps } from 'formik';
 import { Button, Flex, Grid, Image } from '@chakra-ui/core';
