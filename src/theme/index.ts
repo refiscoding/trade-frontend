@@ -47,7 +47,9 @@ const theme = {
       900: '#001509'
     }
   },
-  boxShadow: '0px 0px 4px 4px rgba(0,0,0,0.4)',
+  boxShadowDark: '0px 0px 4px 4px rgba(0,0,0,0.4)',
+  boxShadowLight: '0 2px 4px rgba(0, 0, 0, 0.25)',
+  boxShadowMedium: '0 1px 2px 0 rgba(0, 0, 0, 0.17)',
   gridGutter: 1 // rem - taken from Chakra UI space scale https://chakra-ui.com/theme#spacing
 }
 
