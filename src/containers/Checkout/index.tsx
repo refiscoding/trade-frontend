@@ -1,18 +1,21 @@
 import * as React from 'react';
-import { PageWrap } from '../../layouts';
+
+import { useMediaQuery } from "react-responsive";
+
+
+import CheckoutMobileFlow from "./CheckoutFlowMobile";
+import CheckoutMobileWeb from "./CheckoutFlowWeb";
 
 const CheckoutPage: React.FC = () => {
+   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' });
   return (
-     <PageWrap
-        title="Checkout"
-        align="center"
-        backgroundSize="cover"
-        justify="center"
-        pt={0}
-        mt={10}
-        >
-            Checkout Page
-     </PageWrap>
+     <React.Fragment>
+        {
+           isTabletOrMobile
+            ? <CheckoutMobileFlow />
+            : <CheckoutMobileWeb />
+        }
+     </React.Fragment>
   );
 };
 

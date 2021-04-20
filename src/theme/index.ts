@@ -12,6 +12,7 @@ const theme = {
     ...chakraTheme.colors,
     background: '#efefef',
     info: '#CEEDFF',
+    blueText: '#355EC0',
     brand: {
       50: 'rgba(27,38,79,0.19)',
       100: '#8c8c8c',
