@@ -1,3 +1,11 @@
+## [1.1.2](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.1.1...v1.1.2) (2021-04-21)
+
+
+### Bug Fixes
+
+* **deployment:** add missing dep ([36d3a24](http://bitbucket.org/sovtech/tradefed-frontend/commits/36d3a24f6295f04899dc43c827f453f5849232b6))
+* **deployment:** add types for dep ([7721e99](http://bitbucket.org/sovtech/tradefed-frontend/commits/7721e99b3a346bdf405b0e22e1637c8f9085aee6))
+
 ## [1.1.1](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.1.0...v1.1.1) (2021-04-20)
 
 
