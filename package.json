@@ -26,6 +26,7 @@
     "lodash": "^4.17.15",
     "moment": "^2.25.3",
     "react": "^16.13.1",
+    "react-calendar": "^3.4.0",
     "react-dates": "^21.8.0",
     "react-dom": "^16.13.1",
     "react-feather": "^2.0.8",
