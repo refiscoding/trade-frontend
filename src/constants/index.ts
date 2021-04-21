@@ -1,6 +1,6 @@
 import { IToast } from '@chakra-ui/core'
 import { UploadFile } from '../generated/graphql'
-import algoliasearch from "algoliasearch/lite";
+import algoliasearch from 'algoliasearch/lite'
 
 export const APP_NAME = 'TradeFed'
 
@@ -9,11 +9,15 @@ export const STRAPI_USER_STORAGE_KEY = 'strapi-user'
 export const CLIENT_HOST = process.env.REACT_APP_CLIENT_HOST
 
 export const searchClient = algoliasearch(
-    process.env.REACT_APP_ALGOLIA_APP_ID || '',
-    process.env.REACT_APP_ALGOLIA_API_KEY || ''
+  process.env.REACT_APP_ALGOLIA_APP_ID || '',
+  process.env.REACT_APP_ALGOLIA_API_KEY || ''
 )
 
 export const SEARCH_INDEX = `${process.env.REACT_APP_STAGE}_TRADEFED`
+
+export const mapsScriptUrl =
+  `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&libraries=places` ||
+  ''
 
 // Development
 export const IS_PROD = process.env.NODE_ENV === 'production'

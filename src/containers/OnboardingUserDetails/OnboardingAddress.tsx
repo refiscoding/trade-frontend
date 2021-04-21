@@ -13,6 +13,7 @@ import { ERROR_TOAST } from '../../constants'
 
 type AddressProps = {
   handleUserDetails: (details: any) => void
+  hideTitle?: boolean
 }
 
 const AddressFormValidation = Yup.object().shape({
@@ -40,7 +41,7 @@ const initialValues = {
   lng: 0
 }
 
-const UserDetails: React.FC<AddressProps> = ({ handleUserDetails }) => {
+const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle }) => {
   const [defaultValues, setDefaultValues] = useState<AddressValues>(initialValues)
   const {
     value,
@@ -63,10 +64,7 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails }) => {
     clearSuggestions()
 
     getGeocode({
-      address: description,
-      componentRestrictions: {
-        country: 'RSA'
-      }
+      address: description
     })
       .then((results) => getLatLng(results[0]))
       .then(({ lat, lng }) => {
@@ -116,12 +114,14 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails }) => {
 
   return (
     <React.Fragment>
-      <Flex width="100%" mb={4} flexDirection="column">
-        <H3 textAlign="left">Let’s get to know you.</H3>
-        <Text textAlign="left" fontSize="14px">
-          Fill out some information about yourself to get started.
-        </Text>
-      </Flex>
+      {!hideTitle && (
+        <Flex width="100%" mb={4} flexDirection="column">
+          <H3 textAlign="left">Let’s get to know you.</H3>
+          <Text textAlign="left" fontSize="14px">
+            Fill out some information about yourself to get started.
+          </Text>
+        </Flex>
+      )}
       <Formik
         validationSchema={AddressFormValidation}
         initialValues={defaultValues}
