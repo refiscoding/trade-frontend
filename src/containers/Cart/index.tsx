@@ -4,7 +4,8 @@ import { useHistory } from "react-router-dom";
 import { ApolloError } from 'apollo-client';
 import { Flex, Grid, GridProps, useToast, Button, Spinner } from '@chakra-ui/core';
 
-import DeleteItemsModal from "../Wishlist/DeleteItemsModal";
+import DeleteItemsModal from "../../components/DeleteItemsModal";
+
 import EmptyStateComponent from "../Wishlist/NoWishlist";
 import ProductCard from "../../components/Card/ProductCard";
 import DeleteItemsButton from "../Wishlist/DeleteItemsButton";
@@ -22,16 +23,19 @@ import {
 } from "../../generated/graphql";
 import Section from "../../components/Section";
 import {useMediaQuery} from "react-responsive";
+import { theme } from "../../theme";
 
-type CartProduct = {
+export type CartProduct = {
   quantity: number
   product: Product
 }
 
 type CartPageHeaderProps = GridProps & {
-  onClick: () => void
-  editing: boolean | undefined
   isTabletOrMobile: boolean
+  editing: boolean | undefined
+  numberOfItems: number
+  cartTotal: number
+  onClick: () => void
 };
 
 type ProductRemovalValues = {
@@ -39,13 +43,31 @@ type ProductRemovalValues = {
   checked: boolean | undefined,
 };
 
-const CartPageHeader: React.FC<CartPageHeaderProps> = ({ onClick, editing, isTabletOrMobile  }) => {
+const CartPageHeader: React.FC<CartPageHeaderProps> = ({ isTabletOrMobile, onClick, editing, numberOfItems, cartTotal }) => {
   return(
     <Grid gridTemplateRows="1fr 1fr" width={isTabletOrMobile ? "100%" : "80%"} ml={isTabletOrMobile ? 0 : 5}>
-      <Flex width="100%" mb={3} justifyContent="space-between">
+      <Flex width="100%" ml={isTabletOrMobile ? 0 : 3} mb={4} justifyContent="space-between">
         <H3 textAlign="left" fontSize={18} fontWeight={600}>My Cart</H3>
-        <Text onClick={onClick} fontSize={12} color="blue">{ editing ? 'Done' : 'Edit' }</Text>
+        {
+          isTabletOrMobile && (
+            <Text 
+              onClick={onClick}
+              color="accent.500"
+              style={{ textDecoration: "underline", cursor: "pointer" }}
+              fontSize="12px"
+            >
+              { editing ? 'Done' : 'Edit' }
+            </Text>
+          )
+        }
       </Flex>
+      {
+        isTabletOrMobile && (
+          <Flex width="100%" mb={3} justifyContent="space-between">
+            <Text>{ `Cart Total (${numberOfItems}): R ${cartTotal}.00`}</Text>
+          </Flex>
+        )
+      }
     </Grid>
   );
 };
@@ -164,6 +186,9 @@ const CartPage: React.FC = () => {
     refetch();
   }, [refetch]);
 
+  const confirmationText = `You are about to delete these items in your cart? Once they are removed, you’ll have to re-add them to your cart manually.`;
+
+
   return (
     <PageWrap
       title="My Cart"
@@ -178,9 +203,9 @@ const CartPage: React.FC = () => {
           ? (< EmptyStateComponent isCart />)
           : (
             <React.Fragment>
-              <CartPageHeader isTabletOrMobile={isTabletOrMobile} onClick={handleEditCartClicked} editing={editing} />
+              <CartPageHeader isTabletOrMobile={isTabletOrMobile} onClick={handleEditCartClicked} editing={editing} numberOfItems={itemsCount} cartTotal={cartTotal} />
               <Flex ml={5} width="80%" justifyContent="space-between">
-                <Flex width="75%" flexDirection="column">
+                <Flex width="100%" flexDirection="column">
                   {
                     productsOnly?.map((product: Product) => (
                       <ProductCard
@@ -196,20 +221,35 @@ const CartPage: React.FC = () => {
                     ))
                   }
                 </Flex>
-                <Flex m={2} borderRadius={5} p={3} flexDirection="column" width="250px" height="150px" background="white">
-                  <H3 textAlign="left" fontSize={16} fontWeight={600}>Cart Summary</H3>
-                  <Text fontSize={10} mt={4} color="blue">{ `Cart Total (${itemsCount}): R ${cartTotal}.00`}</Text>
-                  <Button alignSelf="center" onClick={handleCheckoutButtonClicked} mt={4} width="95%" type="submit" variantColor="brand">
-                    CHECKOUT
-                  </Button>
-                </Flex>
+                {
+                  !isTabletOrMobile && (
+                    <Flex m={2} borderRadius={5} p={3} flexDirection="column" width="250px" height="180px" background="white">
+                      <H3 textAlign="left" fontSize={16} fontWeight={600}>Cart Summary</H3>
+                      <Text fontSize={10} mt={4} color="blue">{ `Cart Total (${itemsCount}): R ${cartTotal}.00`}</Text>
+                      <Button alignSelf="center" onClick={handleEditCartClicked} mt={4} width="95%" type="submit" border={`1px solid ${theme.colors.brand[500]}`} background="white">
+                        EDIT
+                      </Button>
+                      <Button alignSelf="center" onClick={handleCheckoutButtonClicked} mt={4} width="95%" type="submit" variantColor="brand">
+                        CHECKOUT
+                      </Button>
+                    </Flex>
+                  )
+                }
               </Flex>
+              {
+                  isTabletOrMobile && (
+                    <Button alignSelf="center" onClick={handleCheckoutButtonClicked} mt={4} width="95%" type="submit" variantColor="brand">
+                      CHECKOUT
+                    </Button>
+                  )
+              }
               {
                 editing && (<DeleteItemsButton handleDeleteButtonClicked={handleDeleteButtonClicked} />)
               }
               {
                 showDeleteItemsModal && <DeleteItemsModal
                   isCart
+                  confirmationText={confirmationText}
                   handleCancelButtonClicked={handleCancelButtonClicked}
                   handleDeleteButtonClicked={handleModalDeleteButtonClicked} />
               }

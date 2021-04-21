@@ -25,5 +25,10 @@ export default {
   productInfoStep: require('../assets/images/product_info_step.svg'),
   productDetailsStep: require('../assets/images/product_details_step.svg'),
   adPlaceholder: require('../assets/images/ad_placeholder.jpg'),
-  adPlaceholder2: require('../assets/images/ad_placeholder_2.png')
+  adPlaceholder2: require('../assets/images/ad_placeholder_2.png'),
+  infoIcon: require('../assets/images/InfoIcon.svg'),
+  masterCardPayment: require('../assets/images/MasterCardPayment.svg'),
+  visaCardPayment: require('../assets/images/VisaPayment.svg'),
+  FNBPayment: require('../assets/images/FNBPayment.png'),
+  AmericanExpressPayment: require('../assets/images/AmericanExpressPayment.png'),
 }

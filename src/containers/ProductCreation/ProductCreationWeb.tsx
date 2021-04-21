@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import { isEmpty } from 'lodash';
-import { Info } from "react-feather";
 import { useHistory } from 'react-router-dom';
 import { Form, Formik, FormikProps } from 'formik';
 import { Button, Flex, Grid, Image } from '@chakra-ui/core';
@@ -11,7 +10,7 @@ import Footer from "../../components/Footer";
 import ProductDetails from './productDetails'
 import ProductComponent from '../ProductView/ProductComponent'
 
-import { images } from "../../theme";
+import { images, theme } from "../../theme";
 import { PageWrap } from '../../layouts'
 import { formatError } from '../../utils'
 import { H3, Text } from '../../typography'
@@ -189,11 +188,11 @@ const ProductCreationWebFlow: React.FC<ProductCreationProps> = ({
             }
             {
               productConfirmStage && (
-                <Flex backgroundColor="#CEEDFF" p={5} height="70%" mt={4}>
+                <Flex backgroundColor={theme.colors.info} p={5} height="65%" mt={4} borderRadius={3}>
                   <Flex>
-                    <Info />
+                    <Image src={images.infoIcon} />
                   </Flex>
-                  <Text ml={3} mt={-2}>
+                  <Text ml={2} mt={0} fontSize={11}>
                     This is how your product will be displayed to the public. You can make changes in the “Product Management” section.
                   </Text>
                 </Flex>
