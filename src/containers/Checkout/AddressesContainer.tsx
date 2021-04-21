@@ -9,7 +9,7 @@ export type AddressesContainerProps = GridProps & {
 const AddressesContainer: React.FC<AddressesContainerProps> = ({ children, mobileFlow, ...rest }) => {
     const numberOfColumns = mobileFlow ? "1fr" : "1fr 1fr";
     const marginTop = mobileFlow ? 5 : 0
-    const height = mobileFlow ? "100%" : "500px";
+    const height = mobileFlow ? "100%" : "550px";
     const overflowY = mobileFlow ? "initial" : "scroll";
     const rowGap = mobileFlow ? "30px" : "90px";
     return(

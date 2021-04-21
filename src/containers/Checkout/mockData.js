@@ -20,7 +20,7 @@ const addresses = [
         contact: "0734213678"
     },
     {
-        name: "Side Town",
+        name: "Side Town I",
         type: "residential",
         street: "342 Kwangware St.",
         buildingComplex: "Kawangware Towers",
@@ -30,7 +30,7 @@ const addresses = [
         contact: "073456789"
     },
     {
-        name: "Side Town",
+        name: "Side Town II",
         type: "residential",
         street: "342 Kwangware St.",
         buildingComplex: "Kawangware Towers",
@@ -40,7 +40,7 @@ const addresses = [
         contact: "073456789"
     },
     {
-        name: "Side Town",
+        name: "Side Town III",
         type: "residential",
         street: "342 Kwangware St.",
         buildingComplex: "Kawangware Towers",
@@ -50,7 +50,7 @@ const addresses = [
         contact: "073456789"
     },
     {
-        name: "Side Town",
+        name: "Side Town IV",
         type: "residential",
         street: "342 Kwangware St.",
         buildingComplex: "Kawangware Towers",

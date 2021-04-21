@@ -1,16 +1,21 @@
 import * as React from "react";
+import { Button, Flex } from "@chakra-ui/core";
 
-import { Button } from "@chakra-ui/core";
 import AddressesContainer from "./AddressesContainer";
 import AddressComponent, { Address } from "./AddressComponent";
+import { SelectedAddress } from ".";
 
 type AddressesProps = {
     mobileFlow: boolean
     addresses: Address[]
-    setActive: (step: number) => void 
+    setActive: (step: number) => void
+    setShowDeleteItemsModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
+    setSelectedAddress: React.Dispatch<React.SetStateAction<SelectedAddress | undefined>>
 };
 
-const AddressesComponent: React.FC<AddressesProps> = ({ addresses, setActive, mobileFlow }) => {
+const AddressesComponent: React.FC<AddressesProps> = ({ addresses, setActive, mobileFlow, setShowDeleteItemsModal, setSelectedAddress }) => {
+   const [activateButton, setActivateButton] = React.useState<boolean>(true);
+
     return (
         <React.Fragment>
             <AddressesContainer mobileFlow={mobileFlow}>
@@ -19,9 +24,13 @@ const AddressesComponent: React.FC<AddressesProps> = ({ addresses, setActive, mo
                         return(
                             <AddressComponent 
                                 key={`${index}_address`}
-                                setActiveStep={setActive}
-                                mobileFlow={mobileFlow}
                                 address={address} 
+                                addresses={addresses}
+                                mobileFlow={mobileFlow}
+                                setActiveStep={setActive}
+                                setSelectedAddress={setSelectedAddress}
+                                setActivateButton={setActivateButton}
+                                setShowDeleteItemsModal={setShowDeleteItemsModal}
                             />
                         )
                     })
@@ -29,16 +38,18 @@ const AddressesComponent: React.FC<AddressesProps> = ({ addresses, setActive, mo
             </AddressesContainer>
             {
                 !mobileFlow && (
-                    <Button
-                        justifySelf="end"
-                        mt={-1}
-                        width="25%"
-                        type="submit"
-                        variantColor="brand"
-                        onClick={() => {}}
-                    >
-                        USE ADDRESS
-                    </Button>
+                   <Flex pt={5} justifySelf="end">
+                        <Button
+                            mt={-3}
+                            width="100%"
+                            type="submit"
+                            variantColor="brand"
+                            isDisabled={activateButton}
+                            onClick={() => setActive(1)}
+                        >
+                            USE ADDRESS
+                        </Button>
+                   </Flex>
                 )
             }
         </React.Fragment>

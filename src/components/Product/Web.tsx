@@ -182,10 +182,10 @@ const ProductComponent: React.FC<ProductProps> = (
               : (<Text>No Specifications Set</Text>)
             }
           </div>
-        <Flex width="414px" background="#ffffff" mt={5}>
+        <Flex width="414px" background={theme.colors.accent[50]} mt={5}>
             {
                 product?.tags?.map((tag: string, index: number) => (
-                <Tag fontSize={12} mr={1} size="sm" key={index} background="#B6DAF5" color="#004A81">{tag?.toUpperCase()}</Tag>
+                <Tag fontSize={12} mr={1} size="sm" key={index} background={theme.colors.tag} color={theme.colors.tagText}>{tag?.toUpperCase()}</Tag>
                 ))
             }
         </Flex>

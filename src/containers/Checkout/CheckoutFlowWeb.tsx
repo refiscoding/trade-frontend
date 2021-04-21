@@ -1,16 +1,21 @@
 import * as React from "react";
 import styled from "@emotion/styled";
 
+import { isEmpty } from "lodash";
 import { Form, Formik } from "formik";
 import { useHistory } from "react-router";
-import { Flex, Grid } from "@chakra-ui/core";
+import { Flex, Grid, Tag } from "@chakra-ui/core";
 
 import NextButton from "./Button";
 import NoData from "./NoDataScreen";
 import DeliveryAddresses from "./Addresses";
+import DeliveryDetails from "./DeliveryDetails";
 import DeliveryAddressForm from "./DeliveryAddressForm";
+import ProductCard from "../../components/Card/ProductCard";
+import DeleteItemsModal from "../../components/DeleteItemsModal";
 
 import { theme } from "../../theme";
+import { CartProduct } from "../Cart";
 import { PageWrap } from "../../layouts";
 import { Stepper } from "../../components";
 import { H3, Text } from "../../typography";
@@ -24,9 +29,15 @@ const Step = styled.div``;
 const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
     active,
     addresses,
+    timeSlots,
+    cartProducts,
     setActiveStep,
+    selectedAddress,
+    setSelectedAddress,
     noAddressDataHeader,
     noAddressDataCaption,
+    showDeleteItemsModal,
+    setShowDeleteItemsModal,
 }) => {
     const history = useHistory();
     const numberOfAddresses = addresses?.length;
@@ -34,8 +45,8 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
     const handleCancelButtonClicked = () => {
         history.push("/cart");
     };
-    const firstStage = active === 0;
     const deliveryAddressInfoStage = active === 0;
+    const confirmOrderStage = active === 1;
     return(
         <React.Fragment>
             <PageWrap
@@ -46,6 +57,14 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                 pt={0}
                 p={0}
             >
+                {
+                    showDeleteItemsModal && (
+                        <DeleteItemsModal
+                            handleCancelButtonClicked={() => {}}
+                            handleDeleteButtonClicked={() => {}}
+                        />
+                    )
+                }
                 <Grid gridTemplateRows="130px 1fr">
                     <Grid
                         p={5}
@@ -76,28 +95,40 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                             borderRadius={5}
                             background={theme.colors.accent[50]}
                             boxShadow={theme.boxShadowMedium}
-                        
                         >
                             <Formik
                                 validationSchema={DeliveryAddressValidation}
                                 initialValues={initialDeliveryAddressValues}
                                 onSubmit={() => {}}
                             >
-                                {() => {
+                                {({ errors }) => {
                                     return (
                                         <Form style={{ width: "100%" }}>
-                                            { deliveryAddressInfoStage && <DeliveryAddressForm />}
-
-                                            <Flex>
-                                                { deliveryAddressInfoStage && (
-                                                    <NextButton
-                                                        active={active}
-                                                        setActive={setActiveStep}
-                                                    >
-                                                        ADD NEW ADDRESS
-                                                    </NextButton>
-                                                )}
-                                            </Flex>
+                                            { deliveryAddressInfoStage && (
+                                                <Flex flexDirection="column">
+                                                    <DeliveryAddressForm />
+                                                    <Flex mt={35}>
+                                                        <NextButton
+                                                            type="submit"
+                                                            active={active}
+                                                            disabled={!isEmpty(errors)}
+                                                            setActive={() => {}}
+                                                        >
+                                                            ADD NEW ADDRESS
+                                                        </NextButton>
+                                                    </Flex>
+                                                </Flex>
+                                            )}
+                                            {
+                                                confirmOrderStage && (
+                                                    <Flex flexDirection="column">
+                                                        <DeliveryDetails
+                                                            timeSlots={timeSlots}
+                                                            mobileFlow={false}
+                                                        />
+                                                    </Flex>
+                                                )
+                                            }
                                         </Form>
                                     )
                                 }}
@@ -113,14 +144,54 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                                         />
                                     )
                                     : (
-                                        <Grid gridTemplateRows="1fr 30px" width="100%">
+                                        <Grid gridTemplateRows="1fr 40px" width="100%">
                                              {
-                                                firstStage && numberOfAddresses && (
+                                                deliveryAddressInfoStage && (
                                                     <DeliveryAddresses
                                                         mobileFlow={false}
                                                         addresses={addresses}
                                                         setActive={setActiveStep}
+                                                        setSelectedAddress={setSelectedAddress}
+                                                        setShowDeleteItemsModal={setShowDeleteItemsModal}
                                                     />
+                                                )
+                                            }
+                                            {
+                                                confirmOrderStage && (
+                                                    <Flex flexDirection="column">
+                                                        <Grid
+                                                            p={4}
+                                                            borderRadius={5}
+                                                            background={theme.colors.accent[50]}
+                                                            boxShadow={theme.boxShadowMedium}
+                                                            gridTemplateColumns="1fr 50px"
+                                                        >
+                                                           <Flex>
+                                                                <Text fontSize={14}>{ selectedAddress?.street },</Text>
+                                                                <Text ml={2} mr={2} fontSize={14}>{ selectedAddress?.cityOrTown } </Text>
+                                                                <Text fontSize={14}>({ selectedAddress?.contact })</Text>
+                                                           </Flex>
+                                                            <Flex justifySelf="end">
+                                                                <Tag fontSize={12} mr={1} size="sm" background={theme.colors.tag} color={theme.colors.tagText}>{ selectedAddress?.type?.toUpperCase() }</Tag>
+                                                            </Flex>
+                                                        </Grid>
+                                                        <Flex mt={4} width="100%" flexDirection="column" overflowY="scroll" maxHeight="600px">
+                                                            {
+                                                                cartProducts?.map((product: CartProduct) => (
+                                                                    <ProductCard
+                                                                        key={`${product?.product?.id}_${Math.random()}`}
+                                                                        width="100%"
+                                                                        isCart={false}
+                                                                        editing={false}
+                                                                        isWishlist={false}
+                                                                        product={product?.product}
+                                                                        handleClick={() => {}}
+                                                                        handleIconClick={() => {}}
+                                                                    />
+                                                                ))
+                                                            }
+                                                        </Flex>
+                                                    </Flex>
                                                 )
                                             }
                                         </Grid>

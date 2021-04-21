@@ -11,15 +11,16 @@ type ActionButtonComponentProps = {
 const ActionButtonComponent: React.FC<ActionButtonComponentProps> = ({ children, setActive }) => {
     return (
         <Flex
+            p={5}
             mt={5}
-            pl={5}
-            height="50px"
-            borderRadius="10px"
-            boxShadow={theme.boxShadowLight}
             width="100%"
-            justify="space-between"
+            height="50px"
+            cursor="pointer"
             alignItems="center"
+            borderRadius="10px"
+            justify="space-between"
             onClick={() => setActive(1)}
+            boxShadow={theme.boxShadowLight}
             backgroundColor={theme.colors.accent[50]}
         >
             { children }

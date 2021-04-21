@@ -151,7 +151,7 @@ const ProductComponentMobile: React.FC<ProductProps> = (
         <Flex width="414px" background="#ffffff">
           {
             product?.tags?.map((tag: string, index: number) => (
-              <Tag fontSize={12} mr={1} size="sm" key={index} background="#B6DAF5" color="#004A81">{tag?.toUpperCase()}</Tag>
+              <Tag fontSize={12} mr={1} size="sm" key={index} background={theme.colors.tag} color={theme.colors.tagText}>{tag?.toUpperCase()}</Tag>
             ))
           }
         </Flex>
