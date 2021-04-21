@@ -186,6 +186,9 @@ const CartPage: React.FC = () => {
     refetch();
   }, [refetch]);
 
+  const confirmationText = `You are about to delete these items in your cart? Once they are removed, you’ll have to re-add them to your cart manually.`;
+
+
   return (
     <PageWrap
       title="My Cart"
@@ -246,6 +249,7 @@ const CartPage: React.FC = () => {
               {
                 showDeleteItemsModal && <DeleteItemsModal
                   isCart
+                  confirmationText={confirmationText}
                   handleCancelButtonClicked={handleCancelButtonClicked}
                   handleDeleteButtonClicked={handleModalDeleteButtonClicked} />
               }

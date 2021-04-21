@@ -2,10 +2,10 @@ import * as React from "react";
 
 import { isEmpty } from "lodash";
 import { Form, Formik } from "formik";
-import { Flex, Grid } from "@chakra-ui/core";
+import { Flex, Grid, Image } from "@chakra-ui/core";
 import { ChevronRight } from "react-feather";
 
-import { theme } from "../../theme";
+import { theme, images } from "../../theme";
 import { PageWrap } from "../../layouts";
 import { Stepper } from "../../components";
 import { H3, Text } from "../../typography";
@@ -13,13 +13,58 @@ import { TimeSlot } from "./AddressComponent";
 import { DeliveryAddressValidation, initialDeliveryAddressValues, CheckoutProps, SelectedAddress } from ".";
 
 import NextButton from "./Button";
+import CardInfo from "./CardInfo";
 import NoData from "./NoDataScreen";
+import CardsComponent from "./Cards";
 import ActionButton from "./ActionButton";
+import OrderSummary from "./OrderSummary";
 import DeliveryAddresses from "./Addresses";
+import SelectPayment from "./SelectPayment";
 import DeliveryDetails from "./DeliveryDetails";
 import DeliveryAddressForm from "./DeliveryAddressForm";
 import CheckoutItemsModal from "./CheckoutProductsModal";
 import DeleteItemsModal from "../../components/DeleteItemsModal";
+
+type SelectPaymentComponentProps = {
+    setShowPaymentOptions: (show: boolean) => void
+};
+
+const SelectPaymentComponent: React.FC<SelectPaymentComponentProps> = ({ setShowPaymentOptions }) => {
+    return (
+        <Flex
+            mb={5}
+            p={4}
+            borderRadius={5}
+            boxShadow="0 2px 4px 0 rgba(0,0,0,0.25)"
+            backgroundColor={theme.colors.accent[50]}
+            onClick={() => setShowPaymentOptions(true)}
+            cursor="pointer"
+        >
+            <Grid gridTemplateRows="40px 1fr">
+                <Text fontWeight={600}>Select Payment Method</Text>
+                <Grid gridTemplateRows="30px 1fr" p={2}>
+                    <Text fontWeight={600} fontSize={12} my={2}>Credit and Debit Card</Text>
+                    <Grid gridTemplateColumns="1fr 1fr"alignContent="center">
+                        <Grid gridTemplateColumns="1fr 1fr 1fr" alignContent="center" columnGap="15px">
+                            <Flex>
+                                <Image src={images.masterCardPayment} />
+                            </Flex>
+                            <Flex>
+                                <Image src={images.visaCardPayment} />
+                            </Flex>
+                            <Flex>
+                                <Image src={images.AmericanExpressPayment} />
+                            </Flex>
+                        </Grid>
+                        <Flex justifySelf="end">
+                            <ChevronRight />
+                        </Flex>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Flex>
+    );
+};
 
 type DeliveryItemsComponentProps = {
     handleViewDeliveryItemsClicked: () => void
@@ -81,26 +126,53 @@ const DeliveryInfoComponent: React.FC<DeliveryInfoComponentProps> = ({ timeSlots
 
 const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
     active,
+    cards,
     addresses,
     timeSlots,
+    deliveryFee,
     cartProducts,
     setActiveStep,
+    checkoutTotal,
     selectedAddress,
+    noCardDataHeader,
+    noCardDataCaption,
+    tradeFinanceMargin,
     setSelectedAddress,
+    showDeleteCardModal,
     noAddressDataHeader,
     noAddressDataCaption,
     showDeleteItemsModal,
+    confirmationTextCard,
+    setShowDeleteCardModal,
+    confirmationTextAddress,
     setShowDeleteItemsModal,
 }) => {
    const [showCheckoutItemsModal, setShowCheckoutItemsModal] = React.useState<boolean>();
+   const [showPaymentOptions, setShowPaymentOptions] = React.useState<boolean>();
 
     const numberOfAddresses = addresses?.length;
+    const numberOfCards = cards?.length;
     const firstStage = active === 0;
     const addDeliveryAddressStage = active === 1;
+    const confirmOrderStage = active === 2;
+    const selectPaymentStage = active === 3;
+    const confirmPaymentStage = active === 4;
+    const addPaymentCardStage = active === 5;
 
     const handleViewDeliveryItemsClicked = () => {
         setShowCheckoutItemsModal(true);
     };
+
+    const showPayments = () => {
+        setShowPaymentOptions(false);
+    };
+
+    const ctaTextStyles = { color: "blue", textDecoration: "underline"};
+
+    const handleChangePayment = () => {
+        setShowPaymentOptions(true);
+    };
+
 
     return(
         <React.Fragment>
@@ -112,6 +184,16 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
                 {
                     showDeleteItemsModal && (
                         <DeleteItemsModal
+                            confirmationText={confirmationTextAddress}
+                            handleCancelButtonClicked={() => {}}
+                            handleDeleteButtonClicked={() => {}}
+                        />
+                    )
+                }
+                {
+                    showDeleteCardModal && (
+                        <DeleteItemsModal
+                            confirmationText={confirmationTextCard}
                             handleCancelButtonClicked={() => {}}
                             handleDeleteButtonClicked={() => {}}
                         />
@@ -148,40 +230,137 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
                                         selectedAddress={selectedAddress}
                                         handleViewDeliveryItemsClicked={handleViewDeliveryItemsClicked}
                                     />
+                                    {
+                                        !showPaymentOptions && (
+                                            <SelectPaymentComponent
+                                                setShowPaymentOptions={setShowPaymentOptions}
+                                            />
+                                        )
+                                    }
+                                    {
+                                        !showPaymentOptions && (
+                                            <ActionButton setActive={() => setActiveStep(5)}>
+                                                <Text fontSize={12}>Add a New Card</Text>
+                                                <ChevronRight />
+                                            </ActionButton>
+                                        )
+                                    }
+                                    {
+                                        !showPaymentOptions  && (
+                                            <CardInfo />
+                                        )
+                                    }
                                 </Stepper>
                                 <Flex>
                                     {
-                                        !numberOfAddresses
+                                        showPaymentOptions
                                             ? (
-                                                <NoData
-                                                    header={noAddressDataHeader}
-                                                    caption={noAddressDataCaption}
+                                                <SelectPayment 
+                                                    mobileFlow
+                                                    setShowPaymentOptions={showPayments}
                                                 />
                                             )
-                                            : firstStage
-                                                ? (
-                                                    <DeliveryAddresses
-                                                        mobileFlow
-                                                        addresses={addresses}
-                                                        setActive={setActiveStep}
-                                                        setShowDeleteItemsModal={setShowDeleteItemsModal}
-                                                        setSelectedAddress={setSelectedAddress}
-                                                    />
-                                                )
-                                                : addDeliveryAddressStage
-                                                    ? (
-                                                        <NextButton
-                                                            type="submit"
-                                                            active={active}
-                                                            disabled={!isEmpty(errors)}
-                                                            setActive={() => setActiveStep(0)}
-                                                        >
-                                                            NEXT
-                                                        </NextButton>
-                                                    )
-                                                    : (
-                                                        <DeliveryInfoComponent timeSlots={timeSlots} />
-                                                    )
+                                            : (
+                                                <React.Fragment>
+                                                    {
+                                                        firstStage && !numberOfAddresses
+                                                            ? (
+                                                                <NoData
+                                                                    header={noAddressDataHeader}
+                                                                    caption={noAddressDataCaption}
+                                                                />
+                                                            )
+                                                            : confirmPaymentStage && !numberOfCards
+                                                                ? (
+                                                                    <NoData
+                                                                        header={noCardDataHeader}
+                                                                        caption={noCardDataCaption}
+                                                                    />
+                                                                )
+                                                                : firstStage
+                                                                    ? (
+                                                                        <DeliveryAddresses
+                                                                            mobileFlow
+                                                                            addresses={addresses}
+                                                                            setActive={setActiveStep}
+                                                                            setShowDeleteItemsModal={setShowDeleteItemsModal}
+                                                                            setSelectedAddress={setSelectedAddress}
+                                                                        />
+                                                                    )
+                                                                    : addDeliveryAddressStage
+                                                                        ? (
+                                                                            <NextButton
+                                                                                type="submit"
+                                                                                active={active}
+                                                                                disabled={!isEmpty(errors)}
+                                                                                setActive={() => setActiveStep(0)}
+                                                                            >
+                                                                                NEXT
+                                                                            </NextButton>
+                                                                        )
+                                                                        : confirmOrderStage
+                                                                            ? (
+                                                                                <Flex flexDirection="column">
+                                                                                    <DeliveryInfoComponent timeSlots={timeSlots} />
+                                                                                    <NextButton
+                                                                                        active={active}
+                                                                                        disabled={false}
+                                                                                        setActive={() => setActiveStep(3)}
+                                                                                    >
+                                                                                        NEXT
+                                                                                    </NextButton>
+                                                                                </Flex>
+                                                                            )
+                                                                            : selectPaymentStage
+                                                                                ? (
+                                                                                    <Flex flexDirection="column">
+                                                                                        <OrderSummary
+                                                                                            mobileFlow
+                                                                                            cartProducts={cartProducts}
+                                                                                            checkoutTotal={checkoutTotal}
+                                                                                            deliveryFee={deliveryFee}
+                                                                                            tradeFinanceMargin={tradeFinanceMargin}
+                                                                                        />
+                                                                                        <NextButton
+                                                                                            active={active}
+                                                                                            disabled={false}
+                                                                                            setActive={() => setActiveStep(4)}
+                                                                                        >
+                                                                                            NEXT
+                                                                                        </NextButton>
+                                                                                    </Flex>
+                                                                                )
+                                                                                : confirmPaymentStage
+                                                                                    ? (
+                                                                                        <Flex flexDirection="column" width="100%">
+                                                                                            <CardsComponent
+                                                                                                mobileFlow
+                                                                                                cards={cards}
+                                                                                                checkoutTotal={checkoutTotal}
+                                                                                                setShowDeleteCardModal={setShowDeleteCardModal}
+                                                                                            />
+                                                                                            <NextButton
+                                                                                                active={active}
+                                                                                                disabled={false}
+                                                                                                setActive={() => setActiveStep(4)}
+                                                                                            >
+                                                                                                {`PAY R ${checkoutTotal}.00`}
+                                                                                            </NextButton>
+                                                                                            <Text mt={4} style={ctaTextStyles} fontSize={12} textAlign="center" onClick={handleChangePayment}>Change Payment Method</Text>
+                                                                                        </Flex>
+                                                                                    )
+                                                                                    : addPaymentCardStage && (
+                                                                                        <NextButton
+                                                                                            active={active}
+                                                                                            disabled={false}
+                                                                                            setActive={() => setActiveStep(4)}
+                                                                                        >
+                                                                                            ADD CARD
+                                                                                        </NextButton>
+                                                                                    )
+                                                    }
+                                                </React.Fragment>
+                                            )
                                     }
                                 </Flex>
                             </Form>

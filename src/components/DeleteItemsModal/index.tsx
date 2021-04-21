@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import { useLocation } from "react-router";
 import { Image, Grid, Button } from '@chakra-ui/core';
 import { FlexProps } from '@chakra-ui/core/dist/Flex';
 
@@ -12,14 +11,10 @@ type DeleteItemsModalProps = FlexProps & {
     handleCancelButtonClicked: () => void
     handleDeleteButtonClicked: () => void
     isCart?: boolean
+    confirmationText: string
 };
 
-const DeleteItemsModal: React.FC<DeleteItemsModalProps> = ({ handleCancelButtonClicked, handleDeleteButtonClicked, isCart }) => {
-    const location = (((useLocation()).pathname)?.split("/"))[1];
-
-    const cartAndWishlisText = `You are about to delete these items in your ${isCart ? 'cart' : 'wish list'}? Once they are removed, you’ll have to re-add them to your ${isCart ? 'cart' : 'wish list'} manually.`
-    const confirmationText = location === "cart" || location === "wishlist" ? cartAndWishlisText : "You are about to remove one of your delivery addresses? Once you have removed it, you'll have to re-add it manually to your addresses"
-
+const DeleteItemsModal: React.FC<DeleteItemsModalProps> = ({ handleCancelButtonClicked, handleDeleteButtonClicked, confirmationText }) => {
     return(
       <ModalWrap
           title="Delete Items"

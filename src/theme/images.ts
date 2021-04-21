@@ -27,4 +27,8 @@ export default {
   adPlaceholder: require('../assets/images/ad_placeholder.jpg'),
   adPlaceholder2: require('../assets/images/ad_placeholder_2.png'),
   infoIcon: require('../assets/images/InfoIcon.svg'),
+  masterCardPayment: require('../assets/images/MasterCardPayment.svg'),
+  visaCardPayment: require('../assets/images/VisaPayment.svg'),
+  FNBPayment: require('../assets/images/FNBPayment.png'),
+  AmericanExpressPayment: require('../assets/images/AmericanExpressPayment.png'),
 }

@@ -7,8 +7,12 @@ import { useHistory } from "react-router";
 import { Flex, Grid, Tag } from "@chakra-ui/core";
 
 import NextButton from "./Button";
+import CardInfo from "./CardInfo";
 import NoData from "./NoDataScreen";
+import CardsComponent from "./Cards";
+import OrderSummary from "./OrderSummary";
 import DeliveryAddresses from "./Addresses";
+import SelectPayment from "./SelectPayment";
 import DeliveryDetails from "./DeliveryDetails";
 import DeliveryAddressForm from "./DeliveryAddressForm";
 import ProductCard from "../../components/Card/ProductCard";
@@ -28,25 +32,41 @@ const Step = styled.div``;
 
 const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
     active,
+    cards,
     addresses,
     timeSlots,
+    deliveryFee,
     cartProducts,
+    checkoutTotal,
     setActiveStep,
     selectedAddress,
+    noCardDataHeader,
+    noCardDataCaption,
+    tradeFinanceMargin,
     setSelectedAddress,
     noAddressDataHeader,
+    showDeleteCardModal,
     noAddressDataCaption,
+    confirmationTextCard,
     showDeleteItemsModal,
+    setShowDeleteCardModal,
     setShowDeleteItemsModal,
+    confirmationTextAddress,
 }) => {
     const history = useHistory();
     const numberOfAddresses = addresses?.length;
+    const numberOfCards = cards?.length;
     const cancelButtonStyles = { textDecoration: "underline", cursor: "pointer"};
+    const deliveryAddressInfoStage = active === 0;
+    const deliveryDetailsStage = active === 1;
+    const confirmOrderStage = active === 2;
+    const confirmPaymentCardStage = active === 3;
+
     const handleCancelButtonClicked = () => {
         history.push("/cart");
     };
-    const deliveryAddressInfoStage = active === 0;
-    const confirmOrderStage = active === 1;
+   const setShowPaymentsOption = () => {};
+
     return(
         <React.Fragment>
             <PageWrap
@@ -60,6 +80,16 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                 {
                     showDeleteItemsModal && (
                         <DeleteItemsModal
+                            confirmationText={confirmationTextAddress}
+                            handleCancelButtonClicked={() => {}}
+                            handleDeleteButtonClicked={() => {}}
+                        />
+                    )
+                }
+                {
+                    showDeleteCardModal && (
+                        <DeleteItemsModal
+                            confirmationText={confirmationTextCard}
                             handleCancelButtonClicked={() => {}}
                             handleDeleteButtonClicked={() => {}}
                         />
@@ -84,6 +114,7 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                                     <Step />
                                     <Step />
                                     <Step />
+                                    <Step />
                                 </Stepper>
                             </StepperContainer>
                         </Grid>
@@ -95,6 +126,8 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                             borderRadius={5}
                             background={theme.colors.accent[50]}
                             boxShadow={theme.boxShadowMedium}
+                            height={confirmOrderStage ? "350px": "100%"}
+
                         >
                             <Formik
                                 validationSchema={DeliveryAddressValidation}
@@ -120,12 +153,50 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                                                 </Flex>
                                             )}
                                             {
-                                                confirmOrderStage && (
+                                                deliveryDetailsStage && (
                                                     <Flex flexDirection="column">
                                                         <DeliveryDetails
                                                             timeSlots={timeSlots}
                                                             mobileFlow={false}
                                                         />
+                                                        <NextButton
+                                                            active={active}
+                                                            disabled={false}
+                                                            setActive={() => setActiveStep(2)}
+                                                        >
+                                                            NEXT
+                                                        </NextButton>
+                                                    </Flex>
+                                                )
+                                            }
+                                            {
+                                                confirmOrderStage && (
+                                                    <Flex flexDirection="column">
+                                                        <SelectPayment mobileFlow={false} setShowPaymentOptions={setShowPaymentsOption} />
+                                                        <Flex mt={30}>
+                                                            <NextButton
+                                                                active={active}
+                                                                disabled={false}
+                                                                setActive={() => setActiveStep(3)}
+                                                            >
+                                                                CONTINUE
+                                                            </NextButton>
+                                                        </Flex>
+                                                    </Flex>
+                                                )
+                                            }
+                                            {
+                                                confirmPaymentCardStage && (
+                                                    <Flex flexDirection="column">
+                                                        <CardInfo />
+                                                        <NextButton
+                                                             type="submit"
+                                                             active={active}
+                                                             disabled={!isEmpty(errors)}
+                                                             setActive={() => {}}
+                                                        >
+                                                            ADD NEW CARD
+                                                        </NextButton>
                                                     </Flex>
                                                 )
                                             }
@@ -136,65 +207,94 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                         </Flex>
                         <Flex>
                             {
-                                !numberOfAddresses
+                                deliveryAddressInfoStage && !numberOfAddresses
                                     ? (
                                         <NoData
                                             header={noAddressDataHeader}
                                             caption={noAddressDataCaption}
                                         />
                                     )
-                                    : (
-                                        <Grid gridTemplateRows="1fr 40px" width="100%">
-                                             {
-                                                deliveryAddressInfoStage && (
-                                                    <DeliveryAddresses
-                                                        mobileFlow={false}
-                                                        addresses={addresses}
-                                                        setActive={setActiveStep}
-                                                        setSelectedAddress={setSelectedAddress}
-                                                        setShowDeleteItemsModal={setShowDeleteItemsModal}
-                                                    />
-                                                )
-                                            }
-                                            {
-                                                confirmOrderStage && (
-                                                    <Flex flexDirection="column">
-                                                        <Grid
-                                                            p={4}
-                                                            borderRadius={5}
-                                                            background={theme.colors.accent[50]}
-                                                            boxShadow={theme.boxShadowMedium}
-                                                            gridTemplateColumns="1fr 50px"
-                                                        >
-                                                           <Flex>
-                                                                <Text fontSize={14}>{ selectedAddress?.street },</Text>
-                                                                <Text ml={2} mr={2} fontSize={14}>{ selectedAddress?.cityOrTown } </Text>
-                                                                <Text fontSize={14}>({ selectedAddress?.contact })</Text>
-                                                           </Flex>
-                                                            <Flex justifySelf="end">
-                                                                <Tag fontSize={12} mr={1} size="sm" background={theme.colors.tag} color={theme.colors.tagText}>{ selectedAddress?.type?.toUpperCase() }</Tag>
+                                    : confirmPaymentCardStage && !numberOfCards 
+                                        ? (
+                                            <NoData
+                                                header={noCardDataHeader}
+                                                caption={noCardDataCaption}
+                                            />
+                                        )
+                                        :
+                                        (
+                                            <Grid gridTemplateRows="1fr 40px" width="100%">
+                                                {
+                                                    deliveryAddressInfoStage && (
+                                                        <DeliveryAddresses
+                                                            mobileFlow={false}
+                                                            addresses={addresses}
+                                                            setActive={setActiveStep}
+                                                            setSelectedAddress={setSelectedAddress}
+                                                            setShowDeleteItemsModal={setShowDeleteItemsModal}
+                                                        />
+                                                    )
+                                                }
+                                                {
+                                                    deliveryDetailsStage && (
+                                                        <Flex flexDirection="column">
+                                                            <Grid
+                                                                p={4}
+                                                                borderRadius={5}
+                                                                background={theme.colors.accent[50]}
+                                                                boxShadow={theme.boxShadowMedium}
+                                                                gridTemplateColumns="1fr 50px"
+                                                            >
+                                                            <Flex>
+                                                                    <Text fontSize={14}>{ selectedAddress?.street },</Text>
+                                                                    <Text ml={2} mr={2} fontSize={14}>{ selectedAddress?.cityOrTown } </Text>
+                                                                    <Text fontSize={14}>({ selectedAddress?.contact })</Text>
                                                             </Flex>
-                                                        </Grid>
-                                                        <Flex mt={4} width="100%" flexDirection="column" overflowY="scroll" maxHeight="600px">
-                                                            {
-                                                                cartProducts?.map((product: CartProduct) => (
-                                                                    <ProductCard
-                                                                        key={`${product?.product?.id}_${Math.random()}`}
-                                                                        width="100%"
-                                                                        isCart={false}
-                                                                        editing={false}
-                                                                        isWishlist={false}
-                                                                        product={product?.product}
-                                                                        handleClick={() => {}}
-                                                                        handleIconClick={() => {}}
-                                                                    />
-                                                                ))
-                                                            }
+                                                                <Flex justifySelf="end">
+                                                                    <Tag fontSize={12} mr={1} size="sm" background={theme.colors.tag} color={theme.colors.tagText}>{ selectedAddress?.type?.toUpperCase() }</Tag>
+                                                                </Flex>
+                                                            </Grid>
+                                                            <Flex mt={4} width="100%" flexDirection="column" overflowY="scroll" maxHeight="600px">
+                                                                {
+                                                                    cartProducts?.map((product: CartProduct) => (
+                                                                        <ProductCard
+                                                                            key={`${product?.product?.id}_${Math.random()}`}
+                                                                            width="100%"
+                                                                            isCart={false}
+                                                                            editing={false}
+                                                                            isWishlist={false}
+                                                                            product={product?.product}
+                                                                            handleClick={() => {}}
+                                                                            handleIconClick={() => {}}
+                                                                        />
+                                                                    ))
+                                                                }
+                                                            </Flex>
                                                         </Flex>
-                                                    </Flex>
-                                                )
-                                            }
-                                        </Grid>
+                                                    )
+                                                }
+                                                {
+                                                    confirmOrderStage && (
+                                                        <OrderSummary
+                                                            mobileFlow={false}
+                                                            cartProducts={cartProducts}
+                                                            checkoutTotal={checkoutTotal}
+                                                            deliveryFee={deliveryFee}
+                                                            tradeFinanceMargin={tradeFinanceMargin}
+                                                        />
+                                                    )
+                                                }
+                                                {
+                                                    confirmPaymentCardStage && (
+                                                        <CardsComponent 
+                                                            mobileFlow={false}
+                                                            cards={cards}
+                                                            checkoutTotal={checkoutTotal}
+                                                            setShowDeleteCardModal={setShowDeleteCardModal}
+                                                        />
+                                                    )
+                                                }
+                                            </Grid>
                                     )
                             }
                         </Flex>

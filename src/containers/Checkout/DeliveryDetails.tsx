@@ -16,7 +16,7 @@ type DeliveryInfoProps = {
 const TimeSlotComponent: React.FC<TimeSlotProps> = ({ slot }) => {
     const [active, setActive] = React.useState<string | undefined>();
     const border = active ? `none` : theme.colors.background;
-    const background = active ? theme.colors.brand[500] : theme.colors.background;
+    const background = active ? "#006edc" : theme.colors.background;
     const color = active ? theme.colors.accent[50] : "";
     const handleSlotClicked = () => {
         setActive(slot?.startTime);
@@ -40,7 +40,7 @@ const TimeSlotComponent: React.FC<TimeSlotProps> = ({ slot }) => {
 const DeliveryInfo: React.FC<DeliveryInfoProps> = ({ timeSlots, mobileFlow }) => {
     const marginLeft = mobileFlow ? "-13px" : "-17px";
     return(
-        <Grid gridTemplateRows="35px 80px 40px 310px 50px 60px">
+        <Grid gridTemplateRows="35px 80px 40px 340px 50px 60px">
             <Text fontWeight={600}>When would like your order delivered?</Text>
             <Flex background={theme.colors.info} p={2} width="383px" marginLeft={marginLeft} height="60px" alignItems="center" justifyItems="space-between">
                 <Image src={images.infoIcon} height="50%"/>

@@ -157,6 +157,8 @@ const WishlistPage: React.FC = () => {
     refetch();
   }, [refetch]);
 
+  const confirmationText = `You are about to delete these items in your wishlist? Once they are removed, you’ll have to re-add them to your wishlist manually.`;
+
   return (
     <PageWrap
         title="My Wishlist"
@@ -197,6 +199,7 @@ const WishlistPage: React.FC = () => {
                 }
                 {
                   showDeleteItemsModal && <DeleteItemsModal
+                                            confirmationText={confirmationText}
                                             handleCancelButtonClicked={handleCancelButtonClicked}
                                             handleDeleteButtonClicked={handleModalDeleteButtonClicked} />
                 }
