@@ -68,6 +68,8 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
   }
   const setShowPaymentsOption = () => {}
 
+  const handleDelete = () => {}
+
   return (
     <PageWrap
       title="Checkout"
@@ -81,8 +83,8 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
       {showDeleteItemsModal && (
         <DeleteItemsModal
           confirmationText={confirmationTextAddress}
-          handleCancelButtonClicked={() => {}}
-          handleDeleteButtonClicked={() => {}}
+          handleCancelButtonClicked={() => setShowDeleteItemsModal(false)}
+          handleDeleteButtonClicked={() => handleDelete()}
         />
       )}
       {showDeleteCardModal && (
@@ -145,16 +147,6 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                     {deliveryAddressInfoStage && (
                       <Flex flexDirection="column">
                         <DeliveryAddressForm />
-                        <Flex mt={35}>
-                          <NextButton
-                            type="submit"
-                            active={active}
-                            disabled={!isEmpty(errors)}
-                            setActive={() => {}}
-                          >
-                            ADD NEW ADDRESS
-                          </NextButton>
-                        </Flex>
                       </Flex>
                     )}
                     {deliveryDetailsStage && (
@@ -230,11 +222,7 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                       gridTemplateColumns="1fr 50px"
                     >
                       <Flex>
-                        <Text fontSize={14}>{selectedAddress?.street},</Text>
-                        <Text ml={2} mr={2} fontSize={14}>
-                          {selectedAddress?.cityOrTown}{' '}
-                        </Text>
-                        <Text fontSize={14}>({selectedAddress?.contact})</Text>
+                        <Text fontSize={14}>{selectedAddress?.address},</Text>
                       </Flex>
                       <Flex justifySelf="end">
                         <Tag

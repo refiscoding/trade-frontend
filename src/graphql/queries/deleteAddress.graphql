@@ -1,0 +1,5 @@
+# import '/fragments/user.graphql'
+query DeleteAddress($id: ID!) {
+    deleteAddress(id: $id) {
+        ...user
+    }}

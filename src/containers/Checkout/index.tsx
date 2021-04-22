@@ -8,14 +8,15 @@ import { useMediaQuery } from 'react-responsive'
 
 import CheckoutWebFlow from './CheckoutFlowWeb'
 import CheckoutMobileFlow from './CheckoutFlowMobile'
-import { Address, TimeSlot } from './AddressComponent'
+import { TimeSlot } from './AddressComponent'
 
 import { Card } from './CardComponent'
 import { CartProduct } from '../Cart'
 import { ERROR_TOAST, mapsScriptUrl } from '../../constants'
-import { useFetchUsersCartQuery } from '../../generated/graphql'
+import { useFetchUsersCartQuery, ComponentLocationAddress } from '../../generated/graphql'
 import { PageWrap } from '../../layouts'
-import { addresses, timeSlots, cards } from './dummyData'
+import { timeSlots, cards } from './dummyData'
+import { useAuthContext } from '../../context/AuthProvider'
 
 export const DeliveryAddressValidation = Yup.object().shape({
   street: Yup.string().required('Street Address is required'),
@@ -56,7 +57,7 @@ export type CheckoutProps = {
   active: number
   deliveryFee: number
   cards: Card[]
-  addresses: Address[]
+  addresses?: ComponentLocationAddress[]
   timeSlots: TimeSlot[]
   checkoutTotal: number
   noCardDataHeader: string
@@ -70,16 +71,19 @@ export type CheckoutProps = {
   setActiveStep: (step: number) => void
   showDeleteItemsModal: boolean | undefined
   showDeleteCardModal: boolean | undefined
-  selectedAddress: SelectedAddress | undefined
+  selectedAddress: ComponentLocationAddress | undefined
   setShowDeleteCardModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
   setShowDeleteItemsModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
-  setSelectedAddress: React.Dispatch<React.SetStateAction<SelectedAddress | undefined>>
+  setSelectedAddress: React.Dispatch<React.SetStateAction<ComponentLocationAddress | undefined>>
 }
 
 const CheckoutPage: React.FC = () => {
+  const { user } = useAuthContext()
   const toast = useToast()
   const [active, setActive] = React.useState<number>(0)
-  const [selectedAddress, setSelectedAddress] = React.useState<SelectedAddress | undefined>()
+  const [selectedAddress, setSelectedAddress] = React.useState<
+    ComponentLocationAddress | undefined
+  >()
   const [showDeleteItemsModal, setShowDeleteItemsModal] = React.useState<boolean | undefined>()
   const [showDeleteCardModal, setShowDeleteCardModal] = React.useState<boolean | undefined>()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
@@ -121,6 +125,8 @@ const CheckoutPage: React.FC = () => {
   const tradeFinanceMargin = 100
 
   const checkoutTotal = productPricesTotal + deliveryFee + tradeFinanceMargin
+
+  const addresses = user?.address as ComponentLocationAddress[]
 
   return (
     <PageWrap title="" script={mapsScriptUrl}>

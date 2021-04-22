@@ -1,19 +1,46 @@
 import * as React from 'react'
 
-import { Grid, Flex } from '@chakra-ui/core'
+import { Grid, Flex, useToast } from '@chakra-ui/core'
 
 import Input, { Label } from './Input'
 import OnboardingAddress from '../OnboardingUserDetails/OnboardingAddress'
+import { ComponentLocationAddressInput, useUpdateAddressMutation } from '../../generated/graphql'
+import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
+import { useAuthContext } from '../../context/AuthProvider'
 
 type DeliveryAddressFormProps = {}
 
+type DetailsInput = {
+  address?: ComponentLocationAddressInput
+}
+
 const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = () => {
+  const { setUser } = useAuthContext()
   const [addressTypeChecked, setAddressTypeChecked] = React.useState<string>('business')
+  const toast = useToast()
 
   const handleAddressTypeChanged = (addressType: string, checked: boolean) => {
     if (checked) {
       setAddressTypeChecked(addressType)
     }
+  }
+
+  const [updateAddress] = useUpdateAddressMutation({
+    onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
+    // @ts-ignore
+    onCompleted: async ({ updateAddress }) => {
+      if (updateAddress?.profileCompleted && setUser) {
+        setUser(updateAddress)
+        toast({
+          description: 'Successfully added your details!',
+          ...SUCCESS_TOAST
+        })
+      }
+    }
+  })
+
+  const handleUserDetails = async (details: DetailsInput) => {
+    await updateAddress({ variables: { input: details.address } })
   }
 
   const addressTypes = [
@@ -47,7 +74,11 @@ const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = () => {
           </Flex>
         ))}
       </Grid>
-      <OnboardingAddress hideTitle={true} handleUserDetails={() => {}} />
+      <OnboardingAddress
+        hideTitle={true}
+        handleUserDetails={handleUserDetails}
+        buttonLabel="ADD NEW ADDRESS"
+      />
     </Flex>
   )
 }

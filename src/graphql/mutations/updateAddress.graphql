@@ -1,0 +1,6 @@
+# import '/fragments/user.graphql'
+mutation updateAddress($input: editComponentLocationAddressInput) {
+  updateAddress(input: $input) {
+    ...user
+  }
+}
