@@ -1,7 +1,6 @@
 import * as React from 'react'
 
 import { Grid, Flex } from '@chakra-ui/core'
-import { ConnectedFormGroup } from '../../components/FormElements'
 
 import Input, { Label } from './Input'
 import OnboardingAddress from '../OnboardingUserDetails/OnboardingAddress'

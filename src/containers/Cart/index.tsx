@@ -196,8 +196,7 @@ const CartPage: React.FC = () => {
     refetch()
   }, [refetch])
 
-  const confirmationText = `You are about to delete these items in your cart? Once they are removed, you’ll have to re-add them to your cart manually.`;
-
+  const confirmationText = `You are about to delete these items in your cart? Once they are removed, you’ll have to re-add them to your cart manually.`
 
   return (
     <PageWrap
@@ -207,68 +206,100 @@ const CartPage: React.FC = () => {
       backgroundSize="cover"
       justify="center"
     >
-      {
-        loading || movingLoading
-          ? (<Spinner />)
-          : emptyCartProducts || !noCart
-          ? (< EmptyStateComponent isCart />)
-          : (
-            <React.Fragment>
-              <CartPageHeader isTabletOrMobile={isTabletOrMobile} onClick={handleEditCartClicked} editing={editing} numberOfItems={itemsCount} cartTotal={cartTotal} />
-              <Flex ml={5} width="80%" justifyContent="space-between">
-                <Flex width="100%" flexDirection="column">
-                  {
-                    productsOnly?.map((product: Product) => (
-                      <ProductCard
-                        width={"100%"}
-                        key={`${product?.id}-${Math.random()}`}
-                        isWishlist={false}
-                        isCart
-                        product={product}
-                        handleClick={editing ? handleCartProductClickedEditing : navigateToProduct }
-                        editing={editing}
-                        handleIconClick={handleCartProductClickedNormal}
-                      />
-                    ))
-                  }
-                </Flex>
-                {
-                  !isTabletOrMobile && (
-                    <Flex m={2} borderRadius={5} p={3} flexDirection="column" width="250px" height="180px" background="white">
-                      <H3 textAlign="left" fontSize={16} fontWeight={600}>Cart Summary</H3>
-                      <Text fontSize={10} mt={4} color="blue">{ `Cart Total (${itemsCount}): R ${cartTotal}.00`}</Text>
-                      <Button alignSelf="center" onClick={handleEditCartClicked} mt={4} width="95%" type="submit" border={`1px solid ${theme.colors.brand[500]}`} background="white">
-                        EDIT
-                      </Button>
-                      <Button alignSelf="center" onClick={handleCheckoutButtonClicked} mt={4} width="95%" type="submit" variantColor="brand">
-                        CHECKOUT
-                      </Button>
-                    </Flex>
-                  )
-                }
-              </Flex>
-              {
-                  isTabletOrMobile && (
-                    <Button alignSelf="center" onClick={handleCheckoutButtonClicked} mt={4} width="95%" type="submit" variantColor="brand">
-                      CHECKOUT
-                    </Button>
-                  )
-              }
-              {
-                editing && (<DeleteItemsButton handleDeleteButtonClicked={handleDeleteButtonClicked} />)
-              }
-              {
-                showDeleteItemsModal && <DeleteItemsModal
+      {loading || movingLoading ? (
+        <Spinner />
+      ) : emptyCartProducts || !noCart ? (
+        <EmptyStateComponent isCart />
+      ) : (
+        <React.Fragment>
+          <CartPageHeader
+            isTabletOrMobile={isTabletOrMobile}
+            onClick={handleEditCartClicked}
+            editing={editing}
+            numberOfItems={itemsCount}
+            cartTotal={cartTotal}
+          />
+          <Flex ml={5} width="80%" justifyContent="space-between">
+            <Flex width="100%" flexDirection="column">
+              {productsOnly?.map((product: Product) => (
+                <ProductCard
+                  width={'100%'}
+                  key={`${product?.id}-${Math.random()}`}
+                  isWishlist={false}
                   isCart
-                  confirmationText={confirmationText}
-                  handleCancelButtonClicked={handleCancelButtonClicked}
-                  handleDeleteButtonClicked={handleModalDeleteButtonClicked} />
-              }
-            </React.Fragment>
-          )
-      }
-      {
-        !isTabletOrMobile &&
+                  product={product}
+                  handleClick={editing ? handleCartProductClickedEditing : navigateToProduct}
+                  editing={editing}
+                  handleIconClick={handleCartProductClickedNormal}
+                />
+              ))}
+            </Flex>
+            {!isTabletOrMobile && (
+              <Flex
+                m={2}
+                borderRadius={5}
+                p={3}
+                flexDirection="column"
+                width="250px"
+                height="180px"
+                background="white"
+              >
+                <H3 textAlign="left" fontSize={16} fontWeight={600}>
+                  Cart Summary
+                </H3>
+                <Text
+                  fontSize={10}
+                  mt={4}
+                  color="blue"
+                >{`Cart Total (${itemsCount}): R ${cartTotal}.00`}</Text>
+                <Button
+                  alignSelf="center"
+                  onClick={handleEditCartClicked}
+                  mt={4}
+                  width="95%"
+                  type="submit"
+                  border={`1px solid ${theme.colors.brand[500]}`}
+                  background="white"
+                >
+                  EDIT
+                </Button>
+                <Button
+                  alignSelf="center"
+                  onClick={handleCheckoutButtonClicked}
+                  mt={4}
+                  width="95%"
+                  type="submit"
+                  variantColor="brand"
+                >
+                  CHECKOUT
+                </Button>
+              </Flex>
+            )}
+          </Flex>
+          {isTabletOrMobile && (
+            <Button
+              alignSelf="center"
+              onClick={handleCheckoutButtonClicked}
+              mt={4}
+              width="95%"
+              type="submit"
+              variantColor="brand"
+            >
+              CHECKOUT
+            </Button>
+          )}
+          {editing && <DeleteItemsButton handleDeleteButtonClicked={handleDeleteButtonClicked} />}
+          {showDeleteItemsModal && (
+            <DeleteItemsModal
+              isCart
+              confirmationText={confirmationText}
+              handleCancelButtonClicked={handleCancelButtonClicked}
+              handleDeleteButtonClicked={handleModalDeleteButtonClicked}
+            />
+          )}
+        </React.Fragment>
+      )}
+      {!isTabletOrMobile && (
         <Flex ml={5} mt={3} width="100%" flexDirection="column" alignItems="center">
           <Section title="Today’s Best Deals">
             {discountDeals?.map((product: Product) => (
