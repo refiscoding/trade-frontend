@@ -14,6 +14,7 @@ import { ERROR_TOAST } from '../../constants'
 type AddressProps = {
   handleUserDetails: (details: any) => void
   hideTitle?: boolean
+  buttonLabel?: string
 }
 
 const AddressFormValidation = Yup.object().shape({
@@ -28,8 +29,10 @@ type AddressValues = {
   suburb: string
   city: string
   postalCode: string
+  address?: string
   lat?: number
   lng?: number
+  type?: string
 }
 
 const initialValues = {
@@ -38,10 +41,11 @@ const initialValues = {
   city: '',
   postalCode: '',
   lat: 0,
-  lng: 0
+  lng: 0,
+  type: 'Residential'
 }
 
-const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle }) => {
+const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle, buttonLabel }) => {
   const [defaultValues, setDefaultValues] = useState<AddressValues>(initialValues)
   const {
     value,
@@ -70,6 +74,7 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle }) =
       .then(({ lat, lng }) => {
         setDefaultValues({
           ...defaultValues,
+          address: description,
           lat,
           lng
         })
@@ -104,10 +109,11 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle }) =
     const address = `${complex} ${suburb} ${city}`
     handleUserDetails({
       address: {
-        address,
+        address: defaultValues.address || address,
         postalCode,
         lng: defaultValues.lng,
-        lat: defaultValues.lat
+        lat: defaultValues.lat,
+        type: defaultValues.type
       }
     })
   }
@@ -178,7 +184,7 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle }) =
               </MotionFlex>
             )}
             <Button mt={4} width="100%" type="submit" variantColor="brand" isLoading={isSubmitting}>
-              NEXT
+              {buttonLabel || 'NEXT'}
             </Button>
           </Form>
         )}
