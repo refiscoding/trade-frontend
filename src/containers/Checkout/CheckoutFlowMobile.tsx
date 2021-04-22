@@ -179,14 +179,16 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
     setShowPaymentOptions(true)
   }
 
+  const handleDelete = () => {}
+
   return (
     <React.Fragment>
       <PageWrap title="Checkout" alignSelf="center" width="100%">
         {showDeleteItemsModal && (
           <DeleteItemsModal
             confirmationText={confirmationTextAddress}
-            handleCancelButtonClicked={() => {}}
-            handleDeleteButtonClicked={() => {}}
+            handleCancelButtonClicked={() => setShowDeleteItemsModal(false)}
+            handleDeleteButtonClicked={() => handleDelete()}
           />
         )}
         {showDeleteCardModal && (

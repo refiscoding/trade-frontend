@@ -68,6 +68,8 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
   }
   const setShowPaymentsOption = () => {}
 
+  const handleDelete = () => {}
+
   return (
     <PageWrap
       title="Checkout"
@@ -81,8 +83,8 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
       {showDeleteItemsModal && (
         <DeleteItemsModal
           confirmationText={confirmationTextAddress}
-          handleCancelButtonClicked={() => {}}
-          handleDeleteButtonClicked={() => {}}
+          handleCancelButtonClicked={() => setShowDeleteItemsModal(false)}
+          handleDeleteButtonClicked={() => handleDelete()}
         />
       )}
       {showDeleteCardModal && (

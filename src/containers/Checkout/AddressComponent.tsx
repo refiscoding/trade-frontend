@@ -40,7 +40,6 @@ type AddressDetailsComponentProps = {
 
 const AddressDetailsComponent: React.FC<AddressDetailsComponentProps> = ({ address }) => (
   <React.Fragment>
-    <Text fontSize={14}>{address?.address} </Text>
     <Text fontSize={14}>{address?.postalCode} </Text>
     <Text mt={3} fontSize={14}></Text>
   </React.Fragment>
