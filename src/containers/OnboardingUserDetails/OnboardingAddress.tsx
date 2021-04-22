@@ -1,4 +1,4 @@
-import { Button, Flex, useToast } from "@chakra-ui/core";
+import { Button, Flex, useToast } from '@chakra-ui/core'
 import { Form, Formik, FormikProps } from 'formik'
 import * as React from 'react'
 import * as Yup from 'yup'
@@ -13,6 +13,7 @@ import { ERROR_TOAST } from '../../constants'
 
 type AddressProps = {
   handleUserDetails: (details: any) => void
+  hideTitle?: boolean
 }
 
 const AddressFormValidation = Yup.object().shape({
@@ -40,7 +41,7 @@ const initialValues = {
   lng: 0
 }
 
-const UserDetails: React.FC<AddressProps> = ({ handleUserDetails }) => {
+const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle }) => {
   const [defaultValues, setDefaultValues] = useState<AddressValues>(initialValues)
   const {
     value,
@@ -63,10 +64,7 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails }) => {
     clearSuggestions()
 
     getGeocode({
-      address: description,
-      componentRestrictions: {
-        country: 'RSA'
-      }
+      address: description
     })
       .then((results) => getLatLng(results[0]))
       .then(({ lat, lng }) => {
@@ -88,12 +86,17 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails }) => {
   const renderSuggestions = () =>
     data.map((suggestion) => {
       const suggestedplaces = suggestion
-
       return (
-        <li key={suggestedplaces.place_id} onClick={handleSelect(suggestion)}>
+        <Flex
+          cursor="pointer"
+          bg="white"
+          p={2}
+          key={suggestedplaces.place_id}
+          onClick={handleSelect(suggestion)}
+        >
           <Text fontWeight={600}>{suggestedplaces.structured_formatting.main_text}</Text>
           <Text>{suggestedplaces.structured_formatting.secondary_text}</Text>
-        </li>
+        </Flex>
       )
     })
 
@@ -111,12 +114,14 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails }) => {
 
   return (
     <React.Fragment>
-      <Flex width="100%" mb={4} flexDirection="column">
-        <H3 textAlign="left">Let’s get to know you.</H3>
-        <Text textAlign="left" fontSize="14px">
-          Fill out some information about yourself to get started.
-        </Text>
-      </Flex>
+      {!hideTitle && (
+        <Flex width="100%" mb={4} flexDirection="column">
+          <H3 textAlign="left">Let’s get to know you.</H3>
+          <Text textAlign="left" fontSize="14px">
+            Fill out some information about yourself to get started.
+          </Text>
+        </Flex>
+      )}
       <Formik
         validationSchema={AddressFormValidation}
         initialValues={defaultValues}
@@ -133,7 +138,7 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails }) => {
       >
         {({ isSubmitting, status }: FormikProps<AddressValues>) => (
           <Form style={{ width: '100%' }}>
-            <Flex flexDirection="column">
+            <Flex flexDirection="column" position="relative">
               <ConnectedFormGroup
                 label="Enter your street address*"
                 name="address"
@@ -143,7 +148,18 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails }) => {
                 value={value}
                 onChange={handleInput}
               />
-              {resultsStatus === 'OK' && <Flex flexDirection="column">{renderSuggestions()}</Flex>}
+              {resultsStatus === 'OK' && (
+                <Flex
+                  flexDirection="column"
+                  position="absolute"
+                  height="200px"
+                  zIndex={15}
+                  width="100%"
+                  bottom={-200}
+                >
+                  {renderSuggestions()}
+                </Flex>
+              )}
             </Flex>
             <ConnectedFormGroup
               label="Complex / Building (Optional)"
