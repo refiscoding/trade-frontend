@@ -3,7 +3,6 @@ import * as React from 'react'
 import { Button } from '@chakra-ui/core'
 import CardsContainer from './CardsContainer'
 import CardComponent, { Card } from './CardComponent'
-import NextButton from './Button'
 import { useHistory } from 'react-router-dom'
 
 type CardsProps = {
