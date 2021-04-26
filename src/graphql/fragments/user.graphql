@@ -16,6 +16,7 @@ fragment user on UsersPermissionsUser {
     lng
     address
     postalCode
+    type
   }
   idNumber
   profileCompleted

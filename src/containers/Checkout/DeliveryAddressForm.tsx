@@ -4,30 +4,39 @@ import { Grid, Flex, useToast } from '@chakra-ui/core'
 
 import Input, { Label } from './Input'
 import OnboardingAddress from '../OnboardingUserDetails/OnboardingAddress'
-import { ComponentLocationAddressInput, useUpdateAddressMutation } from '../../generated/graphql'
+import {
+  ComponentLocationAddressInput,
+  useUpdateAddressMutation,
+  useEditAddressMutation,
+  ComponentLocationAddress
+} from '../../generated/graphql'
 import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
 import { useAuthContext } from '../../context/AuthProvider'
+import { useEffect } from 'react'
 
-type DeliveryAddressFormProps = {}
+type DeliveryAddressFormProps = {
+  editItem?: ComponentLocationAddress
+}
 
 type DetailsInput = {
   address?: ComponentLocationAddressInput
 }
 
-const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = () => {
+const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = ({ editItem }) => {
   const { setUser } = useAuthContext()
-  const [addressTypeChecked, setAddressTypeChecked] = React.useState<string>('business')
+  const [addressTypeChecked, setAddressTypeChecked] = React.useState<string>('')
   const toast = useToast()
 
-  const handleAddressTypeChanged = (addressType: string, checked: boolean) => {
-    if (checked) {
-      setAddressTypeChecked(addressType)
-    }
+  useEffect(() => {
+    editItem && setAddressTypeChecked(editItem.type || '')
+  }, [editItem])
+
+  const handleAddressTypeChanged = (addressType: string) => {
+    setAddressTypeChecked(addressType)
   }
 
   const [updateAddress] = useUpdateAddressMutation({
     onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
-    // @ts-ignore
     onCompleted: async ({ updateAddress }) => {
       if (updateAddress?.profileCompleted && setUser) {
         setUser(updateAddress)
@@ -39,19 +48,45 @@ const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = () => {
     }
   })
 
+  const [editAddress] = useEditAddressMutation({
+    onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
+    onCompleted: async ({ editAddress }) => {
+      if (editAddress?.profileCompleted && setUser) {
+        setUser(editAddress)
+        toast({
+          description: 'Successfully edited your details!',
+          ...SUCCESS_TOAST
+        })
+      }
+    }
+  })
+
   const handleUserDetails = async (details: DetailsInput) => {
-    await updateAddress({ variables: { input: details.address } })
+    if (editItem) {
+      const { id, address, postalCode, lat, lng, defaultAddress } = editItem
+      return await editAddress({
+        variables: {
+          input: {
+            address,
+            postalCode,
+            lat,
+            lng,
+            defaultAddress,
+            ...details.address,
+            type: addressTypeChecked,
+            id
+          }
+        }
+      })
+    }
+    await updateAddress({ variables: { input: { ...details.address, type: addressTypeChecked } } })
   }
 
   const addressTypes = [
     {
-      value: 'business',
-      changeHandler: handleAddressTypeChanged,
       name: 'Business'
     },
     {
-      value: 'residential',
-      changeHandler: handleAddressTypeChanged,
       name: 'Residential'
     }
   ]
@@ -64,11 +99,9 @@ const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = () => {
             <Input
               type="checkbox"
               name={address?.name}
-              value={address?.value}
-              checked={addressTypeChecked === address?.value}
-              onChange={(event) =>
-                address?.changeHandler(event?.target?.value, event?.target?.checked)
-              }
+              value={addressTypeChecked}
+              checked={addressTypeChecked === address?.name}
+              onChange={() => handleAddressTypeChanged(address?.name)}
             />
             <Label>{address?.name}</Label>
           </Flex>
@@ -77,7 +110,7 @@ const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = () => {
       <OnboardingAddress
         hideTitle={true}
         handleUserDetails={handleUserDetails}
-        buttonLabel="ADD NEW ADDRESS"
+        buttonLabel={editItem ? 'Edit Address' : 'ADD NEW ADDRESS'}
       />
     </Flex>
   )

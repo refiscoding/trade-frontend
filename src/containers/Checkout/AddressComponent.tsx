@@ -1,23 +1,18 @@
 import * as React from 'react'
 
 import { ChevronRight } from 'react-feather'
-import { Grid, GridProps, Flex, Tag } from '@chakra-ui/core'
+import { Grid, GridProps, Flex, Tag, useToast } from '@chakra-ui/core'
 
 import { theme } from '../../theme'
 import { AddressInput } from './Input'
 import { Text } from '../../typography'
-import { ComponentLocationAddress } from '../../generated/graphql'
+import { ComponentLocationAddress, useDeleteAddressLazyQuery } from '../../generated/graphql'
+import DeleteItemsModal from '../../components/DeleteItemsModal'
+import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
+import { useAuthContext } from '../../context/AuthProvider'
+import ModalWrap from '../../components/ModalWrap'
+import DeliveryAddressForm from './DeliveryAddressForm'
 
-export type Address = {
-  name: string
-  type: string
-  street: string
-  buildingComplex: string
-  surburb: string
-  cityOrTown: string
-  postalCode: string
-  contact: string
-}
 export type TimeSlot = {
   date: string
   startTime: string
@@ -54,8 +49,12 @@ const AddressComponent: React.FC<AddressComponentProps> = ({
   setSelectedAddress,
   setActivateButton
 }) => {
+  const { setUser } = useAuthContext()
+  const [showModal, setShowModal] = React.useState<boolean>(false)
+  const [showEditModal, setShowEditModal] = React.useState<boolean>(false)
   const numberOfColumns = mobileFlow ? '1fr' : '10px 1fr'
   const height = mobileFlow ? '220px' : '170px'
+  const toast = useToast()
 
   const clickHandler = !mobileFlow
     ? undefined
@@ -65,11 +64,11 @@ const AddressComponent: React.FC<AddressComponentProps> = ({
       }
 
   const handleEditAddressClicked = () => {
-    console.log('TODO: WEB->Prepouate form')
-    console.log('TODO: MOBILE->Set Step + Prepouate form')
+    setShowEditModal(true)
   }
+
   const handleDeleteAddressClicked = () => {
-    setShowDeleteItemsModal(true)
+    setShowModal(true)
   }
 
   const handleAddressSelected = (addressName: string, checked: boolean) => {
@@ -82,10 +81,48 @@ const AddressComponent: React.FC<AddressComponentProps> = ({
     }
   }
 
+  const [deleteAddressQuery] = useDeleteAddressLazyQuery({
+    onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
+    onCompleted: async ({ deleteAddress }) => {
+      console.log('  ', deleteAddress)
+      if (deleteAddress?.profileCompleted && setUser) {
+        setUser(deleteAddress)
+        toast({
+          description: 'Successfully deleted your address',
+          ...SUCCESS_TOAST
+        })
+      }
+      setShowModal(false)
+    }
+  })
+
   const actionTextStyles = { textDecoration: 'underline', cursor: 'pointer' }
+
+  const handleDelete = (addressId: string) => {
+    deleteAddressQuery({ variables: { id: addressId } })
+  }
 
   return (
     <Grid gridTemplateColumns={numberOfColumns} width="100%" height={height}>
+      {showModal && (
+        <DeleteItemsModal
+          confirmationText={'confirmationTextAddress'}
+          handleCancelButtonClicked={() => setShowModal(false)}
+          handleDeleteButtonClicked={() => handleDelete(address.id)}
+        />
+      )}
+      {showEditModal && (
+        <ModalWrap
+          title="Edit Address"
+          isOpen={true}
+          onClose={() => setShowEditModal(false)}
+          isCentered
+        >
+          <Grid padding={5}>
+            <DeliveryAddressForm editItem={address} />
+          </Grid>
+        </ModalWrap>
+      )}
       {!mobileFlow && (
         <AddressInput
           type="checkbox"
