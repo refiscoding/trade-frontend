@@ -13,6 +13,7 @@ import {
 import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
 import { useAuthContext } from '../../context/AuthProvider'
 import { useEffect } from 'react'
+import { ApolloError } from 'apollo-client'
 
 type DeliveryAddressFormProps = {
   editItem?: ComponentLocationAddress
@@ -36,7 +37,7 @@ const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = ({ editItem }) =
   }
 
   const [updateAddress] = useUpdateAddressMutation({
-    onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
     onCompleted: async ({ updateAddress }) => {
       if (updateAddress?.profileCompleted && setUser) {
         setUser(updateAddress)
@@ -49,7 +50,7 @@ const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = ({ editItem }) =
   })
 
   const [editAddress] = useEditAddressMutation({
-    onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
     onCompleted: async ({ editAddress }) => {
       if (editAddress?.profileCompleted && setUser) {
         setUser(editAddress)

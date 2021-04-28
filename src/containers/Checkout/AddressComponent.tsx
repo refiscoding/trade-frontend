@@ -12,6 +12,7 @@ import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
 import { useAuthContext } from '../../context/AuthProvider'
 import ModalWrap from '../../components/ModalWrap'
 import DeliveryAddressForm from './DeliveryAddressForm'
+import { ApolloError } from 'apollo-client'
 
 export type TimeSlot = {
   date: string
@@ -25,7 +26,6 @@ export type AddressComponentProps = GridProps & {
   addresses: ComponentLocationAddress[]
   setActiveStep: (step: number) => void
   setActivateButton: React.Dispatch<React.SetStateAction<boolean>>
-  setShowDeleteItemsModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
   setSelectedAddress: React.Dispatch<React.SetStateAction<ComponentLocationAddress | undefined>>
 }
 
@@ -45,7 +45,6 @@ const AddressComponent: React.FC<AddressComponentProps> = ({
   addresses: allAddresses,
   mobileFlow,
   setActiveStep,
-  setShowDeleteItemsModal,
   setSelectedAddress,
   setActivateButton
 }) => {
@@ -82,9 +81,8 @@ const AddressComponent: React.FC<AddressComponentProps> = ({
   }
 
   const [deleteAddressQuery] = useDeleteAddressLazyQuery({
-    onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
     onCompleted: async ({ deleteAddress }) => {
-      console.log('  ', deleteAddress)
       if (deleteAddress?.profileCompleted && setUser) {
         setUser(deleteAddress)
         toast({

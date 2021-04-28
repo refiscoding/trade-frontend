@@ -198,7 +198,6 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                     addresses={addresses}
                     setActive={setActiveStep}
                     setSelectedAddress={setSelectedAddress}
-                    setShowDeleteItemsModal={setShowDeleteItemsModal}
                   />
                 )}
                 {deliveryDetailsStage && (

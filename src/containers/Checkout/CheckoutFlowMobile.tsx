@@ -243,7 +243,6 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
                           mobileFlow
                           addresses={addresses}
                           setActive={setActiveStep}
-                          setShowDeleteItemsModal={setShowDeleteItemsModal}
                           setSelectedAddress={setSelectedAddress}
                         />
                       ) : addDeliveryAddressStage ? (
