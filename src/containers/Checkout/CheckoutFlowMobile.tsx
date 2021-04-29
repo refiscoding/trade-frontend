@@ -179,18 +179,9 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
     setShowPaymentOptions(true)
   }
 
-  const handleDelete = () => {}
-
   return (
     <React.Fragment>
       <PageWrap title="Checkout" alignSelf="center" width="100%">
-        {showDeleteItemsModal && (
-          <DeleteItemsModal
-            confirmationText={confirmationTextAddress}
-            handleCancelButtonClicked={() => setShowDeleteItemsModal(false)}
-            handleDeleteButtonClicked={() => handleDelete()}
-          />
-        )}
         {showDeleteCardModal && (
           <DeleteItemsModal
             confirmationText={confirmationTextCard}
@@ -252,7 +243,6 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
                           mobileFlow
                           addresses={addresses}
                           setActive={setActiveStep}
-                          setShowDeleteItemsModal={setShowDeleteItemsModal}
                           setSelectedAddress={setSelectedAddress}
                         />
                       ) : addDeliveryAddressStage ? (

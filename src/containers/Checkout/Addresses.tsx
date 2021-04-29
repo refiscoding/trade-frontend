@@ -9,7 +9,6 @@ type AddressesProps = {
   mobileFlow: boolean
   addresses?: ComponentLocationAddress[]
   setActive: (step: number) => void
-  setShowDeleteItemsModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
   setSelectedAddress: React.Dispatch<React.SetStateAction<ComponentLocationAddress | undefined>>
 }
 
@@ -17,7 +16,6 @@ const AddressesComponent: React.FC<AddressesProps> = ({
   addresses,
   setActive,
   mobileFlow,
-  setShowDeleteItemsModal,
   setSelectedAddress
 }) => {
   const [activateButton, setActivateButton] = React.useState<boolean>(true)
@@ -35,7 +33,6 @@ const AddressesComponent: React.FC<AddressesProps> = ({
               setActiveStep={setActive}
               setSelectedAddress={setSelectedAddress}
               setActivateButton={setActivateButton}
-              setShowDeleteItemsModal={setShowDeleteItemsModal}
             />
           )
         })}

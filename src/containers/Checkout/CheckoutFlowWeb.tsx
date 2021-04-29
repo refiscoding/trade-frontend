@@ -49,10 +49,8 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
   showDeleteCardModal,
   noAddressDataCaption,
   confirmationTextCard,
-  showDeleteItemsModal,
   setShowDeleteCardModal,
-  setShowDeleteItemsModal,
-  confirmationTextAddress
+  setShowDeleteItemsModal
 }) => {
   const history = useHistory()
   const numberOfAddresses = addresses?.length
@@ -68,8 +66,6 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
   }
   const setShowPaymentsOption = () => {}
 
-  const handleDelete = () => {}
-
   return (
     <PageWrap
       title="Checkout"
@@ -80,13 +76,6 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
       p={0}
       script={mapsScriptUrl}
     >
-      {showDeleteItemsModal && (
-        <DeleteItemsModal
-          confirmationText={confirmationTextAddress}
-          handleCancelButtonClicked={() => setShowDeleteItemsModal(false)}
-          handleDeleteButtonClicked={() => handleDelete()}
-        />
-      )}
       {showDeleteCardModal && (
         <DeleteItemsModal
           confirmationText={confirmationTextCard}
@@ -209,7 +198,6 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                     addresses={addresses}
                     setActive={setActiveStep}
                     setSelectedAddress={setSelectedAddress}
-                    setShowDeleteItemsModal={setShowDeleteItemsModal}
                   />
                 )}
                 {deliveryDetailsStage && (
