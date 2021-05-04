@@ -33,6 +33,7 @@ const Cart = lazy(() => import('../containers/Cart'))
 const Checkout = lazy(() => import('../containers/Checkout'))
 const UploadSuccess = lazy(() => import('../containers/ProductCreation/upload-success'))
 const CheckoutSuccess = lazy(() => import('../containers/Checkout/successCheckout'))
+const Orders = lazy(() => import('../containers/Orders'))
 
 const PRIVATE_ROUTES: PrivateRouteObject[] = [
   {
@@ -146,7 +147,14 @@ const PRIVATE_ROUTES: PrivateRouteObject[] = [
     breadcrumb: 'About Us',
     path: '/about-us',
     component: AboutUs
-  }
+  },
+  {
+    exact: true,
+    title: 'Orders',
+    breadcrumb: 'Orders',
+    path: '/orders',
+    component: Orders
+  },
 ]
 
 const PUBLIC_ROUTES = [

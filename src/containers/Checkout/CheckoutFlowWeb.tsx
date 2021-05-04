@@ -18,13 +18,14 @@ import DeliveryAddressForm from './DeliveryAddressForm'
 import ProductCard from '../../components/Card/ProductCard'
 import DeleteItemsModal from '../../components/DeleteItemsModal'
 
+
 import { theme } from '../../theme'
 import { CartProduct } from '../Cart'
 import { PageWrap } from '../../layouts'
 import { Stepper } from '../../components'
 import { H3, Text } from '../../typography'
-import { CheckoutProps, initialDeliveryAddressValues, DeliveryAddressValidation } from '.'
 import { mapsScriptUrl } from '../../constants'
+import { CheckoutProps, initialDeliveryAddressValues, DeliveryAddressValidation } from '.'
 
 const StepperContainer = styled.div`
   margin-top: 15px;
@@ -50,7 +51,12 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
   noAddressDataCaption,
   confirmationTextCard,
   setShowDeleteCardModal,
-  setShowDeleteItemsModal
+  confirmationTextAddress,
+  selectedDeliveryDate,
+  setShowDeleteItemsModal,
+  setSelectedDeliveryDate,
+  selectedDeliveryTimeslot,
+  setSelectedDeliveryTimeslot,
 }) => {
   const history = useHistory()
   const numberOfAddresses = addresses?.length
@@ -140,7 +146,7 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                     )}
                     {deliveryDetailsStage && (
                       <Flex flexDirection="column">
-                        <DeliveryDetails timeSlots={timeSlots} mobileFlow={false} />
+                        <DeliveryDetails timeSlots={timeSlots} mobileFlow={false} setSelectedDeliveryDate={setSelectedDeliveryDate} setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot} selectedDeliveryTimeslot={selectedDeliveryTimeslot} />
                         <NextButton
                           active={active}
                           disabled={false}
@@ -198,6 +204,7 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                     addresses={addresses}
                     setActive={setActiveStep}
                     setSelectedAddress={setSelectedAddress}
+                    confirmationTextAddress={confirmationTextAddress}
                   />
                 )}
                 {deliveryDetailsStage && (
@@ -210,7 +217,8 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                       gridTemplateColumns="1fr 50px"
                     >
                       <Flex>
-                        <Text fontSize={14}>{selectedAddress?.address},</Text>
+                        <Text mr={3} fontSize={14}>{selectedAddress?.name}:</Text>
+                        <Text fontSize={14}>{selectedAddress?.address}</Text>
                       </Flex>
                       <Flex justifySelf="end">
                         <Tag
@@ -253,6 +261,10 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                     checkoutTotal={checkoutTotal}
                     deliveryFee={deliveryFee}
                     tradeFinanceMargin={tradeFinanceMargin}
+                    selectedAddress={selectedAddress}
+                    setActiveStep={setActiveStep}
+                    selectedDeliveryDate={selectedDeliveryDate}
+                    selectedDeliveryTimeslot={selectedDeliveryTimeslot}
                   />
                 )}
                 {confirmPaymentCardStage && (

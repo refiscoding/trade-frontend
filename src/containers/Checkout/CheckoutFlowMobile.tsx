@@ -2,8 +2,9 @@ import * as React from 'react'
 
 import { isEmpty } from 'lodash'
 import { Form, Formik } from 'formik'
-import { Flex, Grid, Image } from '@chakra-ui/core'
+import { Flex, Grid, Image, Button, Tag } from '@chakra-ui/core'
 import { ChevronRight } from 'react-feather'
+import { useHistory } from "react-router";
 
 import { theme, images } from '../../theme'
 import { PageWrap } from '../../layouts'
@@ -81,6 +82,11 @@ const DeliveryItemsComponent: React.FC<DeliveryItemsComponentProps> = ({
   selectedAddress
 }) => {
   const actionTextStyle = { textDecoration: 'underline', cursor: 'pointer' }
+
+  const addressDetails = selectedAddress?.address?.split(",") ?? [];
+  const addressStrings = addressDetails[0]?.split("-");
+  const streetAddress = addressStrings[0]?.trim();
+  const buildingOrComplex = addressStrings[1]?.trim();
   return (
     <Grid
       p={5}
@@ -103,8 +109,22 @@ const DeliveryItemsComponent: React.FC<DeliveryItemsComponentProps> = ({
         </Text>
       </Flex>
       <Flex flexDirection="column">
-        <Text fontSize={14}>{selectedAddress?.address} </Text>
-        <Text fontSize={14}>{selectedAddress?.postalCode} </Text>
+        <Flex justify="space-between">
+          <Text mb={3} fontSize={14}>{selectedAddress?.name} </Text>
+          <Tag
+              fontSize={10}
+              size="sm"
+              background={theme.colors.tag}
+              color={theme.colors.tagText}
+            >
+              {selectedAddress?.type?.toUpperCase()}
+            </Tag>
+        </Flex>
+        <Text fontSize={14}>{streetAddress} </Text>
+        <Text fontSize={14}>{buildingOrComplex} </Text>
+        <Text fontSize={14}>{addressDetails[1]} </Text>
+        <Text fontSize={14}>{addressDetails[2]} </Text>
+        <Text mt={3} fontSize={14}>{selectedAddress?.postalCode} </Text>
       </Flex>
     </Grid>
   )
@@ -112,9 +132,12 @@ const DeliveryItemsComponent: React.FC<DeliveryItemsComponentProps> = ({
 
 type DeliveryInfoComponentProps = {
   timeSlots: TimeSlot[]
+  selectedDeliveryTimeslot: string | undefined
+  setSelectedDeliveryDate: React.Dispatch<React.SetStateAction<Date | Date[]>>
+  setSelectedDeliveryTimeslot: React.Dispatch<React.SetStateAction<string | undefined>>
 }
 
-const DeliveryInfoComponent: React.FC<DeliveryInfoComponentProps> = ({ timeSlots }) => {
+const DeliveryInfoComponent: React.FC<DeliveryInfoComponentProps> = ({ timeSlots, setSelectedDeliveryDate, setSelectedDeliveryTimeslot, selectedDeliveryTimeslot }) => {
   return (
     <Flex flexDirection="column">
       <Flex
@@ -124,7 +147,7 @@ const DeliveryInfoComponent: React.FC<DeliveryInfoComponentProps> = ({ timeSlots
         background={theme.colors.accent[50]}
         boxShadow={theme.boxShadowMedium}
       >
-        <DeliveryDetails mobileFlow timeSlots={timeSlots} />
+        <DeliveryDetails mobileFlow timeSlots={timeSlots} setSelectedDeliveryDate={setSelectedDeliveryDate} setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot} selectedDeliveryTimeslot={selectedDeliveryTimeslot}/>
       </Flex>
     </Flex>
   )
@@ -148,11 +171,16 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
   noAddressDataHeader,
   noAddressDataCaption,
   showDeleteItemsModal,
+  selectedDeliveryDate,
   confirmationTextCard,
   setShowDeleteCardModal,
   confirmationTextAddress,
-  setShowDeleteItemsModal
+  setSelectedDeliveryDate,
+  setShowDeleteItemsModal,
+  selectedDeliveryTimeslot,
+  setSelectedDeliveryTimeslot,
 }) => {
+  const history = useHistory()
   const [showCheckoutItemsModal, setShowCheckoutItemsModal] = React.useState<boolean>()
   const [showPaymentOptions, setShowPaymentOptions] = React.useState<boolean>()
 
@@ -179,11 +207,16 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
     setShowPaymentOptions(true)
   }
 
+  const handlePay = () => {
+    history.push('/checkout-success')
+  };
+
   return (
     <React.Fragment>
       <PageWrap title="Checkout" alignSelf="center" width="100%">
         {showDeleteCardModal && (
           <DeleteItemsModal
+
             confirmationText={confirmationTextCard}
             handleCancelButtonClicked={() => {}}
             handleDeleteButtonClicked={() => {}}
@@ -243,6 +276,7 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
                           mobileFlow
                           addresses={addresses}
                           setActive={setActiveStep}
+                          confirmationTextAddress={confirmationTextAddress}
                           setSelectedAddress={setSelectedAddress}
                         />
                       ) : addDeliveryAddressStage ? (
@@ -256,7 +290,7 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
                         </NextButton>
                       ) : confirmOrderStage ? (
                         <Flex flexDirection="column">
-                          <DeliveryInfoComponent timeSlots={timeSlots} />
+                          <DeliveryInfoComponent timeSlots={timeSlots} setSelectedDeliveryDate={setSelectedDeliveryDate} setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot} selectedDeliveryTimeslot={selectedDeliveryTimeslot} />
                           <NextButton
                             active={active}
                             disabled={false}
@@ -273,6 +307,10 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
                             checkoutTotal={checkoutTotal}
                             deliveryFee={deliveryFee}
                             tradeFinanceMargin={tradeFinanceMargin}
+                            selectedAddress={selectedAddress}
+                            setActiveStep={setActiveStep}
+                            selectedDeliveryDate={selectedDeliveryDate}
+                            selectedDeliveryTimeslot={selectedDeliveryTimeslot}
                           />
                           <NextButton
                             active={active}
@@ -290,13 +328,24 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
                             checkoutTotal={checkoutTotal}
                             setShowDeleteCardModal={setShowDeleteCardModal}
                           />
-                          <NextButton
+                          <Button
+                            mt={5}
+                            width="100%"
+                            type={"button"}
+                            variantColor="brand"
+                            variant="solid"
+                            isDisabled={false}
+                            onClick={handlePay}
+                        >
+                          {`PAY R ${checkoutTotal}.00`}
+                        </Button>
+                          {/* <NextButton
                             active={active}
                             disabled={false}
                             setActive={() => setActiveStep(4)}
                           >
                             {`PAY R ${checkoutTotal}.00`}
-                          </NextButton>
+                          </NextButton> */}
                           <Text
                             mt={4}
                             style={ctaTextStyles}

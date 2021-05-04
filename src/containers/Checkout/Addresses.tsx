@@ -8,6 +8,7 @@ import { ComponentLocationAddress } from '../../generated/graphql'
 type AddressesProps = {
   mobileFlow: boolean
   addresses?: ComponentLocationAddress[]
+  confirmationTextAddress: string
   setActive: (step: number) => void
   setSelectedAddress: React.Dispatch<React.SetStateAction<ComponentLocationAddress | undefined>>
 }
@@ -16,7 +17,8 @@ const AddressesComponent: React.FC<AddressesProps> = ({
   addresses,
   setActive,
   mobileFlow,
-  setSelectedAddress
+  setSelectedAddress,
+  confirmationTextAddress,
 }) => {
   const [activateButton, setActivateButton] = React.useState<boolean>(true)
 
@@ -31,6 +33,7 @@ const AddressesComponent: React.FC<AddressesProps> = ({
               addresses={addresses}
               mobileFlow={mobileFlow}
               setActiveStep={setActive}
+              confirmationTextAddress={confirmationTextAddress}
               setSelectedAddress={setSelectedAddress}
               setActivateButton={setActivateButton}
             />

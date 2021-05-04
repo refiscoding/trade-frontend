@@ -105,10 +105,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
             </Flex>
             )}
           <Text mt={4} mb={1} fontSize="10px">
-            Retail: {`${product?.price?.currency} ${product?.price?.retailPricePerUnit}`}
+            Retail: {`${product?.price?.currency} ${product?.price?.retailPricePerUnit}.00`}
           </Text>
           <Text mb={2} fontSize="14px" fontWeight={600}>
-            {`${product?.price?.currency} ${product?.price?.pricePerUnit}`}
+            {`${product?.price?.currency} ${product?.price?.pricePerUnit}.00`}
           </Text>
             {isWishlist && <AddToWishlistButton addToWishlist={false} editing={editing} handleOnClick={() => handleIconClick && handleIconClick(product.id)} />}
             {isCart && <AddToWishlistButton addToWishlist editing={editing} handleOnClick={() => handleIconClick && handleIconClick(product.id)} />}

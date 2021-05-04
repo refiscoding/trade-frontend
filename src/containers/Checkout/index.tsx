@@ -51,6 +51,8 @@ export type SelectedAddress = DeliveryAddressValues & {
 export type TimeSlotProps = {
   slot: TimeSlot
   slots?: TimeSlot[]
+  selectedDeliveryTimeslot: string | undefined
+  setSelectedDeliveryTimeslot: React.Dispatch<React.SetStateAction<string | undefined>>
 }
 
 export type CheckoutProps = {
@@ -69,11 +71,15 @@ export type CheckoutProps = {
   noAddressDataCaption: string
   confirmationTextAddress: string
   setActiveStep: (step: number) => void
+  selectedDeliveryDate: Date | Date[]
+  selectedDeliveryTimeslot: string | undefined
   showDeleteItemsModal: boolean | undefined
   showDeleteCardModal: boolean | undefined
   selectedAddress: ComponentLocationAddress | undefined
   setShowDeleteCardModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
   setShowDeleteItemsModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
+  setSelectedDeliveryDate: React.Dispatch<React.SetStateAction<Date | Date[]>>
+  setSelectedDeliveryTimeslot: React.Dispatch<React.SetStateAction<string | undefined>>
   setSelectedAddress: React.Dispatch<React.SetStateAction<ComponentLocationAddress | undefined>>
 }
 
@@ -86,6 +92,8 @@ const CheckoutPage: React.FC = () => {
   >()
   const [showDeleteItemsModal, setShowDeleteItemsModal] = React.useState<boolean | undefined>()
   const [showDeleteCardModal, setShowDeleteCardModal] = React.useState<boolean | undefined>()
+  const [selectedDeliveryDate, setSelectedDeliveryDate] = React.useState<Date | Date[]>(new Date())
+  const [selectedDeliveryTimeslot, setSelectedDeliveryTimeslot] = React.useState<string | undefined>()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
 
   const noAddressDataHeader = 'No Delivery Addresses Here...'
@@ -129,7 +137,7 @@ const CheckoutPage: React.FC = () => {
   const addresses = user?.address as ComponentLocationAddress[]
 
   return (
-    <PageWrap title="" script={mapsScriptUrl}>
+    <PageWrap title="Checkout" script={mapsScriptUrl}>
       {isTabletOrMobile ? (
         <CheckoutMobileFlow
           active={active}
@@ -150,8 +158,12 @@ const CheckoutPage: React.FC = () => {
           showDeleteItemsModal={showDeleteItemsModal}
           noAddressDataCaption={noAddressDataCaption}
           confirmationTextCard={confirmationTextCard}
+          selectedDeliveryDate={selectedDeliveryDate}
           setShowDeleteCardModal={setShowDeleteCardModal}
           confirmationTextAddress={confirmationTextAddress}
+          setSelectedDeliveryDate={setSelectedDeliveryDate}
+          selectedDeliveryTimeslot={selectedDeliveryTimeslot}
+          setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot}
           setShowDeleteItemsModal={setShowDeleteItemsModal}
         />
       ) : (
@@ -174,8 +186,12 @@ const CheckoutPage: React.FC = () => {
           showDeleteItemsModal={showDeleteItemsModal}
           noAddressDataCaption={noAddressDataCaption}
           confirmationTextCard={confirmationTextCard}
+          selectedDeliveryDate={selectedDeliveryDate}
           setShowDeleteCardModal={setShowDeleteCardModal}
           confirmationTextAddress={confirmationTextAddress}
+          setSelectedDeliveryDate={setSelectedDeliveryDate}
+          selectedDeliveryTimeslot={selectedDeliveryTimeslot}
+          setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot}
           setShowDeleteItemsModal={setShowDeleteItemsModal}
         />
       )}

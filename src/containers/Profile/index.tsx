@@ -31,6 +31,9 @@ const Profile: React.FC<ProfileProps> = () => {
   const navigateToDetails = () => {
     history.push('/profile-details')
   }
+  const navigateToOrderHistory = () => {
+    history.push('/orders')
+  }
 
   return (
     <PageWrap title="My Account" width={isTabletOrMobile ? '100%' : '40%'} alignSelf="center">
@@ -89,6 +92,7 @@ const Profile: React.FC<ProfileProps> = () => {
         width="100%"
         justify="space-between"
         alignItems="center"
+        onClick={() => navigateToOrderHistory()}
         backgroundColor="white"
       >
         <Flex width="80%">

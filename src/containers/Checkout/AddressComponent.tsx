@@ -15,7 +15,7 @@ import DeliveryAddressForm from './DeliveryAddressForm'
 import { ApolloError } from 'apollo-client'
 
 export type TimeSlot = {
-  date: string
+  id: string
   startTime: string
   endTime: string
 }
@@ -23,6 +23,7 @@ export type TimeSlot = {
 export type AddressComponentProps = GridProps & {
   mobileFlow: boolean
   address: ComponentLocationAddress
+  confirmationTextAddress: string
   addresses: ComponentLocationAddress[]
   setActiveStep: (step: number) => void
   setActivateButton: React.Dispatch<React.SetStateAction<boolean>>
@@ -33,12 +34,21 @@ type AddressDetailsComponentProps = {
   address: ComponentLocationAddress
 }
 
-const AddressDetailsComponent: React.FC<AddressDetailsComponentProps> = ({ address }) => (
-  <React.Fragment>
-    <Text fontSize={14}>{address?.postalCode} </Text>
-    <Text mt={3} fontSize={14}></Text>
-  </React.Fragment>
-)
+const AddressDetailsComponent: React.FC<AddressDetailsComponentProps> = ({ address }) => {
+  const addressDetails = address?.address?.split(",") ?? [];
+  const addressStrings = addressDetails[0]?.split("-");
+  const streetAddress = addressStrings[0]?.trim();
+  const buildingOrComplex = addressStrings[1]?.trim();
+  return (
+    <React.Fragment>
+      <Text mt={3} fontSize={14}>{streetAddress} </Text>
+      <Text fontSize={14}>{buildingOrComplex} </Text>
+      <Text fontSize={14}>{addressDetails[1]} </Text>
+      <Text fontSize={14}>{addressDetails[2]} </Text>
+      <Text mt={3} fontSize={14}>{address?.postalCode} </Text>
+    </React.Fragment>
+  )
+}
 
 const AddressComponent: React.FC<AddressComponentProps> = ({
   address,
@@ -46,7 +56,8 @@ const AddressComponent: React.FC<AddressComponentProps> = ({
   mobileFlow,
   setActiveStep,
   setSelectedAddress,
-  setActivateButton
+  setActivateButton,
+  confirmationTextAddress
 }) => {
   const { setUser } = useAuthContext()
   const [showModal, setShowModal] = React.useState<boolean>(false)
@@ -104,7 +115,7 @@ const AddressComponent: React.FC<AddressComponentProps> = ({
     <Grid gridTemplateColumns={numberOfColumns} width="100%" height={height}>
       {showModal && (
         <DeleteItemsModal
-          confirmationText={'confirmationTextAddress'}
+          confirmationText={confirmationTextAddress}
           handleCancelButtonClicked={() => setShowModal(false)}
           handleDeleteButtonClicked={() => handleDelete(address.id)}
         />
@@ -130,7 +141,6 @@ const AddressComponent: React.FC<AddressComponentProps> = ({
         />
       )}
       <Grid
-        gridTemplateRows={`30px 1fr 25px`}
         background={theme.colors.accent[50]}
         borderRadius="10px"
         boxShadow={theme.boxShadowLight}
@@ -141,7 +151,7 @@ const AddressComponent: React.FC<AddressComponentProps> = ({
       >
         <Grid gridTemplateColumns="1fr 1fr">
           <Text fontSize={16} fontWeight={600}>
-            {address?.address}
+            {address?.name}
           </Text>
           <Flex justifySelf="end" alignSelf="start">
             <Tag

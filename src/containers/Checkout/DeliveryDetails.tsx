@@ -11,15 +11,21 @@ import { TimeSlot } from "./AddressComponent";
 type DeliveryInfoProps = {
     timeSlots: TimeSlot[]
     mobileFlow: boolean
+    selectedDeliveryTimeslot: string | undefined
+    setSelectedDeliveryDate: React.Dispatch<React.SetStateAction<Date | Date[]>>
+    setSelectedDeliveryTimeslot: React.Dispatch<React.SetStateAction<string | undefined>>
 };
 
-const TimeSlotComponent: React.FC<TimeSlotProps> = ({ slot }) => {
-    const [active, setActive] = React.useState<string | undefined>();
-    const border = active ? `none` : theme.colors.background;
-    const background = active ? "#006edc" : theme.colors.background;
-    const color = active ? theme.colors.accent[50] : "";
+const TimeSlotComponent: React.FC<TimeSlotProps> = ({ slot, setSelectedDeliveryTimeslot, selectedDeliveryTimeslot }) => {
+    const [active, setActive] = React.useState<string>('');
+
+    const theOne = active === selectedDeliveryTimeslot;
+    const border = theOne ? `none` : theme.colors.background;
+    const background = theOne ? "#006edc" : theme.colors.background;
+    const color = theOne ? theme.colors.accent[50] : "";
     const handleSlotClicked = () => {
-        setActive(slot?.startTime);
+        setActive(slot?.id);
+        setSelectedDeliveryTimeslot(slot?.id);
     };
     return (
         <Flex 
@@ -37,7 +43,7 @@ const TimeSlotComponent: React.FC<TimeSlotProps> = ({ slot }) => {
     );
 };
 
-const DeliveryInfo: React.FC<DeliveryInfoProps> = ({ timeSlots, mobileFlow }) => {
+const DeliveryInfo: React.FC<DeliveryInfoProps> = ({ timeSlots, mobileFlow, setSelectedDeliveryDate, setSelectedDeliveryTimeslot, selectedDeliveryTimeslot }) => {
     const marginLeft = mobileFlow ? "-13px" : "-17px";
     return(
         <Grid gridTemplateRows="35px 80px 40px 340px 50px 60px">
@@ -49,13 +55,13 @@ const DeliveryInfo: React.FC<DeliveryInfoProps> = ({ timeSlots, mobileFlow }) =>
                 </Text>
             </Flex>
             <Text fontSize={14} fontWeight={600}>Select a date:</Text>
-            <Calendar />
+            <Calendar setSelectedDeliveryDate={setSelectedDeliveryDate}/>
             <Text mt={5} fontSize={14} fontWeight={600}>Select a time range:</Text>
             <Grid gridTemplateColumns="1fr 1fr 1fr" columnGap="10px" pr={4}>
                 {
                     timeSlots?.map((slot, index) => {
                         return (
-                            <TimeSlotComponent key={`${index}_timelosts`} slot={slot} />
+                            <TimeSlotComponent key={`${index}_timelosts`} slot={slot} setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot} selectedDeliveryTimeslot={selectedDeliveryTimeslot} />
                         );
                     })
                 }

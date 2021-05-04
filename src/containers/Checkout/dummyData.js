@@ -1,16 +1,16 @@
 const timeSlots = [
   {
-    date: '20/04/2021',
-    startTime: '8:00',
+    id: '1',
+    startTime: '08:00',
     endTime: '11:00'
   },
   {
-    date: '20/04/2021',
+    id: '2',
     startTime: '11:00',
     endTime: '14:00'
   },
   {
-    date: '20/04/2021',
+    id: '3',
     startTime: '14:00',
     endTime: '17:00'
   }

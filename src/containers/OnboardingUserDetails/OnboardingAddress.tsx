@@ -1,15 +1,16 @@
-import { Button, Flex, useToast } from '@chakra-ui/core'
-import { Form, Formik, FormikProps } from 'formik'
-import * as React from 'react'
 import * as Yup from 'yup'
+import * as React from 'react'
+import { useState } from 'react'
+import { Form, Formik, FormikProps } from 'formik'
+import { Button, Flex, useToast, Image } from '@chakra-ui/core'
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete'
 
-import { MotionFlex } from '../../components'
-import { ConnectedFormGroup } from '../../components/FormElements'
-import { H3, Text } from '../../typography'
 import { formatError } from '../../utils'
-import { useState } from 'react'
+import { images } from "../../theme"
+import { H3, Text } from '../../typography'
+import { MotionFlex } from '../../components'
 import { ERROR_TOAST } from '../../constants'
+import { ConnectedFormGroup } from '../../components/FormElements'
 
 type AddressProps = {
   handleUserDetails: (details: any) => void
@@ -29,12 +30,24 @@ type AddressValues = {
   suburb: string
   city: string
   postalCode: string
+  name?: string
   address?: string
   lat?: number
   lng?: number
   type?: string
 }
 
+type SelectedSuggestion = {
+  street: string
+  surburb: string
+  cityOrTown: string
+};
+
+const initialSuggestionValues = {
+  street: '',
+  surburb: '',
+  cityOrTown: '',
+}
 const initialValues = {
   complex: '',
   suburb: '',
@@ -42,11 +55,13 @@ const initialValues = {
   postalCode: '',
   lat: 0,
   lng: 0,
-  type: 'Residential'
+  type: 'Residential',
+  name: ''
 }
 
 const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle, buttonLabel }) => {
-  const [defaultValues, setDefaultValues] = useState<AddressValues>(initialValues)
+  const [defaultValues, setDefaultValues] = useState<AddressValues>(initialValues);
+  const [selectedSuggestion, setSelectedSuggestion] = useState<SelectedSuggestion>(initialSuggestionValues);
   const {
     value,
     suggestions: { status, data },
@@ -58,12 +73,24 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle, but
   })
   const resultsStatus = status
   const toast = useToast()
+  const surburbName = selectedSuggestion?.surburb;
+  const streetAddress = selectedSuggestion?.street;
+  const cityOrTownName = selectedSuggestion?.cityOrTown;
+
+  console.log("TODO: Use Selected Location to populate street, surburb, and town", surburbName, streetAddress, cityOrTownName);
 
   const handleInput = (e: any) => {
     setValue(e.target.value)
   }
 
   const handleSelect = ({ description }: any) => () => {
+    const locationDetails = description?.split(",")
+    const selectedLocation = {
+      street: locationDetails[0],
+      surburb: locationDetails[1] && locationDetails[1]?.trim(),
+      cityOrTown: locationDetails[2]
+    };
+    setSelectedSuggestion({ ...selectedLocation });
     setValue(description, false)
     clearSuggestions()
 
@@ -105,18 +132,23 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle, but
       )
     })
 
-  const handleSubmit = ({ complex, suburb, city, postalCode }: AddressValues) => {
-    const address = `${complex} ${suburb} ${city}`
+  const handleSubmit = ({ complex, suburb, city, postalCode, name }: AddressValues) => {
+    const address = `${value} - ${complex}, ${suburb}, ${city}`
     handleUserDetails({
       address: {
         address: defaultValues.address || address,
         postalCode,
         lng: defaultValues.lng,
         lat: defaultValues.lat,
-        type: defaultValues.type
+        type: defaultValues.type,
+        name
       }
     })
   }
+
+  const handleUseCurrentLocation = () => {
+    console.log("TODO: Use current location")
+  };
 
   return (
     <React.Fragment>
@@ -131,11 +163,11 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle, but
       <Formik
         validationSchema={AddressFormValidation}
         initialValues={defaultValues}
-        onSubmit={async ({ complex, suburb, city, postalCode }, { setStatus, setSubmitting }) => {
+        onSubmit={async ({ complex, suburb, city, postalCode, name }, { setStatus, setSubmitting }) => {
           setStatus(null)
           try {
             setSubmitting(true)
-            handleSubmit({ complex, suburb, city, postalCode })
+            handleSubmit({ complex, suburb, city, postalCode, name })
             setSubmitting(false)
           } catch (error) {
             setStatus(formatError(error))
@@ -144,12 +176,14 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle, but
       >
         {({ isSubmitting, status }: FormikProps<AddressValues>) => (
           <Form style={{ width: '100%' }}>
+            <ConnectedFormGroup label="Address Name*" name="name" type="text" placeholder="Eg. Mum's Place" />
+
             <Flex flexDirection="column" position="relative">
               <ConnectedFormGroup
                 label="Enter your street address*"
                 name="address"
                 type="text"
-                placeholder="Eg. 12 Ridge Street"
+                placeholder="Eg. 56 Gauteng Road"
                 mb={1}
                 value={value}
                 onChange={handleInput}
@@ -166,16 +200,20 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle, but
                   {renderSuggestions()}
                 </Flex>
               )}
+              <Flex justify="space-between" mb={4}>
+                <Text onClick={handleUseCurrentLocation} style={{ cursor: "pointer", textDecoration: "underline" }} fontSize={12}>Use My Current Location</Text>
+                <Image justifySelf="end" width="40%" src={images.PoweredByGoogle} />
+              </Flex>
             </Flex>
             <ConnectedFormGroup
               label="Complex / Building (Optional)"
               name="complex"
               type="text"
-              placeholder="Complex or Building Name, unit number or floor"
+              placeholder="Eg. Complex/Building Name, Unit Number or Floor"
             />
-            <ConnectedFormGroup label="Suburb*" name="suburb" type="text" />
-            <ConnectedFormGroup label="City / Town*" name="city" type="text" />
-            <ConnectedFormGroup label="Postal Code*" name="postalCode" type="text" />
+            <ConnectedFormGroup label="Suburb*" name="suburb" type="text" placeholder="Eg. Langaville" />
+            <ConnectedFormGroup label="City / Town*" name="city" type="text" placeholder="Eg. Brakpan" />
+            <ConnectedFormGroup label="Postal Code*" name="postalCode" type="text" placeholder="Eg. 1540" />
             {status && (
               <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
                 <Text textAlign="right" color="red.500">
