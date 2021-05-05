@@ -111,7 +111,8 @@ const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = ({ editItem }) =
       <OnboardingAddress
         hideTitle={true}
         handleUserDetails={handleUserDetails}
-        buttonLabel={editItem ? 'Edit Address' : 'ADD NEW ADDRESS'}
+        buttonLabel={editItem ? 'EDIT ADDRESS' : 'ADD NEW ADDRESS'}
+        editItem={editItem}
       />
     </Flex>
   )

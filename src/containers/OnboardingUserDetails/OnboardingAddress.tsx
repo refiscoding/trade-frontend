@@ -11,11 +11,13 @@ import { H3, Text } from '../../typography'
 import { MotionFlex } from '../../components'
 import { ERROR_TOAST } from '../../constants'
 import { ConnectedFormGroup } from '../../components/FormElements'
+import { ComponentLocationAddress } from '../../generated/graphql'
 
 type AddressProps = {
   handleUserDetails: (details: any) => void
   hideTitle?: boolean
   buttonLabel?: string
+  editItem?: ComponentLocationAddress
 }
 
 const AddressFormValidation = Yup.object().shape({
@@ -43,25 +45,33 @@ type SelectedSuggestion = {
   cityOrTown: string
 };
 
-const initialSuggestionValues = {
-  street: '',
-  surburb: '',
-  cityOrTown: '',
-}
-const initialValues = {
-  complex: '',
-  suburb: '',
-  city: '',
-  postalCode: '',
-  lat: 0,
-  lng: 0,
-  type: 'Residential',
-  name: ''
-}
+const morphAddressString = (addressString: string) => {
+  const locationDetails = addressString?.split(",")
+  const selectedLocation = {
+    street: locationDetails[0],
+    surburb: locationDetails[1] && locationDetails[1]?.trim(),
+    cityOrTown: locationDetails[2] && locationDetails[2]?.trim()
+  };
+  return selectedLocation
+};
 
-const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle, buttonLabel }) => {
+
+
+const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle, buttonLabel, editItem }) => {
+  const addressString = (editItem ? editItem?.address : '') ?? '';
+  const addressObject = editItem && morphAddressString(addressString)
+
+  const initialValues = {
+    complex: '',
+    suburb: addressObject?.surburb || '',
+    city: addressObject?.cityOrTown || '',
+    postalCode: editItem?.postalCode || '',
+    lat: editItem?.lat || 0,
+    lng: editItem?.lng || 0,
+    type: editItem?.type || 'Residential',
+    name: editItem?.name || ''
+  }
   const [defaultValues, setDefaultValues] = useState<AddressValues>(initialValues);
-  const [selectedSuggestion, setSelectedSuggestion] = useState<SelectedSuggestion>(initialSuggestionValues);
   const {
     value,
     suggestions: { status, data },
@@ -73,11 +83,6 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle, but
   })
   const resultsStatus = status
   const toast = useToast()
-  const surburbName = selectedSuggestion?.surburb;
-  const streetAddress = selectedSuggestion?.street;
-  const cityOrTownName = selectedSuggestion?.cityOrTown;
-
-  console.log("TODO: Use Selected Location to populate street, surburb, and town", surburbName, streetAddress, cityOrTownName);
 
   const handleInput = (e: any) => {
     setValue(e.target.value)
@@ -88,9 +93,8 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle, but
     const selectedLocation = {
       street: locationDetails[0],
       surburb: locationDetails[1] && locationDetails[1]?.trim(),
-      cityOrTown: locationDetails[2]
+      cityOrTown: locationDetails[2] && locationDetails[2]?.trim()
     };
-    setSelectedSuggestion({ ...selectedLocation });
     setValue(description, false)
     clearSuggestions()
 
@@ -103,7 +107,9 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle, but
           ...defaultValues,
           address: description,
           lat,
-          lng
+          lng,
+          suburb: selectedLocation?.surburb,
+          city: selectedLocation?.cityOrTown
         })
       })
       .catch((error) => {
@@ -134,6 +140,7 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle, but
 
   const handleSubmit = ({ complex, suburb, city, postalCode, name }: AddressValues) => {
     const address = `${value} - ${complex}, ${suburb}, ${city}`
+
     handleUserDetails({
       address: {
         address: defaultValues.address || address,

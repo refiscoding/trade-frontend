@@ -15,7 +15,7 @@ const PersonalDetailsComponent: React.FC<ProfileProps> = ({ user }) => {
   })
 
   const styles = {
-    width: isWebViewport ? '35%' : '100%',
+    width: isWebViewport ? '40%' : '100%',
     justifySelf: isWebViewport ? 'center' : ''
   }
   const getAccountType = (isSeller: string) => {
@@ -88,7 +88,7 @@ const PersonalDetailsComponent: React.FC<ProfileProps> = ({ user }) => {
           <Text fontSize={12}>{user?.phoneNumber}</Text>
         </Flex>
       </Flex>
-      <Flex height="40px" width="100%" alignItems="center">
+      <Flex width="100%" alignItems="center">
         <Flex width="30%">
           <Text fontSize={12} fontWeight="bold">
             ID Number
@@ -98,19 +98,19 @@ const PersonalDetailsComponent: React.FC<ProfileProps> = ({ user }) => {
           <Text fontSize={12}>{user?.idNumber}</Text>
         </Flex>
       </Flex>
-      <Flex height="40px" width="100%" alignItems="center">
+      <Flex mt={2} width="100%" alignItems="center">
         <Flex width="30%">
           <Text fontSize={12} fontWeight="bold">
             Address
           </Text>
         </Flex>
-        <Flex width="70%" pl={5} pb={2} borderBottom="1px solid" borderColor="brand.50">
+        <Flex maxHeight={isWebViewport ? "120px" : "80px"} overflowY="scroll" flexDirection="column" width="70%" pl={5} pb={2} borderBottom="1px solid" borderColor="brand.50">
           {user?.address?.map((address) => (
-            <Text fontSize={12}>{address?.address}</Text>
+            <Text fontSize={11} mb={2}>{address?.address}</Text>
           ))}
         </Flex>
       </Flex>
-      <Flex minHeight="40px" width="100%" alignItems="flex-start">
+      <Flex mt={2} width="100%" alignItems="flex-start">
         <Flex width="30%">
           <Text fontSize={12} fontWeight="bold">
             Interests
