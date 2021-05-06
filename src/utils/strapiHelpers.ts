@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios'
 import { fetchJwt } from '.'
-import { UploadFile, UsersPermissionsUser } from '../generated/graphql'
+import { CartProduct } from '../containers/Cart';
+import { ComponentLocationAddress, UploadFile, UsersPermissionsUser } from '../generated/graphql'
 
 const BASE = process.env.REACT_APP_API_HOST || ''
 const CLIENT_BASE = window.location.origin || '';
@@ -92,4 +93,29 @@ const upload = async (
   }
 }
 
-export default { forgotPassword, resetPassword, login, register, providerAuth, upload }
+const sendOrderSummaryEmail = async (
+  cartProducts: CartProduct[], 
+  user: UsersPermissionsUser | undefined, 
+  address: ComponentLocationAddress | undefined, 
+  selectedDeliveryDate: Date | Date[]) => {
+  const data = {
+    products: cartProducts,
+    username: user?.firstName,
+    email: user?.email,
+    address,
+    date: selectedDeliveryDate
+  };
+  try {
+    return await axios.post(`${BASE}/carts/orderSummaryEmail`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${fetchJwt()}`
+      }
+    })
+  } catch (error) {
+    return Promise.reject(error)
+  }
+
+};
+
+export default { forgotPassword, resetPassword, login, register, providerAuth, upload, sendOrderSummaryEmail }

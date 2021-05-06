@@ -70,7 +70,7 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
   const handleCancelButtonClicked = () => {
     history.push('/cart')
   }
-  const setShowPaymentsOption = () => {}
+  const setShowPaymentsOption = () => { }
 
   return (
     <PageWrap
@@ -85,8 +85,8 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
       {showDeleteCardModal && (
         <DeleteItemsModal
           confirmationText={confirmationTextCard}
-          handleCancelButtonClicked={() => {}}
-          handleDeleteButtonClicked={() => {}}
+          handleCancelButtonClicked={() => { }}
+          handleDeleteButtonClicked={() => { }}
         />
       )}
       <Grid gridTemplateRows="130px 1fr">
@@ -134,7 +134,7 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
             <Formik
               validationSchema={DeliveryAddressValidation}
               initialValues={initialDeliveryAddressValues}
-              onSubmit={() => {}}
+              onSubmit={() => { }}
             >
               {({ errors }) => {
                 return (
@@ -180,7 +180,7 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                           type="submit"
                           active={active}
                           disabled={!isEmpty(errors)}
-                          setActive={() => {}}
+                          setActive={() => { }}
                         >
                           ADD NEW CARD
                         </NextButton>
@@ -247,8 +247,8 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                           editing={false}
                           isWishlist={false}
                           product={product?.product}
-                          handleClick={() => {}}
-                          handleIconClick={() => {}}
+                          handleClick={() => { }}
+                          handleIconClick={() => { }}
                         />
                       ))}
                     </Flex>
@@ -269,9 +269,12 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                 )}
                 {confirmPaymentCardStage && (
                   <CardsComponent
-                    mobileFlow={false}
                     cards={cards}
+                    mobileFlow={false}
+                    cartProducts={cartProducts}
                     checkoutTotal={checkoutTotal}
+                    selectedAddress={selectedAddress}
+                    selectedDeliveryDate={selectedDeliveryDate}
                     setShowDeleteCardModal={setShowDeleteCardModal}
                   />
                 )}

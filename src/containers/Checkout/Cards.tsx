@@ -1,27 +1,44 @@
 import * as React from 'react'
 
 import { Button } from '@chakra-ui/core'
-import CardsContainer from './CardsContainer'
-import CardComponent, { Card } from './CardComponent'
 import { useHistory } from 'react-router-dom'
+
+import CardsContainer from './CardsContainer'
+import StrapiHelpers from '../../utils/strapiHelpers'
+import CardComponent, { Card } from './CardComponent'
+
+import { CartProduct } from '../Cart'
+import { useAuthContext } from "../../context/AuthProvider";
+import { ComponentLocationAddress } from '../../generated/graphql'
+
 
 type CardsProps = {
   cards: Card[]
   mobileFlow: boolean
   checkoutTotal: number
+  selectedDeliveryDate: Date | Date[]
+  cartProducts?: CartProduct[]
+  selectedAddress: ComponentLocationAddress | undefined
   setShowDeleteCardModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
 }
 
 const CardsComponent: React.FC<CardsProps> = ({
   cards,
   mobileFlow,
+  cartProducts,
   checkoutTotal,
+  selectedAddress,
+  selectedDeliveryDate,
   setShowDeleteCardModal
 }) => {
   const history = useHistory()
+  const { user } = useAuthContext()
 
   const handlePay = () => {
-    history.push('/checkout-success')
+    if (cartProducts) {
+      StrapiHelpers.sendOrderSummaryEmail(cartProducts, user, selectedAddress, selectedDeliveryDate);
+      history.push('/checkout-success')
+    }
   }
   return (
     <React.Fragment>

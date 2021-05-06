@@ -128,7 +128,7 @@ const CheckoutPage: React.FC = () => {
     return itemsCost
   })
   const productPricesTotal = productPrices?.reduce((a, b) => a + b, 0)
-  // TODO: Fetch actual values from backend
+  // TODO: Fetch actual values from backend once logistics partner confirms and price matrix is agreed
   const deliveryFee = 1000
   const tradeFinanceMargin = 100
 

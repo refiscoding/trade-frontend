@@ -22,9 +22,12 @@ import OrderSummary from './OrderSummary'
 import DeliveryAddresses from './Addresses'
 import SelectPayment from './SelectPayment'
 import DeliveryDetails from './DeliveryDetails'
+import StrapiHelpers from "../../utils/strapiHelpers"
 import DeliveryAddressForm from './DeliveryAddressForm'
 import CheckoutItemsModal from './CheckoutProductsModal'
 import DeleteItemsModal from '../../components/DeleteItemsModal'
+
+import { useAuthContext } from "../../context/AuthProvider";
 import { ComponentLocationAddress } from '../../generated/graphql'
 
 type SelectPaymentComponentProps = {
@@ -112,13 +115,13 @@ const DeliveryItemsComponent: React.FC<DeliveryItemsComponentProps> = ({
         <Flex justify="space-between">
           <Text mb={3} fontSize={14}>{selectedAddress?.name} </Text>
           <Tag
-              fontSize={10}
-              size="sm"
-              background={theme.colors.tag}
-              color={theme.colors.tagText}
-            >
-              {selectedAddress?.type?.toUpperCase()}
-            </Tag>
+            fontSize={10}
+            size="sm"
+            background={theme.colors.tag}
+            color={theme.colors.tagText}
+          >
+            {selectedAddress?.type?.toUpperCase()}
+          </Tag>
         </Flex>
         <Text fontSize={14}>{streetAddress} </Text>
         <Text fontSize={14}>{buildingOrComplex} </Text>
@@ -147,7 +150,7 @@ const DeliveryInfoComponent: React.FC<DeliveryInfoComponentProps> = ({ timeSlots
         background={theme.colors.accent[50]}
         boxShadow={theme.boxShadowMedium}
       >
-        <DeliveryDetails mobileFlow timeSlots={timeSlots} setSelectedDeliveryDate={setSelectedDeliveryDate} setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot} selectedDeliveryTimeslot={selectedDeliveryTimeslot}/>
+        <DeliveryDetails mobileFlow timeSlots={timeSlots} setSelectedDeliveryDate={setSelectedDeliveryDate} setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot} selectedDeliveryTimeslot={selectedDeliveryTimeslot} />
       </Flex>
     </Flex>
   )
@@ -181,8 +184,9 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
   setSelectedDeliveryTimeslot,
 }) => {
   const history = useHistory()
-  const [showCheckoutItemsModal, setShowCheckoutItemsModal] = React.useState<boolean>()
+  const { user } = useAuthContext();
   const [showPaymentOptions, setShowPaymentOptions] = React.useState<boolean>()
+  const [showCheckoutItemsModal, setShowCheckoutItemsModal] = React.useState<boolean>()
 
   const numberOfAddresses = addresses?.length
   const numberOfCards = cards?.length
@@ -208,7 +212,10 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
   }
 
   const handlePay = () => {
-    history.push('/checkout-success')
+    if (cartProducts) {
+      StrapiHelpers.sendOrderSummaryEmail(cartProducts, user, selectedAddress, selectedDeliveryDate);
+      history.push('/checkout-success')
+    }
   };
 
   return (
@@ -218,8 +225,8 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
           <DeleteItemsModal
 
             confirmationText={confirmationTextCard}
-            handleCancelButtonClicked={() => {}}
-            handleDeleteButtonClicked={() => {}}
+            handleCancelButtonClicked={() => { }}
+            handleDeleteButtonClicked={() => { }}
           />
         )}
         {showCheckoutItemsModal && (
@@ -236,7 +243,7 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
         <Formik
           validationSchema={DeliveryAddressValidation}
           initialValues={initialDeliveryAddressValues}
-          onSubmit={() => {}}
+          onSubmit={() => { }}
         >
           {({ errors }) => {
             return (
@@ -326,6 +333,8 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
                             mobileFlow
                             cards={cards}
                             checkoutTotal={checkoutTotal}
+                            selectedAddress={selectedAddress}
+                            selectedDeliveryDate={selectedDeliveryDate}
                             setShowDeleteCardModal={setShowDeleteCardModal}
                           />
                           <Button
@@ -336,16 +345,9 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
                             variant="solid"
                             isDisabled={false}
                             onClick={handlePay}
-                        >
-                          {`PAY R ${checkoutTotal}.00`}
-                        </Button>
-                          {/* <NextButton
-                            active={active}
-                            disabled={false}
-                            setActive={() => setActiveStep(4)}
                           >
                             {`PAY R ${checkoutTotal}.00`}
-                          </NextButton> */}
+                          </Button>
                           <Text
                             mt={4}
                             style={ctaTextStyles}
