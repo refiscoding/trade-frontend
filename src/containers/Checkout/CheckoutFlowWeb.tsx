@@ -26,6 +26,7 @@ import { Stepper } from '../../components'
 import { H3, Text } from '../../typography'
 import { mapsScriptUrl } from '../../constants'
 import { CheckoutProps, initialDeliveryAddressValues, DeliveryAddressValidation } from '.'
+import CheckoutSignatoryModal from './CheckoutSignatoryModal'
 
 const StepperContainer = styled.div`
   margin-top: 15px;
@@ -56,7 +57,9 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
   setShowDeleteItemsModal,
   setSelectedDeliveryDate,
   selectedDeliveryTimeslot,
+  showCheckoutSignatoryModal,
   setSelectedDeliveryTimeslot,
+  setShowCheckoutSignatoryModal,
 }) => {
   const history = useHistory()
   const numberOfAddresses = addresses?.length
@@ -87,6 +90,11 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
           confirmationText={confirmationTextCard}
           handleCancelButtonClicked={() => { }}
           handleDeleteButtonClicked={() => { }}
+        />
+      )}
+      {showCheckoutSignatoryModal && (
+        <CheckoutSignatoryModal
+          setShowCheckoutModal={setShowCheckoutSignatoryModal}
         />
       )}
       <Grid gridTemplateRows="130px 1fr">
@@ -276,6 +284,7 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                     selectedAddress={selectedAddress}
                     selectedDeliveryDate={selectedDeliveryDate}
                     setShowDeleteCardModal={setShowDeleteCardModal}
+                    setShowCheckoutSignatoryModal={setShowCheckoutSignatoryModal}
                   />
                 )}
               </Grid>

@@ -74,11 +74,13 @@ export type CheckoutProps = {
   selectedDeliveryDate: Date | Date[]
   selectedDeliveryTimeslot: string | undefined
   showDeleteItemsModal: boolean | undefined
+  showCheckoutSignatoryModal: boolean | undefined
   showDeleteCardModal: boolean | undefined
   selectedAddress: ComponentLocationAddress | undefined
+  setSelectedDeliveryDate: React.Dispatch<React.SetStateAction<Date | Date[]>>
   setShowDeleteCardModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
   setShowDeleteItemsModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
-  setSelectedDeliveryDate: React.Dispatch<React.SetStateAction<Date | Date[]>>
+  setShowCheckoutSignatoryModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
   setSelectedDeliveryTimeslot: React.Dispatch<React.SetStateAction<string | undefined>>
   setSelectedAddress: React.Dispatch<React.SetStateAction<ComponentLocationAddress | undefined>>
 }
@@ -92,6 +94,7 @@ const CheckoutPage: React.FC = () => {
   >()
   const [showDeleteItemsModal, setShowDeleteItemsModal] = React.useState<boolean | undefined>()
   const [showDeleteCardModal, setShowDeleteCardModal] = React.useState<boolean | undefined>()
+  const [showCheckoutSignatoryModal, setShowCheckoutSignatoryModal] = React.useState<boolean | undefined>()
   const [selectedDeliveryDate, setSelectedDeliveryDate] = React.useState<Date | Date[]>(new Date())
   const [selectedDeliveryTimeslot, setSelectedDeliveryTimeslot] = React.useState<string | undefined>()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
@@ -165,6 +168,8 @@ const CheckoutPage: React.FC = () => {
           selectedDeliveryTimeslot={selectedDeliveryTimeslot}
           setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot}
           setShowDeleteItemsModal={setShowDeleteItemsModal}
+          showCheckoutSignatoryModal={showCheckoutSignatoryModal}
+          setShowCheckoutSignatoryModal={setShowCheckoutSignatoryModal}
         />
       ) : (
         <CheckoutWebFlow
@@ -193,6 +198,8 @@ const CheckoutPage: React.FC = () => {
           selectedDeliveryTimeslot={selectedDeliveryTimeslot}
           setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot}
           setShowDeleteItemsModal={setShowDeleteItemsModal}
+          showCheckoutSignatoryModal={showCheckoutSignatoryModal}
+          setShowCheckoutSignatoryModal={setShowCheckoutSignatoryModal}
         />
       )}
     </PageWrap>

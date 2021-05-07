@@ -25,6 +25,7 @@ import DeliveryDetails from './DeliveryDetails'
 import StrapiHelpers from "../../utils/strapiHelpers"
 import DeliveryAddressForm from './DeliveryAddressForm'
 import CheckoutItemsModal from './CheckoutProductsModal'
+import CheckoutSignatoryModal from './CheckoutSignatoryModal'
 import DeleteItemsModal from '../../components/DeleteItemsModal'
 
 import { useAuthContext } from "../../context/AuthProvider";
@@ -181,7 +182,9 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
   setSelectedDeliveryDate,
   setShowDeleteItemsModal,
   selectedDeliveryTimeslot,
+  showCheckoutSignatoryModal,
   setSelectedDeliveryTimeslot,
+  setShowCheckoutSignatoryModal,
 }) => {
   const history = useHistory()
   const { user } = useAuthContext();
@@ -213,6 +216,7 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
 
   const handlePay = () => {
     if (cartProducts) {
+      // setShowCheckoutSignatoryModal(true);
       StrapiHelpers.sendOrderSummaryEmail(cartProducts, user, selectedAddress, selectedDeliveryDate);
       history.push('/checkout-success')
     }
@@ -233,6 +237,11 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
           <CheckoutItemsModal
             products={cartProducts}
             setShowCheckoutModal={setShowCheckoutItemsModal}
+          />
+        )}
+        {showCheckoutSignatoryModal && (
+          <CheckoutSignatoryModal
+            setShowCheckoutModal={setShowCheckoutSignatoryModal}
           />
         )}
         <Flex width="100%" mb={4} flexDirection="column">
@@ -336,6 +345,7 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
                             selectedAddress={selectedAddress}
                             selectedDeliveryDate={selectedDeliveryDate}
                             setShowDeleteCardModal={setShowDeleteCardModal}
+                            setShowCheckoutSignatoryModal={setShowCheckoutSignatoryModal}
                           />
                           <Button
                             mt={5}

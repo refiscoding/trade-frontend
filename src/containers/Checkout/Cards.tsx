@@ -20,6 +20,7 @@ type CardsProps = {
   cartProducts?: CartProduct[]
   selectedAddress: ComponentLocationAddress | undefined
   setShowDeleteCardModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
+  setShowCheckoutSignatoryModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
 }
 
 const CardsComponent: React.FC<CardsProps> = ({
@@ -29,13 +30,38 @@ const CardsComponent: React.FC<CardsProps> = ({
   checkoutTotal,
   selectedAddress,
   selectedDeliveryDate,
-  setShowDeleteCardModal
+  setShowDeleteCardModal,
+  setShowCheckoutSignatoryModal
 }) => {
   const history = useHistory()
-  const { user } = useAuthContext()
+  // const toast = useToast();
 
-  const handlePay = () => {
+  const { user } = useAuthContext()
+  // const [createOrder] = useCreateCheckoutOrderMutation({
+  //   onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
+  //   onCompleted: async () => {
+  //     toast({
+  //       description: 'You have successfully placed your order!',
+  //       ...SUCCESS_TOAST
+  //     })
+  //     history.push("/checkout-success");
+  //   }
+  // });
+
+  const handlePay = async () => {
+    setShowCheckoutSignatoryModal(true)
     if (cartProducts) {
+      // await createOrder({
+      //   variables: {
+      //     input: {
+      //       deliveryAddress: {
+      //         ...selectedAddress
+      //       },
+      //       deliveryDate: selectedDeliveryDate
+
+      //     }
+      //   }
+      // })
       StrapiHelpers.sendOrderSummaryEmail(cartProducts, user, selectedAddress, selectedDeliveryDate);
       history.push('/checkout-success')
     }

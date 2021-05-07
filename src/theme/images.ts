@@ -31,4 +31,5 @@ export default {
   visaCardPayment: require('../assets/images/VisaPayment.svg'),
   FNBPayment: require('../assets/images/FNBPayment.png'),
   AmericanExpressPayment: require('../assets/images/AmericanExpressPayment.png'),
+  parcel: require('../assets/images/parcel.svg'),
 }
