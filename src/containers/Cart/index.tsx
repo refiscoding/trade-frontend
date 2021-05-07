@@ -144,7 +144,7 @@ const CartPage: React.FC = () => {
   })
   const deals = get(productData, 'products', null) as Product[]
 
-  const handleCartProductClickedEditing = (id: string) => {}
+  const handleCartProductClickedEditing = (id: string) => { }
   const handleCartProductClickedNormal = async (id: Scalars['ID']) => {
     const productToRemove = {
       productToMove: [id]
@@ -196,7 +196,7 @@ const CartPage: React.FC = () => {
     refetch()
   }, [refetch])
 
-  const confirmationText = `You are about to delete these items in your cart? Once they are removed, you’ll have to re-add them to your cart manually.`
+  const confirmationText = `You are about to delete these items in your cart? Once they are removed, you’ll have to re-add them to your cart manually.`;
 
   return (
     <PageWrap
