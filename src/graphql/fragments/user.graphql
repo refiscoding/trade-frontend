@@ -16,12 +16,14 @@ fragment user on UsersPermissionsUser {
     lng
     address
     postalCode
+    type
+    name
   }
   idNumber
   profileCompleted
   isSeller
   profilePicture {
-      ...uploadFile
+    ...uploadFile
   }
   categories {
     id

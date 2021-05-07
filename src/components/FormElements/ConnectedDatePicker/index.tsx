@@ -23,7 +23,7 @@ const ConnectedDatePicker: React.FC<ConnectedDatePickerProps> = ({
 }) => {
   const [field, meta, helpers] = useField(rest.name)
   const [date, setDate] = React.useState(field && field.value ? moment(field.value) : null)
-  const [focused, setFocus] = React.useState<boolean | null>(true)
+  const [focused, setFocus] = React.useState<boolean>(true)
 
   const renderYears = () => {
     const arr = []

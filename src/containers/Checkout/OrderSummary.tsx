@@ -7,12 +7,21 @@ import ReceiptProduct from "./ReceiptProduct";
 
 import { theme } from "../../theme";
 
+import { timeSlots } from "./dummyData";
+import { TimeSlot } from "./AddressComponent";
+import { ComponentLocationAddress } from '../../generated/graphql'
+
+
 type OrderSummaryComponentProps = {
     cartProducts: CartProduct[]
     tradeFinanceMargin: number
     deliveryFee: number
     checkoutTotal: number
     mobileFlow: boolean
+    selectedDeliveryTimeslot: string | undefined
+    selectedDeliveryDate: Date | Date[]
+    selectedAddress: ComponentLocationAddress | undefined
+    setActiveStep: (step: number) => void
 }
 
 const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({ 
@@ -20,8 +29,32 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
     deliveryFee, 
     tradeFinanceMargin,
     checkoutTotal,
-    mobileFlow
+    mobileFlow,
+    selectedDeliveryDate,
+    selectedDeliveryTimeslot,
+    selectedAddress,
+    setActiveStep
     }) => {
+        const selectedTimeSlot = timeSlots?.filter((slot: TimeSlot) => slot?.id === selectedDeliveryTimeslot);
+        const selectedDate = selectedDeliveryDate?.toString()?.split("00:00:00")?.join("");
+
+        const addressDetails = selectedAddress?.address?.split(",") ?? [];
+        const addressStrings = addressDetails[0]?.split("-");
+        const streetAddress = addressStrings[0]?.trim();
+        const buildingOrComplex = addressStrings[1]?.trim();
+
+        const CTAStyles = { textDecoration: "underline", cursor: "pointer" };
+
+        const handleChangeDeliveryDateTime = () => {
+            if(mobileFlow){
+                setActiveStep(2);
+            } else {
+                setActiveStep(1);
+            }
+        }
+        const handleChangeDeliveryAddress = () => {
+            setActiveStep(0);
+        }
     return (
         <Flex
             borderRadius={5}
@@ -55,16 +88,19 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
             <Grid mb={5} borderTop={`1px dashed #acacac}`}>
                 <Text mt={5} fontWeight={600}>{`Delivery Method`}</Text>
                 <Text mt={3}>{`Standard Delivery`}</Text>
-                <Text>{`Thursday, 17 October 2021 (8:30 - 9:00)`}</Text>
-                <Text mt={3} style={{ textDecoration: "underline" }} color={theme.colors.blueText} fontSize={12} fontWeight={600}>{`Change`}</Text>
+                <Text fontSize={mobileFlow ? "14px" : ""}>{selectedDate}</Text>
+                <Text fontSize={mobileFlow ? "14px" : ""}>{`${selectedTimeSlot[0]?.startTime} - ${selectedTimeSlot[0]?.endTime}`}</Text>
+                <Text onClick={handleChangeDeliveryDateTime} mt={3} style={CTAStyles} color={theme.colors.blueText} fontSize={12} fontWeight={600}>{`Change`}</Text>
             </Grid>
             <Grid mb={5} borderTop={`1px dashed #acacac}`}>
-                <Text mt={5} fontWeight={600}>{`TradeFed Delivery Point`}</Text>
-                <Text mt={3}>{`39 La Quinta, Hatfield Pretoria`}</Text>
-                <Text>{`Hatfield`}</Text>
-                <Text>{`Pretoria`}</Text>
-                <Text>{`1991`}</Text>
-                <Text mt={3} style={{ textDecoration: "underline" }} color={theme.colors.blueText} fontSize={12} fontWeight={600}>{`Change`}</Text>
+                <Text mt={5} fontWeight={600}>{`Delivery Point`}</Text>
+                <Text mt={3}>{selectedAddress?.name}</Text>
+                <Text mt={3}>{streetAddress}</Text>
+                <Text>{buildingOrComplex}</Text>
+                <Text>{addressDetails[1]}</Text>
+                <Text>{addressDetails[2]}</Text>
+                <Text mt={3}>{selectedAddress?.postalCode}</Text>
+                <Text onClick={handleChangeDeliveryAddress} mt={3} style={CTAStyles} color={theme.colors.blueText} fontSize={12} fontWeight={600}>{`Change`}</Text>
             </Grid>
         </Flex>
     )

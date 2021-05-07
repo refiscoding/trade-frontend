@@ -1,13 +1,32 @@
 import * as React from "react";
 
-import Calendar from "react-calendar";
+import Calendar, { CalendarProps, CalendarTileProperties } from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import "./style.css";
 
-const CalendarComponent = () => {
+type CalendarComponentProps = CalendarProps & {
+    setSelectedDeliveryDate: React.Dispatch<React.SetStateAction<Date | Date[]>>
+};
+
+const CalendarComponent: React.FC<CalendarComponentProps> = ({ setSelectedDeliveryDate }) => {
     const handleDateChanged = (date: Date | Date[]) => {
-        console.log("SELECTED DATE", date);
+        setSelectedDeliveryDate(date);
     };
-    return <Calendar onChange={handleDateChanged} />
+    const isToday = (someDate: Date) => {
+        const today = new Date()
+        return someDate.getDate() === today.getDate() &&
+          someDate.getMonth() === today.getMonth() &&
+          someDate.getFullYear() === today.getFullYear()
+    }
+    const setTileClassName = (props: CalendarTileProperties) => {
+        const { date } = props;
+        const activeDay = isToday(date);
+        if(activeDay){
+            return "current-day";
+        }
+        return "";
+    };
+    return <Calendar tileClassName={setTileClassName} onChange={handleDateChanged} />
 };
 
 export default CalendarComponent;

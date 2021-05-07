@@ -3,7 +3,7 @@ import moment from 'moment'
 
 import { ChevronRight } from 'react-feather'
 import { useHistory } from 'react-router-dom'
-import { useMediaQuery } from "react-responsive";
+import { useMediaQuery } from 'react-responsive'
 import { Flex, Image, Text } from '@chakra-ui/core'
 
 import { PageWrap } from '../../layouts'
@@ -31,6 +31,9 @@ const Profile: React.FC<ProfileProps> = () => {
   const navigateToDetails = () => {
     history.push('/profile-details')
   }
+  const navigateToOrderHistory = () => {
+    history.push('/orders')
+  }
 
   return (
     <PageWrap title="My Account" width={isTabletOrMobile ? '100%' : '40%'} alignSelf="center">
@@ -44,23 +47,19 @@ const Profile: React.FC<ProfileProps> = () => {
           align="center"
           overflow="hidden"
         >
-          {
-            user?.profilePicture
-              ? (
-                <Image
-                  m={5}
-                  width="100%"
-                  height="100%"
-                  objectFit="cover"
-                  src={user?.profilePicture.url}
-                />
-              )
-              : (
-                <H3 fontSize="2.5rem" color="white">
-                  {initials}
-                </H3>
-              )
-          }
+          {user?.profilePicture ? (
+            <Image
+              m={5}
+              width="100%"
+              height="100%"
+              objectFit="cover"
+              src={user?.profilePicture.url}
+            />
+          ) : (
+            <H3 fontSize="2.5rem" color="white">
+              {initials}
+            </H3>
+          )}
         </Flex>
         <Flex pl={5} flexDir="column" justify="center" align="flex-start">
           <H3 fontWeight="bold">{`${user?.firstName}  ${user?.lastName}`}</H3>
@@ -77,7 +76,7 @@ const Profile: React.FC<ProfileProps> = () => {
         justify="space-between"
         alignItems="center"
         onClick={() => navigateToDetails()}
-        backgroundColor={"#fff"}
+        backgroundColor="white"
       >
         <Flex width="80%">
           <Text fontSize={12}>Personal Information & Preference</Text>
@@ -93,7 +92,8 @@ const Profile: React.FC<ProfileProps> = () => {
         width="100%"
         justify="space-between"
         alignItems="center"
-        backgroundColor={"#fff"}
+        onClick={() => navigateToOrderHistory()}
+        backgroundColor="white"
       >
         <Flex width="80%">
           <Text fontSize={12}>My Order History</Text>
@@ -110,7 +110,7 @@ const Profile: React.FC<ProfileProps> = () => {
         justify="space-between"
         alignItems="center"
         onClick={() => handleBecomeSeller()}
-        backgroundColor={"#fff"}
+        backgroundColor="white"
       >
         <Flex width="80%">
           <Text fontSize={12}>{isSellerApproved ? 'Product Management' : 'Become a Seller'}</Text>
