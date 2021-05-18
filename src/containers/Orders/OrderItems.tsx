@@ -6,19 +6,20 @@ import OrderItem from "./Item";
 
 import { Text } from "../../typography";
 import { theme } from "../../theme";
+import { Maybe, ComponentCartProductCartProduct } from "../../generated/graphql";
 
-export type Cart = { quantity: number; product: { name: string; }; }
+
 type OrderItemsSummaryComponentProps = {
-    items: Cart[]
+    items: Maybe<Maybe<ComponentCartProductCartProduct>[]> | undefined
     isMobile: boolean
+    total: Maybe<number> | undefined
 };
-
 const OrderSummaryComponent: React.FC<OrderItemsSummaryComponentProps> = ({
+    total,
     items,
     isMobile
 }) => {
     const rows = isMobile ? "30px 200px 1fr" : "30px 340px 1fr";
-
     return (
         <Grid
             border={`1px solid ${theme.colors.background}`}
@@ -35,9 +36,10 @@ const OrderSummaryComponent: React.FC<OrderItemsSummaryComponentProps> = ({
             <Text fontWeight={600}>Order Summary</Text>
             <Grid p={2} rowGap="10px" overflowY="scroll" cursor="pointer">
                 {
-                    items?.map((item: Cart) => {
+                    items?.map((item: Maybe<ComponentCartProductCartProduct>, index: number) => {
                         return <OrderItem
-                            cart={item}
+                            key={`${index}_order_item`}
+                            cartItem={item}
                         />
                     })
                 }
@@ -45,7 +47,7 @@ const OrderSummaryComponent: React.FC<OrderItemsSummaryComponentProps> = ({
             <Grid alignSelf="end" gridTemplateColumns="1fr 1fr">
                 <Text fontWeight={600}>Order Total</Text>
                 <Flex justifySelf="end">
-                    <Text fontWeight={600}>{`R 100.00`}</Text>
+                    <Text fontWeight={600}>{`R ${total}.00`}</Text>
                 </Flex>
             </Grid>
 

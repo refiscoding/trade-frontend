@@ -15,6 +15,8 @@ const theme = {
     info: '#CEEDFF',
     blueText: '#355EC0',
     background: '#efefef',
+    dimText: '#6A6A6A',
+    errorText: '#e30017',
     brand: {
       50: 'rgba(27,38,79,0.19)',
       100: '#8c8c8c',

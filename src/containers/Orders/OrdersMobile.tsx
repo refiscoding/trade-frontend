@@ -1,7 +1,9 @@
 import * as React from "react";
 
+import moment from "moment";
+
 import { useHistory } from "react-router";
-import { Flex, Grid } from "@chakra-ui/core";
+import { Flex, Grid, Spinner } from "@chakra-ui/core";
 import { DateRangePicker } from "react-dates";
 import { ArrowLeft, ChevronRight } from "react-feather";
 
@@ -9,15 +11,13 @@ import PageWrap from "../../layouts/PageWrap";
 import OrderItemsSummary from "./OrderItems";
 import OrderComponent from './OrderComponent';
 
-import { Order } from ".";
+import { OrdersPageProps } from ".";
 import { theme } from "../../theme";
 import { Text } from "../../typography";
-import { orders } from "../Checkout/dummyData";
 
-type OrdersProps = {};
+import { Order } from '../../generated/graphql'
 
-
-const OrdersPage: React.FC<OrdersProps> = () => {
+const OrdersPage: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => {
     const history = useHistory();
     const [selectedOrder, setSelectedOrder] = React.useState<Order | undefined>();
 
@@ -28,7 +28,6 @@ const OrdersPage: React.FC<OrdersProps> = () => {
             history.push("/profile");
         };
     };
-
 
     return (
         <PageWrap title="Orders" width="100%">
@@ -48,28 +47,25 @@ const OrdersPage: React.FC<OrdersProps> = () => {
                                     p={3}
                                     flexDirection="column"
                                 >
-                                    <Grid gridTemplateColumns="1fr 1fr">
+                                    <Grid gridTemplateColumns="90px 1fr">
                                         <Text fontSize={12} fontWeight={600}>Order:</Text>
                                         <Text fontSize={12} ml={3}>{`# ${selectedOrder?.orderNumber}`}</Text>
-                                        {/* <Text fontSize={12} ml={3}>{`# 0040jdjdj939393`}</Text> */}
                                     </Grid>
-                                    <Grid gridTemplateColumns="1fr 1fr">
+                                    <Grid gridTemplateColumns="90px 1fr">
                                         <Text fontSize={12} fontWeight={600}>Ordered:</Text>
-                                        <Text fontSize={12} ml={3}>{`${selectedOrder?.orderDate}`}</Text>
-                                        {/* <Text fontSize={12} ml={3}>{`Wed, 9 Jul 2020`}</Text> */}
+                                        <Text fontSize={12} ml={3}>{`${moment(selectedOrder?.orderDate).format("LLLL")}`}</Text>
                                     </Grid>
-                                    <Grid gridTemplateColumns="1fr 1fr">
+                                    <Grid gridTemplateColumns="90px 1fr">
                                         <Text fontSize={12} fontWeight={600}>Paid:</Text>
-                                        <Text fontSize={12} ml={3}>{`${selectedOrder?.paidDate}`}</Text>
-                                        {/* <Text fontSize={12} ml={3}>{`Wed, 9 Jul 2020`}</Text> */}
+                                        <Text fontSize={12} ml={3}>{`${moment(selectedOrder?.paidDate).format("LLLL")}`}</Text>
                                     </Grid>
-                                    <Grid gridTemplateColumns="1fr 1fr">
-                                        <Text fontSize={12} fontWeight={600}>Payment Type:</Text>
+                                    <Grid gridTemplateColumns="90px 1fr">
+                                        <Text fontSize={12} fontWeight={600}>Payment:</Text>
                                         <Text fontSize={12} ml={3}>Credit & Debit</Text>
                                     </Grid>
                                 </Flex>
                                 <OrderComponent setSelectedOrder={setSelectedOrder} order={selectedOrder} />
-                                <OrderItemsSummary isMobile items={selectedOrder?.cart} />
+                                <OrderItemsSummary isMobile items={selectedOrder?.cart?.productsQuantities} total={selectedOrder?.orderTotal} />
                             </Flex>
                         )
                         : (
@@ -105,10 +101,10 @@ const OrdersPage: React.FC<OrdersProps> = () => {
                                     <ChevronRight />
                                 </Flex>
                                 <Flex flexDirection="column">
+                                    {ordersLoading && <Spinner marginTop="20px" marginX="auto" />}
                                     {
-                                        orders?.map(order => (
-                                            <OrderComponent setSelectedOrder={setSelectedOrder} order={order} />
-
+                                        orders?.map((order, index) => (
+                                            <OrderComponent key={`${index}_order_entry_mobile`} setSelectedOrder={setSelectedOrder} order={order} />
                                         ))
                                     }
                                 </Flex>

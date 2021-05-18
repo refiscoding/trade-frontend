@@ -4,6 +4,7 @@ import { Grid } from '@chakra-ui/core';
 import { FlexProps } from '@chakra-ui/core/dist/Flex';
 
 import { Text } from "../../typography";
+import { theme } from '../../theme';
 
 type DeleteItemsButtonProps = FlexProps & {
   handleDeleteButtonClicked: () => void
@@ -12,8 +13,8 @@ type DeleteItemsButtonProps = FlexProps & {
 const DeleteItemsButton: React.FC<DeleteItemsButtonProps> = ({ handleDeleteButtonClicked }) => {
   return (
     <Grid onClick={handleDeleteButtonClicked} templateRows="25px 1fr" justifyItems="center" mt={5}>
-      <Trash2 color="#6A6A6A" />
-      <Text color="#6A6A6A" textAlign="center"> Remove Items</Text>
+      <Trash2 color={theme.colors.dimText} />
+      <Text color={theme.colors.dimText} textAlign="center"> Remove Items</Text>
     </Grid>
   );
 };

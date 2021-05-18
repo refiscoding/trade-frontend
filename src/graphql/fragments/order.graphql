@@ -1,0 +1,40 @@
+# import '/fragments/user.graphql'
+# import '/fragments/product.graphql'
+fragment order on Order {
+  id
+  created_at
+  updated_at
+  orderNumber
+  orderDate
+  paidDate
+  deliveryDate
+  numOfItems
+  deliveryFee
+  orderTotal
+  deliveryAddress {
+    id
+    address
+    postalCode
+    lat
+    lng
+    type
+    name
+  }
+  owner {
+    ...user
+  }
+  cart {
+    productsQuantities {
+      quantity
+      product {
+        ...product
+      }
+    }
+  }
+  signatory {
+    id
+    name
+    relation
+    isCustomer
+  }
+}
