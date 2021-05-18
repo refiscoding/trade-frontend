@@ -1,0 +1,8 @@
+# import '/fragments/order.graphql'
+query fetchUserCheckoutOrders {
+  findCheckoutOrders {
+    payload {
+      ...order
+    }
+  }
+}

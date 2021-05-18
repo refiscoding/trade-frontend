@@ -39,9 +39,9 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
     code: new URLSearchParams(location.search).get('code') as string
   }
 
-  const logoWidth = isWebView ? "50%" : "80%" ;
-  const logoMarginBottom = isWebView ? 5 : 10 ;
-  const logoMarginLeft = isWebView ? 70 : 8 ;
+  const logoWidth = isWebView ? "50%" : "80%";
+  const logoMarginBottom = isWebView ? 5 : 10;
+  const logoMarginLeft = isWebView ? 70 : 8;
   const titleMarginLeft = isWebView ? "45px" : "55px";
   const ctaContainerSize = isWebView ? "164px 164px" : "180px 180px";
 
@@ -59,13 +59,13 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
     >
       {
         isWebView && (
-            <Flex width="100%">
-              <Image width="100%" height="100%" src={images.bg} />
-            </Flex>
+          <Flex width="100%">
+            <Image width="100%" height="100%" src={images.bg} />
+          </Flex>
         )
       }
       <SideSlider>
-      <Image justifySelf="center" width={logoWidth} mb={logoMarginBottom} src={images['TradeFedFullLogo']} ml={logoMarginLeft}/>
+        <Image justifySelf="center" width={logoWidth} mb={logoMarginBottom} src={images['TradeFedFullLogo']} ml={logoMarginLeft} />
         <Flex width="100%">
           <H4 textAlign="left" mb={4} fontWeight={550} ml={titleMarginLeft}>
             Choose New Password
@@ -90,7 +90,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
           {({ isSubmitting, status }: FormikProps<typeof INITIAL_VALUES>) => (
             <Form style={{ width: '100%' }}>
               <Flex mb={10}>
-                <Text textAlign="center" color="#6A6A6A">Please enter and confirm your new account password.</Text>
+                <Text textAlign="center" color={theme.colors.dimText}>Please enter and confirm your new account password.</Text>
               </Flex>
               <ConnectedPasswordGroup name="password" placeholder="Password" />
               <ConnectedPasswordGroup
@@ -112,14 +112,14 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
               )}
               <Grid gridTemplateColumns={ctaContainerSize}>
                 <Button justifySelf="start" mt={10} width="90%" onClick={() => handleCancelClicked()} border={`1px solid ${theme.colors.brand[500]}`} background="white">
-                    <Text fontSize="12px">
-                      CANCEL
-                    </Text>
+                  <Text fontSize="12px">
+                    CANCEL
+                  </Text>
                 </Button>
                 <Button isLoading={isSubmitting} type="submit" mt={10} width="90%" variantColor="brand">
-                    <Text fontSize="12px">
-                      SAVE PASSWORD
-                    </Text>
+                  <Text fontSize="12px">
+                    SAVE PASSWORD
+                  </Text>
                 </Button>
               </Grid>
             </Form>

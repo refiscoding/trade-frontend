@@ -45,7 +45,7 @@ const ProductCreationWebFlow: React.FC<ProductCreationProps> = ({
 
   const currentImage = productInfoStage ? productInfoStageImage : productDetailsStageImage;
   const currentAdImage = productInfoStage ? productInfoStageAdImage : productDetailsStageAdImage;
-  const currentTitle = productInfoStage ? "This is your first step to adding your new product on TradeFed." : "This is your second step that targets the expected audience";  
+  const currentTitle = productInfoStage ? "This is your first step to adding your new product on TradeFed." : "This is your second step that targets the expected audience";
   const currentText = productInfoStage ? "This is the most important information to be displayed for potential buyers." : "Target the audience with images and tags to make it eaiser for them to understand the purchase.";
 
   const handleCancelClicked = () => {
@@ -70,7 +70,7 @@ const ProductCreationWebFlow: React.FC<ProductCreationProps> = ({
                 <H3 textAlign="left" fontSize={18} fontWeight={600}>
                   Add Basic Product Information
                 </H3>
-                <Text fontSize="12px" color="#355EC0" style={{ textDecoration: 'underline', cursor:"pointer" }} onClick={handleCancelClicked}>
+                <Text fontSize="12px" color="#355EC0" style={{ textDecoration: 'underline', cursor: "pointer" }} onClick={handleCancelClicked}>
                   Cancel
                 </Text>
               </Flex>
@@ -89,7 +89,7 @@ const ProductCreationWebFlow: React.FC<ProductCreationProps> = ({
           >
             <Flex
               p={4}
-              mr={5} 
+              mr={5}
               borderRadius={5}
               background="#fff"
               boxShadow="0 1px 2px 0 rgba(0,0,0,0.17)"
@@ -112,8 +112,8 @@ const ProductCreationWebFlow: React.FC<ProductCreationProps> = ({
                   setFormValues(values);
                   return (
                     <Form style={{ width: '100%', marginTop: 20 }}>
-                      { productInfoStage && <ProductInfo packagingError={errors?.packaging} values={values} categories={mappedCategories} handleSetTags={handleSetTags}/> }
-                      { productDetailsStage && <ProductDetails values={values} setImage={handleImages} imageValues={imageByType}/>}
+                      {productInfoStage && <ProductInfo packagingError={errors?.packaging} values={values} categories={mappedCategories} handleSetTags={handleSetTags} />}
+                      {productDetailsStage && <ProductDetails values={values} setImage={handleImages} imageValues={imageByType} />}
                       {status && (
                         <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
                           <Text textAlign="right" color="red.500">
@@ -121,7 +121,7 @@ const ProductCreationWebFlow: React.FC<ProductCreationProps> = ({
                           </Text>
                         </MotionFlex>
                       )}
-                      <Flex mt={active === 0 ? 10 : active === 1 ? 20 : 0 }>
+                      <Flex mt={active === 0 ? 10 : active === 1 ? 20 : 0}>
                         <Button
                           isDisabled={uploading}
                           mt={-5}
@@ -164,12 +164,12 @@ const ProductCreationWebFlow: React.FC<ProductCreationProps> = ({
                   >
                     <Flex mt={10}>
                       <Text fontSize="16px" fontWeight="bold">
-                        { currentTitle }
+                        {currentTitle}
                       </Text>
                     </Flex>
                     <Flex mt={20}>
-                      <Text fontSize="14px" color="#6A6A6A">
-                      { currentText }
+                      <Text fontSize="14px" color={theme.colors.dimText}>
+                        {currentText}
                       </Text>
                     </Flex>
                     <Flex justify="center" align="center" mt={40}>
@@ -215,17 +215,17 @@ const ProductCreationWebFlow: React.FC<ProductCreationProps> = ({
                         preview: true,
                         url: imageByType?.coverImage ? window.URL.createObjectURL(imageByType?.coverImage) : ""
                       },
-                      productImages: imageByType?.productImages?.map((file: File) => ({ url: window.URL.createObjectURL(file)}))
+                      productImages: imageByType?.productImages?.map((file: File) => ({ url: window.URL.createObjectURL(file) }))
                     }}
-                    setShowAddToCartModal={() => {}}
+                    setShowAddToCartModal={() => { }}
                   />
                 </Flex>
               )
             }
           </Grid>
-        </Grid>      
+        </Grid>
       </PageWrap>
-      <Footer removePadding/>
+      <Footer removePadding />
     </React.Fragment>
   )
 }

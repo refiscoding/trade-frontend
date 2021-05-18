@@ -38,6 +38,7 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
   cards,
   addresses,
   timeSlots,
+  handlePay,
   deliveryFee,
   cartProducts,
   checkoutTotal,
@@ -69,6 +70,8 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
   const deliveryDetailsStage = active === 1
   const confirmOrderStage = active === 2
   const confirmPaymentCardStage = active === 3
+
+  const [nextClicked, setNextClicked] = React.useState<boolean | undefined>()
 
   const handleCancelButtonClicked = () => {
     history.push('/cart')
@@ -154,11 +157,25 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                     )}
                     {deliveryDetailsStage && (
                       <Flex flexDirection="column">
-                        <DeliveryDetails timeSlots={timeSlots} mobileFlow={false} setSelectedDeliveryDate={setSelectedDeliveryDate} setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot} selectedDeliveryTimeslot={selectedDeliveryTimeslot} />
+                        <DeliveryDetails
+                          mobileFlow={false}
+                          timeSlots={timeSlots}
+                          nextClicked={nextClicked}
+                          setNextClicked={setNextClicked}
+                          selectedDeliveryDate={selectedDeliveryDate}
+                          setSelectedDeliveryDate={setSelectedDeliveryDate}
+                          selectedDeliveryTimeslot={selectedDeliveryTimeslot}
+                          setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot}
+                        />
                         <NextButton
                           active={active}
                           disabled={false}
-                          setActive={() => setActiveStep(2)}
+                          setActive={() => {
+                            setNextClicked(true);
+                            if (selectedDeliveryDate && selectedDeliveryTimeslot) {
+                              setActiveStep(2)
+                            }
+                          }}
                         >
                           NEXT
                         </NextButton>
@@ -279,6 +296,7 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                   <CardsComponent
                     cards={cards}
                     mobileFlow={false}
+                    handlePay={handlePay}
                     cartProducts={cartProducts}
                     checkoutTotal={checkoutTotal}
                     selectedAddress={selectedAddress}

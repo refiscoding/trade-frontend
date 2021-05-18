@@ -82,7 +82,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
           {({ isSubmitting, status }: FormikProps<InitialValues>) => (
             <Form style={{ width: '100%' }}>
               <Flex mb={4}>
-                <Text textAlign="center" color="#6A6A6A" mb={10}>
+                <Text textAlign="center" color={theme.colors.dimText} mb={10}>
                   Enter your email address below and we&apos;ll send you a link to reset your
                   password.
                 </Text>

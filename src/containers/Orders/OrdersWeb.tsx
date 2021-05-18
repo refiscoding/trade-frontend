@@ -1,6 +1,7 @@
 import * as React from 'react';
+import moment from "moment";
 
-import { Flex, Grid, Tag } from '@chakra-ui/core';
+import { Flex, Grid, Tag, Spinner } from '@chakra-ui/core';
 import { DateRangePicker } from "react-dates";
 
 import OrderItemsSummary from "./OrderItems";
@@ -10,11 +11,12 @@ import NoData from "../Checkout/NoDataScreen";
 import { theme } from '../../theme';
 import { PageWrap } from '../../layouts';
 import { H3, Text } from '../../typography';
-import { orders } from "../Checkout/dummyData";
 import { mapsScriptUrl } from '../../constants';
-import { Order } from '.';
+import { OrdersPageProps } from '.';
+import { Order } from '../../generated/graphql'
 
-const OrdersPageWeb = () => {
+
+const OrdersPageWeb: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => {
     const [selectedOrder, setSelectedOrder] = React.useState<Order | undefined>();
 
     const cancelStyles = {
@@ -28,7 +30,7 @@ const OrdersPageWeb = () => {
        You haven't selected any order to view its details.
        Selecting an order will have it displayed here
    `
-    console.log("TRUE", selectedOrder);
+    const orderAddress = selectedOrder?.deliveryAddress?.address?.split(",") ?? [];
     return (
         <PageWrap
             title="Orders"
@@ -80,8 +82,9 @@ const OrdersPageWeb = () => {
                                 />
                             </Flex>
                             <Flex flexDirection="column" overflowY="scroll" height={'500px'}>
+                                {ordersLoading && <Spinner margin="auto" />}
                                 {
-                                    orders?.map(order => (<OrderComponent setSelectedOrder={setSelectedOrder} order={order} />))
+                                    orders?.map((order, index) => (<OrderComponent key={`${index}_order_entry`} setSelectedOrder={setSelectedOrder} order={order} />))
                                 }
                             </Flex>
                         </Flex>
@@ -97,41 +100,44 @@ const OrdersPageWeb = () => {
                         {
                             selectedOrder
                                 ? <Flex flexDirection="column" width="100%">
-                                    <Grid gridTemplateColumns="1fr 1fr" mb={3} border={`1px solid ${theme.colors.background}`} p={4} borderRadius={5} >
+                                    <Grid gridTemplateColumns="1fr 200px" mb={3} border={`1px solid ${theme.colors.background}`} p={4} borderRadius={5} >
                                         <Flex flexDirection="column">
-                                            <Grid gridTemplateColumns="1fr 1fr">
+                                            <Grid gridTemplateColumns="100px 1fr">
                                                 <Text fontSize={14} fontWeight={600}>Order:</Text>
                                                 <Text fontSize={14} ml={3}>{`# ${selectedOrder?.orderNumber}`}</Text>
                                             </Grid>
-                                            <Grid gridTemplateColumns="1fr 1fr">
+                                            <Grid gridTemplateColumns="100px 250px">
                                                 <Text fontSize={14} fontWeight={600}>Ordered:</Text>
-                                                <Text fontSize={14} ml={3}>{`${selectedOrder?.orderDate}`}</Text>
+                                                <Text fontSize={14} ml={3}>{`${moment(selectedOrder?.orderDate).format("LLLL")}`}</Text>
                                             </Grid>
-                                            <Grid gridTemplateColumns="1fr 1fr">
+                                            <Grid gridTemplateColumns="100px 250px">
                                                 <Text fontSize={14} fontWeight={600}>Paid:</Text>
-                                                <Text fontSize={14} ml={3}>{`${selectedOrder?.paidDate}`}</Text>
+                                                <Text fontSize={14} ml={3}>{`${moment(selectedOrder?.paidDate).format("LLLL")}`}</Text>
                                             </Grid>
-                                            <Grid gridTemplateColumns="1fr 1fr">
-                                                <Text fontSize={14} fontWeight={600}>Payment Type:</Text>
+                                            <Grid gridTemplateColumns="100px 250px">
+                                                <Text fontSize={14} fontWeight={600}>Payment</Text>
                                                 <Text fontSize={14} ml={3}>Credit & Debit</Text>
                                             </Grid>
                                         </Flex>
-                                        <Flex flexDirection="column" justifySelf="end">
+                                        <Flex flexDirection="column" justifySelf="end" width="100%">
                                             <Tag
                                                 fontSize={12}
                                                 size="sm"
                                                 background="#c9cfd4"
-                                                width="40%"
+                                                width="50%"
+                                                display="inline-block"
                                             >
                                                 BUSINESS
                                             </Tag>
                                             <Text fontSize={14}>{`${selectedOrder?.deliveryAddress?.name}`}</Text>
-                                            <Text fontSize={14}>{`${selectedOrder?.deliveryAddress?.address}`}</Text>
+                                            <Text fontSize={14}>{`${orderAddress[0]}`}</Text>
+                                            <Text fontSize={14}>{`${orderAddress[1]}`}</Text>
+                                            <Text fontSize={14}>{`${orderAddress[2]}`}</Text>
                                             <Text fontSize={14}>{`${selectedOrder?.deliveryAddress?.postalCode}`}</Text>
                                         </Flex>
                                     </Grid>
                                     <Flex minHeight="435px">
-                                        <OrderItemsSummary isMobile={false} items={selectedOrder?.cart} />
+                                        <OrderItemsSummary isMobile={false} items={selectedOrder?.cart?.productsQuantities} total={selectedOrder?.orderTotal} />
                                     </Flex>
                                 </Flex>
                                 : <NoData header={noOrderClickedHeader} caption={noOrderClickedCaption} />

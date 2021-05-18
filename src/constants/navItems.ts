@@ -40,7 +40,7 @@ export const NAV_ITEMS: NavItem[] = [
     Icon: Users
   },
   {
-    to: `/login`,
+    to: `/user-support`,
     title: 'Support',
     Icon: HelpCircle
   }

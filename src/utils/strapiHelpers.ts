@@ -94,16 +94,18 @@ const upload = async (
 }
 
 const sendOrderSummaryEmail = async (
-  cartProducts: CartProduct[], 
-  user: UsersPermissionsUser | undefined, 
-  address: ComponentLocationAddress | undefined, 
-  selectedDeliveryDate: Date | Date[]) => {
+  cartProducts: CartProduct[],
+  user: UsersPermissionsUser | undefined,
+  address: ComponentLocationAddress | undefined,
+  selectedDeliveryDate: Date | Date[],
+  checkoutTotal: number) => {
   const data = {
     products: cartProducts,
     username: user?.firstName,
     email: user?.email,
     address,
-    date: selectedDeliveryDate
+    date: selectedDeliveryDate,
+    orderTotal: checkoutTotal,
   };
   try {
     return await axios.post(`${BASE}/carts/orderSummaryEmail`, data, {

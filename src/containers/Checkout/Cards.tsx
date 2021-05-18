@@ -1,15 +1,12 @@
 import * as React from 'react'
 
 import { Button } from '@chakra-ui/core'
-import { useHistory } from 'react-router-dom'
 
 import CardsContainer from './CardsContainer'
-import StrapiHelpers from '../../utils/strapiHelpers'
 import CardComponent, { Card } from './CardComponent'
 
 import { CartProduct } from '../Cart'
-import { useAuthContext } from "../../context/AuthProvider";
-import { ComponentLocationAddress } from '../../generated/graphql'
+import { ComponentLocationAddress } from '../../generated/graphql';
 
 
 type CardsProps = {
@@ -18,6 +15,7 @@ type CardsProps = {
   checkoutTotal: number
   selectedDeliveryDate: Date | Date[]
   cartProducts?: CartProduct[]
+  handlePay?: () => void
   selectedAddress: ComponentLocationAddress | undefined
   setShowDeleteCardModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
   setShowCheckoutSignatoryModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
@@ -25,6 +23,7 @@ type CardsProps = {
 
 const CardsComponent: React.FC<CardsProps> = ({
   cards,
+  handlePay,
   mobileFlow,
   cartProducts,
   checkoutTotal,
@@ -33,39 +32,6 @@ const CardsComponent: React.FC<CardsProps> = ({
   setShowDeleteCardModal,
   setShowCheckoutSignatoryModal
 }) => {
-  const history = useHistory()
-  // const toast = useToast();
-
-  const { user } = useAuthContext()
-  // const [createOrder] = useCreateCheckoutOrderMutation({
-  //   onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
-  //   onCompleted: async () => {
-  //     toast({
-  //       description: 'You have successfully placed your order!',
-  //       ...SUCCESS_TOAST
-  //     })
-  //     history.push("/checkout-success");
-  //   }
-  // });
-
-  const handlePay = async () => {
-    setShowCheckoutSignatoryModal(true)
-    if (cartProducts) {
-      // await createOrder({
-      //   variables: {
-      //     input: {
-      //       deliveryAddress: {
-      //         ...selectedAddress
-      //       },
-      //       deliveryDate: selectedDeliveryDate
-
-      //     }
-      //   }
-      // })
-      StrapiHelpers.sendOrderSummaryEmail(cartProducts, user, selectedAddress, selectedDeliveryDate);
-      history.push('/checkout-success')
-    }
-  }
   return (
     <React.Fragment>
       <CardsContainer mobileFlow={mobileFlow}>

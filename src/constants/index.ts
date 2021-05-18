@@ -15,6 +15,8 @@ export const searchClient = algoliasearch(
 
 export const SEARCH_INDEX = `${process.env.REACT_APP_STAGE}_TRADEFED`
 
+export const zendeskWidgetScriptUrl = `https://static.zdassets.com/ekr/snippet.js?key=${process.env.REACT_APP_ZENDESK_WIDGET_KEY}` || '';
+
 export const mapsScriptUrl =
   `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&libraries=places` ||
   ''

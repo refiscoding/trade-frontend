@@ -71,7 +71,7 @@ const AddToCartModal: React.FC<AddToCartModalProps> = ({ handleContinueShoppingB
                     <Button width="100%" mt={4} variantColor="brand" onClick={handleContinueShoppingButtonClicked}>
                         CONTINUE SHOPPING
                     </Button>
-                    <Button width="100%" variant="outline" onClick={handleGoToCartButtonClicked}>
+                    <Button mt={2} width="100%" variant="outline" onClick={handleGoToCartButtonClicked}>
                         GO TO CART
                     </Button>
                 </Grid>

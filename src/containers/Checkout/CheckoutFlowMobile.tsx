@@ -2,9 +2,8 @@ import * as React from 'react'
 
 import { isEmpty } from 'lodash'
 import { Form, Formik } from 'formik'
-import { Flex, Grid, Image, Button, Tag } from '@chakra-ui/core'
 import { ChevronRight } from 'react-feather'
-import { useHistory } from "react-router";
+import { Flex, Grid, Image, Button, Tag } from '@chakra-ui/core'
 
 import { theme, images } from '../../theme'
 import { PageWrap } from '../../layouts'
@@ -22,13 +21,11 @@ import OrderSummary from './OrderSummary'
 import DeliveryAddresses from './Addresses'
 import SelectPayment from './SelectPayment'
 import DeliveryDetails from './DeliveryDetails'
-import StrapiHelpers from "../../utils/strapiHelpers"
 import DeliveryAddressForm from './DeliveryAddressForm'
 import CheckoutItemsModal from './CheckoutProductsModal'
 import CheckoutSignatoryModal from './CheckoutSignatoryModal'
 import DeleteItemsModal from '../../components/DeleteItemsModal'
 
-import { useAuthContext } from "../../context/AuthProvider";
 import { ComponentLocationAddress } from '../../generated/graphql'
 
 type SelectPaymentComponentProps = {
@@ -136,12 +133,15 @@ const DeliveryItemsComponent: React.FC<DeliveryItemsComponentProps> = ({
 
 type DeliveryInfoComponentProps = {
   timeSlots: TimeSlot[]
+  nextClicked: boolean | undefined
   selectedDeliveryTimeslot: string | undefined
+  selectedDeliveryDate: Date | Date[]
+  setNextClicked: React.Dispatch<React.SetStateAction<boolean | undefined>>
   setSelectedDeliveryDate: React.Dispatch<React.SetStateAction<Date | Date[]>>
   setSelectedDeliveryTimeslot: React.Dispatch<React.SetStateAction<string | undefined>>
 }
 
-const DeliveryInfoComponent: React.FC<DeliveryInfoComponentProps> = ({ timeSlots, setSelectedDeliveryDate, setSelectedDeliveryTimeslot, selectedDeliveryTimeslot }) => {
+const DeliveryInfoComponent: React.FC<DeliveryInfoComponentProps> = ({ timeSlots, setSelectedDeliveryDate, setSelectedDeliveryTimeslot, selectedDeliveryTimeslot, setNextClicked, nextClicked, selectedDeliveryDate }) => {
   return (
     <Flex flexDirection="column">
       <Flex
@@ -151,7 +151,7 @@ const DeliveryInfoComponent: React.FC<DeliveryInfoComponentProps> = ({ timeSlots
         background={theme.colors.accent[50]}
         boxShadow={theme.boxShadowMedium}
       >
-        <DeliveryDetails mobileFlow timeSlots={timeSlots} setSelectedDeliveryDate={setSelectedDeliveryDate} setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot} selectedDeliveryTimeslot={selectedDeliveryTimeslot} />
+        <DeliveryDetails selectedDeliveryDate={selectedDeliveryDate} setNextClicked={setNextClicked} nextClicked={nextClicked} mobileFlow timeSlots={timeSlots} setSelectedDeliveryDate={setSelectedDeliveryDate} setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot} selectedDeliveryTimeslot={selectedDeliveryTimeslot} />
       </Flex>
     </Flex>
   )
@@ -161,6 +161,7 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
   active,
   cards,
   addresses,
+  handlePay,
   timeSlots,
   deliveryFee,
   cartProducts,
@@ -186,10 +187,9 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
   setSelectedDeliveryTimeslot,
   setShowCheckoutSignatoryModal,
 }) => {
-  const history = useHistory()
-  const { user } = useAuthContext();
   const [showPaymentOptions, setShowPaymentOptions] = React.useState<boolean>()
   const [showCheckoutItemsModal, setShowCheckoutItemsModal] = React.useState<boolean>()
+  const [nextClicked, setNextClicked] = React.useState<boolean | undefined>()
 
   const numberOfAddresses = addresses?.length
   const numberOfCards = cards?.length
@@ -214,13 +214,7 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
     setShowPaymentOptions(true)
   }
 
-  const handlePay = () => {
-    if (cartProducts) {
-      // setShowCheckoutSignatoryModal(true);
-      StrapiHelpers.sendOrderSummaryEmail(cartProducts, user, selectedAddress, selectedDeliveryDate);
-      history.push('/checkout-success')
-    }
-  };
+  const deliveryDetailsIncluded = selectedAddress && selectedDeliveryTimeslot;
 
   return (
     <React.Fragment>
@@ -306,11 +300,25 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
                         </NextButton>
                       ) : confirmOrderStage ? (
                         <Flex flexDirection="column">
-                          <DeliveryInfoComponent timeSlots={timeSlots} setSelectedDeliveryDate={setSelectedDeliveryDate} setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot} selectedDeliveryTimeslot={selectedDeliveryTimeslot} />
+                          <DeliveryInfoComponent
+                            timeSlots={timeSlots}
+                            nextClicked={nextClicked}
+                            setNextClicked={setNextClicked}
+                            selectedDeliveryDate={selectedDeliveryDate}
+                            setSelectedDeliveryDate={setSelectedDeliveryDate}
+                            selectedDeliveryTimeslot={selectedDeliveryTimeslot}
+                            setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot}
+                          />
                           <NextButton
                             active={active}
                             disabled={false}
-                            setActive={() => setActiveStep(3)}
+                            setActive={
+                              () => {
+                                if (deliveryDetailsIncluded) {
+                                  setActiveStep(3)
+                                }
+                              }
+                            }
                           >
                             NEXT
                           </NextButton>

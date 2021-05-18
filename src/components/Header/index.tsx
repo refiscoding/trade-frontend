@@ -88,7 +88,7 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
             justifyContent={isTabletOrMobile ? 'center' : 'flex-start'}
             pl={5}
           >
-            <Image mr={5} width={isTabletOrMobile ? '100%' : '40%'} src={images['TradeFedFullLogo']} />
+          <Image mr={5} width={isTabletOrMobile ? '100%' : '30%'} src={images['TradeFedFullLogo']} />
           </Flex>
           <Flex
             display={isTabletOrMobile ? "none" : "flex"}

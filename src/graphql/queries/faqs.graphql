@@ -1,0 +1,7 @@
+query fetchFAQs {
+  faqs {
+    id
+    Question
+    Answer
+  }
+}

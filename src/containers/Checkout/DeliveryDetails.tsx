@@ -11,7 +11,10 @@ import { TimeSlot } from "./AddressComponent";
 type DeliveryInfoProps = {
     timeSlots: TimeSlot[]
     mobileFlow: boolean
+    nextClicked: boolean | undefined
+    selectedDeliveryDate: Date | Date[]
     selectedDeliveryTimeslot: string | undefined
+    setNextClicked: React.Dispatch<React.SetStateAction<boolean | undefined>>
     setSelectedDeliveryDate: React.Dispatch<React.SetStateAction<Date | Date[]>>
     setSelectedDeliveryTimeslot: React.Dispatch<React.SetStateAction<string | undefined>>
 };
@@ -28,7 +31,7 @@ const TimeSlotComponent: React.FC<TimeSlotProps> = ({ slot, setSelectedDeliveryT
         setSelectedDeliveryTimeslot(slot?.id);
     };
     return (
-        <Flex 
+        <Flex
             height="60%"
             borderRadius={3}
             cursor="pointer"
@@ -38,33 +41,45 @@ const TimeSlotComponent: React.FC<TimeSlotProps> = ({ slot, setSelectedDeliveryT
             color={color}
             onClick={handleSlotClicked}
         >
-            <Text ml={2} fontSize={14}>{ slot?.startTime } - { slot?.endTime }</Text>
+            <Text ml={2} fontSize={14}>{slot?.startTime} - {slot?.endTime}</Text>
         </Flex>
     );
 };
 
-const DeliveryInfo: React.FC<DeliveryInfoProps> = ({ timeSlots, mobileFlow, setSelectedDeliveryDate, setSelectedDeliveryTimeslot, selectedDeliveryTimeslot }) => {
+const DeliveryInfo: React.FC<DeliveryInfoProps> = ({ timeSlots, mobileFlow, setSelectedDeliveryDate, setSelectedDeliveryTimeslot, selectedDeliveryTimeslot, selectedDeliveryDate, nextClicked }) => {
     const marginLeft = mobileFlow ? "-13px" : "-17px";
-    return(
-        <Grid gridTemplateRows="35px 80px 40px 340px 50px 60px">
+    return (
+        <Grid gridTemplateRows="35px 80px 40px 355px 50px 60px">
             <Text fontWeight={600}>When would like your order delivered?</Text>
             <Flex background={theme.colors.info} p={2} width="383px" marginLeft={marginLeft} height="60px" alignItems="center" justifyItems="space-between">
-                <Image src={images.infoIcon} height="50%"/>
+                <Image src={images.infoIcon} height="50%" />
                 <Text fontSize={12} ml={3}>
                     Selected date and time may differ according to transport companies' schedules.
                 </Text>
             </Flex>
             <Text fontSize={14} fontWeight={600}>Select a date:</Text>
-            <Calendar setSelectedDeliveryDate={setSelectedDeliveryDate}/>
-            <Text mt={5} fontSize={14} fontWeight={600}>Select a time range:</Text>
-            <Grid gridTemplateColumns="1fr 1fr 1fr" columnGap="10px" pr={4}>
+            <Flex flexDirection="column" mb={5}>
+                <Calendar setSelectedDeliveryDate={setSelectedDeliveryDate} />
                 {
-                    timeSlots?.map((slot, index) => {
-                        return (
-                            <TimeSlotComponent key={`${index}_timelosts`} slot={slot} setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot} selectedDeliveryTimeslot={selectedDeliveryTimeslot} />
-                        );
-                    })
+                    nextClicked && !setSelectedDeliveryDate && <Text fontSize={12} color={theme.colors.errorText}>Select Date</Text>
                 }
+            </Flex>
+            <Text mt={5} fontSize={14} fontWeight={600}>Select a time range:</Text>
+            <Grid gridTemplateRows="55px 15px">
+                <Grid gridTemplateColumns="1fr 1fr 1fr" columnGap="10px" pr={4}>
+                    {
+                        timeSlots?.map((slot, index) => {
+                            return (
+                                <TimeSlotComponent key={`${index}_timelosts`} slot={slot} setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot} selectedDeliveryTimeslot={selectedDeliveryTimeslot} />
+                            );
+                        })
+                    }
+                </Grid>
+                <Flex mt={-3} justifySelf="start">
+                    {
+                        nextClicked && !setSelectedDeliveryTimeslot && <Text fontSize={12} color={theme.colors.errorText}>Select Time Slot</Text>
+                    }
+                </Flex>
             </Grid>
         </Grid>
     );

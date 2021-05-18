@@ -1,44 +1,6 @@
-# import '/fragments/product.graphql'
-# import '/fragments/user.graphql'
-
 mutation createCheckoutOrder($input: CreateCheckoutOrderInput!) {
   createCheckoutOrder(input: $input) {
-    payload {
-      id
-      orderNumber
-      orderDate
-      paidDate
-      deliveryDate
-      numOfItems
-      deliveryFee
-      orderTotal
-      deliveryAddress {
-        id
-        lat
-        lng
-        address
-        postalCode
-        type
-        name
-      }
-      cart {
-        total
-        productsQuantities {
-          quantity
-          product {
-            ...product
-          }
-        }
-      }
-      owner {
-        ...user
-      }
-      signatory {
-        name
-        relation
-        isCustomer
-      }
-    }
+    payload
     error
   }
 }
