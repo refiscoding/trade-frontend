@@ -216,7 +216,7 @@ const CheckoutPage: React.FC = () => {
           cards={cards}
           addresses={addresses}
           timeSlots={timeSlots}
-            handlePay={handlePay}
+          handlePay={handlePay}
           cartProducts={products}
           deliveryFee={deliveryFee}
           setActiveStep={setActiveStep}
