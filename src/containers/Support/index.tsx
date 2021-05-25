@@ -4,13 +4,14 @@ import { ArrowLeft } from 'react-feather';
 import { useMediaQuery } from "react-responsive";
 import { Text, Button, Grid, Flex, Divider } from '@chakra-ui/core'
 
-import { theme } from '../../theme'
+import { images, theme } from '../../theme'
 import { H5 } from '../../typography'
 import { PageWrap } from '../../layouts'
 import { Faq, Maybe } from '../../generated/graphql'
 import { zendeskWidgetScriptUrl } from '../../constants'
 import { useHistory } from 'react-router-dom';
 import { useFetchFaQsQuery } from '../../generated/graphql'
+import { InfoPage } from '../../components';
 
 type UserSupportProps = {}
 type FAQOpion = Pick<Faq, "id" | "Question" | "Answer">
@@ -66,21 +67,30 @@ const UserSupport: React.FC<UserSupportProps> = () => {
                 <Text ml={3} fontWeight={600} >{knowledge ? "Support" : "Home"}</Text>
             </Flex>
             {
-                !currentPage && (
-                    <Grid margin="auto" gridTemplateRows="70px 70px 100%" justifyItems="center">
-                        <H5 mt={5} fontWeight={600}>How can we help you?</H5>
-                        <Text color={theme.colors.dimText} textAlign="center" fontSize={14}>Please check out our Frequetnly Asked Questions (FAQs) below or click on the help icon for live chat</Text>
-                        <Grid gridTemplateRows="50px 50px 50px">
-                            <SupportPageButton onClick={() => setPage("knowledge")}>FAQs</SupportPageButton>
+                currentPage
+                    ? knowledge && faqsData?.faqs?.length
+                        ? faqsData?.faqs?.map((faq: Maybe<FAQOpion>, index: number) => (
+                            <Flex margin="auto" key={`${index}_faq`} flexDirection="column" justify="space-between" width={isWebView ? "70%" : "100%"} >
+                                <KnowledgeBaseFAQs FAQ={faq} isWebView={isWebView} />
+                            </Flex>
+                        ))
+                        : <InfoPage
+                            image={images.emptyWishlist}
+                            header="No FAQS set up"
+                            caption={`
+                              The admin has not set up FAQs, use the help button for further assistance`}
+                        />
+                    : (
+                        <Grid margin="auto" gridTemplateRows="70px 70px 100%" justifyItems="center">
+                            <H5 mt={5} fontWeight={600}>How can we help you?</H5>
+                            <Text color={theme.colors.dimText} textAlign="center" fontSize={14}>Please check out our Frequetnly Asked Questions (FAQs) below or click on the help icon for live chat</Text>
+                            <Grid gridTemplateRows="50px 50px 50px">
+                                <SupportPageButton onClick={() => setPage("knowledge")}>FAQs</SupportPageButton>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                )
+                    )
+
             }
-            {knowledge && faqsData?.faqs?.length && faqsData?.faqs?.map((faq: Maybe<FAQOpion>, index: number) => (
-                <Flex margin="auto" key={`${index}_faq`} flexDirection="column" justify="space-between" width={isWebView ? "70%" : "100%"} >
-                    <KnowledgeBaseFAQs FAQ={faq} isWebView={isWebView} />
-                </Flex>
-            ))}
         </PageWrap>
     )
 }
