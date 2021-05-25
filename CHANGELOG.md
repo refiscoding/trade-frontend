@@ -1,3 +1,10 @@
+# [1.2.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.1.2...v1.2.0) (2021-05-25)
+
+
+### Features
+
+* **support:** add empty state for FAQs ([61a9699](http://bitbucket.org/sovtech/tradefed-frontend/commits/61a9699fcd93f21f2ab753ea2d50ed34453d9f85))
+
 ## [1.1.2](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.1.1...v1.1.2) (2021-04-21)
 
 
