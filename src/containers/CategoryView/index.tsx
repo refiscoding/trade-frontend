@@ -3,7 +3,7 @@ import { sortBy, reverse, slice } from 'lodash'
 import { ApolloError } from 'apollo-client'
 import { PageWrap } from '../../layouts'
 import { useHistory, useParams } from 'react-router-dom'
-import { Flex, useToast } from '@chakra-ui/core'
+import { Button, Flex, useToast } from '@chakra-ui/core'
 import Hero from '../../components/Hero'
 import { Category, Product, useCategoryQuery, useProductQuery } from '../../generated/graphql'
 import { get } from 'lodash'
@@ -73,6 +73,9 @@ const Home: React.FC = () => {
             {products?.map((product: Product) => (
               <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
             ))}
+            <Button mt={4} width="100%" variantColor="brand">
+              VIEW MORE
+            </Button>
           </Section>
         </React.Fragment>
       </Flex>

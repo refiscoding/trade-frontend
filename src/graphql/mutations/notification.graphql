@@ -1,0 +1,6 @@
+mutation markNotificationAsRead($input: MarkNotificationAsReadInput!) {
+  markNotificationAsRead(input: $input) {
+    payload
+    error
+  }
+}

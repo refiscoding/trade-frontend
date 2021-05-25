@@ -32,4 +32,9 @@ export default {
   FNBPayment: require('../assets/images/FNBPayment.png'),
   AmericanExpressPayment: require('../assets/images/AmericanExpressPayment.png'),
   parcel: require('../assets/images/parcel.svg'),
+  notifications: {
+    info: require('../assets/images/InfoIconNotifications.svg'),
+    error: require('../assets/images/WarningIcon.svg'),
+    success: require('../assets/images/SuccessIcon.svg'),
+  }
 }

@@ -65,7 +65,6 @@ export type CheckoutProps = {
   checkoutTotal: number
   noCardDataHeader: string
   noCardDataCaption: string
-  tradeFinanceMargin: number
   cartProducts: CartProduct[]
   noAddressDataHeader: string
   confirmationTextCard: string
@@ -147,9 +146,8 @@ const CheckoutPage: React.FC = () => {
   const productPricesTotal = productPrices?.reduce((a, b) => a + b, 0)
   // TODO: Fetch actual values from backend once logistics partner confirms and price matrix is agreed
   const deliveryFee = 1000
-  const tradeFinanceMargin = 100
 
-  const checkoutTotal = productPricesTotal + deliveryFee + tradeFinanceMargin
+  const checkoutTotal = productPricesTotal + deliveryFee;
 
   const addresses = user?.address as ComponentLocationAddress[]
 
@@ -193,7 +191,6 @@ const CheckoutPage: React.FC = () => {
           selectedAddress={selectedAddress}
           noCardDataHeader={noCardDataHeader}
           noCardDataCaption={noCardDataCaption}
-          tradeFinanceMargin={tradeFinanceMargin}
           setSelectedAddress={setSelectedAddress}
           noAddressDataHeader={noAddressDataHeader}
           showDeleteCardModal={showDeleteCardModal}
@@ -224,7 +221,6 @@ const CheckoutPage: React.FC = () => {
           selectedAddress={selectedAddress}
           noCardDataHeader={noCardDataHeader}
           noCardDataCaption={noCardDataCaption}
-          tradeFinanceMargin={tradeFinanceMargin}
           setSelectedAddress={setSelectedAddress}
           noAddressDataHeader={noAddressDataHeader}
           showDeleteCardModal={showDeleteCardModal}

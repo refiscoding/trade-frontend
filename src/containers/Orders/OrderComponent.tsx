@@ -1,5 +1,7 @@
 import * as React from "react";
-import moment from "moment";
+import dayjs from "dayjs";
+import RelativeTime from "dayjs/plugin/relativeTime";
+import LocalizedFormat from "dayjs/plugin/localizedFormat";
 
 import { ChevronRight } from "react-feather";
 import { Flex, Grid, Image } from '@chakra-ui/core';
@@ -8,7 +10,8 @@ import { Text } from '../../typography';
 import { theme, images } from '../../theme';
 import { Order } from '../../generated/graphql'
 
-
+dayjs.extend(RelativeTime);
+dayjs.extend(LocalizedFormat);
 
 type OrderComponentProps = {
     setSelectedOrder: (val: Order) => void
@@ -32,7 +35,7 @@ const OrderComponent: React.FC<OrderComponentProps> = ({ setSelectedOrder, order
             onClick={handleOrderClicked}
         >
             <Flex justify="space-between" borderBottom={`1px solid ${theme.colors.background}`} ml={-8} mb={2} width="364px" pl={6} pb={3}>
-                <Text fontSize={14} fontWeight={600}>{`Delivered: ${moment(order?.deliveryDate).format("LLLL")}`}</Text>
+                <Text fontSize={14} fontWeight={600}>{`Delivered: ${dayjs(order?.deliveryDate).format("LLLL")}`}</Text>
                 <ChevronRight />
             </Flex>
             {

@@ -95,13 +95,13 @@ const ProductFilter: React.FC = () => {
           <Form style={{ width: '100%' }}>
             <ConnectedFormGroup
               label="Min Price"
-              placeholder="Select and option..."
+              placeholder="Select an option..."
               name="minPrice"
               type="text"
             />
             <ConnectedFormGroup
               label="Max Price"
-              placeholder="Select and option..."
+              placeholder="Select an option..."
               name="maxPrice"
               type="text"
             />
@@ -136,7 +136,7 @@ const ProductFilter: React.FC = () => {
             />
             <ConnectedFormGroup
               label="Select Country"
-              placeholder="Select and option..."
+              placeholder="Select an option..."
               name="country"
               type="text"
             />

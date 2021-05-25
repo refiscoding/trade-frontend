@@ -1,16 +1,26 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
+import mixpanel from "mixpanel-browser";
+
+import { Helmet } from 'react-helmet'
+import { css, Global } from '@emotion/core'
 import { ApolloProvider } from '@apollo/react-hooks'
 import { CSSReset, ThemeProvider } from '@chakra-ui/core'
-import { css, Global } from '@emotion/core'
-import React from 'react'
-import 'react-dates/initialize'
-import ReactDOM from 'react-dom'
-import { Helmet } from 'react-helmet'
-import client from './apollo'
+
 import App from './App'
+import client from './apollo'
+import * as serviceWorker from './serviceWorker'
+
+import { theme } from './theme'
 import { APP_NAME } from './constants'
 import { AppProvider, AuthProvider } from './context'
-import * as serviceWorker from './serviceWorker'
-import { theme } from './theme'
+
+import 'react-dates/initialize'
+
+mixpanel.init(`${process.env.REACT_APP_MIXPANEL_KEY}`, {
+  debug: process.env.REACT_APP_STAGE === "dev",
+  ignore_dnt: true
+});
 
 ReactDOM.render(
   <React.StrictMode>

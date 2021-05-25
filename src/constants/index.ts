@@ -44,6 +44,25 @@ export const ERROR_TOAST: IToast = {
   position: 'bottom-right'
 }
 
+export const notificationsMap = {
+  onboarding: {
+    EMAIL_VERIFICATION: 'EMAIL_VERIFICATION',
+    SIGNUP_COMPLETE: 'SIGNUP_COMPLETE',
+    RESET_PASSWORD: 'RESET_PASSWORD',
+  },
+  seller: {
+    MERCHANT_REQUEST: 'MERCHANT_REQUEST',
+    MERCHANT_REQUEST_APPROVED: 'MERCHANT_REQUEST_APPROVED',
+    MERCHANT_REQUEST_REJECTED: 'MERCHANT_REQUEST_REJECTED',
+  },
+  order: {
+    STALE_WISHLIST: 'STALE_WISHLIST',
+    STALE_CART: 'STALE_CART',
+    ORDER_RETURNED: 'ORDER_RETURNED',
+    ORDER_CREATED: 'ORDER_CREATED',
+  },
+};
+
 export const DATE_FORMAT = 'DD/MM/YYYY'
 
 export const PHONE_NUMBER_REGEX = new RegExp('^([0]{1})?([1-9]{1}[0-9]{8})$')

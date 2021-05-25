@@ -14,7 +14,6 @@ import { ComponentLocationAddress } from '../../generated/graphql'
 
 type OrderSummaryComponentProps = {
     cartProducts: CartProduct[]
-    tradeFinanceMargin: number
     deliveryFee: number
     checkoutTotal: number
     mobileFlow: boolean
@@ -24,37 +23,36 @@ type OrderSummaryComponentProps = {
     setActiveStep: (step: number) => void
 }
 
-const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({ 
-    cartProducts, 
-    deliveryFee, 
-    tradeFinanceMargin,
+const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
+    cartProducts,
+    deliveryFee,
     checkoutTotal,
     mobileFlow,
     selectedDeliveryDate,
     selectedDeliveryTimeslot,
     selectedAddress,
     setActiveStep
-    }) => {
-        const selectedTimeSlot = timeSlots?.filter((slot: TimeSlot) => slot?.id === selectedDeliveryTimeslot);
-        const selectedDate = selectedDeliveryDate?.toString()?.split("00:00:00")?.join("");
+}) => {
+    const selectedTimeSlot = timeSlots?.filter((slot: TimeSlot) => slot?.id === selectedDeliveryTimeslot);
+    const selectedDate = selectedDeliveryDate?.toString()?.split("00:00:00")?.join("");
 
-        const addressDetails = selectedAddress?.address?.split(",") ?? [];
-        const addressStrings = addressDetails[0]?.split("-");
-        const streetAddress = addressStrings[0]?.trim();
-        const buildingOrComplex = addressStrings[1]?.trim();
+    const addressDetails = selectedAddress?.address?.split(",") ?? [];
+    const addressStrings = addressDetails[0]?.split("-");
+    const streetAddress = addressStrings[0]?.trim();
+    const buildingOrComplex = addressStrings[1]?.trim();
 
-        const CTAStyles = { textDecoration: "underline", cursor: "pointer" };
+    const CTAStyles = { textDecoration: "underline", cursor: "pointer" };
 
-        const handleChangeDeliveryDateTime = () => {
-            if(mobileFlow){
-                setActiveStep(2);
-            } else {
-                setActiveStep(1);
-            }
+    const handleChangeDeliveryDateTime = () => {
+        if (mobileFlow) {
+            setActiveStep(2);
+        } else {
+            setActiveStep(1);
         }
-        const handleChangeDeliveryAddress = () => {
-            setActiveStep(0);
-        }
+    }
+    const handleChangeDeliveryAddress = () => {
+        setActiveStep(0);
+    }
     return (
         <Flex
             borderRadius={5}
@@ -68,14 +66,13 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
                 {
                     cartProducts?.map((item: CartProduct, index: number) => {
                         const { product, quantity } = item;
-                        return <ReceiptProduct 
-                                    key={`${index}_checkout_product`} 
-                                    mobileFlow={mobileFlow}
-                                    product={product} 
-                                    quantity={quantity}
-                                    tradeFinanceMargin={tradeFinanceMargin}
-                                    deliveryFee={deliveryFee}
-                                />
+                        return <ReceiptProduct
+                            key={`${index}_checkout_product`}
+                            mobileFlow={mobileFlow}
+                            product={product}
+                            quantity={quantity}
+                            deliveryFee={deliveryFee}
+                        />
                     })
                 }
             </Grid>

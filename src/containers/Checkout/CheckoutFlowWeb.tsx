@@ -46,7 +46,6 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
   selectedAddress,
   noCardDataHeader,
   noCardDataCaption,
-  tradeFinanceMargin,
   setSelectedAddress,
   noAddressDataHeader,
   showDeleteCardModal,
@@ -285,7 +284,6 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                     cartProducts={cartProducts}
                     checkoutTotal={checkoutTotal}
                     deliveryFee={deliveryFee}
-                    tradeFinanceMargin={tradeFinanceMargin}
                     selectedAddress={selectedAddress}
                     setActiveStep={setActiveStep}
                     selectedDeliveryDate={selectedDeliveryDate}

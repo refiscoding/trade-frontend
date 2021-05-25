@@ -93,7 +93,7 @@ const ProductInfo: React.FC<ProductInfoTypes> = ({ categories, values, handleSet
       <ConnectedNumberInput label="Price per Unit" name="pricePerUnit" unit={currency} />
       <ConnectedNumberInput label="Retail Price per Unit" name="retailPricePerUnit" unit={currency} />
       <ConnectedFormGroup
-        label="How Many Units available to sell?"
+        label="How many units are available to sell?"
         name="availableUnits"
         type="text"
       />

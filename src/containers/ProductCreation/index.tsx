@@ -30,7 +30,7 @@ export const ProductFormValidation = Yup.object().shape({
   tags: Yup.string(),
   pricePerUnit: Yup.string().required('A price per unit is required'),
   retailPricePerUnit: Yup.string().required('A retail price per unit is required'),
-  availableUnits: Yup.string().required('A Units available to sell is required'),
+  availableUnits: Yup.string().required('Units available to sell is required'),
   packaging: Yup.string().required('Packaging is required'),
   itemsPerPackage: Yup.string().required('Items per package is required'),
   description: Yup.string().required('Products description is required'),

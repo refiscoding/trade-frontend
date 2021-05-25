@@ -1,8 +1,9 @@
 import * as React from 'react';
-import moment from "moment";
+import dayjs from 'dayjs';
 
-import { Flex, Grid, Tag, Spinner } from '@chakra-ui/core';
+import { useHistory } from 'react-router-dom';
 import { DateRangePicker } from "react-dates";
+import { Flex, Grid, Tag, Spinner } from '@chakra-ui/core';
 
 import OrderItemsSummary from "./OrderItems";
 import OrderComponent from './OrderComponent';
@@ -17,6 +18,7 @@ import { Order } from '../../generated/graphql'
 
 
 const OrdersPageWeb: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => {
+    const history = useHistory();
     const [selectedOrder, setSelectedOrder] = React.useState<Order | undefined>();
 
     const cancelStyles = {
@@ -31,6 +33,9 @@ const OrdersPageWeb: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => 
        Selecting an order will have it displayed here
    `
     const orderAddress = selectedOrder?.deliveryAddress?.address?.split(",") ?? [];
+    const handleReturnOrderClicked = () => {
+        history.push("/returns");
+    };
     return (
         <PageWrap
             title="Orders"
@@ -56,7 +61,7 @@ const OrdersPageWeb: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => 
                             <H3 textAlign="left" fontSize={18} fontWeight={600}>
                                 My Order History
                             </H3>
-                            <Text fontSize={12} style={cancelStyles}>Home</Text>
+                            <Text onClick={handleReturnOrderClicked} fontSize={12} style={cancelStyles}>Return an Order</Text>
                         </Flex>
                     </Grid>
                 </Grid>
@@ -108,11 +113,11 @@ const OrdersPageWeb: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => 
                                             </Grid>
                                             <Grid gridTemplateColumns="100px 250px">
                                                 <Text fontSize={14} fontWeight={600}>Ordered:</Text>
-                                                <Text fontSize={14} ml={3}>{`${moment(selectedOrder?.orderDate).format("LLLL")}`}</Text>
+                                                <Text fontSize={14} ml={3}>{`${dayjs(selectedOrder?.orderDate).format("LLLL")}`}</Text>
                                             </Grid>
                                             <Grid gridTemplateColumns="100px 250px">
                                                 <Text fontSize={14} fontWeight={600}>Paid:</Text>
-                                                <Text fontSize={14} ml={3}>{`${moment(selectedOrder?.paidDate).format("LLLL")}`}</Text>
+                                                <Text fontSize={14} ml={3}>{`${dayjs(selectedOrder?.paidDate).format("LLLL")}`}</Text>
                                             </Grid>
                                             <Grid gridTemplateColumns="100px 250px">
                                                 <Text fontSize={14} fontWeight={600}>Payment</Text>

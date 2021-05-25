@@ -1,10 +1,17 @@
-import { Flex } from '@chakra-ui/core'
-import { AnimatePresence } from 'framer-motion'
 import * as React from 'react'
+import { get } from "lodash";
+import { AnimatePresence } from 'framer-motion'
+import { Flex, useToast } from '@chakra-ui/core'
 import { useMediaQuery } from 'react-responsive'
-import { useAppContext } from '../../../context/AppProvider'
+
 import { Text } from '../../../typography'
 import { MenuItem, Tooltip } from './styles'
+import { useAppContext } from '../../../context/AppProvider'
+
+import { ApolloError } from 'apollo-boost'
+import { ERROR_TOAST } from '../../../constants'
+import { useFetchUserNotificationsQuery, Notification } from '../../../generated/graphql'
+
 
 type SideBarItemProps = {
   title: string
@@ -18,6 +25,37 @@ type SideBarItemProps = {
   closeOnNavigate?: boolean
   handleClick?: () => void
 }
+
+type CounterProps = {
+  Icon: React.FC
+  notifications: Notification[]
+};
+
+const NotificationsCounter: React.FC<CounterProps> = ({ Icon, notifications }) => {
+  return (
+    <Flex flexDirection="column">
+      <Flex
+        backgroundColor="#CF2121"
+        height="25px"
+        width="25px"
+        color="#fff"
+        textAlign="center"
+        justify="center"
+        align="center"
+        borderRadius="50%"
+        fontSize="12px"
+        position="absolute"
+        top="0"
+        left="20px"
+      >
+        {
+          notifications?.length > 9 ? '9+' : notifications?.length
+        }
+      </Flex>
+      <Icon />
+    </Flex>
+  );
+};
 
 const SideBarItem: React.FC<SideBarItemProps> = ({
   accentColor,
@@ -48,7 +86,22 @@ const SideBarItem: React.FC<SideBarItemProps> = ({
         x: { stiffness: 200 }
       }
     }
-  }
+  };
+
+  const notificationsIcon = title === "Notifications";
+
+  const toast = useToast();
+
+  const { data: userNotifications, refetch: refetchNotifications } = useFetchUserNotificationsQuery({
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
+  });
+  const notifications = get(userNotifications, "findUserNotifications.payload");
+
+  const hasNotifications = notifications?.length;
+
+  React.useEffect(() => {
+    refetchNotifications();
+  }, [refetchNotifications]);
 
   return (
     <MenuItem
@@ -73,7 +126,13 @@ const SideBarItem: React.FC<SideBarItemProps> = ({
         className="sidebar-nav-item-wrapper"
       >
         <Flex className="icon-wrap" mx={3}>
-          <Icon />
+          {
+            notificationsIcon
+              ? hasNotifications
+                ? <NotificationsCounter notifications={notifications} Icon={Icon} />
+                : <Icon />
+              : <Icon />
+          }
         </Flex>
         <AnimatePresence>
           {drawerOpen && (
