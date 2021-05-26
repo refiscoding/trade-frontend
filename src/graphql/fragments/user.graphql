@@ -29,4 +29,16 @@ fragment user on UsersPermissionsUser {
     id
     name
   }
+  notifications {
+    id
+    type
+    title
+    category
+    message
+    trigger
+    recipient {
+      email
+    }
+    read
+  }
 }

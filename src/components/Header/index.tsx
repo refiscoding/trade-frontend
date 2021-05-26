@@ -1,4 +1,4 @@
-import {Flex, Image, Text} from '@chakra-ui/core'
+import { Flex, Image, Text } from '@chakra-ui/core'
 import styled from '@emotion/styled'
 import { motion } from 'framer-motion'
 import * as React from 'react'
@@ -9,10 +9,10 @@ import { useAppContext } from '../../context/AppProvider'
 import SideBarButton from '../SideBar/SideBarButton'
 import { images } from '../../theme'
 import { ShoppingCart } from 'react-feather'
-import {InstantSearch} from "react-instantsearch-dom";
-import {SEARCH_INDEX, searchClient} from "../../constants";
-import {SearchBar} from "../index";
-import {useAuthContext} from "../../context/AuthProvider";
+import { InstantSearch } from "react-instantsearch-dom";
+import { SEARCH_INDEX, searchClient } from "../../constants";
+import { SearchBar } from "../index";
+import { useAuthContext } from "../../context/AuthProvider";
 
 type HeaderProps = RouteComponentProps &
   ColorProps & {
@@ -29,7 +29,7 @@ type HeaderContProps = SpaceProps &
     open?: boolean
   }
 
-const HeaderCont = styled(motion.div)<HeaderContProps>`
+const HeaderCont = styled(motion.div) <HeaderContProps>`
   ${space};
   ${color};
   top: 0;
@@ -68,7 +68,7 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
 
   const handleBecomeSeller = () => {
     if (isSellerApproved) {
-      history.push('/product-management')
+      history.push('/orders')
       return
     }
     history.push('/apply-seller')
@@ -77,54 +77,57 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
   const handleFilter = () => {
     history.push(`/product-filter`)
   }
+  const handleLogoClicked = () => {
+    history.push(`/`)
+  }
 
   return (
     <HeaderCont pr={4} pl={drawerOpen ? 'calc(186px + 1rem)' : '1rem'} {...rest}>
-        <InstantSearch indexName={SEARCH_INDEX} searchClient={searchClient}>
-          <SideBarButton color="black" open={drawerOpen} onClick={toggleDrawer} />
-          <Flex
-            width={isTabletOrMobile ? '50%' : '40%'}
-            align="center"
-            justifyContent={isTabletOrMobile ? 'center' : 'flex-start'}
-            pl={5}
-          >
-          <Image mr={5} width={isTabletOrMobile ? '100%' : '30%'} src={images['TradeFedFullLogo']} />
+      <InstantSearch indexName={SEARCH_INDEX} searchClient={searchClient}>
+        <SideBarButton color="black" open={drawerOpen} onClick={toggleDrawer} />
+        <Flex
+          width={isTabletOrMobile ? '50%' : '40%'}
+          align="center"
+          justifyContent={isTabletOrMobile ? 'center' : 'flex-start'}
+          pl={5}
+        >
+          <Image cursor="pointer" onClick={handleLogoClicked} mr={5} width={isTabletOrMobile ? '100%' : '30%'} src={images['TradeFedFullLogo']} />
+        </Flex>
+        <Flex
+          display={isTabletOrMobile ? "none" : "flex"}
+          width={isTabletOrMobile ? 0 : '55%'}
+        >
+          <Flex width="40%" alignItems="center" justifyContent="space-between" px={5}>
+            <Text
+              color="brand.500"
+              fontSize="14px"
+              cursor="pointer"
+              onClick={handleBecomeSeller}
+              pr={4}
+            >
+              {isSellerApproved ? 'Order History' : 'Become a Seller'}
+            </Text>
+            <Text
+              color="brand.500"
+              fontSize="14px"
+              cursor="pointer"
+              onClick={handleMyaccount}
+            >
+              My Account
+            </Text>
           </Flex>
-          <Flex
-            display={isTabletOrMobile ? "none" : "flex"}
-            width={isTabletOrMobile ? 0 : '55%'}
-          >
-            <Flex width="40%" alignItems="center" justifyContent="space-between" px={5}>
-              <Text
-                color="brand.500"
-                fontSize="14px"
-                cursor="pointer"
-                onClick={() => handleBecomeSeller()}
-                pr={4}
-              >
-                {isSellerApproved ? 'Product Management' : 'Become a Seller'}
-              </Text>
-              <Text
-                color="brand.500"
-                fontSize="14px"
-                cursor="pointer"
-                onClick={() => handleMyaccount()}
-              >
-                My Account
-              </Text>
-            </Flex>
-            <Flex width="65%" mr={4}>
-              <SearchBar
-                handleFilter={() => handleFilter()}
-                handleSearch={() => {}}
-                handleReset={() => {}}
-              />
-            </Flex>
+          <Flex width="65%" mr={4}>
+            <SearchBar
+              handleFilter={handleFilter}
+              handleSearch={() => { }}
+              handleReset={() => { }}
+            />
           </Flex>
-          <Flex>
-            <ShoppingCart onClick={handleCartIconClicked} />
-          </Flex>
-        </InstantSearch>
+        </Flex>
+        <Flex>
+          <ShoppingCart onClick={handleCartIconClicked} />
+        </Flex>
+      </InstantSearch>
     </HeaderCont>
   )
 }

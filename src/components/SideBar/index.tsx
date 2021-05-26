@@ -1,10 +1,10 @@
-import { Flex } from '@chakra-ui/core'
+import { Flex, useToast } from '@chakra-ui/core'
 import { AnimatePresence, motion, useAnimation, Variants } from 'framer-motion'
 import * as React from 'react'
 import { useMediaQuery } from 'react-responsive'
 import { ColorProps } from 'styled-system'
 import { useAppContext } from '../../context/AppProvider'
-import { NavItem, SELLER_NAV_ITEM, AUTH_NAV_ITEMS, LOGOUT_NAV_ITEM } from '../../constants/navItems'
+import { NavItem, AUTH_NAV_ITEMS, LOGOUT_NAV_ITEM } from '../../constants/navItems'
 import { images } from '../../theme'
 import { Text } from '../../typography'
 import Header from '../Header'
@@ -13,6 +13,9 @@ import SideBarItem from './SideBarItem'
 import { MenuCont, Overlay, RenderWrapper } from './styles'
 import { useAuthContext } from '../../context/AuthProvider'
 import { useHistory } from 'react-router'
+import { useFetchUserNotificationsQuery } from '../../generated/graphql'
+import { ApolloError } from 'apollo-boost'
+import { ERROR_TOAST } from '../../constants'
 
 type SideBarProps = ColorProps & {
   accentColor: string
@@ -38,7 +41,8 @@ const SideBar: React.FC<SideBarProps> = ({
   closeOnNavigate
 }) => {
   const { drawerOpen, toggleDrawer } = useAppContext()
-  const { user, isAuthenticated, logout } = useAuthContext()
+  const { isAuthenticated, logout } = useAuthContext()
+  const toast = useToast()
   const history = useHistory()
 
   const controls = useAnimation()
@@ -53,11 +57,18 @@ const SideBar: React.FC<SideBarProps> = ({
     }
   }, [isTabletOrMobile, drawerOpen, controls])
 
+  const { refetch: refetchNotifications } = useFetchUserNotificationsQuery({
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
+  });
+
+  React.useEffect(() => {
+    refetchNotifications();
+  }, [refetchNotifications]);
+
+
+
   const handleNavItems = () => {
     const updatedNavItems = navItems
-    if (user?.isSeller === 'approved') {
-      updatedNavItems[1] = SELLER_NAV_ITEM
-    }
     return updatedNavItems
   }
 
@@ -79,7 +90,7 @@ const SideBar: React.FC<SideBarProps> = ({
   }
 
   const handleAuth = () => {
-    if(!isAuthenticated) {
+    if (!isAuthenticated) {
       return
     }
     logout && logout()

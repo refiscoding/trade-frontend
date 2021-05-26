@@ -1,6 +1,5 @@
 import * as React from "react";
-
-import moment from "moment";
+import dayjs from "dayjs";
 
 import { useHistory } from "react-router";
 import { Flex, Grid, Spinner } from "@chakra-ui/core";
@@ -29,6 +28,10 @@ const OrdersPage: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => {
         };
     };
 
+    const handleReturnOrder = () => {
+        history.push("/returns");
+    };
+
     return (
         <PageWrap title="Orders" width="100%">
             <Grid gridTemplateRows="50px 30px 50px 1fr" width="100%">
@@ -53,11 +56,11 @@ const OrdersPage: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => {
                                     </Grid>
                                     <Grid gridTemplateColumns="90px 1fr">
                                         <Text fontSize={12} fontWeight={600}>Ordered:</Text>
-                                        <Text fontSize={12} ml={3}>{`${moment(selectedOrder?.orderDate).format("LLLL")}`}</Text>
+                                        <Text fontSize={12} ml={3}>{`${dayjs(selectedOrder?.orderDate).format("LLLL")}`}</Text>
                                     </Grid>
                                     <Grid gridTemplateColumns="90px 1fr">
                                         <Text fontSize={12} fontWeight={600}>Paid:</Text>
-                                        <Text fontSize={12} ml={3}>{`${moment(selectedOrder?.paidDate).format("LLLL")}`}</Text>
+                                        <Text fontSize={12} ml={3}>{`${dayjs(selectedOrder?.paidDate).format("LLLL")}`}</Text>
                                     </Grid>
                                     <Grid gridTemplateColumns="90px 1fr">
                                         <Text fontSize={12} fontWeight={600}>Payment:</Text>
@@ -92,7 +95,7 @@ const OrdersPage: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => {
                                     width="100%"
                                     justify="space-between"
                                     alignItems="center"
-                                    onClick={() => console.log("TODO: Add Handler")}
+                                    onClick={() => handleReturnOrder()}
                                     backgroundColor="white"
                                 >
                                     <Flex width="80%">

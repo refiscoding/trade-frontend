@@ -2,7 +2,7 @@ import { Flex, Image, Text } from '@chakra-ui/core'
 import * as React from 'react'
 import { ColorProps } from 'styled-system'
 import images from '../../theme/images'
-import moment from 'moment'
+import dayjs from 'dayjs';
 import { useHistory } from 'react-router'
 
 type FooterProps = ColorProps & {
@@ -28,12 +28,12 @@ const footerItems = [
   },
   {
     title: 'Support',
-    url: '/'
+    url: '/user-support'
   }
 ]
 
 const Footer: React.FC<FooterProps> = ({ removePadding }) => {
-  const currentYear = moment().format('YYYY')
+  const currentYear = dayjs().format('YYYY');
   const history = useHistory()
   return (
     <Flex
@@ -44,7 +44,7 @@ const Footer: React.FC<FooterProps> = ({ removePadding }) => {
       mt={10}
       mb="-1rem"
       alignItems="center"
-      ml={removePadding ? "-16px" : 0 }
+      ml={removePadding ? "-16px" : 0}
     >
       <Flex m={2} mt={4} width="50%" justifyContent="space-evenly">
         <Image width="30px" height="30px" src={images.FacebookFooter} />

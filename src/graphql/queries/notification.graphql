@@ -1,0 +1,18 @@
+query fetchUserNotifications {
+  findUserNotifications {
+    payload {
+      id
+      type
+      title
+      category
+      message
+      trigger
+      created_at
+      recipient {
+        email
+      }
+      read
+    }
+    error
+  }
+}

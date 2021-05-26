@@ -13,14 +13,12 @@ type OrderItemComponentProps = {
     cartItem: Maybe<ComponentCartProductCartProduct>
 };
 
-
-
 const OrderItemComponent: React.FC<OrderItemComponentProps> = ({ cartItem }) => {
     const price = get(cartItem, "product.price.pricePerUnit")
     const quantity = get(cartItem, "quantity")
 
     return (
-        <Grid borderBottom={`1px solid ${theme.colors.background}`} gridTemplateRows="30px 30px 30px" height="90px">
+        <Grid borderBottom={`1px solid ${theme.colors.background}`} gridTemplateRows="30px 30px" height="90px">
             <Grid gridTemplateColumns="1fr 1fr">
                 <Flex>
                     <Text fontWeight={600} fontSize={12}>{cartItem?.product?.name}</Text>
@@ -36,14 +34,6 @@ const OrderItemComponent: React.FC<OrderItemComponentProps> = ({ cartItem }) => 
                 </Flex>
                 <Flex justifySelf="end">
                     <Text fontWeight={500} fontSize={12}>{`R ${1000}.00`}</Text>
-                </Flex>
-            </Grid>
-            <Grid gridTemplateColumns={"1fr 1fr"}>
-                <Flex>
-                    <Text fontSize={"11px"}>Trade Finance Margin (10%)</Text>
-                </Flex>
-                <Flex justifySelf="end">
-                    <Text fontWeight={500} fontSize={12}>{`R ${200}.00`}</Text>
                 </Flex>
             </Grid>
         </Grid>

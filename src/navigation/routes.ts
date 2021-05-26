@@ -35,6 +35,8 @@ const UploadSuccess = lazy(() => import('../containers/ProductCreation/upload-su
 const CheckoutSuccess = lazy(() => import('../containers/Checkout/successCheckout'))
 const Orders = lazy(() => import('../containers/Orders'))
 const Support = lazy(() => import('../containers/Support'))
+const Notifications = lazy(() => import('../containers/Notifications'))
+const Returns = lazy(() => import('../containers/Returns'))
 
 const PRIVATE_ROUTES: PrivateRouteObject[] = [
   {
@@ -162,7 +164,20 @@ const PRIVATE_ROUTES: PrivateRouteObject[] = [
     breadcrumb: 'Support',
     path: '/user-support',
     component: Support
-
+  },
+  {
+    exact: false,
+    title: 'Notifications',
+    breadcrumb: 'Notifications',
+    path: '/notifications',
+    component: Notifications
+  },
+  {
+    exact: false,
+    title: 'Returns',
+    breadcrumb: 'Order Returns',
+    path: '/returns',
+    component: Returns
   }
 ]
 

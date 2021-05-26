@@ -11,6 +11,7 @@ fragment order on Order {
   numOfItems
   deliveryFee
   orderTotal
+  wasReturned
   deliveryAddress {
     id
     address

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 import { ChevronRight } from 'react-feather'
 import { useHistory } from 'react-router-dom'
@@ -17,12 +17,12 @@ const Profile: React.FC<ProfileProps> = () => {
   const history = useHistory()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   const initials = `${user?.firstName?.[0]}${user?.lastName?.[0]}`
-  const joinDate = moment(user?.created_at).format('DD/MM/YYYY')
+  const joinDate = dayjs(user?.created_at).format('DD/MM/YYYY')
   const isSellerApproved = user?.isSeller === 'approved'
 
   const handleBecomeSeller = () => {
     if (isSellerApproved) {
-      history.push('/product-management')
+      history.push('/wishlist')
       return
     }
     history.push('/apply-seller')
@@ -113,7 +113,7 @@ const Profile: React.FC<ProfileProps> = () => {
         backgroundColor="white"
       >
         <Flex width="80%">
-          <Text fontSize={12}>{isSellerApproved ? 'Product Management' : 'Become a Seller'}</Text>
+          <Text fontSize={12}>{isSellerApproved ? 'My Wishlist' : 'Become a Seller'}</Text>
         </Flex>
         <ChevronRight />
       </Flex>

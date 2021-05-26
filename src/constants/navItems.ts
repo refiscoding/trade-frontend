@@ -30,7 +30,7 @@ export const NAV_ITEMS: NavItem[] = [
     Icon: Star
   },
   {
-    to: `/`,
+    to: `/notifications`,
     title: 'Notifications',
     Icon: Bell
   },

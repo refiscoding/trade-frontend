@@ -4,13 +4,13 @@ import { ApolloError } from 'apollo-client'
 import { PageWrap } from '../../layouts'
 import { useAuthContext } from '../../context/AuthProvider'
 import { useHistory, useLocation } from 'react-router-dom'
-import { Flex, useToast, Text } from '@chakra-ui/core'
+import { Flex, useToast, Text, Button } from '@chakra-ui/core'
 import { images } from '../../theme'
 import Hero from '../../components/Hero'
 import { Category, Product, useCategoryQuery, useProductQuery } from '../../generated/graphql'
 import { get } from 'lodash'
 import Footer from '../../components/Footer'
-import {ERROR_TOAST, SEARCH_INDEX, searchClient} from '../../constants'
+import { ERROR_TOAST, SEARCH_INDEX, searchClient } from '../../constants'
 import ProductCard from '../../components/Card/ProductCard'
 import CategoryCard from '../../components/Card/CategoryCard'
 import Section from '../../components/Section'
@@ -164,6 +164,9 @@ const Home: React.FC = () => {
                 {products?.map((product: Product) => (
                   <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
                 ))}
+                <Button mt={4} width="100%" variantColor="brand">
+                  VIEW MORE
+                </Button>
               </Section>
             </React.Fragment>
           )}
