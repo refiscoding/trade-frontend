@@ -1,6 +1,8 @@
 import * as React from "react";
 import dayjs from "dayjs";
 
+import moment from "moment";
+
 import { useHistory } from "react-router";
 import { Flex, Grid, Spinner } from "@chakra-ui/core";
 import { DateRangePicker } from "react-dates";
