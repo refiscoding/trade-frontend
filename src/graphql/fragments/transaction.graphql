@@ -1,0 +1,16 @@
+# import '/fragments/order.graphql'
+
+fragment transaction on Transaction {
+  id
+  created_at
+  updated_at
+  published_at
+  order {
+      ...order
+  }
+  amount
+  type
+  status
+  reference
+  fnbReference
+}

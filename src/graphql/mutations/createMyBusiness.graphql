@@ -1,21 +1,7 @@
-# THIS IS FOR CRUD DEMONSTRATION PURPOSES ONLY!
-# You should not be creating users like this.
+# import '/fragments/business.graphql'
+
 mutation createMyBusiness($input: BusinessInput) {
   createMyBusiness(input: $input) {
-    id
-    name
-    category {
-      id
-    }
-    revenue
-    registrationNumber
-    isVatRegistered
-    uniqueProducts
-    products
-    revenue
-    hasPhysicalStore
-    isRetailSupplier
-    businessType
-    vatNumber
+    ...business
   }
 }

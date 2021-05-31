@@ -1,4 +1,5 @@
 # import '/fragments/uploadFile.graphql'
+
 fragment product on Product {
     id
     name
