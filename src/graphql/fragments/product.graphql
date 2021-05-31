@@ -1,26 +1,33 @@
 # import '/fragments/uploadFile.graphql'
-
 fragment product on Product {
     id
+    created_at
+    updated_at
     name
     description
     shortDescription
     tags
+    availableUnits
+    packaging
+    productPrice
+    features
+    minSellCost
+    maxSellCost
+    tradeFedCost
+    business {
+        ...business
+    }
     price {
         currency
         retailPricePerUnit
         pricePerUnit
     }
-    availableUnits
-    packaging
-    productPrice
     size {
         height
         weight
         productLength
         width
     }
-    features
     variants {
         variants
         quantity

@@ -2,28 +2,28 @@ import { get } from 'lodash'
 import * as React from 'react'
 import { useHistory } from 'react-router-dom'
 import { ApolloError } from 'apollo-client'
+import { useMediaQuery } from "react-responsive";
 import { Flex, Grid, GridProps, useToast, Button, Spinner } from '@chakra-ui/core'
 
 import DeleteItemsModal from '../../components/DeleteItemsModal'
 
+import Section from '../../components/Section'
 import EmptyStateComponent from '../Wishlist/NoWishlist'
 import ProductCard from '../../components/Card/ProductCard'
 import DeleteItemsButton from '../Wishlist/DeleteItemsButton'
 
+import { theme } from '../../theme'
 import { PageWrap } from '../../layouts'
 import { H3, Text } from '../../typography'
 import { ERROR_TOAST, mapsScriptUrl, SUCCESS_TOAST } from '../../constants'
 import {
   Product,
-  useFetchUsersCartQuery,
-  useRemoveProductsFromCartMutation,
-  useFromCartToWishlistMutation,
   Scalars,
-  useProductQuery
+  useProductQuery,
+  useFetchUsersCartQuery,
+  useFromCartToWishlistMutation,
+  useRemoveProductsFromCartMutation,
 } from '../../generated/graphql'
-import Section from '../../components/Section'
-import { useMediaQuery } from 'react-responsive'
-import { theme } from '../../theme'
 
 export type CartProduct = {
   quantity: number
@@ -60,16 +60,24 @@ const CartPageHeader: React.FC<CartPageHeaderProps> = ({
         <H3 textAlign="left" fontSize={18} fontWeight={600}>
           My Cart
         </H3>
-        {isTabletOrMobile && (
-          <Text
-            onClick={onClick}
-            color="accent.500"
-            style={{ textDecoration: 'underline', cursor: 'pointer' }}
-            fontSize="12px"
-          >
-            {editing ? 'Done' : 'Edit'}
-          </Text>
-        )}
+        {
+          isTabletOrMobile
+            && !editing
+            ? (
+              <Button justifySelf="end" width="70px" onClick={onClick} border={`1px solid ${theme.colors.brand[500]}`} background="white">
+                <Text fontSize="12px">
+                  EDIT
+                </Text>
+              </Button>
+            )
+            : isTabletOrMobile && (
+              <Button width="70px" variantColor="brand" onClick={onClick}>
+                <Text fontSize="12px">
+                  DONE
+                </Text>
+              </Button>
+            )
+        }
       </Flex>
       {isTabletOrMobile && (
         <Flex width="100%" mb={3} justifyContent="space-between">
@@ -102,6 +110,7 @@ const CartPage: React.FC = () => {
         itemsRemoved === 0
           ? 'No items removed from cart'
           : `Successfully removed ${itemsRemoved} items from cart`
+
       toast({ description: message, ...SUCCESS_TOAST })
       history.push('/cart')
       refetch()
@@ -109,17 +118,20 @@ const CartPage: React.FC = () => {
     },
     awaitRefetchQueries: true
   })
-  const [fromWishlistToCart, { loading: movingLoading }] = useFromCartToWishlistMutation({
+  const [fromCartToWishlist, { loading: movingLoading }] = useFromCartToWishlistMutation({
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
     onCompleted: ({ fromCartToWishlist }) => {
       const itemMoved = fromCartToWishlist?.payload?.product?.name
-      const message = `Successfully moved "${itemMoved}" to your wishlist`
-      toast({ description: message, ...SUCCESS_TOAST })
-      refetch()
+      if (itemMoved) {
+        const message = `Successfully moved "${itemMoved}" to your wishlist`
+        toast({ description: message, ...SUCCESS_TOAST })
+        refetch()
+      }
     },
     awaitRefetchQueries: true
-  })
-  const products = get(userCart, 'findCart.payload.productsQuantities', null) as CartProduct[]
+  });
+
+  const products = get(userCart, 'findCart.payload.products', null);
   const noCart = get(userCart, 'findCart.payload', null)
   const productsOnly = products?.map((entry: CartProduct) => entry.product)
   const cartTotal = get(userCart, 'findCart.payload.total', null)
@@ -144,12 +156,12 @@ const CartPage: React.FC = () => {
   })
   const deals = get(productData, 'products', null) as Product[]
 
-  const handleCartProductClickedEditing = (id: string) => { }
+  const handleCartProductClickedEditing = (id: Scalars['ID']) => { return; }
   const handleCartProductClickedNormal = async (id: Scalars['ID']) => {
     const productToRemove = {
       productToMove: [id]
     }
-    await fromWishlistToCart({
+    await fromCartToWishlist({
       variables: {
         input: productToRemove
       }
@@ -159,7 +171,7 @@ const CartPage: React.FC = () => {
   const handleDeleteButtonClicked = () => {
     setShowDeleteItemsModal(true)
   }
-  const handleCheckoutButtonClicked = () => {
+  const handleCheckoutButtonClicked = async () => {
     history.push('/checkout')
   }
   const handleCancelButtonClicked = () => {
@@ -183,7 +195,7 @@ const CartPage: React.FC = () => {
     }
   }
 
-  const navigateToProduct = (id: string) => {
+  const navigateToProduct = (id: Scalars['ID']) => {
     history.push(`/product/${id}`)
   }
 
@@ -219,7 +231,7 @@ const CartPage: React.FC = () => {
             numberOfItems={itemsCount}
             cartTotal={cartTotal}
           />
-          <Flex ml={5} width="80%" justifyContent="space-between">
+          <Flex width={isTabletOrMobile ? "100%" : "80%"} justifyContent="space-between">
             <Flex width="100%" flexDirection="column">
               {productsOnly?.map((product: Product) => (
                 <ProductCard
@@ -268,7 +280,6 @@ const CartPage: React.FC = () => {
                   onClick={handleCheckoutButtonClicked}
                   mt={4}
                   width="95%"
-                  type="submit"
                   variantColor="brand"
                 >
                   CHECKOUT
@@ -282,7 +293,6 @@ const CartPage: React.FC = () => {
               onClick={handleCheckoutButtonClicked}
               mt={4}
               width="95%"
-              type="submit"
               variantColor="brand"
             >
               CHECKOUT

@@ -1,4 +1,4 @@
-# import '/fragments/user.graphql'
+# import '/fragments/transaction.graphql'
 # import '/fragments/product.graphql'
 
 fragment order on Order {
@@ -9,34 +9,25 @@ fragment order on Order {
   orderDate
   paidDate
   deliveryDate
-  numOfItems
-  deliveryFee
+  count
   orderTotal
   wasReturned
-  deliveryAddress {
-    id
-    address
-    postalCode
-    lat
-    lng
-    type
-    name
-  }
-  owner {
-    ...user
-  }
-  cart {
-    productsQuantities {
-      quantity
-      product {
-        ...product
-      }
-    }
-  }
+  orderStatus
   signatory {
     id
     name
     relation
     isCustomer
+  }
+  items {
+    id
+    quantity
+    total
+    products {
+      ...product
+    }
+  }
+  deliveryAddress {
+    ...address
   }
 }

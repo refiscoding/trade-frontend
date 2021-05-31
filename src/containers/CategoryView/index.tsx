@@ -44,7 +44,7 @@ const Home: React.FC = () => {
     3
   )
 
-  const navigateToProduct = (id: string) => {
+  const navigateToProduct = (id: string | undefined) => {
     history.push(`/product/${id}`)
   }
 

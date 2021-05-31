@@ -54,7 +54,7 @@ const DeliveryInfo: React.FC<DeliveryInfoProps> = ({ timeSlots, mobileFlow, setS
             <Flex background={theme.colors.info} p={2} width="383px" marginLeft={marginLeft} height="60px" alignItems="center" justifyItems="space-between">
                 <Image src={images.infoIcon} height="50%" />
                 <Text fontSize={12} ml={3}>
-                    Selected date and time may differ according to transport companies' schedules.
+                    We currently do not offer delivery services. The selected date and time may differ according to transport companies' schedules.
                 </Text>
             </Flex>
             <Text fontSize={14} fontWeight={600}>Select a date:</Text>

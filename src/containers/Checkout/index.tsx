@@ -4,20 +4,18 @@ import * as React from 'react'
 import { get } from 'lodash'
 import { useToast } from '@chakra-ui/core'
 import { ApolloError } from 'apollo-client'
-import { useHistory } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 
 import CheckoutWebFlow from './CheckoutFlowWeb'
 import CheckoutMobileFlow from './CheckoutFlowMobile'
 
 import { Card } from './CardComponent'
-import { CartProduct } from '../Cart'
 import { PageWrap } from '../../layouts'
 import { TimeSlot } from './AddressComponent'
 import { timeSlots, cards } from './dummyData'
 import { useAuthContext } from '../../context/AuthProvider'
-import { ERROR_TOAST, mapsScriptUrl, SUCCESS_TOAST } from '../../constants'
-import { useFetchUsersCartQuery, ComponentLocationAddress, useCreateCheckoutOrderMutation } from '../../generated/graphql'
+import { ERROR_TOAST, mapsScriptUrl } from '../../constants'
+import { useFetchUsersCartQuery, ComponentLocationAddress, useCreateCheckoutOrderMutation, ComponentCartCartProduct } from '../../generated/graphql';
 
 export const DeliveryAddressValidation = Yup.object().shape({
   street: Yup.string().required('Street Address is required'),
@@ -58,14 +56,13 @@ export type TimeSlotProps = {
 
 export type CheckoutProps = {
   active: number
-  deliveryFee: number
   cards: Card[]
   handlePay: () => void
   timeSlots: TimeSlot[]
   checkoutTotal: number
   noCardDataHeader: string
   noCardDataCaption: string
-  cartProducts: CartProduct[]
+  createOrderLoading: boolean
   noAddressDataHeader: string
   confirmationTextCard: string
   noAddressDataCaption: string
@@ -73,6 +70,7 @@ export type CheckoutProps = {
   selectedDeliveryDate: Date | Date[]
   setActiveStep: (step: number) => void
   addresses?: ComponentLocationAddress[]
+  cartProducts: ComponentCartCartProduct[]
   showDeleteCardModal: boolean | undefined
   showDeleteItemsModal: boolean | undefined
   selectedDeliveryTimeslot: string | undefined
@@ -89,7 +87,6 @@ export type CheckoutProps = {
 const CheckoutPage: React.FC = () => {
   const { user } = useAuthContext()
   const toast = useToast()
-  const history = useHistory()
   const [active, setActive] = React.useState<number>(0)
   const [selectedAddress, setSelectedAddress] = React.useState<
     ComponentLocationAddress | undefined
@@ -101,14 +98,11 @@ const CheckoutPage: React.FC = () => {
   const [selectedDeliveryTimeslot, setSelectedDeliveryTimeslot] = React.useState<string | undefined>()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
 
-  const [createOrder] = useCreateCheckoutOrderMutation({
+  const [createOrder, { loading: createOrderLoading }] = useCreateCheckoutOrderMutation({
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
-    onCompleted: async () => {
-      toast({
-        description: 'You have successfully placed your order!',
-        ...SUCCESS_TOAST
-      })
-      history.push("/checkout-success");
+    onCompleted: async ({ createCheckoutOrder }) => {
+      const transactionPaymentUrl = createCheckoutOrder.payload?.fnbPaymentOptionsUrl;
+      window.open(transactionPaymentUrl, "_blank", "noopener, noreferrer, resizable");
     }
   });
 
@@ -135,32 +129,21 @@ const CheckoutPage: React.FC = () => {
     setActive(step)
   }
 
-  const products = get(userCart, 'findCart.payload.productsQuantities', null) as CartProduct[]
+  const products = get(userCart, 'findCart.payload.products', null) as ComponentCartCartProduct[]
 
-  const productPrices = products?.map((item: CartProduct) => {
-    const { product, quantity } = item
-    const price = get(product, 'price.pricePerUnit', null)
-    const itemsCost = price * quantity
-    return itemsCost
-  })
-  const productPricesTotal = productPrices?.reduce((a, b) => a + b, 0)
-  // TODO: Fetch actual values from backend once logistics partner confirms and price matrix is agreed
-  const deliveryFee = 1000
-
-  const checkoutTotal = productPricesTotal + deliveryFee;
+  const checkoutTotal = get(userCart, 'findCart.payload.total', null)
 
   const addresses = user?.address as ComponentLocationAddress[]
 
   const handlePay = async () => {
     if (products) {
-      // setShowCheckoutSignatoryModal(true);
       const orderInput = {
         deliveryAddress: {
           address: selectedAddress?.address,
           postalCode: selectedAddress?.postalCode,
           lat: selectedAddress?.lat,
           lng: selectedAddress?.lng,
-          defaultAddress: selectedAddress?.defaultAddress,
+          isDefaultAddress: selectedAddress?.isDefaultAddress,
           type: selectedAddress?.type,
           name: selectedAddress?.name
         },
@@ -171,7 +154,6 @@ const CheckoutPage: React.FC = () => {
           input: orderInput
         }
       })
-      history.push('/checkout-success')
     }
   };
 
@@ -185,13 +167,13 @@ const CheckoutPage: React.FC = () => {
           timeSlots={timeSlots}
           handlePay={handlePay}
           cartProducts={products}
-          deliveryFee={deliveryFee}
           setActiveStep={setActiveStep}
           checkoutTotal={checkoutTotal}
           selectedAddress={selectedAddress}
           noCardDataHeader={noCardDataHeader}
           noCardDataCaption={noCardDataCaption}
           setSelectedAddress={setSelectedAddress}
+          createOrderLoading={createOrderLoading}
           noAddressDataHeader={noAddressDataHeader}
           showDeleteCardModal={showDeleteCardModal}
           showDeleteItemsModal={showDeleteItemsModal}
@@ -215,13 +197,13 @@ const CheckoutPage: React.FC = () => {
           timeSlots={timeSlots}
           handlePay={handlePay}
           cartProducts={products}
-          deliveryFee={deliveryFee}
           setActiveStep={setActiveStep}
           checkoutTotal={checkoutTotal}
           selectedAddress={selectedAddress}
           noCardDataHeader={noCardDataHeader}
           noCardDataCaption={noCardDataCaption}
           setSelectedAddress={setSelectedAddress}
+          createOrderLoading={createOrderLoading}
           noAddressDataHeader={noAddressDataHeader}
           showDeleteCardModal={showDeleteCardModal}
           showDeleteItemsModal={showDeleteItemsModal}

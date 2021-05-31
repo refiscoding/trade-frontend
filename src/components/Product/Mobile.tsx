@@ -1,13 +1,15 @@
 import * as React from 'react';
-import { Flex, Image, Text, Button, Grid, Select, Tag } from '@chakra-ui/core';
 
-import ProductCard from '../../components/Card/ProductCard';
+import { MapPin, Briefcase } from "react-feather";
+import { Flex, Image, Text, Button, Grid, Tag, Checkbox } from '@chakra-ui/core';
+
 import Section from '../../components/Section';
+import ProductCard from '../../components/Card/ProductCard';
 
 import { theme } from "../../theme";
 import { ProductProps } from "./props";
 import { Product } from "../../generated/graphql";
-import { VerifiedBadge }from "../../components/Product";
+import { VerifiedBadge } from "../../components/Product";
 import { useHistory } from "react-router-dom";
 
 const ProductComponentMobile: React.FC<ProductProps> = (
@@ -18,10 +20,9 @@ const ProductComponentMobile: React.FC<ProductProps> = (
     productPackaging,
     isPreview
   }) => {
-    // TODO: Replace line 77 this with ConnectedSelect component
   const history = useHistory()
 
-  const navigateToProduct = (id: string) => {
+  const navigateToProduct = (id: string | undefined) => {
     history.push(`/product/${id}`)
   }
 
@@ -77,33 +78,39 @@ const ProductComponentMobile: React.FC<ProductProps> = (
         <Text fontSize="14px" color="#355EC0" fontWeight={600}>
           {`This item is sold per ${productPackaging}`}
         </Text>
-        <Flex flexDirection="column" mt={3}>
-          <Text fontSize="14px" color="#4A4A4A" mb={2}>
-            Select Quantity
+        <Flex mt={2}>
+          <Briefcase />
+          <Text ml={3} fontSize="14px" >
+            {`Supplied by ${product?.business?.name}`}
           </Text>
-          <Select placeholder="Select quantity" width="100%">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-            <option value="9">9</option>
-            <option value="10+">10+</option>
-          </Select>
+        </Flex>
+        <Flex>
+          <MapPin style={{ marginTop: 3 }} />
+          <Text mt={2} ml={3} fontSize="12px" >
+            {`Delivered from ${product?.business?.address?.address}`}
+          </Text>
+        </Flex>
+        <Flex flexDirection="column" mt={3}>
+          <Checkbox
+            name="quantity"
+            placeholder="Enter quantity eg. 3"
+            style={{
+              padding: 3,
+              border: `1px solid ${theme.colors.background}`,
+              width: "48%"
+            }}
+          />
         </Flex>
         <Grid gridTemplateColumns="200px 200px">
           <Button justifySelf="start" mt={4} width="90%" onClick={() => handleAddToWishlistClicked(product?.id)} border={`1px solid ${theme.colors.brand[500]}`} background="white">
-              <Text fontSize="12px">
-                ADD TO WISHLIST
-              </Text>
+            <Text fontSize="12px">
+              ADD TO WISHLIST
+            </Text>
           </Button>
           <Button mt={4} width="90%" variantColor="brand" onClick={() => handleAddToCartClicked(product?.id)}>
-              <Text fontSize="12px">
-                ADD TO CART
-              </Text>
+            <Text fontSize="12px">
+              ADD TO CART
+            </Text>
           </Button>
         </Grid>
       </Flex>
@@ -117,18 +124,18 @@ const ProductComponentMobile: React.FC<ProductProps> = (
           <Flex ml="1rem" width="100%" as="ul" flexDirection="column" alignSelf="flex-start">
             {
               product?.features?.length
-              ? (
-                <ul style={{ marginLeft: 15 }}>
-                  {
-                    product?.features?.map((feature: string) => (
-                      <li key={feature}>
-                        <Text fontSize="12px">{ feature }</Text>
-                      </li>
-                    ))
-                  }
-                </ul>
-              )
-              : (<Text fontSize="12px" ml={"-1rem"}>No Features Set</Text>)
+                ? (
+                  <ul style={{ marginLeft: 15 }}>
+                    {
+                      product?.features?.map((feature: string) => (
+                        <li key={feature}>
+                          <Text fontSize="12px">{feature}</Text>
+                        </li>
+                      ))
+                    }
+                  </ul>
+                )
+                : (<Text fontSize="12px" ml={"-1rem"}>No Features Set</Text>)
             }
           </Flex>
         </Section>
@@ -146,7 +153,7 @@ const ProductComponentMobile: React.FC<ProductProps> = (
                 )
                 : (<Text>No Specifications Set</Text>)
             }
-          </Flex> 
+          </Flex>
         </Section>
         <Flex width="414px" background="#ffffff">
           {
@@ -160,7 +167,7 @@ const ProductComponentMobile: React.FC<ProductProps> = (
         <Flex flexDirection="column" width="414px" background="accent.50" p={5} pt={0}>
           <Section title="Deals You Might Be Interested In" width="100%">
             {deals?.slice(0, 2)?.map((product: Product) => (
-              <ProductCard key={product.id} product={product} handleClick={navigateToProduct}/>
+              <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
             ))}
           </Section>
           <Button width="100%" variantColor="brand">

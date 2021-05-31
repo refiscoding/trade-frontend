@@ -1,15 +1,12 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
 
-import { isEmpty } from 'lodash'
 import { Form, Formik } from 'formik'
 import { useHistory } from 'react-router'
-import { Flex, Grid, Tag } from '@chakra-ui/core'
+import { Flex, Grid, Tag, Spinner } from '@chakra-ui/core'
 
 import NextButton from './Button'
-import CardInfo from './CardInfo'
 import NoData from './NoDataScreen'
-import CardsComponent from './Cards'
 import OrderSummary from './OrderSummary'
 import DeliveryAddresses from './Addresses'
 import SelectPayment from './SelectPayment'
@@ -20,13 +17,13 @@ import DeleteItemsModal from '../../components/DeleteItemsModal'
 
 
 import { theme } from '../../theme'
-import { CartProduct } from '../Cart'
 import { PageWrap } from '../../layouts'
 import { Stepper } from '../../components'
 import { H3, Text } from '../../typography'
 import { mapsScriptUrl } from '../../constants'
 import { CheckoutProps, initialDeliveryAddressValues, DeliveryAddressValidation } from '.'
 import CheckoutSignatoryModal from './CheckoutSignatoryModal'
+import { ComponentCartCartProduct } from '../../generated/graphql'
 
 const StepperContainer = styled.div`
   margin-top: 15px;
@@ -39,7 +36,6 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
   addresses,
   timeSlots,
   handlePay,
-  deliveryFee,
   cartProducts,
   checkoutTotal,
   setActiveStep,
@@ -47,6 +43,7 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
   noCardDataHeader,
   noCardDataCaption,
   setSelectedAddress,
+  createOrderLoading,
   noAddressDataHeader,
   showDeleteCardModal,
   noAddressDataCaption,
@@ -127,7 +124,6 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                 <Step />
                 <Step />
                 <Step />
-                <Step />
               </Stepper>
             </StepperContainer>
           </Grid>
@@ -190,24 +186,14 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                           <NextButton
                             active={active}
                             disabled={false}
-                            setActive={() => setActiveStep(3)}
+                            setActive={() => handlePay()}
                           >
-                            CONTINUE
+                            {
+                              createOrderLoading && <Spinner mr={3} />
+                            }
+                            PROCEED TO PAYMENT
                           </NextButton>
                         </Flex>
-                      </Flex>
-                    )}
-                    {confirmPaymentCardStage && (
-                      <Flex flexDirection="column">
-                        <CardInfo />
-                        <NextButton
-                          type="submit"
-                          active={active}
-                          disabled={!isEmpty(errors)}
-                          setActive={() => { }}
-                        >
-                          ADD NEW CARD
-                        </NextButton>
                       </Flex>
                     )}
                   </Form>
@@ -263,7 +249,7 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                       overflowY="scroll"
                       maxHeight="600px"
                     >
-                      {cartProducts?.map((product: CartProduct) => (
+                      {cartProducts?.map((product: ComponentCartCartProduct) => (
                         <ProductCard
                           key={`${product?.product?.id}_${Math.random()}`}
                           width="100%"
@@ -283,24 +269,10 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                     mobileFlow={false}
                     cartProducts={cartProducts}
                     checkoutTotal={checkoutTotal}
-                    deliveryFee={deliveryFee}
                     selectedAddress={selectedAddress}
                     setActiveStep={setActiveStep}
                     selectedDeliveryDate={selectedDeliveryDate}
                     selectedDeliveryTimeslot={selectedDeliveryTimeslot}
-                  />
-                )}
-                {confirmPaymentCardStage && (
-                  <CardsComponent
-                    cards={cards}
-                    mobileFlow={false}
-                    handlePay={handlePay}
-                    cartProducts={cartProducts}
-                    checkoutTotal={checkoutTotal}
-                    selectedAddress={selectedAddress}
-                    selectedDeliveryDate={selectedDeliveryDate}
-                    setShowDeleteCardModal={setShowDeleteCardModal}
-                    setShowCheckoutSignatoryModal={setShowCheckoutSignatoryModal}
                   />
                 )}
               </Grid>

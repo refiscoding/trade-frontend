@@ -3,11 +3,11 @@ import { Grid, Button, Flex, FlexProps } from '@chakra-ui/core';
 
 import ProductCard from "../../components/Card/ProductCard";
 
-import { CartProduct } from '../Cart';
 import { ModalWrap } from '../../components';
+import { ComponentCartCartProduct } from '../../generated/graphql';
 
 type CheckoutModalProps = FlexProps & {
-    products: CartProduct[]
+    products: ComponentCartCartProduct[]
     setShowCheckoutModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
 };
 
@@ -22,15 +22,15 @@ const CheckoutModal: React.FC<CheckoutModalProps> = ({ setShowCheckoutModal, pro
             <Flex padding={5} pb={0}>
                 <Grid gridTemplateRows="150px 1fr 1fr 1fr">
                     {
-                        products?.map((product: CartProduct, index: number) => {
+                        products?.map((item: ComponentCartCartProduct, index: number) => {
                             return(
                                 <ProductCard
                                     isCart={false}
                                     editing={false}
                                     isWishlist={false}
                                     width={"100%"}
-                                    product={product?.product}
-                                    key={`${product?.product?.id}-${index}`}
+                                    product={item?.product}
+                                    key={`${item?.product?.id}-${index}`}
                                     handleClick={() => {}}
                                     handleIconClick={() => {}}
                                 />

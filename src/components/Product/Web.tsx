@@ -1,34 +1,35 @@
 import * as React from 'react';
-import { Flex, Image, Text, Button, Grid, Select, Tag } from '@chakra-ui/core';
+
+import { MapPin, Briefcase } from "react-feather";
+import { Flex, Image, Text, Button, Grid, Tag, Checkbox } from '@chakra-ui/core';
 
 import Section from '../../components/Section';
 import ProductCard from '../../components/Card/ProductCard';
 
 import { theme } from "../../theme";
 import { Product } from "../../generated/graphql";
-import { VerifiedBadge }from "../../components/Product";
+import { VerifiedBadge } from "../../components/Product";
 import { ProductProps } from "./props";
 import { useHistory } from "react-router-dom";
 
 const ProductComponent: React.FC<ProductProps> = (
-    { 
-        product,
-        handleAddToWishlistClicked,
-        handleAddToCartClicked,
-        deals,
-        productPackaging,
-        productImages,
-        isPreview
+  {
+    product,
+    handleAddToWishlistClicked,
+    handleAddToCartClicked,
+    deals,
+    productPackaging,
+    productImages,
+    isPreview
   }) => {
-    // TODO: Replace line 103 this with ConnectedSelect component
   const history = useHistory()
 
-  const navigateToProduct = (id: string) => {
+  const navigateToProduct = (id: string | undefined) => {
     history.push(`/product/${id}`)
   }
 
   const coverImage = product?.coverImage?.url;
-  const hasProductImages =  productImages?.length > 0;
+  const hasProductImages = productImages?.length > 0;
 
   return (
     <React.Fragment>
@@ -70,9 +71,9 @@ const ProductComponent: React.FC<ProductProps> = (
                 </Flex>
               ) : null}
             </Flex>
-            {  hasProductImages
-                && (
-                  <Grid gridTemplateRows="90px 90px 90px 90px" rowGap={3} ml={5} mt={6} overflowY="scroll">
+            {hasProductImages
+              && (
+                <Grid gridTemplateRows="90px 90px 90px 90px" rowGap={3} ml={5} mt={6} overflowY="scroll">
                   {
                     productImages?.map((product: string | undefined) => (
                       <Image
@@ -82,54 +83,60 @@ const ProductComponent: React.FC<ProductProps> = (
                         src={product}
                       />
                     ))
-              }
-            </Grid>)
+                }
+              </Grid>)
             }
           </Grid>
-          <Grid gridTemplateRows="40px 50px 35px 30px 50px 40px 80px 1fr" padding={5} pt={10}>
+          <Grid gridTemplateRows="40px 50px 35px 30px 50px 40px 30px 30px 50px 60px" padding={5} pt={10}>
             <Text fontSize="20px" fontWeight={600}>
-              { product?.name }
+              {product?.name}
             </Text>
             <Text fontSize="12px" fontWeight={400} maxHeight="70px" overflow="hidden">
-              { product?.shortDescription }
+              {product?.shortDescription}
             </Text>
-              <VerifiedBadge />
+            <VerifiedBadge />
             <Text fontSize="18px">
-              { `Retail: ${product?.price?.currency} ${product?.price?.retailPricePerUnit}.00` }
+              {`Retail: ${product?.price?.currency} ${product?.price?.retailPricePerUnit}.00`}
             </Text>
             <Text fontSize="30px" fontWeight={700}>
-              { `${product?.price?.currency} ${product?.price?.pricePerUnit}.00` }
+              {`${product?.price?.currency} ${product?.price?.pricePerUnit}.00`}
             </Text>
             <Text fontSize="14px" color="#355EC0" fontWeight={600}>
               {`This item is sold per ${productPackaging}`}
             </Text>
-            <Flex flexDirection="column">
-              <Text fontSize="14px" color="#4A4A4A" mb={2}>
-                Select Quantity
+            <Flex>
+              <Briefcase />
+              <Text ml={3} fontSize="14px" >
+                {`Supplied by ${product?.business?.name}`}
               </Text>
-              <Select placeholder="Select quantity" width="40%">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10+">10+</option>
-              </Select>
+            </Flex>
+            <Flex>
+              <MapPin />
+              <Text ml={3} fontSize="14px" >
+                {`Delivered from ${product?.business?.address?.address}`}
+              </Text>
+            </Flex>
+            <Flex mt={3} flexDirection="column">
+              <Checkbox
+                name="quantity"
+                placeholder="Enter quantity eg. 3"
+                style={{
+                  padding: 3,
+                  border: `1px solid ${theme.colors.background}`,
+                  width: "50%"
+                }}
+              />
             </Flex>
             <Flex flexWrap="wrap" >
-              <Button justifySelf="start" width="150px" mt={4} mr={2}  onClick={() => handleAddToWishlistClicked(product?.id)} border={`1px solid ${theme.colors.brand[500]}`} background="white">
-                  <Text fontSize="12px">
-                    ADD TO WISHLIST
-                  </Text>
+              <Button justifySelf="start" width="150px" mt={4} mr={2} onClick={() => handleAddToWishlistClicked(product?.id)} border={`1px solid ${theme.colors.brand[500]}`} background="white">
+                <Text fontSize="12px">
+                  ADD TO WISHLIST
+                </Text>
               </Button>
               <Button mt={4} variantColor="brand" width="150px" onClick={() => handleAddToCartClicked(product?.id)}>
-                  <Text fontSize="12px">
-                    ADD TO CART
-                  </Text>
+                <Text fontSize="12px">
+                  ADD TO CART
+                </Text>
               </Button>
             </Flex>
           </Grid>
@@ -141,7 +148,7 @@ const ProductComponent: React.FC<ProductProps> = (
             About This Product
           </Text>
           <Text fontSize="12px">
-            { product?.description }
+            {product?.description}
           </Text>
         </div>
         <Grid gridTemplateColumns="1fr 1fr">
@@ -151,18 +158,18 @@ const ProductComponent: React.FC<ProductProps> = (
             </Text>
             {
               product?.features?.length
-              ? (
-                <ul style={{ marginLeft: 15 }}>
-                  {
-                    product?.features?.map((feature: string) => (
-                      <li key={feature}>
-                        <Text fontSize="12px">{ feature }</Text>
-                      </li>
-                    ))
-                  }
-                </ul>
-              )
-              : (<Text>No Features Set</Text>)
+                ? (
+                  <ul style={{ marginLeft: 15 }}>
+                    {
+                      product?.features?.map((feature: string) => (
+                        <li key={feature}>
+                          <Text fontSize="12px">{feature}</Text>
+                        </li>
+                      ))
+                    }
+                  </ul>
+                )
+                : (<Text>No Features Set</Text>)
             }
           </div>
           <div>
@@ -171,31 +178,31 @@ const ProductComponent: React.FC<ProductProps> = (
             </Text>
             {
               product?.size
-              ? (
+                ? (
                   <Flex flexDirection="column">
                     <Text fontSize="12px">Height : {product.size?.height}</Text>
                     <Text fontSize="12px">Width : {product.size?.width}</Text>
                     <Text fontSize="12px">Length : {product.size?.productLength}</Text>
                     <Text fontSize="12px">Weight : {product.size?.weight}</Text>
                   </Flex>
-              )
-              : (<Text>No Specifications Set</Text>)
+                )
+                : (<Text>No Specifications Set</Text>)
             }
           </div>
-        <Flex width="414px" background={theme.colors.accent[50]} mt={5}>
+          <Flex width="414px" background={theme.colors.accent[50]} mt={5}>
             {
-                product?.tags?.map((tag: string, index: number) => (
+              product?.tags?.map((tag: string, index: number) => (
                 <Tag fontSize={12} mr={1} size="sm" key={index} background={theme.colors.tag} color={theme.colors.tagText}>{tag?.toUpperCase()}</Tag>
-                ))
+              ))
             }
-        </Flex>
+          </Flex>
         </Grid>
       </Grid>
       {isPreview &&
         <Flex ml={5} mt={3} width="100%" flexDirection="column" alignItems="center">
           <Section title="Deals You Might Be Interested In">
             {deals?.map((product: Product) => (
-              <ProductCard key={product.id} product={product} handleClick={navigateToProduct}/>
+              <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
             ))}
           </Section>
           <Button width="80%" variantColor="brand">
