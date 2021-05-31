@@ -212,7 +212,7 @@ const ProductComponent: React.FC<ProductProps> = (
               VIEW MORE
             </Text>
           </Button>
-      </Flex>
+        </Flex>
       }
     </React.Fragment>
   )

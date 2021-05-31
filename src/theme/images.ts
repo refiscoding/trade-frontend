@@ -1,5 +1,5 @@
 export default {
-  bg: require('../assets/images/core-bg.jpg'),
+  bg: require('../assets/images/tradefed-bg.svg'),
   404: require('../assets/images/404.svg'),
   noData: require('../assets/images/no-data.png'),
   Facebook: require('../assets/images/Facebook.svg'),

@@ -1,4 +1,5 @@
 # import '/fragments/uploadFile.graphql'
+# import '/fragments/business.graphql'
 fragment product on Product {
     id
     created_at

@@ -53,7 +53,6 @@ const ProductComponent: React.FC<ProductProps> = ({ product, setShowAddToCartMod
   const handleAddToWishlistClicked = async (id: string) => {
     if(!addProductPage){
       await addProductToWishlist({ variables: { input: { productToAdd: id } } });
-      window.location.href = '/wishlist';
     };
   };
   const handleAddToCartClicked = async (id: string) => {

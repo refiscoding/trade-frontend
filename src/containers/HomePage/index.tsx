@@ -79,7 +79,7 @@ const Home: React.FC = () => {
     // eslint-disable-next-line
   }, [user, isAuthenticated])
 
-  const navigateToProduct = (id: string) => {
+  const navigateToProduct = (id: string | undefined) => {
     history.push(`/product/${id}`)
   }
 

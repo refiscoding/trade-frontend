@@ -4,13 +4,12 @@ import { Mail } from 'react-feather'
 import { Form, Formik, FormikProps } from 'formik'
 import { Link, useHistory } from 'react-router-dom'
 import { Button, Flex, Image, Checkbox } from '@chakra-ui/core'
-import { useMediaQuery } from "react-responsive"
 
 import { MotionFlex, SideSlider } from '../../components'
 import { ConnectedFormGroup, ConnectedPasswordGroup } from '../../components/FormElements'
 import { useAuthContext } from '../../context/AuthProvider'
 import { PageWrap } from '../../layouts'
-import { images } from '../../theme'
+import { images, theme } from '../../theme'
 import { H3, Text } from '../../typography'
 import { formatError } from '../../utils'
 
@@ -38,10 +37,6 @@ const Register: React.FC<RegisterProps> = () => {
   const [termsChecked, setTermsChecked] = React.useState<boolean | null>(false);
 
   const history = useHistory()
-  
-  const isWebViewport = useMediaQuery({
-    query: "(min-width: 40em)"
-  });
 
   React.useEffect(() => {
     if (user?.confirmed) {
@@ -57,23 +52,24 @@ const Register: React.FC<RegisterProps> = () => {
     setTermsChecked(!termsChecked);
   };
 
-  const logoWidth = isWebViewport ? "50%" : "100%" ;
-  const logoMarginBottom = isWebViewport ? 5 : 10 ;
-  const logoMarginLeft = isWebViewport ? 70 : 0 ;
-
   return (
-    <PageWrap pt={0} title="Register" align="center" justify="center">
-      {
-        isWebViewport && (
-          <Flex width="100%">
-            <Image width="100%" height="100%" src={images['signUpPageBanner']} />
-          </Flex>
-        )
-      }
+    <PageWrap
+      align="center"
+      title="Login"
+      backgroundSize="contain"
+      backgroundRepeat="no-repeat"
+      bgImage={`url(${images.bg})`}
+      justify="center"
+      pt={0}
+    >
       <SideSlider>
-        <Image justifySelf="center" width={logoWidth} mb={logoMarginBottom} src={images['TradeFedFullLogo']} ml={logoMarginLeft}/>
-        <Flex width="100%" align="center" justify="center" mb={4}>
-          <H3 textAlign="left">Create an account</H3>
+        <Flex width="100%" flexDirection="column" pb={4}>
+          <H3 textAlign="center" mb={4} fontWeight="bold" color={theme.colors.brand[500]}>
+            Register
+          </H3>
+          <Text textAlign="center" fontSize="18px" color="gray.500">
+            Hi there! Welcome to TradeFed.
+          </Text>
         </Flex>
         <Formik
           validationSchema={RegisterFormValidation}
@@ -106,12 +102,12 @@ const Register: React.FC<RegisterProps> = () => {
                 </MotionFlex>
               )}
               <Flex mb={5}>
-                <Checkbox name="terms" mr={3} mt={2} onChange={handleTermsCheckboxClicked}/>
-                <Flex mb={2} mt={4} align="center" justify="center">
+                <Checkbox name="terms" mr={3} mt={2} onChange={handleTermsCheckboxClicked} />
+                <Flex mb={2} mt={4} align="center" justify="center" color={theme.colors.brand[500]}>
                   <Text>
                     I agree to the {' '}
                     <a style={{ fontWeight: 600, textDecoration: "underline" }} href={`https://tradefed.co.za/about-us`} target="_blank" rel="noopener noreferrer">
-                      { terms }
+                      {terms}
                     </a>
                   </Text>
                 </Flex>
