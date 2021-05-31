@@ -68,7 +68,7 @@ const OrdersPage: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => {
                                     </Grid>
                                 </Flex>
                                 <OrderComponent setSelectedOrder={setSelectedOrder} order={selectedOrder} />
-                                <OrderItemsSummary isMobile items={selectedOrder?.cart?.productsQuantities} total={selectedOrder?.orderTotal} />
+                                <OrderItemsSummary isMobile items={selectedOrder?.items} total={selectedOrder?.orderTotal} />
                             </Flex>
                         )
                         : (

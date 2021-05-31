@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 
 import { useHistory } from 'react-router-dom';
 import { DateRangePicker } from "react-dates";
-import { Flex, Grid, Tag, Spinner } from '@chakra-ui/core';
+import { Flex, Grid, Tag, Spinner, Button } from '@chakra-ui/core';
 
 import OrderItemsSummary from "./OrderItems";
 import OrderComponent from './OrderComponent';
@@ -19,16 +19,22 @@ import { Order } from '../../generated/graphql'
 
 const OrdersPageWeb: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => {
     const history = useHistory();
+    const noOrders = !orders?.length;
+
     const [selectedOrder, setSelectedOrder] = React.useState<Order | undefined>();
 
     const cancelStyles = {
         cursor: "pointer",
         textDecoration: "underline",
         color: theme.colors.blueText
-    }
+    };
 
-    const noOrderClickedHeader = 'Select an order to view details';
-    const noOrderClickedCaption = `
+    const noOrdersNoOrderClickedMessage = 'If you had orders, you would select one on the left and view its details here. For now, shop for products';
+    const noOrdersHeader = 'Shop for products';
+    const noOrdersCaption = 'You currently don\'t have an order history. Complete an order and it will show up here';
+
+    const noOrderClickedHeader = noOrders ? noOrdersHeader : 'Select an order to view details';
+    const noOrderClickedCaption = noOrders ? noOrdersNoOrderClickedMessage : `
        You haven't selected any order to view its details.
        Selecting an order will have it displayed here
    `
@@ -36,6 +42,7 @@ const OrdersPageWeb: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => 
     const handleReturnOrderClicked = () => {
         history.push("/returns");
     };
+
     return (
         <PageWrap
             title="Orders"
@@ -61,7 +68,21 @@ const OrdersPageWeb: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => 
                             <H3 textAlign="left" fontSize={18} fontWeight={600}>
                                 My Order History
                             </H3>
-                            <Text onClick={handleReturnOrderClicked} fontSize={12} style={cancelStyles}>Return an Order</Text>
+                            {
+                                noOrders
+                                    ? (
+                                        <Button
+                                            mb={4}
+                                            width="100px"
+                                            variantColor="brand"
+                                            size="sm"
+                                            onClick={() => history.push("/")}
+                                        >
+                                            SHOP
+                                        </Button>
+                                    )
+                                    : <Text onClick={handleReturnOrderClicked} fontSize={12} style={cancelStyles}>Return an Order</Text>
+                            }
                         </Flex>
                     </Grid>
                 </Grid>
@@ -74,22 +95,32 @@ const OrdersPageWeb: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => 
                         boxShadow={theme.boxShadowMedium}
                     >
                         <Flex flexDirection="column">
-                            <Text>Select Date Range:</Text>
                             <Flex mb={2}>
-                                <DateRangePicker
-                                    startDate={null}
-                                    endDate={null}
-                                    startDateId="start"
-                                    endDateId="end"
-                                    onDatesChange={() => console.log("TODO: Add Handler")}
-                                    focusedInput={null}
-                                    onFocusChange={() => console.log("TODO: Add Handler")}
-                                />
+                                {
+                                    !noOrders &&
+                                    (
+                                        <Flex flexDirection="column">
+                                            <Text>Select Date Range:</Text>
+                                            <DateRangePicker
+                                                startDate={null}
+                                                endDate={null}
+                                                startDateId="start"
+                                                endDateId="end"
+                                                onDatesChange={() => console.log("TODO: Add Handler")}
+                                                focusedInput={null}
+                                                onFocusChange={() => console.log("TODO: Add Handler")}
+                                            />
+                                        </Flex>
+
+                                    )
+                                }
                             </Flex>
                             <Flex flexDirection="column" overflowY="scroll" height={'500px'}>
                                 {ordersLoading && <Spinner margin="auto" />}
                                 {
-                                    orders?.map((order, index) => (<OrderComponent key={`${index}_order_entry`} setSelectedOrder={setSelectedOrder} order={order} />))
+                                    noOrders
+                                        ? <NoData header={noOrdersHeader} caption={noOrdersCaption} />
+                                        : orders?.map((order, index) => (<OrderComponent key={`${index}_order_entry`} setSelectedOrder={setSelectedOrder} order={order} />))
                                 }
                             </Flex>
                         </Flex>
@@ -142,7 +173,7 @@ const OrdersPageWeb: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => 
                                         </Flex>
                                     </Grid>
                                     <Flex minHeight="435px">
-                                        <OrderItemsSummary isMobile={false} items={selectedOrder?.cart?.productsQuantities} total={selectedOrder?.orderTotal} />
+                                        <OrderItemsSummary isMobile={false} items={selectedOrder?.items} total={selectedOrder?.orderTotal} />
                                     </Flex>
                                 </Flex>
                                 : <NoData header={noOrderClickedHeader} caption={noOrderClickedCaption} />
