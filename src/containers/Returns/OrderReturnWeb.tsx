@@ -4,23 +4,23 @@ import dayjs from "dayjs";
 import RelativeTime from "dayjs/plugin/relativeTime";
 
 import { Form, Formik } from 'formik'
-
 import { useHistory } from 'react-router-dom';
 import { Flex, Grid, Button, Spinner } from '@chakra-ui/core'
+
+import NoData from "../Checkout/NoDataScreen";
 
 import { theme } from '../../theme';
 import { OrderReturnsProps } from ".";
 import { PageWrap } from '../../layouts'
 import { H3, Text } from '../../typography';
 import { Order } from '../../generated/graphql';
-import { ConnectedFormGroup } from '../../components/FormElements';
+import { ConnectedFormGroup, ConnectedTextArea } from '../../components/FormElements';
 
 dayjs.extend(RelativeTime);
 
-
-const OrderReturns: React.FC<OrderReturnsProps> = ({ orders, fetchingOrders, pastOrders, activeOrders }) => {
+const OrderReturns: React.FC<OrderReturnsProps> = ({ orders, fetchingOrders, pastOrders, activeOrders, noPastOrdersHeader, noPastOrdersCaption, noActiveOrdersHeader, noActiveOrdersCaption }) => {
     const history = useHistory();
-    const [currentPage, setCurrentPage] = React.useState<string>("past");
+    const [currentPage, setCurrentPage] = React.useState<string>("active");
     const cancelStyles = {
         cursor: "pointer",
         textDecoration: "underline",
@@ -59,7 +59,7 @@ const OrderReturns: React.FC<OrderReturnsProps> = ({ orders, fetchingOrders, pas
                     borderRadius={5}
                     background={theme.colors.accent[50]}
                     boxShadow={theme.boxShadowMedium}
-                    height="300px"
+                    height="400px"
                 >
                     <Flex flexDirection="column" width="100%">
                         <Flex justify="space-between" mb={5}>
@@ -94,6 +94,23 @@ const OrderReturns: React.FC<OrderReturnsProps> = ({ orders, fetchingOrders, pas
                             <Form style={{ width: '100%' }}>
                                 <ConnectedFormGroup label="Order ID*" name="orderId" type="text" placeholder="Eg. TFSA-aw3erdfsd" />
                                 <ConnectedFormGroup label="Delivery Address Name" name="addressName" type="text" placeholder="Eg. Mum's Place" />
+                                <Flex flexDirection="column">
+                                    <select placeholder="Why would like to return the order?">
+                                        <option>Why would like to return the order?</option>
+                                        <option>1 don't care</option>
+                                        <option>It was a mistaken purchase</option>
+                                        <option>1</option>
+                                        <option>1</option>
+                                    </select>
+                                    <select style={{ marginTop: 10, marginBottom: 10 }} placeholder="What would you like to be done?">
+                                        <option>What would you like to be done?</option>
+                                        <option>Exchange the order</option>
+                                        <option>Something else</option>
+                                        <option>1</option>
+                                        <option>1</option>
+                                    </select>
+                                </Flex>
+                                <ConnectedTextArea name="returnReason" handleSetTags={() => { }} />
                                 <Button
                                     mt={4}
                                     width="100%"
@@ -117,67 +134,70 @@ const OrderReturns: React.FC<OrderReturnsProps> = ({ orders, fetchingOrders, pas
                     flexDirection="column"
                 >
                     {
-                        pastOrderPage && (
-                            <React.Fragment>
-                                <Text fontWeight={600} fontSize={14}>{`All Past Orders (${pastOrders ? pastOrders?.length : ''}`})</Text>
-                                <Flex flexDirection="column">
-                                    <Grid
-                                        mt={3}
-                                        p={4}
-                                    >
-                                        <Flex justify="space-between" mb={3} borderBottom={`1px dashed ${theme.colors.background}`} pb={3}>
-                                            <Text fontWeight={600}>Order#</Text>
-                                            <Text fontWeight={600}>Delivery Date</Text>
-                                            <Text fontWeight={600}>Delivered To</Text>
-                                        </Flex>
-                                        {
-                                            fetchingOrders && <Spinner margin="auto" />
-                                        }
-                                        {
-                                            pastOrders?.map((order: Order, index: number) => (
-                                                <Flex borderBottom={`1px dashed ${theme.colors.background}`} textAlign="left" key={`${index}_order_item`} justify="space-between" py={4}>
-                                                    <Text fontSize={12}>{order?.orderNumber}</Text>
-                                                    <Text fontSize={12}>{dayjs(order?.deliveryDate).fromNow()}</Text>
-                                                    <Text fontSize={12}>{order?.deliveryAddress?.name}</Text>
-                                                </Flex>
-                                            ))
-                                        }
-                                    </Grid>
-                                </Flex>
-                            </React.Fragment>
-
-                        )
+                        activeOrderPage && activeOrders?.length
+                            ? (
+                                <React.Fragment>
+                                    <Text fontWeight={600} fontSize={14}>{`All Active Orders (${activeOrders ? activeOrders?.length : ''}`})</Text>
+                                    <Flex flexDirection="column">
+                                        <Grid
+                                            mt={3}
+                                            p={4}
+                                        >
+                                            <Flex justify="space-between" mb={3} borderBottom={`1px dashed ${theme.colors.background}`} pb={3}>
+                                                <Text fontWeight={600}>Order#</Text>
+                                                <Text fontWeight={600}>Delivery Date</Text>
+                                                <Text fontWeight={600}>Delivered To</Text>
+                                            </Flex>
+                                            {
+                                                fetchingOrders && <Spinner margin="auto" />
+                                            }
+                                            {
+                                                activeOrders?.map((order: Order, index: number) => (
+                                                    <Flex borderBottom={`1px dashed ${theme.colors.background}`} textAlign="left" key={`${index}_order_item`} justify="space-between" py={4}>
+                                                        <Text fontSize={12}>{order?.orderNumber}</Text>
+                                                        <Text fontSize={12}>{dayjs(order?.deliveryDate).fromNow()}</Text>
+                                                        <Text fontSize={12}>{order?.deliveryAddress?.name || "Home"}</Text>
+                                                    </Flex>
+                                                ))
+                                            }
+                                        </Grid>
+                                    </Flex>
+                                </React.Fragment>
+                            )
+                            : activeOrderPage && !activeOrders?.length && <NoData header={noActiveOrdersHeader} caption={noActiveOrdersCaption} />
                     }
                     {
-                        activeOrderPage && (
-                            <React.Fragment>
-                                <Text fontWeight={600} fontSize={14}>{`All Active Orders (${activeOrders ? activeOrders?.length : ''}`})</Text>
-                                <Flex flexDirection="column">
-                                    <Grid
-                                        mt={3}
-                                        p={4}
-                                    >
-                                        <Flex justify="space-between" mb={3} borderBottom={`1px dashed ${theme.colors.background}`} pb={3}>
-                                            <Text fontWeight={600}>Order#</Text>
-                                            <Text fontWeight={600}>Delivery Date</Text>
-                                            <Text fontWeight={600}>Delivered To</Text>
-                                        </Flex>
-                                        {
-                                            fetchingOrders && <Spinner margin="auto" />
-                                        }
-                                        {
-                                            activeOrders?.map((order: Order, index: number) => (
-                                                <Flex borderBottom={`1px dashed ${theme.colors.background}`} textAlign="left" key={`${index}_order_item`} justify="space-between" py={4}>
-                                                    <Text fontSize={12}>{order?.orderNumber}</Text>
-                                                    <Text fontSize={12}>{dayjs(order?.deliveryDate).fromNow()}</Text>
-                                                    <Text fontSize={12}>{order?.deliveryAddress?.name || "Home"}</Text>
-                                                </Flex>
-                                            ))
-                                        }
-                                    </Grid>
-                                </Flex>
-                            </React.Fragment>
-                        )
+                        pastOrderPage && pastOrders?.length
+                            ? (
+                                <React.Fragment>
+                                    <Text fontWeight={600} fontSize={14}>{`All Past Orders (${pastOrders ? pastOrders?.length : ''}`})</Text>
+                                    <Flex flexDirection="column">
+                                        <Grid
+                                            mt={3}
+                                            p={4}
+                                        >
+                                            <Flex justify="space-between" mb={3} borderBottom={`1px dashed ${theme.colors.background}`} pb={3}>
+                                                <Text fontWeight={600}>Order#</Text>
+                                                <Text fontWeight={600}>Delivery Date</Text>
+                                                <Text fontWeight={600}>Delivered To</Text>
+                                            </Flex>
+                                            {
+                                                fetchingOrders && <Spinner margin="auto" />
+                                            }
+                                            {
+                                                pastOrders?.map((order: Order, index: number) => (
+                                                    <Flex borderBottom={`1px dashed ${theme.colors.background}`} textAlign="left" key={`${index}_order_item`} justify="space-between" py={4}>
+                                                        <Text fontSize={12}>{order?.orderNumber}</Text>
+                                                        <Text fontSize={12}>{dayjs(order?.deliveryDate).fromNow()}</Text>
+                                                        <Text fontSize={12}>{order?.deliveryAddress?.name}</Text>
+                                                    </Flex>
+                                                ))
+                                            }
+                                        </Grid>
+                                    </Flex>
+                                </React.Fragment>
+                            )
+                            : pastOrderPage && !pastOrders?.length && <NoData header={noPastOrdersHeader} caption={noPastOrdersCaption} />
                     }
                 </Flex>
             </Grid>

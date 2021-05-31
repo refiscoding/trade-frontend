@@ -23,7 +23,7 @@ const OrdersPage = () => {
     const { data: userOrders, loading: userOrdersLoading, refetch: refetchUserOrders } = useFetchUserCheckoutOrdersQuery({
         onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
     });
-    const orders = get(userOrders, 'findCheckoutOrders.payload')// as Order[]
+    const orders = get(userOrders, 'findCheckoutOrders.payload')
 
     React.useEffect(() => {
         refetchUserOrders();

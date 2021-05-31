@@ -1,17 +1,16 @@
 import * as React from 'react'
 import { get } from "lodash";
+import { ApolloError } from 'apollo-boost'
 import { AnimatePresence } from 'framer-motion'
 import { Flex, useToast } from '@chakra-ui/core'
 import { useMediaQuery } from 'react-responsive'
 
+import { theme } from '../../../theme';
 import { Text } from '../../../typography'
 import { MenuItem, Tooltip } from './styles'
-import { useAppContext } from '../../../context/AppProvider'
-
-import { ApolloError } from 'apollo-boost'
 import { ERROR_TOAST } from '../../../constants'
-import { useFetchUserNotificationsQuery, Notification } from '../../../generated/graphql'
-
+import { useAppContext } from '../../../context/AppProvider'
+import { useFetchUserNotificationsQuery, useFetchUsersWhishlistQuery } from '../../../generated/graphql'
 
 type SideBarItemProps = {
   title: string
@@ -28,14 +27,15 @@ type SideBarItemProps = {
 
 type CounterProps = {
   Icon: React.FC
-  notifications: Notification[]
+  count: number
+  color: string
 };
 
-const NotificationsCounter: React.FC<CounterProps> = ({ Icon, notifications }) => {
+const NotificationsCounter: React.FC<CounterProps> = ({ Icon, count, color }) => {
   return (
     <Flex flexDirection="column">
       <Flex
-        backgroundColor="#CF2121"
+        backgroundColor={color}
         height="25px"
         width="25px"
         color="#fff"
@@ -49,7 +49,7 @@ const NotificationsCounter: React.FC<CounterProps> = ({ Icon, notifications }) =
         left="20px"
       >
         {
-          notifications?.length > 9 ? '9+' : notifications?.length
+          count > 9 ? '9+' : count
         }
       </Flex>
       <Icon />
@@ -88,6 +88,7 @@ const SideBarItem: React.FC<SideBarItemProps> = ({
     }
   };
 
+  const wishlistIcon = title === "My Wish List";
   const notificationsIcon = title === "Notifications";
 
   const toast = useToast();
@@ -95,13 +96,19 @@ const SideBarItem: React.FC<SideBarItemProps> = ({
   const { data: userNotifications, refetch: refetchNotifications } = useFetchUserNotificationsQuery({
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
   });
+  const { data: userWishlist, refetch: refetchWishlist } = useFetchUsersWhishlistQuery({
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
+  });
   const notifications = get(userNotifications, "findUserNotifications.payload");
-
+  const products = get(userWishlist, 'findOneWishlist.payload.products', null);
+  const hasWishlist = userWishlist?.findOneWishlist?.payload;
+  const hasWishlistProducts = hasWishlist?.products?.length;
   const hasNotifications = notifications?.length;
 
   React.useEffect(() => {
     refetchNotifications();
-  }, [refetchNotifications]);
+    refetchWishlist()
+  }, [refetchNotifications, refetchWishlist]);
 
   return (
     <MenuItem
@@ -129,9 +136,13 @@ const SideBarItem: React.FC<SideBarItemProps> = ({
           {
             notificationsIcon
               ? hasNotifications
-                ? <NotificationsCounter notifications={notifications} Icon={Icon} />
+                ? <NotificationsCounter count={notifications?.length} Icon={Icon} color="#CF2121" />
                 : <Icon />
-              : <Icon />
+              : wishlistIcon
+                ? hasWishlistProducts
+                  ? <NotificationsCounter count={products?.length} Icon={Icon} color={theme.colors.brand[500]} />
+                  : <Icon />
+                : <Icon />
           }
         </Flex>
         <AnimatePresence>

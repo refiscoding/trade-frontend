@@ -1,7 +1,7 @@
 import * as Yup from 'yup'
 import * as React from 'react'
 import { Form, Formik, FormikProps } from 'formik'
-import { Button, Flex, useToast, Image, Grid } from '@chakra-ui/core'
+import { Button, Flex, useToast, Grid } from '@chakra-ui/core'
 import { useHistory, useLocation } from 'react-router-dom'
 import { useMediaQuery } from "react-responsive";
 
@@ -10,7 +10,7 @@ import strapiHelpers from '../../utils/strapiHelpers'
 import { images, theme } from '../../theme'
 import { PageWrap } from '../../layouts'
 import { formatError } from '../../utils'
-import { H4, Text } from '../../typography'
+import { Text, H3 } from '../../typography'
 import { SUCCESS_TOAST } from '../../constants'
 import { MotionFlex, SideSlider } from '../../components'
 import { ConnectedPasswordGroup } from '../../components/FormElements'
@@ -39,37 +39,27 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
     code: new URLSearchParams(location.search).get('code') as string
   }
 
-  const logoWidth = isWebView ? "50%" : "80%";
-  const logoMarginBottom = isWebView ? 5 : 10;
-  const logoMarginLeft = isWebView ? 70 : 8;
-  const titleMarginLeft = isWebView ? "45px" : "55px";
   const ctaContainerSize = isWebView ? "164px 164px" : "180px 180px";
 
   const handleCancelClicked = () => {
     history.push("/login");
   };
 
-
   return (
     <PageWrap
-      pt={0}
       align="center"
+      title="Login"
+      backgroundSize="contain"
+      backgroundRepeat="no-repeat"
+      bgImage={`url(${images.bg})`}
       justify="center"
-      title="Reset Password"
+      pt={0}
     >
-      {
-        isWebView && (
-          <Flex width="100%">
-            <Image width="100%" height="100%" src={images.bg} />
-          </Flex>
-        )
-      }
       <SideSlider>
-        <Image justifySelf="center" width={logoWidth} mb={logoMarginBottom} src={images['TradeFedFullLogo']} ml={logoMarginLeft} />
-        <Flex width="100%">
-          <H4 textAlign="left" mb={4} fontWeight={550} ml={titleMarginLeft}>
-            Choose New Password
-          </H4>
+        <Flex width="100%" flexDirection="column" pb={4}>
+          <H3 textAlign="center" mb={4} fontWeight="bold">
+            Reset Password
+          </H3>
         </Flex>
         <Formik
           validationSchema={ResetPasswordFormValidation}
@@ -110,13 +100,13 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
                   </Text>
                 </MotionFlex>
               )}
-              <Grid gridTemplateColumns={ctaContainerSize}>
-                <Button justifySelf="start" mt={10} width="90%" onClick={() => handleCancelClicked()} border={`1px solid ${theme.colors.brand[500]}`} background="white">
+              <Grid gridTemplateColumns={ctaContainerSize} justifyContent="center" justifyItems="center" justifySelf="center">
+                <Button justifySelf="start" mt={10} width="95%" onClick={() => handleCancelClicked()} border={`1px solid ${theme.colors.brand[500]}`} background="white">
                   <Text fontSize="12px">
                     CANCEL
                   </Text>
                 </Button>
-                <Button isLoading={isSubmitting} type="submit" mt={10} width="90%" variantColor="brand">
+                <Button isLoading={isSubmitting} type="submit" mt={10} width="95%" variantColor="brand">
                   <Text fontSize="12px">
                     SAVE PASSWORD
                   </Text>

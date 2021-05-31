@@ -1,0 +1,15 @@
+# import '/fragments/product.graphql'
+fragment cart on Cart {
+  id
+  created_at
+  updated_at
+  products {
+      id
+      quantity
+      product {
+      ...product
+      }
+  }
+  total
+  
+}

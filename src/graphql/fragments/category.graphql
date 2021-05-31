@@ -1,0 +1,19 @@
+# import '/fragments/uploadFile.graphql'
+# import '/fragments/business.graphql'
+# import '/fragments/product.graphql'
+
+fragment category on Category {
+  id
+  created_at
+  updated_at
+  name
+  categoryImage {
+      ...uploadFile
+  }
+  products {
+      ...product
+  }
+  business {
+      ...business
+  }
+}

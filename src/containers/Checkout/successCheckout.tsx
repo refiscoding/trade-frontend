@@ -5,7 +5,9 @@ import { images } from '../../theme'
 import { useHistory } from 'react-router-dom'
 
 const CheckoutSuccess: React.FC = () => {
-  const history = useHistory()
+  const history = useHistory();
+  // TODO: Integrete with value from backend after payment success
+  const orderNumber = "TFED-ighjkhjk";
   return (
     <PageWrap
       title="Checkout Success"
@@ -16,9 +18,11 @@ const CheckoutSuccess: React.FC = () => {
     >
       <InfoPage
         image={images.uploadProductSuccess}
-        header="Success!"
+        header="Payment Successful!"
         caption={`
-          Your order has been placed with the supplier and a receipt will be sent to you via email within the next few minutes. 
+          We have received your payment for order ${orderNumber}.
+          You will receive an invoice in your email with the summary.
+          One of our representatives will also contact you to facilitate delivery to the pickup point.
         `}
         action={() => history.push('/')}
         actionText="OK"

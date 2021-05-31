@@ -18,6 +18,10 @@ export type OrderReturnsProps = {
     pastOrders: Order[]
     activeOrders: Order[]
     fetchingOrders: boolean
+    noPastOrdersHeader: string
+    noPastOrdersCaption: string
+    noActiveOrdersHeader: string
+    noActiveOrdersCaption: string
 }
 
 const OrderReturns = () => {
@@ -45,12 +49,35 @@ const OrderReturns = () => {
         }
     });
 
+    const noPastOrdersHeader = 'No Past Orders';
+    const noPastOrdersCaption = 'You currently don\'t have any orders that have been delivered to you in the past';
+    const noActiveOrdersHeader = 'No Active Orders';
+    const noActiveOrdersCaption = 'You currently haven\'t placed any orders that are active';
+
     return (
         <PageWrap title="Order Returns">
             {
                 isWebView
-                    ? <ReturnsWeb orders={orders} fetchingOrders={userOrdersLoading} pastOrders={pastOrders} activeOrders={activeOrders} />
-                    : <ReturnsMobile orders={orders} fetchingOrders={userOrdersLoading} pastOrders={pastOrders} activeOrders={activeOrders} />
+                    ? <ReturnsWeb
+                        orders={orders}
+                        pastOrders={pastOrders}
+                        activeOrders={activeOrders}
+                        fetchingOrders={userOrdersLoading}
+                        noPastOrdersHeader={noPastOrdersHeader}
+                        noPastOrdersCaption={noPastOrdersCaption}
+                        noActiveOrdersHeader={noActiveOrdersHeader}
+                        noActiveOrdersCaption={noActiveOrdersCaption}
+                    />
+                    : <ReturnsMobile
+                        orders={orders}
+                        pastOrders={pastOrders}
+                        activeOrders={activeOrders}
+                        fetchingOrders={userOrdersLoading}
+                        noPastOrdersHeader={noPastOrdersHeader}
+                        noPastOrdersCaption={noPastOrdersCaption}
+                        noActiveOrdersHeader={noActiveOrdersHeader}
+                        noActiveOrdersCaption={noActiveOrdersCaption}
+                    />
             }
         </PageWrap>
     )

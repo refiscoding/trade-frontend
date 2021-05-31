@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { Button } from '@chakra-ui/core'
+import { Button, Spinner } from '@chakra-ui/core'
 
 import CardsContainer from './CardsContainer'
 import CardComponent, { Card } from './CardComponent'
@@ -12,6 +12,7 @@ import { ComponentLocationAddress } from '../../generated/graphql';
 type CardsProps = {
   cards: Card[]
   mobileFlow: boolean
+  createOrderLoading?: boolean
   checkoutTotal: number
   selectedDeliveryDate: Date | Date[]
   cartProducts?: CartProduct[]
@@ -28,6 +29,7 @@ const CardsComponent: React.FC<CardsProps> = ({
   cartProducts,
   checkoutTotal,
   selectedAddress,
+  createOrderLoading,
   selectedDeliveryDate,
   setShowDeleteCardModal,
   setShowCheckoutSignatoryModal
@@ -55,6 +57,9 @@ const CardsComponent: React.FC<CardsProps> = ({
           variantColor="brand"
           onClick={handlePay}
         >
+          {
+            createOrderLoading && <Spinner height="25px" />
+          }
           {`PAY R ${checkoutTotal}.00`}
         </Button>
       )}

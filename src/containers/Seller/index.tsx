@@ -8,7 +8,8 @@ import {
   useCategoryQuery,
   useCreateMyBusinessMutation,
   // eslint-disable-next-line @typescript-eslint/camelcase
-  Enum_Business_Businesstype
+  Enum_Business_Businesstype,
+  Maybe
 } from '../../generated/graphql'
 import { formatError } from '../../utils'
 import { useHistory } from 'react-router-dom'
@@ -21,7 +22,7 @@ import * as Yup from 'yup'
 import PersonalInfo from './personalInfo'
 import BusinessInfo from './businessInfo'
 import { useEffect } from 'react'
-import {useMediaQuery} from "react-responsive";
+import { useMediaQuery } from "react-responsive";
 
 const SellerFormValidation = Yup.object().shape({
   firstName: Yup.string().required('First Name is required'),
@@ -65,7 +66,7 @@ type SellerValues = {
   revenue: string
   vatNumber: string
   uniqueProducts: string
-  products: string
+  products: Maybe<Maybe<string>[]> | undefined
   hasPhysicalStore: string
   isRetailSupplier: string
   // eslint-disable-next-line @typescript-eslint/camelcase
@@ -81,7 +82,7 @@ const initialValues = {
   vatNumber: '',
   revenue: '',
   uniqueProducts: '',
-  products: '',
+  products: '' || undefined,
   hasPhysicalStore: '',
   isRetailSupplier: '',
   carryStock: ''
@@ -220,7 +221,8 @@ const Seller: React.FC = () => {
                 SUBMIT
               </Button>
             </Form>
-          )}
+          )
+        }
         }
       </Formik>
     </PageWrap>

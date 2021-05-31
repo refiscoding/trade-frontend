@@ -4,7 +4,7 @@ import { ColorProps } from 'styled-system'
 import { useMediaQuery } from "react-responsive";
 
 import { images } from '../../theme'
-import { H3, Text } from '../../typography'
+import { H3 } from '../../typography'
 
 type InfoPageProps = ColorProps & {
   hasLogo?: boolean
@@ -38,9 +38,9 @@ const InfoPage: React.FC<InfoPageProps> = ({
         <H3 fontSize="20px" fontWeight={600}>
           {header}
         </H3>
-        <Text mt={4} fontSize="14px" textAlign="center">
+        <Flex mt={3} maxWidth={550} wordBreak="break-word">
           {caption}
-        </Text>
+        </Flex>
       </Flex>
       {action && (
         <Button onClick={action} mt={4} width={ctaButtonWidth} ml={ctaButtonMargin} type="submit" variantColor="brand">
