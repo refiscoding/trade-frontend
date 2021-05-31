@@ -1,7 +1,8 @@
 import * as React from 'react'
-import { Flex, Image, Text, Checkbox } from '@chakra-ui/core'
+import { Flex, Image, Text } from '@chakra-ui/core'
 import { FlexProps } from '@chakra-ui/core/dist/Flex'
 
+import Input from "../../Input";
 import CardFooter from '../CardFooter'
 import AddToWishlistButton from './AddToWishlistButton'
 
@@ -55,9 +56,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <Flex width={rest.width || "320px"} justifyContent="space-between" alignItems="center" position="relative">
       {(isCart || isWishlist) && editing && (
-        <Checkbox
+        <Input
           name={product?.id}
           value={product?.id}
+          type="checkbox"
           onChange={(event) => handleRadioPressed(event?.target?.value, event?.target?.checked)}
         />
       )}

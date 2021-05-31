@@ -1,10 +1,11 @@
 import * as React from 'react';
 
 import { MapPin, Briefcase } from "react-feather";
-import { Flex, Image, Text, Button, Grid, Tag, Checkbox } from '@chakra-ui/core';
+import { Flex, Image, Text, Button, Grid, Tag } from '@chakra-ui/core';
 
 import Section from '../../components/Section';
 import ProductCard from '../../components/Card/ProductCard';
+import Input from '../../components/Input';
 
 import { theme } from "../../theme";
 import { Product } from "../../generated/graphql";
@@ -117,8 +118,9 @@ const ProductComponent: React.FC<ProductProps> = (
               </Text>
             </Flex>
             <Flex mt={3} flexDirection="column">
-              <Checkbox
+              <Input
                 name="quantity"
+                type="text"
                 placeholder="Enter quantity eg. 3"
                 style={{
                   padding: 3,

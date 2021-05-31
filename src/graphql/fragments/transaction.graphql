@@ -1,5 +1,4 @@
 # import '/fragments/order.graphql'
-
 fragment transaction on Transaction {
   id
   created_at
