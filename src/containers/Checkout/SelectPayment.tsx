@@ -52,10 +52,10 @@ const SelectPaymentComponent: React.FC<SelectPaymentComponentProps> = ({ mobileF
                             <Image src={images.AmericanExpressPayment} />
                         </Flex>
                     </Grid>
-                    <Input type="checkbox" disabled />
+                    <Input type="checkbox" />
                 </Grid>
             </Grid>
-            <Grid gridTemplateRows="1fr 1fr" borderBottom={`1px solid ${theme.colors.background}`} p={2}>
+            {/* <Grid gridTemplateRows="1fr 1fr" borderBottom={`1px solid ${theme.colors.background}`} p={2}>
                 <Text fontWeight={600} fontSize={12} my={2}>Online Payment</Text>
                 <Grid gridTemplateColumns="1fr 1fr">
                     <Grid gridTemplateColumns="1fr 1fr 1fr">
@@ -63,7 +63,7 @@ const SelectPaymentComponent: React.FC<SelectPaymentComponentProps> = ({ mobileF
                     </Grid>
                     <Input type="checkbox" />
                 </Grid>
-            </Grid>
+            </Grid> */}
         </Grid>
     );
 };

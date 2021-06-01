@@ -64,7 +64,7 @@ const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = ({ editItem }) =
 
   const handleUserDetails = async (details: DetailsInput) => {
     if (editItem) {
-      const { id, address, postalCode, lat, lng, defaultAddress } = editItem
+      const { id, address, postalCode, lat, lng, isDefaultAddress } = editItem
       return await editAddress({
         variables: {
           input: {
@@ -72,7 +72,7 @@ const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = ({ editItem }) =
             postalCode,
             lat,
             lng,
-            defaultAddress,
+            isDefaultAddress,
             ...details.address,
             type: addressTypeChecked,
             id

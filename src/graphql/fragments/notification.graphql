@@ -1,0 +1,11 @@
+fragment notification on Notification {
+  id
+  created_at
+  updated_at
+  type
+  title
+  category
+  message
+  trigger
+  read
+}

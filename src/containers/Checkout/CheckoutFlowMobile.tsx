@@ -3,7 +3,7 @@ import * as React from 'react'
 import { isEmpty } from 'lodash'
 import { Form, Formik } from 'formik'
 import { ChevronRight } from 'react-feather'
-import { Flex, Grid, Image, Button, Tag } from '@chakra-ui/core'
+import { Flex, Grid, Image, Tag, Spinner, Button } from '@chakra-ui/core'
 
 import { theme, images } from '../../theme'
 import { PageWrap } from '../../layouts'
@@ -15,7 +15,6 @@ import { DeliveryAddressValidation, initialDeliveryAddressValues, CheckoutProps 
 import NextButton from './Button'
 import CardInfo from './CardInfo'
 import NoData from './NoDataScreen'
-import CardsComponent from './Cards'
 import ActionButton from './ActionButton'
 import OrderSummary from './OrderSummary'
 import DeliveryAddresses from './Addresses'
@@ -163,7 +162,6 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
   addresses,
   handlePay,
   timeSlots,
-  deliveryFee,
   cartProducts,
   setActiveStep,
   checkoutTotal,
@@ -171,6 +169,7 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
   noCardDataHeader,
   noCardDataCaption,
   setSelectedAddress,
+  createOrderLoading,
   showDeleteCardModal,
   noAddressDataHeader,
   noAddressDataCaption,
@@ -197,7 +196,6 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
   const confirmOrderStage = active === 2
   const selectPaymentStage = active === 3
   const confirmPaymentStage = active === 4
-  const addPaymentCardStage = active === 5
 
   const handleViewDeliveryItemsClicked = () => {
     setShowCheckoutItemsModal(true)
@@ -263,12 +261,6 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
                   {!showPaymentOptions && (
                     <SelectPaymentComponent setShowPaymentOptions={setShowPaymentOptions} />
                   )}
-                  {!showPaymentOptions && (
-                    <ActionButton setActive={() => setActiveStep(5)}>
-                      <Text fontSize={12}>Add a New Card</Text>
-                      <ChevronRight />
-                    </ActionButton>
-                  )}
                   {!showPaymentOptions && <CardInfo />}
                 </Stepper>
                 <Flex>
@@ -322,47 +314,29 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
                             NEXT
                           </NextButton>
                         </Flex>
-                      ) : selectPaymentStage ? (
+                      ) : selectPaymentStage && (
                         <Flex flexDirection="column">
                           <OrderSummary
                             mobileFlow
                             cartProducts={cartProducts}
                             checkoutTotal={checkoutTotal}
-                            deliveryFee={deliveryFee}
                             selectedAddress={selectedAddress}
                             setActiveStep={setActiveStep}
                             selectedDeliveryDate={selectedDeliveryDate}
                             selectedDeliveryTimeslot={selectedDeliveryTimeslot}
                           />
-                          <NextButton
-                            active={active}
-                            disabled={false}
-                            setActive={() => setActiveStep(4)}
-                          >
-                            NEXT
-                          </NextButton>
-                        </Flex>
-                      ) : confirmPaymentStage ? (
-                        <Flex flexDirection="column" width="100%">
-                          <CardsComponent
-                            mobileFlow
-                            cards={cards}
-                            checkoutTotal={checkoutTotal}
-                            selectedAddress={selectedAddress}
-                            selectedDeliveryDate={selectedDeliveryDate}
-                            setShowDeleteCardModal={setShowDeleteCardModal}
-                            setShowCheckoutSignatoryModal={setShowCheckoutSignatoryModal}
-                          />
                           <Button
                             mt={5}
                             width="100%"
-                            type={"button"}
+                            type="button"
                             variantColor="brand"
                             variant="solid"
-                            isDisabled={false}
-                            onClick={handlePay}
+                            onClick={() => handlePay()}
                           >
-                            {`PAY R ${checkoutTotal}.00`}
+                            {
+                              createOrderLoading && <Spinner />
+                            }
+                            {`PROCEED TO PAYMENT`}
                           </Button>
                           <Text
                             mt={4}
@@ -374,16 +348,6 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
                             Change Payment Method
                           </Text>
                         </Flex>
-                      ) : (
-                        addPaymentCardStage && (
-                          <NextButton
-                            active={active}
-                            disabled={false}
-                            setActive={() => setActiveStep(4)}
-                          >
-                            ADD CARD
-                          </NextButton>
-                        )
                       )}
                     </React.Fragment>
                   )}

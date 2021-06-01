@@ -1,39 +1,32 @@
 import * as React from "react";
 
 import { get } from "lodash";
-
 import { Grid, Flex, Tag } from "@chakra-ui/core";
+
 import { Text } from "../../typography";
 import { theme } from "../../theme";
-
-import { ComponentCartProductCartProduct, Maybe } from "../../generated/graphql";
-
+import { ComponentOrdersOrder, Maybe } from "../../generated/graphql";
 
 type OrderItemComponentProps = {
-    cartItem: Maybe<ComponentCartProductCartProduct>
+    cartItem: Maybe<ComponentOrdersOrder>
 };
 
 const OrderItemComponent: React.FC<OrderItemComponentProps> = ({ cartItem }) => {
-    const price = get(cartItem, "product.price.pricePerUnit")
-    const quantity = get(cartItem, "quantity")
+    const itemToUse = cartItem?.products && cartItem?.products[0];
+    const price = get(itemToUse, "productPrice");
+    const name = get(itemToUse, "name");
+    const quantity = get(cartItem, "quantity") ?? 1;
+    const total = price && price * quantity;
 
     return (
-        <Grid borderBottom={`1px solid ${theme.colors.background}`} gridTemplateRows="30px 30px" height="90px">
+        <Grid borderBottom={`1px solid ${theme.colors.background}`} height="90px">
             <Grid gridTemplateColumns="1fr 1fr">
                 <Flex>
-                    <Text fontWeight={600} fontSize={12}>{cartItem?.product?.name}</Text>
-                    <Tag height="70%" justifySelf="start" fontSize={11} ml={2} size="sm" background="#c9cfd4">{cartItem?.quantity}</Tag>
+                    <Text fontWeight={600} fontSize={12}>{name}</Text>
+                    <Tag alignSelf="start" justifySelf="start" fontSize={11} ml={2} size="sm" background="#c9cfd4">{quantity}</Tag>
                 </Flex>
                 <Flex justifySelf="end">
-                    <Text fontWeight={600} fontSize={14}>{`R ${quantity ? price * quantity : price}.00`}</Text>
-                </Flex>
-            </Grid>
-            <Grid gridTemplateColumns="1fr 1fr">
-                <Flex>
-                    <Text fontSize={14}>Delivery</Text>
-                </Flex>
-                <Flex justifySelf="end">
-                    <Text fontWeight={500} fontSize={12}>{`R ${1000}.00`}</Text>
+                    <Text fontWeight={600} fontSize={14}>{`R ${total}.00`}</Text>
                 </Flex>
             </Grid>
         </Grid>

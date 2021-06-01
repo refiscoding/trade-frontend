@@ -1,4 +1,13 @@
+# import '/fragments/notification.graphql'
+# import '/fragments/transaction.graphql'
 # import '/fragments/uploadFile.graphql'
+# import '/fragments/business.graphql'
+# import '/fragments/wishlist.graphql'
+# import '/fragments/address.graphql'
+# import '/fragments/category.graphql'
+# import '/fragments/cart.graphql'
+# import '/fragments/order.graphql'
+
 fragment user on UsersPermissionsUser {
   id
   created_at
@@ -6,28 +15,39 @@ fragment user on UsersPermissionsUser {
   username
   email
   confirmed
-  provider
+  blocked
   phoneNumber
   firstName
   lastName
-  address {
-    id
-    lat
-    lng
-    address
-    postalCode
-    type
-    name
-  }
   idNumber
   profileCompleted
   isSeller
   profilePicture {
     ...uploadFile
   }
+  business {
+   ...business
+  }
+  wishlist {
+    ...wishlist
+  }
+  cart {
+    ...cart
+  }
+  address {
+    ...address
+  }
   categories {
-    id
-    name
+    ...category
+  }
+  orders {
+    ...order
+  }
+  notifications {
+    ...notification
+  }
+   transactions {
+    ...transaction
   }
   notifications {
     id

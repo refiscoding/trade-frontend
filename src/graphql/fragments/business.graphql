@@ -1,0 +1,21 @@
+# import '/fragments/address.graphql'
+
+fragment business on Business {
+  id
+  created_at
+  updated_at
+  published_at
+  name
+  registrationNumber
+  isVatRegistered
+  hasPhysicalStore
+  businessType
+  vatNumber
+  isRetailSupplier
+  uniqueProducts
+  revenue
+  address {
+      ...address
+  }
+  productsSummary
+}

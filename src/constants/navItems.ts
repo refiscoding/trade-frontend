@@ -20,14 +20,14 @@ export const NAV_ITEMS: NavItem[] = [
     Icon: Briefcase
   },
   {
-    to: `/profile`,
-    title: 'My Account',
-    Icon: User
-  },
-  {
     to: `/wishlist`,
     title: 'My Wish List',
     Icon: Star
+  },
+  {
+    to: `/profile`,
+    title: 'My Account',
+    Icon: User
   },
   {
     to: `/notifications`,

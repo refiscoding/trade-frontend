@@ -1,0 +1,10 @@
+fragment address on ComponentLocationAddress {
+  id
+  name
+  isDefaultAddress
+  address
+  postalCode
+  lat
+  lng
+  type
+}

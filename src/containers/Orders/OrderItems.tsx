@@ -6,11 +6,10 @@ import OrderItem from "./Item";
 
 import { Text } from "../../typography";
 import { theme } from "../../theme";
-import { Maybe, ComponentCartProductCartProduct } from "../../generated/graphql";
-
+import { Maybe, ComponentOrdersOrder } from "../../generated/graphql";
 
 type OrderItemsSummaryComponentProps = {
-    items: Maybe<Maybe<ComponentCartProductCartProduct>[]> | undefined
+    items: Maybe<Maybe<ComponentOrdersOrder>[]> | undefined
     isMobile: boolean
     total: Maybe<number> | undefined
 };
@@ -36,7 +35,7 @@ const OrderSummaryComponent: React.FC<OrderItemsSummaryComponentProps> = ({
             <Text fontWeight={600}>Order Summary</Text>
             <Grid p={2} rowGap="10px" overflowY="scroll" cursor="pointer">
                 {
-                    items?.map((item: Maybe<ComponentCartProductCartProduct>, index: number) => {
+                    items?.map((item: Maybe<ComponentOrdersOrder>, index: number) => {
                         return <OrderItem
                             key={`${index}_order_item`}
                             cartItem={item}

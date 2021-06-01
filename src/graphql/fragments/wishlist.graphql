@@ -1,0 +1,9 @@
+# import '/fragments/product.graphql'
+fragment wishlist on Wishlist {
+  id
+  created_at
+  updated_at
+  products {
+      ...product
+  }
+}

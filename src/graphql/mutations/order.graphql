@@ -1,6 +1,13 @@
+# import '/fragments/order.graphql'
+
 mutation createCheckoutOrder($input: CreateCheckoutOrderInput!) {
   createCheckoutOrder(input: $input) {
-    payload
+    payload {
+      order {
+        ...order
+      }
+      fnbPaymentOptionsUrl
+    }
     error
   }
 }

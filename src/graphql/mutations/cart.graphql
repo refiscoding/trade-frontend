@@ -1,20 +1,11 @@
 # import '/fragments/product.graphql'
-# import '/fragments/user.graphql'
+# import '/fragments/cart.graphql'
+# import '/fragments/wishlist.graphql'
 
 mutation addProductToCart($input: AddProductToCartInput!) {
     addProductToCart(input: $input) {
       payload {
-        id
-        owner {
-          ...user
-        }
-        productsQuantities {
-          quantity
-          product {
-            ...product
-          }
-        }
-        total
+        ...cart
       }
     error
   }
@@ -23,16 +14,7 @@ mutation removeProductsFromCart($input: RemoveProductFromCartInput!) {
     removeProductsFromCart(input: $input) {
       payload {
        cart {
-        owner {
-          ...user
-        }
-        productsQuantities {
-          quantity
-          product {
-            ...product
-          }
-        }
-        total
+        ...cart
       }
       removedItems {
         ...product
@@ -49,24 +31,10 @@ mutation fromCartToWishlist($input: FromCartToWishlistInput!) {
           ...product
         }
         cart {
-          owner {
-            ...user
-          }
-          productsQuantities {
-            quantity
-            product {
-              ...product
-            }
-          }
-          total
+          ...cart
         }
         wishlist {
-          owner {
-            ...user
-          }
-          products {
-            ...product
-          }
+          ...wishlist
         }
       }
     error

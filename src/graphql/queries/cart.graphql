@@ -1,19 +1,9 @@
-# import '/fragments/product.graphql'
-# import '/fragments/user.graphql'
+# import '/fragments/cart.graphql'
 
 query fetchUsersCart {
   findCart {
     payload {
-        owner {
-          ...user
-        }
-        productsQuantities {
-            quantity
-            product {
-                ...product
-            }
-        }
-        total
+       ...cart
     }
     error
   }
