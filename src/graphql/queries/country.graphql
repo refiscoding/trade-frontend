@@ -1,0 +1,7 @@
+# import '/fragments/country.graphql'
+
+query fetchCountries($publicationState: PublicationState) {
+   countries(publicationState: $publicationState){
+    ...country
+  }
+}

@@ -1,5 +1,6 @@
 # import '/fragments/uploadFile.graphql'
 # import '/fragments/business.graphql'
+# import '/fragments/category.graphql'
 fragment product on Product {
     id
     created_at
@@ -10,37 +11,24 @@ fragment product on Product {
     tags
     availableUnits
     packaging
-    productPrice
     features
     minSellCost
     maxSellCost
     tradeFedCost
+    discount
+    currency
+    height
+    weight
+    width
+    lengths
+    coverImage {
+        ...uploadFile
+    }
     business {
         ...business
     }
-    price {
-        currency
-        retailPricePerUnit
-        pricePerUnit
-    }
-    size {
-        height
-        weight
-        productLength
-        width
-    }
-    variants {
-        variants
-        quantity
-    }
-    discount {
-        discountPercentage
-    }
     categories {
         id
-    }
-    coverImage {
-        ...uploadFile
     }
     productImages {
         ...uploadFile

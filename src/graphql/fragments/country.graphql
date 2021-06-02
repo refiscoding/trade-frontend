@@ -1,0 +1,8 @@
+fragment country on Country {
+  id
+  created_at
+  updated_at
+  published_at
+  name
+  code
+}

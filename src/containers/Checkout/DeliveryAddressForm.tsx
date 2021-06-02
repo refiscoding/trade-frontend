@@ -8,7 +8,9 @@ import {
   ComponentLocationAddressInput,
   useUpdateAddressMutation,
   useEditAddressMutation,
-  ComponentLocationAddress
+  ComponentLocationAddress,
+  Enum_Componentlocationaddress_Type,
+  Maybe
 } from '../../generated/graphql'
 import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
 import { useAuthContext } from '../../context/AuthProvider'
@@ -25,16 +27,22 @@ type DetailsInput = {
 
 const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = ({ editItem }) => {
   const { setUser } = useAuthContext()
-  const [addressTypeChecked, setAddressTypeChecked] = React.useState<string>('')
+  const [addressTypeChecked, setAddressTypeChecked] = React.useState<Maybe<Enum_Componentlocationaddress_Type> | undefined>();
+  // Enum_Componentlocationaddress_Type | null | undefined
   const toast = useToast()
 
   useEffect(() => {
-    editItem && setAddressTypeChecked(editItem.type || '')
+    editItem && setAddressTypeChecked(editItem.type)
   }, [editItem])
 
+  const addressTypeCheck = 'Residential';
+
   const handleAddressTypeChanged = (addressType: string) => {
-    setAddressTypeChecked(addressType)
+    // setAddressTypeChecked(addressType)
   }
+  // const handleAddressTypeChanged = (addressType: React.SetStateAction<Maybe<Enum_Componentlocationaddress_Type> | undefined>) => {
+  //   setAddressTypeChecked(addressType)
+  // }
 
   const [updateAddress] = useUpdateAddressMutation({
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
@@ -95,16 +103,16 @@ const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = ({ editItem }) =
   return (
     <Flex flexDirection="column">
       <Grid gridTemplateColumns="1fr 1fr" mb={5}>
-        {addressTypes?.map((address, index) => (
+        {addressTypes?.map((addressType, index) => (
           <Flex alignItems="center" key={`${index}_address_type`}>
             <Input
               type="checkbox"
-              name={address?.name}
-              value={addressTypeChecked}
-              checked={addressTypeChecked === address?.name}
-              onChange={() => handleAddressTypeChanged(address?.name)}
+              name={addressType?.name}
+              value={addressTypeCheck}
+              checked={addressTypeChecked === addressType?.name}
+              onChange={() => handleAddressTypeChanged(addressType?.name)}
             />
-            <Label>{address?.name}</Label>
+            <Label>{addressType?.name}</Label>
           </Flex>
         ))}
       </Grid>
