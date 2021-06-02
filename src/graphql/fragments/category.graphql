@@ -13,7 +13,7 @@ fragment category on Category {
   products {
       ...product
   }
-  business {
+  businesses {
       ...business
   }
 }

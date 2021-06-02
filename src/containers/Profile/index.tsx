@@ -34,6 +34,9 @@ const Profile: React.FC<ProfileProps> = () => {
   const navigateToOrderHistory = () => {
     history.push('/orders')
   }
+  const handleAddressBook = () => {
+    history.push('/addresses');
+  }
 
   return (
     <PageWrap title="My Account" width={isTabletOrMobile ? '100%' : '40%'} alignSelf="center">
@@ -113,7 +116,24 @@ const Profile: React.FC<ProfileProps> = () => {
         backgroundColor="white"
       >
         <Flex width="80%">
-          <Text fontSize={12}>{isSellerApproved ? 'My Wishlist' : 'Become a Seller'}</Text>
+          <Text fontSize={12}>{isSellerApproved ? 'Product Management' : 'Become a Seller'}</Text>
+        </Flex>
+        <ChevronRight />
+      </Flex>
+      <Flex
+        mt={5}
+        pl={5}
+        height="50px"
+        borderRadius="10px"
+        boxShadow="0 2px 4px 0 rgba(0,0,0,0.25)"
+        width="100%"
+        justify="space-between"
+        alignItems="center"
+        onClick={() => handleAddressBook()}
+        backgroundColor="white"
+      >
+        <Flex width="80%">
+          <Text fontSize={12}>{`My Address Book`}</Text>
         </Flex>
         <ChevronRight />
       </Flex>

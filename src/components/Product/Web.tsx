@@ -49,7 +49,7 @@ const ProductComponent: React.FC<ProductProps> = (
                 src={coverImage}
                 objectFit="contain"
               />
-              {product?.discount?.discountPercentage && product?.discount?.discountPercentage > 0 ? (
+              {product?.discount ? (
                 <Flex
                   alignItems="center"
                   justifyContent="center"
@@ -67,7 +67,7 @@ const ProductComponent: React.FC<ProductProps> = (
                     Save
                   </Text>
                   <Text color="white" fontSize="14px" fontWeight={600}>
-                    {`${product?.discount?.discountPercentage}%`}
+                    {`${product?.discount}%`}
                   </Text>
                 </Flex>
               ) : null}
@@ -84,8 +84,8 @@ const ProductComponent: React.FC<ProductProps> = (
                         src={product}
                       />
                     ))
-                }
-              </Grid>)
+                  }
+                </Grid>)
             }
           </Grid>
           <Grid gridTemplateRows="40px 50px 35px 30px 50px 40px 30px 30px 50px 60px" padding={5} pt={10}>
@@ -97,10 +97,10 @@ const ProductComponent: React.FC<ProductProps> = (
             </Text>
             <VerifiedBadge />
             <Text fontSize="18px">
-              {`Retail: ${product?.price?.currency} ${product?.price?.retailPricePerUnit}.00`}
+              {`Retail: ${product?.currency} ${product?.maxSellCost}.00`}
             </Text>
             <Text fontSize="30px" fontWeight={700}>
-              {`${product?.price?.currency} ${product?.price?.pricePerUnit}.00`}
+              {`${product?.currency} ${product?.tradeFedCost}.00`}
             </Text>
             <Text fontSize="14px" color="#355EC0" fontWeight={600}>
               {`This item is sold per ${productPackaging}`}
@@ -114,7 +114,7 @@ const ProductComponent: React.FC<ProductProps> = (
             <Flex>
               <MapPin />
               <Text ml={3} fontSize="14px" >
-                {`Delivered from ${product?.business?.address?.address}`}
+                {`Delivered from ${product?.business && product?.business?.address && product?.business?.address[0]?.address}`}
               </Text>
             </Flex>
             <Flex mt={3} flexDirection="column">
@@ -158,7 +158,17 @@ const ProductComponent: React.FC<ProductProps> = (
             <Text fontSize="17px" fontWeight={600} mb={3}>
               Product Features
             </Text>
-            {
+            <ul style={{ marginLeft: 15 }}>
+              {
+                product?.features?.split(",")?.map((feature: string, index: number) => (
+                  <li key={`${feature}_${index}`}>
+                    <Text fontSize="12px">{feature}</Text>
+                  </li>
+
+                ))
+              }
+            </ul>
+            {/* {
               product?.features?.length
                 ? (
                   <ul style={{ marginLeft: 15 }}>
@@ -172,32 +182,45 @@ const ProductComponent: React.FC<ProductProps> = (
                   </ul>
                 )
                 : (<Text>No Features Set</Text>)
-            }
+            } */}
           </div>
           <div>
             <Text fontSize="17px" fontWeight={600} mb={3}>
               Product Specification
             </Text>
-            {
+            <Flex flexDirection="column">
+              <Text fontSize="12px">Height : {product?.height}</Text>
+              <Text fontSize="12px">Width : {product?.width}</Text>
+              <Text fontSize="12px">Length : {product?.lengths}</Text>
+              <Text fontSize="12px">Weight : {product?.weight}</Text>
+            </Flex>
+            {/* {
               product?.size
                 ? (
                   <Flex flexDirection="column">
-                    <Text fontSize="12px">Height : {product.size?.height}</Text>
-                    <Text fontSize="12px">Width : {product.size?.width}</Text>
-                    <Text fontSize="12px">Length : {product.size?.productLength}</Text>
-                    <Text fontSize="12px">Weight : {product.size?.weight}</Text>
+                    <Text fontSize="12px">Height : {product?.height}</Text>
+                    <Text fontSize="12px">Width : {product?.width}</Text>
+                    <Text fontSize="12px">Length : {product?.lengths}</Text>
+                    <Text fontSize="12px">Weight : {product?.weight}</Text>
                   </Flex>
                 )
                 : (<Text>No Specifications Set</Text>)
-            }
+            } */}
           </div>
           <Flex width="414px" background={theme.colors.accent[50]} mt={5}>
+            {
+              product?.tags?.split(",")?.map((tag: string, index: number) => (
+                <Tag fontSize={12} mr={1} size="sm" key={index} background={theme.colors.tag} color={theme.colors.tagText}>{tag?.toUpperCase()}</Tag>
+              ))
+            }
+          </Flex>
+          {/* <Flex width="414px" background={theme.colors.accent[50]} mt={5}>
             {
               product?.tags?.map((tag: string, index: number) => (
                 <Tag fontSize={12} mr={1} size="sm" key={index} background={theme.colors.tag} color={theme.colors.tagText}>{tag?.toUpperCase()}</Tag>
               ))
             }
-          </Flex>
+          </Flex> */}
         </Grid>
       </Grid>
       {isPreview &&

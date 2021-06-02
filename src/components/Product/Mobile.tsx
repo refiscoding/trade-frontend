@@ -35,7 +35,7 @@ const ProductComponentMobile: React.FC<ProductProps> = (
           height="100%"
           src={product?.coverImage?.url}
         />
-        {product?.discount?.discountPercentage && product?.discount?.discountPercentage > 0 ? (
+        {product?.discount ? (
           <Flex
             alignItems="center"
             justifyContent="center"
@@ -53,7 +53,7 @@ const ProductComponentMobile: React.FC<ProductProps> = (
               Save
             </Text>
             <Text color="white" fontSize="14px" fontWeight={600}>
-              {`${product?.discount?.discountPercentage}%`}
+              {`${product?.discount}%`}
             </Text>
           </Flex>
         ) : null}
@@ -67,14 +67,14 @@ const ProductComponentMobile: React.FC<ProductProps> = (
           {product?.shortDescription}
         </Text>
         <Text mt={4} mb={1} fontSize="12px">
-          Retail: {`${product?.price?.currency} ${product?.price?.retailPricePerUnit}`}
+          Retail: {`${product?.currency} ${product?.maxSellCost}`}
         </Text>
         <Text
           mb={2}
           fontSize="18px"
           fontWeight={600}
         >
-          {`${product?.price?.currency} ${product?.price?.pricePerUnit}.00`}
+          {`${product?.currency} ${product?.tradeFedCost}.00`}
         </Text>
         <Text fontSize="14px" color="#355EC0" fontWeight={600}>
           {`This item is sold per ${productPackaging}`}
@@ -88,7 +88,7 @@ const ProductComponentMobile: React.FC<ProductProps> = (
         <Flex>
           <MapPin style={{ marginTop: 3 }} />
           <Text mt={2} ml={3} fontSize="12px" >
-            {`Delivered from ${product?.business?.address?.address}`}
+            {`Delivered from ${product?.business && product?.business?.address && product?.business?.address[0]?.address}`}
           </Text>
         </Flex>
         <Flex flexDirection="column" mt={3}>
@@ -124,26 +124,40 @@ const ProductComponentMobile: React.FC<ProductProps> = (
         </Section>
         <Section title="Product Features" p="0 1rem" pb="0px">
           <Flex ml="1rem" width="100%" as="ul" flexDirection="column" alignSelf="flex-start">
-            {
+            <ul style={{ marginLeft: 15 }}>
+              {
+                product?.features?.split(",")?.map((feature: string, index: number) => (
+                  <li key={`${feature}_${index}`}>
+                    <Text fontSize="12px">{feature}</Text>
+                  </li>
+
+                ))
+              }
+            </ul>
+            {/* {
               product?.features?.length
                 ? (
                   <ul style={{ marginLeft: 15 }}>
                     {
                       product?.features?.map((feature: string) => (
-                        <li key={feature}>
-                          <Text fontSize="12px">{feature}</Text>
-                        </li>
+
                       ))
                     }
                   </ul>
                 )
                 : (<Text fontSize="12px" ml={"-1rem"}>No Features Set</Text>)
-            }
+            } */}
           </Flex>
         </Section>
         <Section title="Product Specifications" p="0 1rem" pb="0px">
           <Flex ml="1rem" width="100%" as="ul" flexDirection="column" alignSelf="flex-start">
-            {
+            <Flex flexDirection="column">
+              <Text fontSize="12px">Height : {product?.height}</Text>
+              <Text fontSize="12px">Width : {product?.width}</Text>
+              <Text fontSize="12px">Length : {product?.lengths}</Text>
+              <Text fontSize="12px">Weight : {product?.weight}</Text>
+            </Flex>
+            {/* {
               product?.size
                 ? (
                   <Flex flexDirection="column">
@@ -154,12 +168,12 @@ const ProductComponentMobile: React.FC<ProductProps> = (
                   </Flex>
                 )
                 : (<Text>No Specifications Set</Text>)
-            }
+            } */}
           </Flex>
         </Section>
         <Flex width="414px" background="#ffffff">
           {
-            product?.tags?.map((tag: string, index: number) => (
+            product?.tags?.split(",")?.map((tag: string, index: number) => (
               <Tag fontSize={12} mr={1} size="sm" key={index} background={theme.colors.tag} color={theme.colors.tagText}>{tag?.toUpperCase()}</Tag>
             ))
           }

@@ -39,7 +39,7 @@ const Home: React.FC = () => {
 
   const products = get(productData, 'products', null) as Product[]
   const deals: Product[] = slice(
-    reverse(sortBy(products, [(product) => product?.discount?.discountPercentage])),
+    reverse(sortBy(products, [(product) => product?.discount])),
     0,
     3
   )

@@ -109,6 +109,10 @@ const ProductCreationWebFlow: React.FC<ProductCreationProps> = ({
                 }}
               >
                 {({ isSubmitting, status, values, errors }: FormikProps<ProductValues>) => {
+                  console.log("SUB", isSubmitting);
+                  console.log("VALS", values);
+                  console.log("Status", status);
+                  console.log("Errors", errors);
                   setFormValues(values);
                   return (
                     <Form style={{ width: '100%', marginTop: 20 }}>
@@ -154,7 +158,7 @@ const ProductCreationWebFlow: React.FC<ProductCreationProps> = ({
             </Flex>
             {
               !productConfirmStage && (
-                <Grid gridTemplateRows="640px 400px">
+                <Grid gridTemplateRows="640px 400px" width="48vw">
                   <Grid
                     background="#fff"
                     borderRadius={5}

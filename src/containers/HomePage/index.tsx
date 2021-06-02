@@ -1,22 +1,25 @@
 import * as React from 'react'
-import { sortBy, reverse, slice, some } from 'lodash'
+
 import { ApolloError } from 'apollo-client'
-import { PageWrap } from '../../layouts'
-import { useAuthContext } from '../../context/AuthProvider'
+import { useMediaQuery } from 'react-responsive'
+import { sortBy, reverse, slice, some, get } from 'lodash'
 import { useHistory, useLocation } from 'react-router-dom'
 import { Flex, useToast, Text, Button } from '@chakra-ui/core'
-import { images } from '../../theme'
+import { Hits, InstantSearch, Stats } from 'react-instantsearch-dom'
+
 import Hero from '../../components/Hero'
-import { Category, Product, useCategoryQuery, useProductQuery } from '../../generated/graphql'
-import { get } from 'lodash'
 import Footer from '../../components/Footer'
-import { ERROR_TOAST, SEARCH_INDEX, searchClient } from '../../constants'
+import Section from '../../components/Section'
 import ProductCard from '../../components/Card/ProductCard'
 import CategoryCard from '../../components/Card/CategoryCard'
-import Section from '../../components/Section'
-import { Hits, InstantSearch, Stats } from 'react-instantsearch-dom'
+
+import { PageWrap } from '../../layouts'
+import { images, theme } from '../../theme'
 import { SearchBar } from '../../components'
-import { useMediaQuery } from 'react-responsive'
+import { useAuthContext } from '../../context/AuthProvider'
+import { ERROR_TOAST, SEARCH_INDEX, searchClient } from '../../constants'
+import { Category, Product, useCategoryQuery, useProductQuery } from '../../generated/graphql'
+
 
 type filterParams = {
   minPrice: string
@@ -67,7 +70,7 @@ const Home: React.FC = () => {
   const categories = get(data, 'categories', null) as Category[]
   const products = get(productData, 'products', null) as Product[]
   const deals: Product[] = slice(
-    reverse(sortBy(products, [(product) => product?.discount?.discountPercentage])),
+    reverse(sortBy(products, [(product) => product?.discount])),
     0,
     3
   )
@@ -146,7 +149,7 @@ const Home: React.FC = () => {
                 header="HOLIDAY DASH"
                 caption="Shop early deals"
               />
-              <Section title="Product Categories" borderBottomWidth={10} maxWidth={'1100px'}>
+              <Section card title="Product Categories" borderBottomWidth={10} maxWidth={'1100px'}>
                 {categories?.map((category: Category) => (
                   <CategoryCard
                     key={category.id}
@@ -155,12 +158,12 @@ const Home: React.FC = () => {
                   />
                 ))}
               </Section>
-              <Section title="Today’s Best Deals" borderBottomWidth={10} maxWidth={'1100px'}>
+              <Section card title="Today’s Best Deals" borderBottomWidth={10} maxWidth={'1100px'}>
                 {deals?.map((product: Product) => (
                   <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
                 ))}
               </Section>
-              <Section title="Deals For You" maxWidth={'1100px'}>
+              <Section card title="Deals For You" maxWidth={'1100px'}>
                 {products?.map((product: Product) => (
                   <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
                 ))}

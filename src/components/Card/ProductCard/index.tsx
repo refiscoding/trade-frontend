@@ -76,7 +76,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           }
         }}>
           <Image width="100%" height="100%" src={product?.coverImage?.url} />
-          {product?.discount?.discountPercentage && product?.discount?.discountPercentage > 0 ? (
+          {product?.discount ? (
             <Flex
               alignItems="center"
               justifyContent="center"
@@ -92,7 +92,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 Save
               </Text>
               <Text color="white" fontSize="14px" fontWeight={600}>
-                {`${product?.discount?.discountPercentage}%`}
+                {`${product?.discount}%`}
               </Text>
             </Flex>
           ) : null}
@@ -119,10 +119,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
             </Flex>
           )}
           <Text mt={4} mb={1} fontSize="10px">
-            Retail: {`${product?.price?.currency} ${product?.price?.retailPricePerUnit}.00`}
+            Retail: {`${product?.currency} ${product?.maxSellCost}.00`}
           </Text>
           <Text mb={2} fontSize="14px" fontWeight={600}>
-            {`${product?.price?.currency} ${product?.price?.pricePerUnit}.00`}
+            {`${product?.currency} ${product?.tradeFedCost}.00`}
           </Text>
           {isWishlist && <AddToWishlistButton addToWishlist={false} editing={editing} handleOnClick={() => {
             if (product && handleIconClick) {
