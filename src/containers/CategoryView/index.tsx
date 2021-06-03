@@ -64,12 +64,12 @@ const Home: React.FC = () => {
             image={category?.categoryImage?.url}
             header={category?.name}
           />
-          <Section title="Today’s Best Deals" >
+          <Section card title="Today’s Best Deals" >
             {deals?.map((product: Product) => (
               <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
             ))}
           </Section>
-          <Section title="Deals For You">
+          <Section card title="Deals For You">
             {products?.map((product: Product) => (
               <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
             ))}

@@ -22,7 +22,7 @@ const Profile: React.FC<ProfileProps> = () => {
 
   const handleBecomeSeller = () => {
     if (isSellerApproved) {
-      history.push('/wishlist')
+      history.push('/product-management')
       return
     }
     history.push('/apply-seller')
