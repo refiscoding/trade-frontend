@@ -66,9 +66,11 @@ const SideBar: React.FC<SideBarProps> = ({
   }, [refetchNotifications]);
 
 
-
   const handleNavItems = () => {
     const updatedNavItems = navItems
+    if (user?.isSeller === 'approved') {
+      updatedNavItems[1] = SELLER_NAV_ITEM
+    }
     return updatedNavItems
   }
 
