@@ -125,7 +125,7 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
               color="brand.500"
               fontSize="14px"
               cursor="pointer"
-              onClick={() => handleBecomeSeller()}
+              onClick={handleBecomeSeller}
               pr={4}
             >
               {isSellerApproved ? 'Product Management' : 'Become a Seller'}
@@ -134,7 +134,7 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
               color="brand.500"
               fontSize="14px"
               cursor="pointer"
-              onClick={() => handleMyaccount()}
+              onClick={handleMyaccount}
             >
               My Account
             </Text>
