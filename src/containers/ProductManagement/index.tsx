@@ -1,8 +1,7 @@
 import * as React from 'react'
+
 import { PageWrap } from '../../layouts'
 import ProductManagementCard from '../../components/Card/ProductMangementCard'
-import { Button } from '@chakra-ui/core'
-import { useHistory } from 'react-router-dom'
 
 const productManagementItems = [
   {
@@ -22,8 +21,6 @@ const productManagementItems = [
 type ProductManagementProps = {}
 
 const ProductManagement: React.FC<ProductManagementProps> = () => {
-  const history = useHistory()
-
   return (
     <PageWrap alignItems="center" title="Product Management" >
       {productManagementItems.map((item, key) => (

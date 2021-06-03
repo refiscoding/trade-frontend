@@ -220,7 +220,7 @@ const ProductCreation: React.FC = () => {
       name: values.name,
       shortDescription: values.shortDescription,
       description: values.description,
-      tags: "",// [...tags],
+      tags: tags?.join(","),
       price: {
         currency: 'R',
         retailPricePerUnit: parseInt(values.retailPricePerUnit),
