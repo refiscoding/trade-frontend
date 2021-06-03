@@ -12,7 +12,7 @@ type OrderItemComponentProps = {
 };
 
 const OrderItemComponent: React.FC<OrderItemComponentProps> = ({ cartItem }) => {
-    const itemToUse = cartItem?.products && cartItem?.products[0];
+    const itemToUse = cartItem?.product;
     const price = get(itemToUse, "productPrice");
     const name = get(itemToUse, "name");
     const quantity = get(cartItem, "quantity") ?? 1;

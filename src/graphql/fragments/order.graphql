@@ -12,7 +12,7 @@ fragment order on Order {
   count
   orderTotal
   wasReturned
-  orderStatus
+  status
   signatory {
     id
     name
@@ -23,7 +23,7 @@ fragment order on Order {
     id
     quantity
     total
-    products {
+    product {
       ...product
     }
   }

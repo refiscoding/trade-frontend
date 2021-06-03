@@ -154,7 +154,7 @@ const ProductCreationWebFlow: React.FC<ProductCreationProps> = ({
             </Flex>
             {
               !productConfirmStage && (
-                <Grid gridTemplateRows="640px 400px">
+                <Grid gridTemplateRows="640px 400px" width="48vw">
                   <Grid
                     background="#fff"
                     borderRadius={5}

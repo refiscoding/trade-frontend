@@ -48,11 +48,7 @@ const currency = [
   {
     label: 'ZAR',
     value: 'ZAR'
-  },
-  {
-    label: '$',
-    value: 'USD'
-  },
+  }
 ]
 
 const ProductInfo: React.FC<ProductInfoTypes> = ({ categories, values, handleSetTags, packagingError }) => {
@@ -90,8 +86,8 @@ const ProductInfo: React.FC<ProductInfoTypes> = ({ categories, values, handleSet
         }}
       />
       <ConnectedTextArea label="Add Tags" name="tags" hasTags handleSetTags={handleSetTags}/>
-      <ConnectedNumberInput label="Price per Unit" name="pricePerUnit" unit={currency} />
-      <ConnectedNumberInput label="Retail Price per Unit" name="retailPricePerUnit" unit={currency} />
+      <ConnectedNumberInput label="Minimum Selling Price*" name="pricePerUnit" unit={currency} />
+      <ConnectedNumberInput label="Maximum Selling Price*" name="retailPricePerUnit" unit={currency} />
       <ConnectedFormGroup
         label="How many units are available to sell?"
         name="availableUnits"

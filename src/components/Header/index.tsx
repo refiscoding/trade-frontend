@@ -87,7 +87,7 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
 
   const handleBecomeSeller = () => {
     if (isSellerApproved) {
-      history.push('/orders')
+      history.push('/product-management')
       return
     }
     history.push('/apply-seller')
@@ -128,7 +128,7 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
               onClick={handleBecomeSeller}
               pr={4}
             >
-              {isSellerApproved ? 'Order History' : 'Become a Seller'}
+              {isSellerApproved ? 'Product Management' : 'Become a Seller'}
             </Text>
             <Text
               color="brand.500"

@@ -98,7 +98,7 @@ const PersonalDetailsComponent: React.FC<ProfileProps> = ({ user }) => {
           <Text fontSize={12}>{user?.idNumber}</Text>
         </Flex>
       </Flex>
-      <Flex mt={2} width="100%" alignItems="center">
+      {/* <Flex mt={2} width="100%" alignItems="center">
         <Flex width="30%">
           <Text fontSize={12} fontWeight="bold">
             Address
@@ -109,7 +109,7 @@ const PersonalDetailsComponent: React.FC<ProfileProps> = ({ user }) => {
             <Text fontSize={11} mb={2}>{address?.address}</Text>
           ))}
         </Flex>
-      </Flex>
+      </Flex> */}
       <Flex mt={2} width="100%" alignItems="flex-start">
         <Flex width="30%">
           <Text fontSize={12} fontWeight="bold">

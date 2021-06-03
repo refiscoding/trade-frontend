@@ -24,7 +24,7 @@ const ReceiptProductComponent: React.FC<ReceiptProductComponentProps> = ({ produ
                     <Tag height="70%" justifySelf="start" fontSize={11} ml={2} size="sm" background="#B6DAF5" color="#004A81">{quantity}</Tag>
                 </Flex>
                 <Flex justifySelf="end">
-                    <Text fontWeight={600} fontSize={14}>{`${product?.price?.currency} ${product?.price?.pricePerUnit ? product.price?.pricePerUnit * (quantity || 1) : product?.price?.pricePerUnit}.00`}</Text>
+                    <Text fontWeight={600} fontSize={14}>{`${product?.currency} ${product?.tradeFedCost ? product?.tradeFedCost * (quantity || 1) : product?.tradeFedCost}.00`}</Text>
                 </Flex>
             </Grid>
         </Grid>

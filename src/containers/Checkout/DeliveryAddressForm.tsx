@@ -8,7 +8,9 @@ import {
   ComponentLocationAddressInput,
   useUpdateAddressMutation,
   useEditAddressMutation,
-  ComponentLocationAddress
+  ComponentLocationAddress,
+  Enum_Componentlocationaddress_Type,
+  Maybe
 } from '../../generated/graphql'
 import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
 import { useAuthContext } from '../../context/AuthProvider'
@@ -25,15 +27,23 @@ type DetailsInput = {
 
 const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = ({ editItem }) => {
   const { setUser } = useAuthContext()
-  const [addressTypeChecked, setAddressTypeChecked] = React.useState<string>('')
+  const [addressTypeChecked, setAddressTypeChecked] = React.useState<Maybe<Enum_Componentlocationaddress_Type> | undefined>();
   const toast = useToast()
 
   useEffect(() => {
-    editItem && setAddressTypeChecked(editItem.type || '')
+    editItem && setAddressTypeChecked(editItem.type)
   }, [editItem])
 
+  const addressTypeCheck = 'Residential';
+
   const handleAddressTypeChanged = (addressType: string) => {
-    setAddressTypeChecked(addressType)
+    const bus = addressType === 'Business';
+    const res = addressType === 'Residential';
+    if (bus) {
+      setAddressTypeChecked(Enum_Componentlocationaddress_Type?.Business)
+    } else if (res) {
+      setAddressTypeChecked(Enum_Componentlocationaddress_Type?.Residential)
+    }
   }
 
   const [updateAddress] = useUpdateAddressMutation({
@@ -90,23 +100,25 @@ const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = ({ editItem }) =
     {
       name: 'Residential'
     }
-  ]
+  ];
 
   return (
     <Flex flexDirection="column">
       <Grid gridTemplateColumns="1fr 1fr" mb={5}>
-        {addressTypes?.map((address, index) => (
-          <Flex alignItems="center" key={`${index}_address_type`}>
-            <Input
-              type="checkbox"
-              name={address?.name}
-              value={addressTypeChecked}
-              checked={addressTypeChecked === address?.name}
-              onChange={() => handleAddressTypeChanged(address?.name)}
-            />
-            <Label>{address?.name}</Label>
-          </Flex>
-        ))}
+        {addressTypes?.map((addressType, index) => {
+          return (
+            <Flex alignItems="center" key={`${index}_address_type`}>
+              <Input
+                type="checkbox"
+                name={addressType?.name}
+                value={addressTypeCheck}
+                checked={addressTypeChecked === addressType?.name}
+                onChange={() => handleAddressTypeChanged(addressType?.name)}
+              />
+              <Label>{addressType?.name}</Label>
+            </Flex>
+          )
+        })}
       </Grid>
       <OnboardingAddress
         hideTitle={true}
