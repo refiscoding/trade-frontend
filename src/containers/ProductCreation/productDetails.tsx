@@ -86,20 +86,8 @@ const ProductDetails: React.FC<ProductDetailsTypes> = ({ values, setImage, image
         name="features"
         render={(arrayHelpers) => {
           const features = values.features
-          console.log("Feature==>", values)
-          console.log("Feature==>", values.features)
           return (
             <Flex flexDirection="column">
-              {/* <Flex alignItems="center">
-                <ConnectedFormGroup name={`features`} type="text" />
-                <Flex
-                  ml={2}
-                  mb={4}
-                // onClick={() => arrayHelpers.remove(index)}
-                >
-                  <XCircle />
-                </Flex>
-              </Flex> */}
               {features?.split(",")?.map((feature: string, index: number) => (
                 <Flex key={index} alignItems="center">
                   <ConnectedFormGroup name={`features.[${index}]`} type="text" />
