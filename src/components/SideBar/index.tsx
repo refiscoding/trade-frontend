@@ -16,6 +16,7 @@ import { useHistory } from 'react-router'
 import { useFetchUserNotificationsQuery } from '../../generated/graphql'
 import { ApolloError } from 'apollo-boost'
 import { ERROR_TOAST } from '../../constants'
+import { useAuthContext } from '../../context/AuthProvider'
 
 type SideBarProps = ColorProps & {
   accentColor: string
@@ -42,6 +43,8 @@ const SideBar: React.FC<SideBarProps> = ({
 }) => {
   const { drawerOpen, toggleDrawer } = useAppContext()
   const { isAuthenticated, logout } = useAuthContext()
+  const { user, isAuthenticated, logout } = useAuthContext()
+
   const toast = useToast()
   const history = useHistory()
 
