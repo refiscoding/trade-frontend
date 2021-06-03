@@ -29,9 +29,6 @@ const ProductManagement: React.FC<ProductManagementProps> = () => {
       {productManagementItems.map((item, key) => (
         <ProductManagementCard key={key} caption={item.caption} title={item.title} />
       ))}
-      <Button onClick={() => history.push('/add-product')} mt={4} width="100%" variantColor="brand">
-        + ADD PRODUCT
-      </Button>
     </PageWrap>
   )
 }

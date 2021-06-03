@@ -107,10 +107,6 @@ const initialValues = {
   isRetailSupplier: '',
 }
 
-const valuesMapper = (value: string): boolean => {
-  return value === 'true'
-}
-
 const Seller: React.FC = () => {
   const { user, setUser } = useAuthContext()
   const history = useHistory()
@@ -168,7 +164,6 @@ const Seller: React.FC = () => {
   })
 
   const handleSubmit = async (values: SellerValues) => {
-    const userAddresses = get(user, 'address', []) ?? [];
     const {
       name,
       email,
