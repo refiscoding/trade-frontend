@@ -1,22 +1,24 @@
-import { Flex, useToast } from '@chakra-ui/core'
-import { AnimatePresence, motion, useAnimation, Variants } from 'framer-motion'
 import * as React from 'react'
-import { useMediaQuery } from 'react-responsive'
+
+import { useHistory } from 'react-router'
+import { ApolloError } from 'apollo-boost'
 import { ColorProps } from 'styled-system'
-import { useAppContext } from '../../context/AppProvider'
-import { NavItem, AUTH_NAV_ITEMS, LOGOUT_NAV_ITEM } from '../../constants/navItems'
+import { Flex, useToast } from '@chakra-ui/core'
+import { useMediaQuery } from 'react-responsive'
+import { AnimatePresence, motion, useAnimation, Variants } from 'framer-motion'
+
+import Header from '../Header'
+import SideBarItem from './SideBarItem'
+import SideBarButton from './SideBarButton'
+
 import { images } from '../../theme'
 import { Text } from '../../typography'
-import Header from '../Header'
-import SideBarButton from './SideBarButton'
-import SideBarItem from './SideBarItem'
+import { ERROR_TOAST } from '../../constants'
+import { useAppContext } from '../../context/AppProvider'
 import { MenuCont, Overlay, RenderWrapper } from './styles'
 import { useAuthContext } from '../../context/AuthProvider'
-import { useHistory } from 'react-router'
 import { useFetchUserNotificationsQuery } from '../../generated/graphql'
-import { ApolloError } from 'apollo-boost'
-import { ERROR_TOAST } from '../../constants'
-import { useAuthContext } from '../../context/AuthProvider'
+import { NavItem, AUTH_NAV_ITEMS, LOGOUT_NAV_ITEM, SELLER_NAV_ITEM } from '../../constants/navItems'
 
 type SideBarProps = ColorProps & {
   accentColor: string
@@ -42,7 +44,6 @@ const SideBar: React.FC<SideBarProps> = ({
   closeOnNavigate
 }) => {
   const { drawerOpen, toggleDrawer } = useAppContext()
-  const { isAuthenticated, logout } = useAuthContext()
   const { user, isAuthenticated, logout } = useAuthContext()
 
   const toast = useToast()
