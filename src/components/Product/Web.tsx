@@ -205,7 +205,7 @@ const ProductComponent: React.FC<ProductProps> = (
               </Flex>
               {
                 product?.additionalInfo && (
-                  <a target="_blank" href={product?.additionalInfo[0]?.url || ''}>
+                  <a target="_blank" rel="noopener noreferrer" href={product?.additionalInfo[0]?.url || ''}>
                     <Flex ml={5} justify="space-between" border={theme.colors.background} borderRadius={3}>
                       <Image src={images.pdfFile} height="40px" />
                       <Text ml={2} mt={2}>Additional Product Information</Text>

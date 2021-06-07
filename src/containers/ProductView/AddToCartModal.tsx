@@ -1,4 +1,7 @@
 import * as React from 'react';
+
+import { get } from 'lodash';
+import { useMediaQuery } from 'react-responsive';
 import { Image, Grid, Button, Flex, Select, FlexProps } from '@chakra-ui/core';
 
 import { Text } from "../../typography";
@@ -17,16 +20,39 @@ type CartModalProductComponentProps = FlexProps & {
 };
 
 const CartModalProductComponent: React.FC<CartModalProductComponentProps> = ({ product }) => {
+    const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' });
+    const maxSellCost = get(product, 'maxSellCost') as number;
+    const tradeFedCost = get(product, 'tradeFedCost') as number;
+    const discount = Math.round(((maxSellCost - tradeFedCost) / maxSellCost) * 100);
+
     return (
-        <Flex border={`1px solid ${theme.colors.background}`} borderRadius={5}>
+        <Flex border={`1px solid ${theme.colors.background}`} borderRadius={5} position="relative">
             <Image
-                width="50%"
-                height="100%"
-                objectFit="contain"
+                width={isTabletOrMobile ? "50%" : "40%"}
                 borderBottomLeftRadius={3}
                 borderTopLeftRadius={3}
                 src={product?.coverImage?.url}
             />
+            {discount ? (
+                <Flex
+                    alignItems="center"
+                    justifyContent="center"
+                    width="50px"
+                    height="50px"
+                    position="absolute"
+                    bg="accent.700"
+                    flexDirection="column"
+                    top={0}
+                    left={isTabletOrMobile ? "95px" : "150px"}
+                >
+                    <Text color="white" fontSize="14px">
+                        Save
+                    </Text>
+                    <Text color="white" fontSize="14px" fontWeight={600}>
+                        {`${discount}%`}
+                    </Text>
+                </Flex>
+            ) : null}
             <Flex flexDirection="column" ml={3}>
                 <Flex mt={2}>
                     <Text fontSize="14px" fontWeight="bold">{product?.name}</Text>

@@ -174,7 +174,7 @@ const ProductComponentMobile: React.FC<ProductProps> = (
             </Flex>
             {
               product?.additionalInfo && (
-                <a target="_blank" href={product?.additionalInfo[0]?.url || ''}>
+                <a target="_blank" rel="noopener noreferrer" href={product?.additionalInfo[0]?.url || ''}>
                   <Flex border={theme.colors.background} borderRadius={3}>
                     <Image src={images.pdfFile} height="30px" />
                     <Text ml={2} fontSize={12} mt={2}>Additional Product Information</Text>
