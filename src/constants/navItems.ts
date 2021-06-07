@@ -62,13 +62,13 @@ export const LOGOUT_NAV_ITEM: NavItem[] = [
 
 export const AUTH_NAV_ITEMS: NavItem[] = [
   {
+    to: `/register`,
+    title: 'Sign Up',
+    Icon: Lock
+  },
+  {
     to: `/login`,
     title: 'Login',
     Icon: Lock
   },
-  {
-    to: `/register`,
-    title: 'Sign Up',
-    Icon: Lock
-  }
 ]

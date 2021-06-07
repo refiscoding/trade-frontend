@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { Image, Grid, Button, Flex, Select, FlexProps } from '@chakra-ui/core';
 
-import { ModalWrap } from '../../components';
 import { Text } from "../../typography";
+import { theme } from "../../theme";
+import { ModalWrap } from '../../components';
 
 type AddToCartModalProps = FlexProps & {
     handleContinueShoppingButtonClicked: () => void
@@ -17,20 +18,28 @@ type CartModalProductComponentProps = FlexProps & {
 
 const CartModalProductComponent: React.FC<CartModalProductComponentProps> = ({ product }) => {
     return (
-        <Grid gridTemplateColumns="repeat(2, 1fr)" border="1px solid #ececec" borderRadius={3} mb={3}>
+        <Flex border={`1px solid ${theme.colors.background}`} borderRadius={5}>
             <Image
-                width="100%"
+                width="50%"
                 height="100%"
+                objectFit="contain"
                 borderBottomLeftRadius={3}
                 borderTopLeftRadius={3}
                 src={product?.coverImage?.url}
             />
-            <Grid gridTemplateRows="25px 1fr" padding={2}>
-                <Text fontSize="14px" fontWeight="bold">{ product?.name }</Text>  
-                <Text fontSize="12px">{ product?.shortDescription }</Text>  
-                <Text fontSize="12px" fontWeight="bold">{`${product?.price?.currency} ${product?.price?.retailPricePerUnit}.00`}</Text>  
-            </Grid>
-        </Grid>
+            <Flex flexDirection="column" ml={3}>
+                <Flex mt={2}>
+                    <Text fontSize="14px" fontWeight="bold">{product?.name}</Text>
+                </Flex>
+                <Flex mb={2}>
+                    <Text fontSize="12px">{product?.shortDescription}</Text>
+                </Flex>
+                <Flex width="100%">
+                    <Text fontSize="12px" fontWeight="bold">{`${product?.currency} ${product?.tradeFedCost}.00`}</Text>
+                </Flex>
+            </Flex>
+
+        </Flex>
     );
 };
 
@@ -40,44 +49,46 @@ export const QuantitySelectComponent: React.FC<CartModalProductComponentProps> =
     const packagingType = packaging === "perPack" ? "pack" : packaging;
 
     const getOptions = (units: number) => {
-        for(let i = 0; i < units; i++){
+        for (let i = 0; i < units; i++) {
             return (
                 <option key={`${i}${Math.random()}`}>{`${i + 1} ${packagingType}`}</option>
             );
         }
     };
-    return(
+    return (
         <Grid gridTemplateRows="30px 1fr">
             {!noTitle && <Text>Quantity: </Text>}
             <Select focusBorderColor="accent.500">
-                { getOptions(units) }
+                {getOptions(units)}
             </Select>
         </Grid>
     );
 };
 
 const AddToCartModal: React.FC<AddToCartModalProps> = ({ handleContinueShoppingButtonClicked, handleGoToCartButtonClicked, handleCancelButtonClicked, product }) => {
-    return(
-      <ModalWrap
-          title="Item added to cart"
-          isOpen={true}
-          onClose={handleCancelButtonClicked}
-          isCentered
+    return (
+        <ModalWrap
+            title="Item added to cart"
+            isOpen={true}
+            onClose={handleCancelButtonClicked}
+            isCentered
         >
             <Flex padding={5} pb={0}>
                 <Grid gridTemplateRows="150px 1fr 1fr 1fr">
                     <CartModalProductComponent product={product} />
-                    <QuantitySelectComponent product={product}/>
+                    <QuantitySelectComponent product={product} />
                     <Button width="100%" mt={4} variantColor="brand" onClick={handleContinueShoppingButtonClicked}>
                         CONTINUE SHOPPING
                     </Button>
-                    <Button mt={2} width="100%" variant="outline" onClick={handleGoToCartButtonClicked}>
-                        GO TO CART
+                    <Button justifySelf="start" mt={4} width="100%" onClick={handleGoToCartButtonClicked} border={`1px solid ${theme.colors.brand[500]}`} background="white">
+                        <Text>
+                            GO TO CART
+                        </Text>
                     </Button>
                 </Grid>
             </Flex>
-      </ModalWrap>
+        </ModalWrap>
     );
-};    
+};
 
 export default AddToCartModal;

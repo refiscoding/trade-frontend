@@ -46,15 +46,16 @@ const ProductComponent: React.FC<ProductProps> = (
   const businessAddress = addresses ? addresses[0]?.address : '';
 
   const textColor = "#355EC0";
+  const coverImageWidth = drawerOpen ? '380px' : '450px';
 
   return (
     <React.Fragment>
       <Flex mb={3} backgroundColor="white" borderRadius={5} width="80%" boxShadow={theme.boxShadowMedium}>
         <Grid gridTemplateColumns="1fr 1fr">
-          <Grid gridTemplateColumns={`${drawerOpen ? '400px' : '450px'} 150px`} height={435} columnGap={3} >
+          <Grid gridTemplateColumns={`${coverImageWidth} 150px`} height={435} columnGap={3} >
             <Flex
               m={5}
-              width={`${drawerOpen ? '400px' : '450px'}`}
+              width={`${coverImageWidth}`}
               height="450px"
               position="relative"
             >
@@ -111,11 +112,11 @@ const ProductComponent: React.FC<ProductProps> = (
               {product?.shortDescription}
             </Text>
             <VerifiedBadge />
-            <Text mt={3} fontSize="16px">
-              {`Retail: ${product?.currency} ${product?.maxSellCost}.00`}
-            </Text>
             <Text mt={3} fontSize="24px" fontWeight={600}>
               {`${product?.currency} ${product?.tradeFedCost}.00`}
+            </Text>
+            <Text mt={3} fontSize="16px">
+              {`Retail: ${product?.currency} ${product?.maxSellCost}.00`}
             </Text>
             <Text mt={3} fontSize="14px" color={textColor} fontWeight={600}>
               {`This item is sold per ${productPackaging}`}

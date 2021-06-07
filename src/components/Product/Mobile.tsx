@@ -84,16 +84,17 @@ const ProductComponentMobile: React.FC<ProductProps> = (
         <Text ml={marginLeft} fontSize="10px" maxHeight="60%" overflow="hidden" mt={3}>
           {product?.shortDescription}
         </Text>
-        <Text ml={marginLeft} mt={4} mb={1} fontSize="12px">
-          Retail: {`${product?.currency} ${product?.maxSellCost}`}
-        </Text>
         <Text
           ml={marginLeft}
+          mt={2}
           mb={2}
           fontSize="18px"
           fontWeight={600}
         >
           {`${product?.currency} ${product?.tradeFedCost}.00`}
+        </Text>
+        <Text ml={marginLeft} mt={-1} mb={1} fontSize="12px">
+          Retail: {`${product?.currency} ${product?.maxSellCost}`}
         </Text>
         <Text ml={marginLeft} fontSize="14px" color={textColor} fontWeight={600}>
           {`This item is sold per ${productPackaging}`}
@@ -127,8 +128,8 @@ const ProductComponentMobile: React.FC<ProductProps> = (
               marginTop: "5px"
             }}
           />
-          <Text mt={2} ml={3} color={textColor} fontSize={12} fontWeight={600}>{`${product?.availableUnits} units`}</Text>
-          <Text mt={2} ml={1} fontSize={12}>{`available`}</Text>
+          <Text mt={3} ml={3} color={textColor} fontSize={12} fontWeight={600}>{`${product?.availableUnits} units`}</Text>
+          <Text mt={3} ml={1} fontSize={12}>{`available`}</Text>
         </Flex>
         <Grid ml={marginLeft} gridTemplateColumns="200px 200px">
           <Button justifySelf="start" mt={4} width={isSmallPhone ? "80%" : "90%"} onClick={() => handleAddToWishlistClicked(product?.id)} border={`1px solid ${theme.colors.brand[500]}`} background="white">
