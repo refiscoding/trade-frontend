@@ -76,7 +76,7 @@ const ProductComponentMobile: React.FC<ProductProps> = (
           </Flex>
         ) : null}
       </Flex>
-      <Flex flexDirection="column" p={5} pt={0} background={theme.colors.accent[50]} mb={2} boxShadow={theme.boxShadowMedium}>
+      <Flex borderBottomRightRadius={5} borderBottomLeftRadius={5} flexDirection="column" p={5} pt={0} background={theme.colors.accent[50]} mb={2} boxShadow={theme.boxShadowMedium}>
         <Text ml={marginLeft} my={2} fontSize="18px" fontWeight={600}>
           {product?.name}
         </Text>
@@ -143,7 +143,7 @@ const ProductComponentMobile: React.FC<ProductProps> = (
           </Button>
         </Grid>
       </Flex>
-      <Flex flexDirection="column" background={theme.colors.accent[50]} boxShadow={theme.boxShadowMedium} mb={2} p={5} pt={0}>
+      <Flex borderRadius={5} flexDirection="column" background={theme.colors.accent[50]} boxShadow={theme.boxShadowMedium} mb={2} p={5} pt={0}>
         <Section ml={marginLeft} p="0 1rem" pb="0px" title="About This Product">
           <Flex width="100%" alignSelf="flex-start">
             <Text fontSize="12px">{product?.description}</Text>
@@ -193,12 +193,12 @@ const ProductComponentMobile: React.FC<ProductProps> = (
       </Flex>
       {isPreview &&
         <Flex ml={marginLeft} flexDirection="column" background="accent.50" p={5} pt={0}>
-          <Section title="Deals You Might Be Interested In" width="100%">
+          <Section card title="Deals You Might Be Interested In" width="100%">
             {deals?.slice(0, 2)?.map((product: Product) => (
               <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
             ))}
           </Section>
-          <Button width="100%" variantColor="brand">
+          <Button justifySelf="center" width="100%" variantColor="brand">
             <Text fontSize="12px">
               VIEW MORE
             </Text>

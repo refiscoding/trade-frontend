@@ -77,8 +77,8 @@ const SideBarButton: React.FC<SideBarButtonProps> = ({
   return (
     <SvgWrap>
       <MotionSvg
-        width={24}
-        height={24}
+        width={open ? 12 : 24}
+        height={open ? 12 : 24}
         onClick={onClick}
         overflow="visible"
         preserveAspectRatio="none"
