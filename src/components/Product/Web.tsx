@@ -1,18 +1,19 @@
 import * as React from 'react';
 
 import { get } from 'lodash';
+import { useHistory } from "react-router-dom";
 import { MapPin, Briefcase } from "react-feather";
 import { Flex, Image, Text, Button, Grid, Tag } from '@chakra-ui/core';
 
+import Input from '../../components/Input';
 import Section from '../../components/Section';
 import ProductCard from '../../components/Card/ProductCard';
-import Input from '../../components/Input';
 
+import { ProductProps } from "./props";
 import { images, theme } from "../../theme";
 import { Product } from "../../generated/graphql";
+import { useAppContext } from '../../context/AppProvider';
 import { VerifiedBadge } from "../../components/Product";
-import { ProductProps } from "./props";
-import { useHistory } from "react-router-dom";
 
 const ProductComponent: React.FC<ProductProps> = (
   {
@@ -25,6 +26,7 @@ const ProductComponent: React.FC<ProductProps> = (
     handleAddToWishlistClicked,
   }) => {
   const history = useHistory()
+  const { drawerOpen } = useAppContext();
 
   const navigateToProduct = (id: string | undefined) => {
     history.push(`/product/${id}`)
@@ -32,6 +34,8 @@ const ProductComponent: React.FC<ProductProps> = (
 
   const coverImage = product?.coverImage?.url;
   const hasProductImages = productImages?.length > 0;
+
+
 
   const maxSellCost = get(product, 'maxSellCost') as number;
   const tradeFedCost = get(product, 'tradeFedCost') as number;
@@ -47,10 +51,10 @@ const ProductComponent: React.FC<ProductProps> = (
     <React.Fragment>
       <Flex mb={3} backgroundColor="white" borderRadius={5} width="80%" boxShadow={theme.boxShadowMedium}>
         <Grid gridTemplateColumns="1fr 1fr">
-          <Grid gridTemplateColumns="450px 150px" height={435} columnGap={3} >
+          <Grid gridTemplateColumns={`${drawerOpen ? '400px' : '450px'} 150px`} height={435} columnGap={3} >
             <Flex
               m={5}
-              width="450px"
+              width={`${drawerOpen ? '400px' : '450px'}`}
               height="450px"
               position="relative"
             >

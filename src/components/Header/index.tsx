@@ -8,8 +8,8 @@ import { ShoppingCart } from 'react-feather'
 import { useMediaQuery } from 'react-responsive'
 import { InstantSearch } from "react-instantsearch-dom";
 import { Flex, Image, Text, useToast } from '@chakra-ui/core'
-import { RouteComponentProps, withRouter, useHistory } from 'react-router'
 import { color, ColorProps, space, SpaceProps } from 'styled-system'
+import { RouteComponentProps, withRouter, useHistory } from 'react-router'
 
 import SideBarButton from '../SideBar/SideBarButton'
 
@@ -120,7 +120,7 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
           display={isTabletOrMobile ? "none" : "flex"}
           width={isTabletOrMobile ? 0 : '55%'}
         >
-          <Flex width="40%" alignItems="center" justifyContent="space-between" px={5}>
+          <Flex width={drawerOpen ? '50%' : '40%'} alignItems="center" justifyContent="space-between" px={5}>
             <Text
               color="brand.500"
               fontSize="14px"
