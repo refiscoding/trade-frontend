@@ -35,8 +35,6 @@ const ProductComponent: React.FC<ProductProps> = (
   const coverImage = product?.coverImage?.url;
   const hasProductImages = productImages?.length > 0;
 
-
-
   const maxSellCost = get(product, 'maxSellCost') as number;
   const tradeFedCost = get(product, 'tradeFedCost') as number;
   const discount = Math.round(((maxSellCost - tradeFedCost) / maxSellCost) * 100);
