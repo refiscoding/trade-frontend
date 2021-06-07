@@ -20,7 +20,7 @@ const AddressBook: React.FC<AddressBookProps> = () => {
                 <Text mb={4} fontWeight={550} fontSize={14} textAlign="center">My Addresses</Text>
                 <Flex width="100%" flexDirection="column" p={3}>
                     {user?.address?.map((address) => (
-                        <Grid gridTemplateRows="30px 1fr 1fr" borderBottom={`1px solid #dadada`} minWidth={`${isTabletOrMobile ? '300px' : '400px'}`}>
+                        <Grid gridTemplateRows="30px 1fr 1fr" borderRadius={5} background={theme.colors.accent[50]} boxShadow={theme.boxShadowMedium} minWidth={`${isTabletOrMobile ? '400px' : '600px'}`} p={4}>
                             <Grid gridTemplateColumns="1fr 90px" width="100%">
                                 <Text fontWeight={550} fontSize={14}>{address?.name}</Text>
                                 <Tag

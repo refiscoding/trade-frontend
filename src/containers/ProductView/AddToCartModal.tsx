@@ -34,7 +34,7 @@ const CartModalProductComponent: React.FC<CartModalProductComponentProps> = ({ p
     );
 };
 
-export const QuantitySelectComponent: React.FC<CartModalProductComponentProps> = ({ product, noTitle, ...rest }) => {
+export const QuantitySelectComponent: React.FC<CartModalProductComponentProps> = ({ product, noTitle }) => {
     const packaging = product?.packaging;
     const units = product?.availableUnits;
     const packagingType = packaging === "perPack" ? "pack" : packaging;
@@ -47,9 +47,9 @@ export const QuantitySelectComponent: React.FC<CartModalProductComponentProps> =
         }
     };
     return(
-        <Grid width={rest.width} height={rest.height} gridTemplateRows="30px 1fr">
+        <Grid gridTemplateRows="30px 1fr">
             {!noTitle && <Text>Quantity: </Text>}
-            <Select height={rest.height} focusBorderColor="accent.500">
+            <Select focusBorderColor="accent.500">
                 { getOptions(units) }
             </Select>
         </Grid>

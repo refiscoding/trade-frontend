@@ -47,11 +47,11 @@ const ProductComponent: React.FC<ProductProps> = (
     <React.Fragment>
       <Flex mb={3} backgroundColor="white" borderRadius={5} width="80%" boxShadow={theme.boxShadowMedium}>
         <Grid gridTemplateColumns="1fr 1fr">
-          <Grid gridTemplateColumns="550px 150px" height={435} columnGap={3} >
+          <Grid gridTemplateColumns="450px 150px" height={435} columnGap={3} >
             <Flex
               m={5}
-              width="550px"
-              height="400px"
+              width="450px"
+              height="450px"
               position="relative"
             >
               <Image
@@ -99,7 +99,7 @@ const ProductComponent: React.FC<ProductProps> = (
                 </Grid>)
             }
           </Grid>
-          <Grid gridTemplateRows="40px 50px 35px 30px 50px 40px 30px 30px 50px 60px" padding={5} pt={10}>
+          <Grid gridTemplateRows="40px 50px 35px 30px 50px 40px 30px 30px 50px 60px" padding={5} pt={8}>
             <Text fontSize="20px" fontWeight={600}>
               {product?.name}
             </Text>
@@ -107,16 +107,16 @@ const ProductComponent: React.FC<ProductProps> = (
               {product?.shortDescription}
             </Text>
             <VerifiedBadge />
-            <Text fontSize="18px">
+            <Text mt={3} fontSize="16px">
               {`Retail: ${product?.currency} ${product?.maxSellCost}.00`}
             </Text>
-            <Text fontSize="30px" fontWeight={700}>
+            <Text mt={3} fontSize="24px" fontWeight={600}>
               {`${product?.currency} ${product?.tradeFedCost}.00`}
             </Text>
-            <Text fontSize="14px" color={textColor} fontWeight={600}>
+            <Text mt={3} fontSize="14px" color={textColor} fontWeight={600}>
               {`This item is sold per ${productPackaging}`}
             </Text>
-            <Flex>
+            <Flex mt={3}>
               <Briefcase />
               <Text ml={3} fontSize="14px" >
                 {`Supplied by ${product?.business?.name}`}
@@ -124,7 +124,7 @@ const ProductComponent: React.FC<ProductProps> = (
             </Flex>
             {
               businessAddress && (
-                <Flex>
+                <Flex mt={3}>
                   <MapPin />
                   <Text ml={3} fontSize="14px" >
                     {`Delivered from ${product?.business && product?.business?.address && product?.business?.address[0]?.address}`}
@@ -132,7 +132,7 @@ const ProductComponent: React.FC<ProductProps> = (
                 </Flex>
               )
             }
-            <Flex mt={3} flexDirection="column">
+            <Flex mt={3}>
               <Input
                 name="quantity"
                 type="text"
@@ -140,10 +140,12 @@ const ProductComponent: React.FC<ProductProps> = (
                 style={{
                   padding: 3,
                   border: `1px solid ${theme.colors.background}`,
-                  width: "50%"
+                  width: "40%",
+                  marginTop: "15px"
                 }}
               />
-              <Text fontSize={12} color={textColor}>{`${product?.availableUnits} units`}</Text>available
+              <Text mt={5} ml={3} color={textColor} fontSize={12} fontWeight={600}>{`${product?.availableUnits} units`}</Text>
+              <Text mt={5} ml={1} fontSize={12}>{`available`}</Text>
             </Flex>
             <Flex flexWrap="wrap" >
               <Button justifySelf="start" width="150px" mt={4} mr={2} onClick={() => handleAddToWishlistClicked(product?.id)} border={`1px solid ${theme.colors.brand[500]}`} background="white">

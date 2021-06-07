@@ -41,11 +41,9 @@ const ProductComponentMobile: React.FC<ProductProps> = (
   const discount = Math.round(((maxSellCost - tradeFedCost) / maxSellCost) * 100);
 
   const addresses = get(product, 'business.address');
-
   const businessAddress = addresses ? addresses[0]?.address : '';
 
   const textColor = "#355EC0";
-
 
   return (
     <Flex flexDirection="column">
@@ -125,7 +123,8 @@ const ProductComponentMobile: React.FC<ProductProps> = (
             style={{
               padding: 3,
               border: `1px solid ${theme.colors.background}`,
-              width: "48%"
+              width: "48%",
+              marginTop: "5px"
             }}
           />
           <Text mt={2} ml={3} color={textColor} fontSize={12} fontWeight={600}>{`${product?.availableUnits} units`}</Text>
