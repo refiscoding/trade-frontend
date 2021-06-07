@@ -30,7 +30,7 @@ const ProductComponentMobile: React.FC<ProductProps> = (
   const isTinyPhone = useMediaQuery({ query: '(max-width: 20em)' });
 
   const positionRight = isTinyPhone ? "6rem" : isSmallPhone ? "3rem" : "2rem";
-  const marginLeft = isTinyPhone ? "5rem" : isSmallPhone ? "2.25rem" : "2";
+  const marginLeft = isTinyPhone ? "6rem" : isSmallPhone ? "3rem" : "2";
 
   const navigateToProduct = (id: string | undefined) => {
     history.push(`/product/${id}`)
@@ -43,6 +43,9 @@ const ProductComponentMobile: React.FC<ProductProps> = (
   const addresses = get(product, 'business.address');
 
   const businessAddress = addresses ? addresses[0]?.address : '';
+
+  const textColor = "#355EC0";
+
 
   return (
     <Flex flexDirection="column">
@@ -94,7 +97,7 @@ const ProductComponentMobile: React.FC<ProductProps> = (
         >
           {`${product?.currency} ${product?.tradeFedCost}.00`}
         </Text>
-        <Text ml={marginLeft} fontSize="14px" color="#355EC0" fontWeight={600}>
+        <Text ml={marginLeft} fontSize="14px" color={textColor} fontWeight={600}>
           {`This item is sold per ${productPackaging}`}
         </Text>
         <Flex ml={marginLeft} mt={2}>
@@ -114,7 +117,7 @@ const ProductComponentMobile: React.FC<ProductProps> = (
 
           )
         }
-        <Flex ml={marginLeft} flexDirection="column" mt={3}>
+        <Flex ml={marginLeft} mt={3}>
           <Input
             name="quantity"
             type="text"
@@ -125,6 +128,8 @@ const ProductComponentMobile: React.FC<ProductProps> = (
               width: "48%"
             }}
           />
+          <Text mt={2} ml={3} color={textColor} fontSize={12} fontWeight={600}>{`${product?.availableUnits} units`}</Text>
+          <Text mt={2} ml={1} fontSize={12}>{`available`}</Text>
         </Flex>
         <Grid ml={marginLeft} gridTemplateColumns="200px 200px">
           <Button justifySelf="start" mt={4} width={isSmallPhone ? "80%" : "90%"} onClick={() => handleAddToWishlistClicked(product?.id)} border={`1px solid ${theme.colors.brand[500]}`} background="white">

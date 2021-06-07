@@ -41,6 +41,8 @@ const ProductComponent: React.FC<ProductProps> = (
 
   const businessAddress = addresses ? addresses[0]?.address : '';
 
+  const textColor = "#355EC0";
+
   return (
     <React.Fragment>
       <Flex mb={3} backgroundColor="white" borderRadius={5} width="80%" boxShadow={theme.boxShadowMedium}>
@@ -111,7 +113,7 @@ const ProductComponent: React.FC<ProductProps> = (
             <Text fontSize="30px" fontWeight={700}>
               {`${product?.currency} ${product?.tradeFedCost}.00`}
             </Text>
-            <Text fontSize="14px" color="#355EC0" fontWeight={600}>
+            <Text fontSize="14px" color={textColor} fontWeight={600}>
               {`This item is sold per ${productPackaging}`}
             </Text>
             <Flex>
@@ -141,6 +143,7 @@ const ProductComponent: React.FC<ProductProps> = (
                   width: "50%"
                 }}
               />
+              <Text fontSize={12} color={textColor}>{`${product?.availableUnits} units`}</Text>available
             </Flex>
             <Flex flexWrap="wrap" >
               <Button justifySelf="start" width="150px" mt={4} mr={2} onClick={() => handleAddToWishlistClicked(product?.id)} border={`1px solid ${theme.colors.brand[500]}`} background="white">
@@ -216,7 +219,7 @@ const ProductComponent: React.FC<ProductProps> = (
       </Grid>
       {isPreview &&
         <Flex ml={5} mt={3} width="100%" flexDirection="column" alignItems="center">
-        <Section card title="Deals You Might Be Interested In">
+          <Section card title="Deals You Might Be Interested In">
             {deals?.map((product: Product) => (
               <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
             ))}
