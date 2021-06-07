@@ -15,12 +15,17 @@ fragment product on Product {
     minSellCost
     maxSellCost
     tradeFedCost
+    dimensionsUnit
+    weightUnit
     discount
     currency
     height
     weight
     width
     lengths
+    additionalInfo {
+        url
+    }
     coverImage {
         ...uploadFile
     }

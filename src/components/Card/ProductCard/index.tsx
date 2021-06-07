@@ -1,4 +1,6 @@
 import * as React from 'react'
+
+import { get } from 'lodash';
 import { Flex, Image, Text } from '@chakra-ui/core'
 import { FlexProps } from '@chakra-ui/core/dist/Flex'
 
@@ -51,14 +53,18 @@ const ProductCard: React.FC<ProductCardProps> = ({
       const updatedArray = [...existingProductsObjWithoutCurrent, { ...data }]
       localStorage.setItem('remove_from_wishlist', JSON.stringify(updatedArray, null, 2))
     }
-  }
+  };
+
+  const maxSellCost = get(product, 'maxSellCost') as number;
+  const tradeFedCost = get(product, 'tradeFedCost') as number;
+  const discount = Math.round(((maxSellCost - tradeFedCost) / maxSellCost) * 100);
 
   return (
     <Flex width={rest.width || "320px"} justifyContent="space-between" alignItems="center" position="relative">
       {(isCart || isWishlist) && editing && (
         <Input
-          name={product?.id}
-          value={product?.id}
+          name={product?.id || ''}
+          value={product?.id || ''}
           type="checkbox"
           onChange={(event) => handleRadioPressed(event?.target?.value, event?.target?.checked)}
         />
@@ -75,8 +81,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
             handleClick(product?.id)
           }
         }}>
-          <Image width="100%" height="100%" src={product?.coverImage?.url} />
-          {product?.discount ? (
+          <Image width="100%" height="100%" src={product?.coverImage?.url || ''} />
+          {discount ? (
             <Flex
               alignItems="center"
               justifyContent="center"
@@ -92,7 +98,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 Save
               </Text>
               <Text color="white" fontSize="14px" fontWeight={600}>
-                {`${product?.discount}%`}
+                {`${discount}%`}
               </Text>
             </Flex>
           ) : null}

@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { get } from 'lodash';
 import { MapPin, Briefcase } from "react-feather";
 import { Flex, Image, Text, Button, Grid, Tag } from '@chakra-ui/core';
 
@@ -7,7 +8,7 @@ import Section from '../../components/Section';
 import ProductCard from '../../components/Card/ProductCard';
 import Input from '../../components/Input';
 
-import { theme } from "../../theme";
+import { images, theme } from "../../theme";
 import { Product } from "../../generated/graphql";
 import { VerifiedBadge } from "../../components/Product";
 import { ProductProps } from "./props";
@@ -15,13 +16,13 @@ import { useHistory } from "react-router-dom";
 
 const ProductComponent: React.FC<ProductProps> = (
   {
-    product,
-    handleAddToWishlistClicked,
-    handleAddToCartClicked,
     deals,
-    productPackaging,
+    product,
+    isPreview,
     productImages,
-    isPreview
+    productPackaging,
+    handleAddToCartClicked,
+    handleAddToWishlistClicked,
   }) => {
   const history = useHistory()
 
@@ -32,9 +33,17 @@ const ProductComponent: React.FC<ProductProps> = (
   const coverImage = product?.coverImage?.url;
   const hasProductImages = productImages?.length > 0;
 
+  const maxSellCost = get(product, 'maxSellCost') as number;
+  const tradeFedCost = get(product, 'tradeFedCost') as number;
+  const discount = Math.round(((maxSellCost - tradeFedCost) / maxSellCost) * 100);
+
+  const addresses = get(product, 'business.address');
+
+  const businessAddress = addresses ? addresses[0]?.address : '';
+
   return (
     <React.Fragment>
-      <Flex mb={3} backgroundColor="white" borderRadius={3} width="80%">
+      <Flex mb={3} backgroundColor="white" borderRadius={5} width="80%" boxShadow={theme.boxShadowMedium}>
         <Grid gridTemplateColumns="1fr 1fr">
           <Grid gridTemplateColumns="550px 150px" height={435} columnGap={3} >
             <Flex
@@ -46,10 +55,10 @@ const ProductComponent: React.FC<ProductProps> = (
               <Image
                 width="100%"
                 height="100%"
-                src={coverImage}
+                src={coverImage || ''}
                 objectFit="contain"
               />
-              {product?.discount ? (
+              {discount ? (
                 <Flex
                   alignItems="center"
                   justifyContent="center"
@@ -67,7 +76,7 @@ const ProductComponent: React.FC<ProductProps> = (
                     Save
                   </Text>
                   <Text color="white" fontSize="14px" fontWeight={600}>
-                    {`${product?.discount}%`}
+                    {`${discount}%`}
                   </Text>
                 </Flex>
               ) : null}
@@ -78,10 +87,10 @@ const ProductComponent: React.FC<ProductProps> = (
                   {
                     productImages?.map((product: string | undefined) => (
                       <Image
-                        key={product}
+                        key={product || `${Math.random()}`}
                         width="90%"
                         height="90px"
-                        src={product}
+                        src={product || ''}
                       />
                     ))
                   }
@@ -111,12 +120,16 @@ const ProductComponent: React.FC<ProductProps> = (
                 {`Supplied by ${product?.business?.name}`}
               </Text>
             </Flex>
-            <Flex>
-              <MapPin />
-              <Text ml={3} fontSize="14px" >
-                {`Delivered from ${product?.business && product?.business?.address && product?.business?.address[0]?.address}`}
-              </Text>
-            </Flex>
+            {
+              businessAddress && (
+                <Flex>
+                  <MapPin />
+                  <Text ml={3} fontSize="14px" >
+                    {`Delivered from ${product?.business && product?.business?.address && product?.business?.address[0]?.address}`}
+                  </Text>
+                </Flex>
+              )
+            }
             <Flex mt={3} flexDirection="column">
               <Input
                 name="quantity"
@@ -144,7 +157,7 @@ const ProductComponent: React.FC<ProductProps> = (
           </Grid>
         </Grid>
       </Flex>
-      <Grid gridTemplateRows="1fr 1fr" backgroundColor="white" borderRadius={3} padding={10} fontSize="12px" width="80%">
+      <Grid gridTemplateRows="1fr 1fr" backgroundColor="white" borderRadius={3} padding={10} fontSize="12px" width="80%" boxShadow={theme.boxShadowMedium}>
         <div>
           <Text fontSize="17px" fontWeight={600}>
             About This Product
@@ -153,8 +166,8 @@ const ProductComponent: React.FC<ProductProps> = (
             {product?.description}
           </Text>
         </div>
-        <Grid gridTemplateColumns="1fr 1fr">
-          <div>
+        <Grid gridTemplateColumns="1fr 1fr" columnGap="20px">
+          <div style={{ border: `1px solid ${theme.colors.background}`, padding: 15, borderRadius: 3, }}>
             <Text fontSize="17px" fontWeight={600} mb={3}>
               Product Features
             </Text>
@@ -168,44 +181,29 @@ const ProductComponent: React.FC<ProductProps> = (
                 ))
               }
             </ul>
-            {/* {
-              product?.features?.length
-                ? (
-                  <ul style={{ marginLeft: 15 }}>
-                    {
-                      product?.features?.map((feature: string) => (
-                        <li key={feature}>
-                          <Text fontSize="12px">{feature}</Text>
-                        </li>
-                      ))
-                    }
-                  </ul>
-                )
-                : (<Text>No Features Set</Text>)
-            } */}
           </div>
-          <div>
+          <div style={{ border: `1px solid ${theme.colors.background}`, padding: 15, borderRadius: 3, }}>
             <Text fontSize="17px" fontWeight={600} mb={3}>
               Product Specification
             </Text>
-            <Flex flexDirection="column">
-              <Text fontSize="12px">Height : {product?.height}</Text>
-              <Text fontSize="12px">Width : {product?.width}</Text>
-              <Text fontSize="12px">Length : {product?.lengths}</Text>
-              <Text fontSize="12px">Weight : {product?.weight}</Text>
-            </Flex>
-            {/* {
-              product?.size
-                ? (
-                  <Flex flexDirection="column">
-                    <Text fontSize="12px">Height : {product?.height}</Text>
-                    <Text fontSize="12px">Width : {product?.width}</Text>
-                    <Text fontSize="12px">Length : {product?.lengths}</Text>
-                    <Text fontSize="12px">Weight : {product?.weight}</Text>
-                  </Flex>
+            <Flex justify="space-between">
+              <Flex flexDirection="column">
+                <Text fontSize="12px">Height : {`${product?.height} ${product?.dimensionsUnit}`}</Text>
+                <Text fontSize="12px">Width : {`${product?.width} ${product?.dimensionsUnit}`}</Text>
+                <Text fontSize="12px">Length : {`${product?.lengths} ${product?.dimensionsUnit}`}</Text>
+                <Text fontSize="12px">Weight : {`${product?.weight} ${product?.weightUnit}`}</Text>
+              </Flex>
+              {
+                product?.additionalInfo && (
+                  <a target="_blank" href={product?.additionalInfo[0]?.url || ''}>
+                    <Flex ml={5} justify="space-between" border={theme.colors.background} borderRadius={3}>
+                      <Image src={images.pdfFile} height="40px" />
+                      <Text ml={2} mt={2}>Additional Product Information</Text>
+                    </Flex>
+                  </a>
                 )
-                : (<Text>No Specifications Set</Text>)
-            } */}
+              }
+            </Flex>
           </div>
           <Flex width="414px" background={theme.colors.accent[50]} mt={5}>
             {
@@ -214,18 +212,11 @@ const ProductComponent: React.FC<ProductProps> = (
               ))
             }
           </Flex>
-          {/* <Flex width="414px" background={theme.colors.accent[50]} mt={5}>
-            {
-              product?.tags?.map((tag: string, index: number) => (
-                <Tag fontSize={12} mr={1} size="sm" key={index} background={theme.colors.tag} color={theme.colors.tagText}>{tag?.toUpperCase()}</Tag>
-              ))
-            }
-          </Flex> */}
         </Grid>
       </Grid>
       {isPreview &&
         <Flex ml={5} mt={3} width="100%" flexDirection="column" alignItems="center">
-          <Section title="Deals You Might Be Interested In">
+        <Section card title="Deals You Might Be Interested In">
             {deals?.map((product: Product) => (
               <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
             ))}

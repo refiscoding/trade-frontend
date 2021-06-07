@@ -17,10 +17,14 @@ const VerifiedBadgeIcon = () => (
     </svg>
 );
 
-const VerifiedBadge = () => (
+type VerifiedBadgeProps = {
+    marginLeft?: string;
+};
+
+const VerifiedBadge: React.FC<VerifiedBadgeProps> = ({ marginLeft }) => (
     <Popover closeOnEsc closeOnBlur placement="top-start" trigger="hover">
         <PopoverTrigger>
-            <Grid mt={2} gridTemplateColumns="28px 1fr">
+            <Grid mt={2} ml={marginLeft || 2} gridTemplateColumns="28px 1fr">
                 <VerifiedBadgeIcon />
                 <Text fontSize="12px" fontWeight={600} color="#63C035" mt={1}>
                     Verified Seller

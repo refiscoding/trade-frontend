@@ -7,16 +7,17 @@ import { theme } from "../../theme";
 
 type SectionProps = FlexProps & {
   card?: boolean
+  ml?: string
 };
 
-const Section: React.FC<SectionProps> = ({ children, card, ...rest }) => {
+const Section: React.FC<SectionProps> = ({ children, card, ml, ...rest }) => {
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' });
   const boxShadow = card ? theme.boxShadowMedium : '';
   const borderRadius = card ? '3px' : '';
   return (
     <Flex
       p={rest.p || '1rem'}
-      ml="-1rem"
+      ml={ml ? ml : "-1rem"}
       width={isTabletOrMobile ? "100vw" : rest.width || "80%"}
       flexDirection="column"
       my={rest.my || 4}
