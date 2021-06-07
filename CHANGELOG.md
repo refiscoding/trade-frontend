@@ -1,3 +1,11 @@
+# [1.3.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.2.1...v1.3.0) (2021-06-07)
+
+
+### Features
+
+* **app:** appwide UI fixes ([0e9410d](http://bitbucket.org/sovtech/tradefed-frontend/commits/0e9410d5c450442d56b4b0bc3ceae16e019529e6))
+* **app:** appwide UI fixes ([5a4146d](http://bitbucket.org/sovtech/tradefed-frontend/commits/5a4146d8b3c5beb5d2bf27fbd24fe27d4be7eac2))
+
 ## [1.2.1](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.2.0...v1.2.1) (2021-05-26)
 
 

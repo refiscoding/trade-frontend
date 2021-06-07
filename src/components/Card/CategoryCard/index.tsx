@@ -1,10 +1,13 @@
+import * as React from 'react'
+
 import { Image, Text } from '@chakra-ui/core'
 import { FlexProps } from '@chakra-ui/core/dist/Flex'
-import * as React from 'react'
+import { useMediaQuery } from 'react-responsive'
+
 import CardFooter from '../CardFooter'
+
 import { Card } from '../../index'
 import { Category } from '../../../generated/graphql'
-import { useMediaQuery } from 'react-responsive'
 
 type CategoryCardProps = FlexProps & {
   category: Category

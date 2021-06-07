@@ -102,7 +102,7 @@ const WishlistPage: React.FC = () => {
     variables: {
       limit: 3,
       where: {
-        productPrice_lt: 30,
+        tradeFedCost_lt: 30,
       }
     },
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
@@ -223,12 +223,12 @@ const WishlistPage: React.FC = () => {
       {
         !isTabletOrMobile &&
         <Flex ml={5} mt={3} width="100%" flexDirection="column" alignItems="center">
-          <Section title="Today’s Best Deals">
+          <Section card title="Today’s Best Deals">
             {discountDeals?.map((product: Product) => (
               <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
             ))}
           </Section>
-          <Section title="Deals For You">
+          <Section card title="Deals For You">
             {deals?.map((product: Product) => (
               <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
             ))}

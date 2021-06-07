@@ -46,17 +46,17 @@ const ProductComponent: React.FC<ProductProps> = ({ product, setShowAddToCartMod
   });
   const products = get(productData, 'products', null) as Product[]
   const deals: Product[] = slice(
-    reverse(sortBy(products, [(product) => product?.discount?.discountPercentage])),
+    reverse(sortBy(products, [(product) => product?.discount])),
     0,
     3
   )
   const handleAddToWishlistClicked = async (id: string) => {
-    if(!addProductPage){
+    if (!addProductPage) {
       await addProductToWishlist({ variables: { input: { productToAdd: id } } });
     };
   };
   const handleAddToCartClicked = async (id: string) => {
-    if(!addProductPage){
+    if (!addProductPage) {
       await addProductToCart({ variables: { input: { productToAdd: id } } });
       !loading && setShowAddToCartModal();
     };
@@ -64,32 +64,32 @@ const ProductComponent: React.FC<ProductProps> = ({ product, setShowAddToCartMod
   const productPackagingType = (product?.packaging?.split("per")) ?? [];
   const productPackaging = productPackagingType?.length > 1 ? "pack" : product?.packaging;
   const productImages = product?.productImages?.map((image: UploadFile) => image?.url);
-  const isPreview =  !product?.coverImage?.preview
+  const isPreview = !product?.coverImage?.preview
 
   return (
     <React.Fragment>
       {
         isWebViewport
-        ? (
-          <ProductWeb
+          ? (
+            <ProductWeb
+              deals={deals}
               product={product}
-              handleAddToWishlistClicked={handleAddToWishlistClicked}
-              handleAddToCartClicked={handleAddToCartClicked}
-              deals={deals}
-              productPackaging={productPackaging}
-              productImages={productImages}
               isPreview={isPreview}
-          />
-        )
-        : (
-            <ProductMobile 
-              product={product} 
-              handleAddToWishlistClicked={handleAddToWishlistClicked}
-              handleAddToCartClicked={handleAddToCartClicked}
-              deals={deals}
-              productPackaging={productPackaging}
               productImages={productImages}
+              productPackaging={productPackaging}
+              handleAddToCartClicked={handleAddToCartClicked}
+              handleAddToWishlistClicked={handleAddToWishlistClicked}
+            />
+          )
+          : (
+            <ProductMobile
+              deals={deals}
+              product={product}
               isPreview={isPreview}
+              productImages={productImages}
+              productPackaging={productPackaging}
+              handleAddToCartClicked={handleAddToCartClicked}
+              handleAddToWishlistClicked={handleAddToWishlistClicked}
             />
           )
       }

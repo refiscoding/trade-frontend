@@ -53,7 +53,7 @@ export type ProductValues = {
   packaging?: packagingEnum
   itemsPerPackage: string
   description: string
-  features: string[]
+  features: string
   variations?: variantsEnum
   height: string
   length: string
@@ -71,7 +71,7 @@ export const initialValues = {
   availableUnits: '',
   itemsPerPackage: '',
   description: '',
-  features: [''],
+  features: '',
   height: '',
   length: '',
   width: '',
@@ -98,13 +98,13 @@ type MappedProduct = {
   name: string,
   shortDescription: string,
   description: string,
-  tags: string[],
+  tags: string,
   price: PriceItem,
   availableUnits: number,
   packaging: packagingEnum | undefined,
   productPrice: number,
   size: SizeItem,
-  features: string[],
+  features: string,
   variants: VariantsItem,
   categories: string[]
 };
@@ -220,7 +220,7 @@ const ProductCreation: React.FC = () => {
       name: values.name,
       shortDescription: values.shortDescription,
       description: values.description,
-      tags: [...tags],
+      tags: tags?.join(","),
       price: {
         currency: 'R',
         retailPricePerUnit: parseInt(values.retailPricePerUnit),
@@ -235,7 +235,7 @@ const ProductCreation: React.FC = () => {
         width: parseInt(values.width),
         weight: parseInt(values.weight)
       },
-      features: [...values.features],
+      features: "", // [...values.features],
       variants: {
         variants: values.variations,
         quantity: 0

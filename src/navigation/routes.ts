@@ -37,6 +37,7 @@ const Orders = lazy(() => import('../containers/Orders'))
 const Support = lazy(() => import('../containers/Support'))
 const Notifications = lazy(() => import('../containers/Notifications'))
 const Returns = lazy(() => import('../containers/Returns'))
+const AddressBook = lazy(() => import('../containers/AddressBook'))
 
 const PRIVATE_ROUTES: PrivateRouteObject[] = [
   {
@@ -178,6 +179,13 @@ const PRIVATE_ROUTES: PrivateRouteObject[] = [
     breadcrumb: 'Order Returns',
     path: '/returns',
     component: Returns
+  },
+  {
+    exact: false,
+    title: 'Addresses',
+    breadcrumb: 'Address Book',
+    path: '/addresses',
+    component: AddressBook
   }
 ]
 

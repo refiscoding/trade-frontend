@@ -13,14 +13,15 @@ import { useAppContext } from '../../../context/AppProvider'
 import { useFetchUserNotificationsQuery, useFetchUsersWhishlistQuery } from '../../../generated/graphql'
 
 type SideBarItemProps = {
+  to: string;
+  mt?: number;
   title: string
-  to: string
   color: string
+  Icon: React.FC
+  tooltipBg?: string
   hoverColor: string
   accentColor: string
-  Icon: React.FC
   tooltipColor?: string
-  tooltipBg?: string
   closeOnNavigate?: boolean
   handleClick?: () => void
 }
@@ -58,16 +59,17 @@ const NotificationsCounter: React.FC<CounterProps> = ({ Icon, count, color }) =>
 };
 
 const SideBarItem: React.FC<SideBarItemProps> = ({
-  accentColor,
-  color,
-  hoverColor,
-  Icon,
-  title,
   to,
-  tooltipColor,
+  mt,
+  Icon,
+  color,
+  title,
   tooltipBg,
+  hoverColor,
+  accentColor,
+  handleClick,
+  tooltipColor,
   closeOnNavigate,
-  handleClick
 }) => {
   const { drawerOpen, toggleDrawer } = useAppContext()
 
@@ -112,6 +114,7 @@ const SideBarItem: React.FC<SideBarItemProps> = ({
 
   return (
     <MenuItem
+      mt={mt}
       to={to}
       color={color}
       hoverAccent={accentColor}
@@ -127,6 +130,7 @@ const SideBarItem: React.FC<SideBarItemProps> = ({
       activeClassName="active-nav-link"
     >
       <Flex
+        mt={mt ? mt : 0}
         height="50px"
         alignItems="center"
         justifyContent="center"

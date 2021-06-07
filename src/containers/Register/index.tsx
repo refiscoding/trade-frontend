@@ -1,17 +1,23 @@
 import * as Yup from 'yup'
 import * as React from 'react'
-import { Mail } from 'react-feather'
-import { Form, Formik, FormikProps } from 'formik'
-import { Link, useHistory } from 'react-router-dom'
-import { Button, Flex, Image, Checkbox } from '@chakra-ui/core'
 
-import { MotionFlex, SideSlider } from '../../components'
-import { ConnectedFormGroup, ConnectedPasswordGroup } from '../../components/FormElements'
-import { useAuthContext } from '../../context/AuthProvider'
+import { Mail } from 'react-feather';
+import { ApolloError } from 'apollo-boost';
+import { Form, Formik, FormikProps } from 'formik';
+import { Link, useHistory } from 'react-router-dom';
+import { Button, Flex, Image, useToast } from '@chakra-ui/core';
+
+import Input from "../../components/Input";
+
 import { PageWrap } from '../../layouts'
-import { images, theme } from '../../theme'
-import { H3, Text } from '../../typography'
 import { formatError } from '../../utils'
+import { H3, Text } from '../../typography'
+import { images, theme } from '../../theme'
+import { ERROR_TOAST } from '../../constants'
+import { MotionFlex, SideSlider } from '../../components'
+import { useAuthContext } from '../../context/AuthProvider'
+import { useFetchLegalitiesQuery } from '../../generated/graphql';
+import { ConnectedFormGroup, ConnectedPasswordGroup } from '../../components/FormElements'
 
 type RegisterProps = {}
 
@@ -33,8 +39,14 @@ const baseUrl = process.env.REACT_APP_API_HOST
 const terms = "Terms & Conditions";
 
 const Register: React.FC<RegisterProps> = () => {
+  const toast = useToast();
   const { register, user, logout } = useAuthContext()
+  const [showError, setShowError] = React.useState<boolean | null>(false);
   const [termsChecked, setTermsChecked] = React.useState<boolean | null>(false);
+
+  const { data: legalities } = useFetchLegalitiesQuery({
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
+  });
 
   const history = useHistory()
 
@@ -49,8 +61,10 @@ const Register: React.FC<RegisterProps> = () => {
   }, [user]);
 
   const handleTermsCheckboxClicked = () => {
+    setShowError(!termsChecked);
     setTermsChecked(!termsChecked);
   };
+  const termsAndConditionsLink = legalities?.legality?.termsAndConditionsFile?.url;
 
   return (
     <PageWrap
@@ -78,15 +92,20 @@ const Register: React.FC<RegisterProps> = () => {
             password: '',
           }}
           onSubmit={async ({ email, password }, { setStatus, setSubmitting }) => {
-            setStatus(null)
-            try {
-              setSubmitting(true)
-              if (register) {
-                await register(email, password)
+            if (!termsChecked) {
+              setShowError(true);
+              return
+            } else {
+              setStatus(null)
+              try {
+                setSubmitting(true)
+                if (register) {
+                  await register(email, password)
+                }
+                setSubmitting(false)
+              } catch (error) {
+                setStatus(formatError(error))
               }
-              setSubmitting(false)
-            } catch (error) {
-              setStatus(formatError(error))
             }
           }}
         >
@@ -102,16 +121,25 @@ const Register: React.FC<RegisterProps> = () => {
                 </MotionFlex>
               )}
               <Flex mb={5}>
-                <Checkbox name="terms" mr={3} mt={2} onChange={handleTermsCheckboxClicked} />
+                <Flex mt={5} mr={3}>
+                  <Input type="checkbox" name="terms" onChange={handleTermsCheckboxClicked} />
+                </Flex>
                 <Flex mb={2} mt={4} align="center" justify="center" color={theme.colors.brand[500]}>
                   <Text>
                     I agree to the {' '}
-                    <a style={{ fontWeight: 600, textDecoration: "underline" }} href={`https://tradefed.co.za/about-us`} target="_blank" rel="noopener noreferrer">
+                    <a style={{ fontWeight: 600, textDecoration: "underline" }} href={termsAndConditionsLink} target="_blank" rel="noopener noreferrer">
                       {terms}
                     </a>
                   </Text>
                 </Flex>
               </Flex>
+              {
+                showError && !termsChecked && (
+                  <Text fontSize={12} color="red.500">
+                    Kindly read and accept the terms and conditions
+                  </Text>
+                )
+              }
               <Button
                 mt={4}
                 width="100%"

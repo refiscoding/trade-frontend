@@ -1,0 +1,13 @@
+query fetchLegalities($publicationState: PublicationState) {
+    legality(publicationState: $publicationState) {
+    termsAndConditionsFile {
+      url
+    }
+    privacyPolicyFile {
+      url
+    }
+    returnsPolicyFile {
+      url
+    }
+  }
+}

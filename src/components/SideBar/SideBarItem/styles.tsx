@@ -8,8 +8,9 @@ import { theme } from '../../../theme'
 const MotionLink = motion.custom(NavLink)
 
 type MenuItemProps = {
-  color?: string
+  mt?: number
   bg?: string
+  color?: string
   accentcolor?: string
   hovercolor?: string
   hoverAccent?: string
@@ -53,6 +54,7 @@ export const MenuItem = styled(MotionLink)<MenuItemProps>`
   background: transparent;
   justify-content: flex-start;
   transition: background 0.2s ease;
+  margin-top: ${(props) => get(props, 'mt')}px;
   &.active-nav-link::before {
     ${color};
     top: 0;

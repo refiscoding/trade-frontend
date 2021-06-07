@@ -1,4 +1,5 @@
 # import '/fragments/address.graphql'
+# import '/fragments/country.graphql'
 
 fragment business on Business {
   id
@@ -18,4 +19,14 @@ fragment business on Business {
       ...address
   }
   productsSummary
+  phoneNumber
+  websiteAddress
+  yearsInOperation
+  beeStatus
+  annualTurnover
+  description
+  hazChem
+  countries {
+    ...country
+  }
 }

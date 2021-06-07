@@ -1,11 +1,14 @@
 import * as Yup from 'yup'
 import * as React from 'react'
+
 import { Mail } from 'react-feather'
 import { useMediaQuery } from "react-responsive";
 import { Form, Formik, FormikProps } from 'formik'
 import { LocationDescriptorObject } from 'history'
-import { Button, Flex, Image, Checkbox, Grid } from '@chakra-ui/core'
+import { Button, Flex, Image, Grid } from '@chakra-ui/core'
 import { Link, useHistory, useLocation } from 'react-router-dom'
+
+import Input from "../../components/Input";
 
 import { images, theme } from '../../theme'
 import { PageWrap } from '../../layouts'
@@ -13,7 +16,7 @@ import { formatError } from '../../utils'
 import { H3, Text } from '../../typography'
 import { MotionFlex, SideSlider } from '../../components'
 import { useAuthContext } from '../../context/AuthProvider'
-import { ConnectedFormGroup, ConnectedPasswordGroup } from '../../components/FormElements'
+import { ConnectedFormGroup, ConnectedPasswordGroup } from '../../components/FormElements';
 
 const LoginFormValidation = Yup.object().shape({
   email: Yup.string()
@@ -57,6 +60,8 @@ const Login: React.FC<LoginProps> = () => {
   };
 
   const rememberMeContainer = isTabletOrMobile ? "170px 165px" : "145px 165px";
+
+  console.log("==>", rememberMeChecked)
 
   return (
     <PageWrap
@@ -117,7 +122,9 @@ const Login: React.FC<LoginProps> = () => {
               <Flex mb={3}>
                 <Grid gridTemplateColumns={rememberMeContainer}>
                   <Flex>
-                    <Checkbox name="rememberMe" mr={3} onChange={handleRememberMeClicked} />
+                    <Flex mt={1} mr={2}>
+                      <Input type="checkbox" name="rememberMe" onChange={handleRememberMeClicked} />
+                    </Flex>
                     <Flex align="center" justify="center">
                       <Text>
                         Remember Me

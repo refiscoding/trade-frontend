@@ -88,7 +88,7 @@ const ProductDetails: React.FC<ProductDetailsTypes> = ({ values, setImage, image
           const features = values.features
           return (
             <Flex flexDirection="column">
-              {features?.map((feature: string, index: number) => (
+              {features?.split(",")?.map((feature: string, index: number) => (
                 <Flex key={index} alignItems="center">
                   <ConnectedFormGroup name={`features.[${index}]`} type="text" />
                   <Flex

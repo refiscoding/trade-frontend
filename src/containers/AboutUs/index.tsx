@@ -1,53 +1,64 @@
-import { Flex, Text } from '@chakra-ui/core'
 import * as React from 'react'
+
+import styled from "@emotion/styled";
+
+import { useHistory } from 'react-router'
+import { useMediaQuery } from "react-responsive";
+import { Flex, Text, useToast } from '@chakra-ui/core'
 import { ChevronRight, Facebook, Instagram, Twitter } from 'react-feather'
 
-import { PageWrap } from '../../layouts'
 import Section from '../../components/Section'
-import { useHistory } from 'react-router'
-import {useMediaQuery} from "react-responsive";
+
+import { theme } from "../../theme";
+import { PageWrap } from '../../layouts'
+
+import { useFetchLegalitiesQuery } from '../../generated/graphql';
+import { ApolloError } from 'apollo-client';
+import { ERROR_TOAST } from '../../constants';
+
+type LinkProps = {
+  boxShadow: string
+  background: string
+  mt?: string
+}
+
+const Link = styled.a<LinkProps>`
+  width: 100%;
+  padding: .8rem;
+  border-radius: .4rem;
+  margin-top: ${props => props.mt};
+  background: ${props => props.background};
+  box-shadow: ${props => props.boxShadow};
+`;
 
 const AboutUs: React.FC = () => {
+  const toast = useToast();
   const history = useHistory()
+
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
-  const handleLinks = () => {
-    window.location.href = 'https://tradefed.co.za/about-us'
-  }
+
+  const { data: legalities } = useFetchLegalitiesQuery({
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
+  });
+
+  const privacyPolicyFile = legalities?.legality?.privacyPolicyFile?.url;
+  const termsAndConditionsFile = legalities?.legality?.termsAndConditionsFile?.url;
 
   return (
     <PageWrap title="About Us" alignSelf="center" width={isTabletOrMobile ? '100%' : '40%'}>
       <Section my={1} title="About Us" bg="transparent" width="100%" >
-        <Flex
-          pl={5}
-          height="50px"
-          borderRadius="10px"
-          boxShadow="0 2px 4px 0 rgba(0,0,0,0.25)"
-          width="100%"
-          justify="space-between"
-          alignItems="center"
-          onClick={() => handleLinks()}
-        >
-          <Flex width="80%">
+        <Link href={privacyPolicyFile} target="_blank" rel="noopener noreferrer" boxShadow={theme.boxShadowMedium} background={theme.colors.accent[50]}>
+          <Flex width="100%" justify="space-between">
             <Text fontSize={12}>Privacy Policy</Text>
+            <ChevronRight />
           </Flex>
-          <ChevronRight />
-        </Flex>
-        <Flex
-          mt={5}
-          pl={5}
-          height="50px"
-          borderRadius="10px"
-          boxShadow="0 2px 4px 0 rgba(0,0,0,0.25)"
-          width="100%"
-          justify="space-between"
-          alignItems="center"
-          onClick={() => handleLinks()}
-        >
-          <Flex width="80%">
+        </Link>
+        <Link href={termsAndConditionsFile} target="_blank" rel="noopener noreferrer" boxShadow={theme.boxShadowMedium} background={theme.colors.accent[50]} mt="20px">
+          <Flex width="100%" justify="space-between">
             <Text fontSize={12}>Terms of Service</Text>
+            <ChevronRight />
           </Flex>
-          <ChevronRight />
-        </Flex>
+        </Link>
       </Section>
       <Section my={1} title="What is TradeFed all about? " bg="transparent" width="100%">
         <Text fontSize={14}>

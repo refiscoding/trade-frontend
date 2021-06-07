@@ -4,9 +4,12 @@ import { get } from 'lodash'
 import { PageWrap } from '../../layouts'
 import { MotionFlex } from '../../components'
 import {
-  useUpdateSelfMutation,
   useCategoryQuery,
+  useUpdateSelfMutation,
+  useFetchCountriesQuery,
   useCreateMyBusinessMutation,
+  Category,
+  Country,
   // eslint-disable-next-line @typescript-eslint/camelcase
   Enum_Business_Businesstype,
   Maybe
@@ -14,7 +17,7 @@ import {
 import { formatError } from '../../utils'
 import { useHistory } from 'react-router-dom'
 import { useAuthContext } from '../../context/AuthProvider'
-import { Button, Flex, useToast } from '@chakra-ui/core'
+import { Button, Flex, useToast, Image } from '@chakra-ui/core'
 import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
 import { Form, Formik, FormikProps } from 'formik'
 import { H3, Text } from '../../typography'
@@ -23,6 +26,7 @@ import PersonalInfo from './personalInfo'
 import BusinessInfo from './businessInfo'
 import { useEffect } from 'react'
 import { useMediaQuery } from "react-responsive";
+import { images, theme } from '../../theme'
 
 const SellerFormValidation = Yup.object().shape({
   firstName: Yup.string().required('First Name is required'),
@@ -30,6 +34,8 @@ const SellerFormValidation = Yup.object().shape({
   email: Yup.string().email('Please enter a valid email address').required('An email is required'),
   idNumber: Yup.string().required('ID Number is required').length(13),
   phoneNumber: Yup.string().required('Phone Number is required'),
+  businessPhoneNumber: Yup.string().required('Business Phone Number is required'),
+  yearsOfOperation: Yup.string().required('Years Of Operation is required'),
   name: Yup.string().required('Business Name is required'),
   category: Yup.string().required('Business Category is required'),
   isVatRegistered: Yup.boolean().required('VAT Registration Status is required'),
@@ -39,19 +45,21 @@ const SellerFormValidation = Yup.object().shape({
   hasPhysicalStore: Yup.string().required('Physical Presence is required'),
   isRetailSupplier: Yup.string().required('Retail Supplier Status is required'),
   businessType: Yup.string().required('Business Type is required'),
-  carryStock: Yup.string().required('Stock Carriage Status is required'),
   revenue: Yup.string().required('Revenue Range is required'),
   registrationNumber: Yup.string().required('Registration Number is required'),
+  beeStatus: Yup.string().required('BEE Status is required'),
+  hazChem: Yup.string().required('Has Chem Status is required'),
 });
 
 export type ErrorsObject = {
   isVatRegistered?: string | undefined
   businessType?: string | undefined
-  carryStock?: string | undefined
   hasPhysicalStore?: string | undefined
   isRetailSupplier?: string | undefined
   revenue?: string | undefined
   registrationNumber?: string | undefined
+  beeStatus?: string | undefined
+  hazChem?: string | undefined
 };
 
 type SellerValues = {
@@ -59,24 +67,36 @@ type SellerValues = {
   lastName: string
   email: string
   idNumber: string
-  name: string
-  category: string
-  isVatRegistered: string
   phoneNumber?: string
-  revenue: string
+  name: string
+  registrationNumber: string
+  businessPhoneNumber: string
+  businessWebsite?: string
+  yearsOfOperation: string
+  category: string
+  location: string
+  isVatRegistered: string
   vatNumber: string
+  revenue: string
+  beeStatus: string
   uniqueProducts: string
-  products: Maybe<Maybe<string>[]> | undefined
+  products: Maybe<Maybe<string>> | undefined
   hasPhysicalStore: string
   isRetailSupplier: string
+  hazChem: string
+  errors?: ErrorsObject
   // eslint-disable-next-line @typescript-eslint/camelcase
   businessType?: Enum_Business_Businesstype
-  carryStock: string
-  errors?: ErrorsObject
 }
 
 const initialValues = {
   name: '',
+  businessPhoneNumber: '',
+  yearsOfOperation: '',
+  location: '',
+  beeStatus: '',
+  hazChem: '',
+  registrationNumber: '',
   category: '',
   isVatRegistered: '',
   vatNumber: '',
@@ -85,11 +105,6 @@ const initialValues = {
   products: '' || undefined,
   hasPhysicalStore: '',
   isRetailSupplier: '',
-  carryStock: ''
-}
-
-const valuesMapper = (value: string): boolean => {
-  return value === 'true'
 }
 
 const Seller: React.FC = () => {
@@ -100,6 +115,8 @@ const Seller: React.FC = () => {
   const { data } = useCategoryQuery({
     onError: (err: any) => formatError(err)
   })
+  const { data: countriesData } = useFetchCountriesQuery();
+
   const autofillDetails = {
     ...initialValues,
     firstName: user?.firstName || '',
@@ -115,11 +132,16 @@ const Seller: React.FC = () => {
     }
   }, [history, user])
 
-  const categories: any = get(data, 'categories', [])
+  const categories: any = get(data, 'categories', []);
+  const countries: any = get(countriesData, 'countries', []);
 
-  const mappedCategories = categories.map((category: any) => ({
+  const mappedCategories = categories.map((category: Category) => ({
     label: category.name,
     value: category.id
+  }))
+  const mappedCountries = countries.map((country: Country) => ({
+    label: country.name,
+    value: country.id
   }))
 
   const [updateSelf] = useUpdateSelfMutation({
@@ -144,34 +166,48 @@ const Seller: React.FC = () => {
   const handleSubmit = async (values: SellerValues) => {
     const {
       name,
-      category,
-      vatNumber,
-      uniqueProducts,
-      products,
-      hasPhysicalStore,
-      isRetailSupplier,
-      businessType,
-      revenue,
-      isVatRegistered,
-      firstName,
-      lastName,
       email,
-      idNumber,
-      phoneNumber
-    } = values
-
-    const businessValues = {
-      name,
-      category,
-      isVatRegistered: valuesMapper(isVatRegistered),
-      vatNumber,
-      uniqueProducts: uniqueProducts,
-      products,
       revenue,
-      hasPhysicalStore: valuesMapper(hasPhysicalStore),
-      isRetailSupplier: valuesMapper(isRetailSupplier),
-      businessType: businessType
-    }
+      hazChem,
+      category,
+      products,
+      location,
+      idNumber,
+      lastName,
+      beeStatus,
+      firstName,
+      vatNumber,
+      phoneNumber,
+      businessType,
+      uniqueProducts,
+      isVatRegistered,
+      businessWebsite,
+      isRetailSupplier,
+      hasPhysicalStore,
+      yearsOfOperation,
+      registrationNumber,
+      businessPhoneNumber,
+    } = values
+    const businessInput = {
+      name,
+      revenue,
+      beeStatus,
+      vatNumber,
+      businessType,
+      uniqueProducts,
+      registrationNumber,
+      countries: [location],
+      categories: [category],
+      productsSummary: products,
+      hazChem: Boolean(hazChem),
+      websiteAddress: businessWebsite,
+      phoneNumber: businessPhoneNumber,
+      isVatRegistered: Boolean(isVatRegistered),
+      hasPhysicalStore: Boolean(hasPhysicalStore),
+      isRetailSupplier: Boolean(isRetailSupplier),
+      yearsInOperation: parseInt(yearsOfOperation),
+    };
+
     const userDetails = {
       firstName,
       lastName,
@@ -179,17 +215,20 @@ const Seller: React.FC = () => {
       idNumber,
       phoneNumber
     }
-    await createMyBusiness({ variables: { input: businessValues } })
+    await createMyBusiness({ variables: { input: businessInput } })
     await updateSelf({ variables: { input: { ...userDetails } } })
   }
 
   return (
     <PageWrap pt={0} title="Seller Details" mt={10} width={isTabletOrMobile ? '100%' : '40%'} alignSelf="center">
-      <Flex width="100%" my={4} flexDirection="column">
-        <H3 textAlign="left">Apply to sell on TradeFed.</H3>
-        <Text textAlign="left" fontSize="14px">
-          To continue to be a seller, you need to go through a credit check process as well.
-        </Text>
+      <Flex width="100%" my={4} flexDirection="column" borderRadius={3}>
+        <H3 textAlign="center">Apply to sell on TradeFed.</H3>
+        <Flex mt={3} background={theme.colors.info} p={2} width="100%" height="40px" alignItems="center" justifyItems="space-between">
+          <Image src={images.infoIcon} height="50%" />
+          <Text fontSize={12} ml={3}>
+            To continue to be a seller, you need to go through a credit check process as well.
+          </Text>
+        </Flex>
       </Flex>
       <Formik
         validationSchema={SellerFormValidation}
@@ -209,7 +248,7 @@ const Seller: React.FC = () => {
           return (
             <Form style={{ width: '100%' }}>
               <PersonalInfo />
-              <BusinessInfo categories={mappedCategories} errors={errors} />
+              <BusinessInfo categories={mappedCategories} countries={mappedCountries} errors={errors} />
               {status && (
                 <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
                   <Text textAlign="right" color="red.500">

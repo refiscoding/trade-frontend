@@ -1,29 +1,32 @@
 import * as React from 'react';
 
+import { get } from 'lodash';
+import { useHistory } from "react-router-dom";
 import { MapPin, Briefcase } from "react-feather";
 import { Flex, Image, Text, Button, Grid, Tag } from '@chakra-ui/core';
 
+import Input from '../../components/Input';
 import Section from '../../components/Section';
 import ProductCard from '../../components/Card/ProductCard';
-import Input from '../../components/Input';
 
-import { theme } from "../../theme";
-import { Product } from "../../generated/graphql";
-import { VerifiedBadge } from "../../components/Product";
 import { ProductProps } from "./props";
-import { useHistory } from "react-router-dom";
+import { images, theme } from "../../theme";
+import { Product } from "../../generated/graphql";
+import { useAppContext } from '../../context/AppProvider';
+import { VerifiedBadge } from "../../components/Product";
 
 const ProductComponent: React.FC<ProductProps> = (
   {
-    product,
-    handleAddToWishlistClicked,
-    handleAddToCartClicked,
     deals,
-    productPackaging,
+    product,
+    isPreview,
     productImages,
-    isPreview
+    productPackaging,
+    handleAddToCartClicked,
+    handleAddToWishlistClicked,
   }) => {
   const history = useHistory()
+  const { drawerOpen } = useAppContext();
 
   const navigateToProduct = (id: string | undefined) => {
     history.push(`/product/${id}`)
@@ -32,24 +35,35 @@ const ProductComponent: React.FC<ProductProps> = (
   const coverImage = product?.coverImage?.url;
   const hasProductImages = productImages?.length > 0;
 
+  const maxSellCost = get(product, 'maxSellCost') as number;
+  const tradeFedCost = get(product, 'tradeFedCost') as number;
+  const discount = Math.round(((maxSellCost - tradeFedCost) / maxSellCost) * 100);
+
+  const addresses = get(product, 'business.address');
+
+  const businessAddress = addresses ? addresses[0]?.address : '';
+
+  const textColor = "#355EC0";
+  const coverImageWidth = drawerOpen ? '380px' : '450px';
+
   return (
     <React.Fragment>
-      <Flex mb={3} backgroundColor="white" borderRadius={3} width="80%">
+      <Flex mb={3} backgroundColor="white" borderRadius={5} width="80%" boxShadow={theme.boxShadowMedium}>
         <Grid gridTemplateColumns="1fr 1fr">
-          <Grid gridTemplateColumns="550px 150px" height={435} columnGap={3} >
+          <Grid gridTemplateColumns={`${coverImageWidth} 150px`} height={435} columnGap={3} >
             <Flex
               m={5}
-              width="550px"
-              height="400px"
+              width={`${coverImageWidth}`}
+              height="450px"
               position="relative"
             >
               <Image
                 width="100%"
                 height="100%"
-                src={coverImage}
+                src={coverImage || ''}
                 objectFit="contain"
               />
-              {product?.discount?.discountPercentage && product?.discount?.discountPercentage > 0 ? (
+              {discount ? (
                 <Flex
                   alignItems="center"
                   justifyContent="center"
@@ -67,7 +81,7 @@ const ProductComponent: React.FC<ProductProps> = (
                     Save
                   </Text>
                   <Text color="white" fontSize="14px" fontWeight={600}>
-                    {`${product?.discount?.discountPercentage}%`}
+                    {`${discount}%`}
                   </Text>
                 </Flex>
               ) : null}
@@ -78,17 +92,17 @@ const ProductComponent: React.FC<ProductProps> = (
                   {
                     productImages?.map((product: string | undefined) => (
                       <Image
-                        key={product}
+                        key={product || `${Math.random()}`}
                         width="90%"
                         height="90px"
-                        src={product}
+                        src={product || ''}
                       />
                     ))
-                }
-              </Grid>)
+                  }
+                </Grid>)
             }
           </Grid>
-          <Grid gridTemplateRows="40px 50px 35px 30px 50px 40px 30px 30px 50px 60px" padding={5} pt={10}>
+          <Grid gridTemplateRows="40px 50px 35px 30px 50px 40px 30px 30px 50px 60px" padding={5} pt={8}>
             <Text fontSize="20px" fontWeight={600}>
               {product?.name}
             </Text>
@@ -96,28 +110,32 @@ const ProductComponent: React.FC<ProductProps> = (
               {product?.shortDescription}
             </Text>
             <VerifiedBadge />
-            <Text fontSize="18px">
-              {`Retail: ${product?.price?.currency} ${product?.price?.retailPricePerUnit}.00`}
+            <Text mt={3} fontSize="24px" fontWeight={600}>
+              {`${product?.currency} ${product?.tradeFedCost}.00`}
             </Text>
-            <Text fontSize="30px" fontWeight={700}>
-              {`${product?.price?.currency} ${product?.price?.pricePerUnit}.00`}
+            <Text mt={3} fontSize="16px">
+              {`Retail: ${product?.currency} ${product?.maxSellCost}.00`}
             </Text>
-            <Text fontSize="14px" color="#355EC0" fontWeight={600}>
+            <Text mt={3} fontSize="14px" color={textColor} fontWeight={600}>
               {`This item is sold per ${productPackaging}`}
             </Text>
-            <Flex>
+            <Flex mt={3}>
               <Briefcase />
               <Text ml={3} fontSize="14px" >
                 {`Supplied by ${product?.business?.name}`}
               </Text>
             </Flex>
-            <Flex>
-              <MapPin />
-              <Text ml={3} fontSize="14px" >
-                {`Delivered from ${product?.business?.address?.address}`}
-              </Text>
-            </Flex>
-            <Flex mt={3} flexDirection="column">
+            {
+              businessAddress && (
+                <Flex mt={3}>
+                  <MapPin />
+                  <Text ml={3} fontSize="14px" >
+                    {`Delivered from ${product?.business && product?.business?.address && product?.business?.address[0]?.address}`}
+                  </Text>
+                </Flex>
+              )
+            }
+            <Flex mt={3}>
               <Input
                 name="quantity"
                 type="text"
@@ -125,9 +143,12 @@ const ProductComponent: React.FC<ProductProps> = (
                 style={{
                   padding: 3,
                   border: `1px solid ${theme.colors.background}`,
-                  width: "50%"
+                  width: "40%",
+                  marginTop: "15px"
                 }}
               />
+              <Text mt={5} ml={3} color={textColor} fontSize={12} fontWeight={600}>{`${product?.availableUnits} units`}</Text>
+              <Text mt={5} ml={1} fontSize={12}>{`available`}</Text>
             </Flex>
             <Flex flexWrap="wrap" >
               <Button justifySelf="start" width="150px" mt={4} mr={2} onClick={() => handleAddToWishlistClicked(product?.id)} border={`1px solid ${theme.colors.brand[500]}`} background="white">
@@ -144,7 +165,7 @@ const ProductComponent: React.FC<ProductProps> = (
           </Grid>
         </Grid>
       </Flex>
-      <Grid gridTemplateRows="1fr 1fr" backgroundColor="white" borderRadius={3} padding={10} fontSize="12px" width="80%">
+      <Grid gridTemplateRows="1fr 1fr" backgroundColor="white" borderRadius={3} padding={10} fontSize="12px" width="80%" boxShadow={theme.boxShadowMedium}>
         <div>
           <Text fontSize="17px" fontWeight={600}>
             About This Product
@@ -153,47 +174,48 @@ const ProductComponent: React.FC<ProductProps> = (
             {product?.description}
           </Text>
         </div>
-        <Grid gridTemplateColumns="1fr 1fr">
-          <div>
+        <Grid gridTemplateColumns="1fr 1fr" columnGap="20px">
+          <div style={{ border: `1px solid ${theme.colors.background}`, padding: 15, borderRadius: 3, }}>
             <Text fontSize="17px" fontWeight={600} mb={3}>
               Product Features
             </Text>
-            {
-              product?.features?.length
-                ? (
-                  <ul style={{ marginLeft: 15 }}>
-                    {
-                      product?.features?.map((feature: string) => (
-                        <li key={feature}>
-                          <Text fontSize="12px">{feature}</Text>
-                        </li>
-                      ))
-                    }
-                  </ul>
-                )
-                : (<Text>No Features Set</Text>)
-            }
+            <ul style={{ marginLeft: 15 }}>
+              {
+                product?.features?.split(",")?.map((feature: string, index: number) => (
+                  <li key={`${feature}_${index}`}>
+                    <Text fontSize="12px">{feature}</Text>
+                  </li>
+
+                ))
+              }
+            </ul>
           </div>
-          <div>
+          <div style={{ border: `1px solid ${theme.colors.background}`, padding: 15, borderRadius: 3, }}>
             <Text fontSize="17px" fontWeight={600} mb={3}>
               Product Specification
             </Text>
-            {
-              product?.size
-                ? (
-                  <Flex flexDirection="column">
-                    <Text fontSize="12px">Height : {product.size?.height}</Text>
-                    <Text fontSize="12px">Width : {product.size?.width}</Text>
-                    <Text fontSize="12px">Length : {product.size?.productLength}</Text>
-                    <Text fontSize="12px">Weight : {product.size?.weight}</Text>
-                  </Flex>
+            <Flex justify="space-between">
+              <Flex flexDirection="column">
+                <Text fontSize="12px">Height : {`${product?.height} ${product?.dimensionsUnit}`}</Text>
+                <Text fontSize="12px">Width : {`${product?.width} ${product?.dimensionsUnit}`}</Text>
+                <Text fontSize="12px">Length : {`${product?.lengths} ${product?.dimensionsUnit}`}</Text>
+                <Text fontSize="12px">Weight : {`${product?.weight} ${product?.weightUnit}`}</Text>
+              </Flex>
+              {
+                product?.additionalInfo && (
+                  <a target="_blank" rel="noopener noreferrer" href={product?.additionalInfo[0]?.url || ''}>
+                    <Flex ml={5} justify="space-between" border={theme.colors.background} borderRadius={3}>
+                      <Image src={images.pdfFile} height="40px" />
+                      <Text ml={2} mt={2}>Additional Product Information</Text>
+                    </Flex>
+                  </a>
                 )
-                : (<Text>No Specifications Set</Text>)
-            }
+              }
+            </Flex>
           </div>
           <Flex width="414px" background={theme.colors.accent[50]} mt={5}>
             {
-              product?.tags?.map((tag: string, index: number) => (
+              product?.tags?.split(",")?.map((tag: string, index: number) => (
                 <Tag fontSize={12} mr={1} size="sm" key={index} background={theme.colors.tag} color={theme.colors.tagText}>{tag?.toUpperCase()}</Tag>
               ))
             }
@@ -202,7 +224,7 @@ const ProductComponent: React.FC<ProductProps> = (
       </Grid>
       {isPreview &&
         <Flex ml={5} mt={3} width="100%" flexDirection="column" alignItems="center">
-          <Section title="Deals You Might Be Interested In">
+          <Section card title="Deals You Might Be Interested In">
             {deals?.map((product: Product) => (
               <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
             ))}
