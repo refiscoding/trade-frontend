@@ -95,11 +95,19 @@ const CartModalProductComponent: React.FC<CartModalProductComponentProps> = ({ p
 
 export const QuantitySelectComponent: React.FC<QuantityComponentProps> = ({ count, available }) => {
   const [currentNumber, setCurrentNumber] = React.useState<number>(1)
+  const [currentNumberColor, setCurrentNumberColor] = React.useState<string>(theme.colors.blueText)
+
+  const errorColor = '#f53131'
+
   const increment = () => {
     if (available) {
       const outOfStock = currentNumber >= available
+      if (outOfStock) {
+        setCurrentNumberColor(errorColor)
+      } else {
+        setCurrentNumber((currentNumber || 1) + 1)
+      }
     }
-    setCurrentNumber((currentNumber || 1) + 1)
   }
   const decrement = () => {
     setCurrentNumber((currentNumber === 1 ? 2 : currentNumber) - 1)
@@ -110,6 +118,13 @@ export const QuantitySelectComponent: React.FC<QuantityComponentProps> = ({ coun
       setCurrentNumber(count as number)
     }
   }, [count])
+  React.useEffect(() => {
+    if (available) {
+      if (currentNumber < available) {
+        setCurrentNumberColor(theme.colors.blueText)
+      }
+    }
+  }, [available, currentNumber])
 
   return (
     <React.Fragment>
@@ -117,7 +132,7 @@ export const QuantitySelectComponent: React.FC<QuantityComponentProps> = ({ coun
       <Text
         mx={3}
         mt={2}
-        color={theme.colors.blueText}
+        color={currentNumberColor}
         fontSize={12}
         fontWeight={600}
       >{`${currentNumber}`}</Text>
