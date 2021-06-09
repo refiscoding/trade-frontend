@@ -6,7 +6,6 @@ import { useMediaQuery } from 'react-responsive'
 import { MapPin, Briefcase } from 'react-feather'
 import { Flex, Image, Text, Button, Grid, Tag } from '@chakra-ui/core'
 
-import Input from '../../components/Input'
 import Section from '../../components/Section'
 import ProductCard from '../../components/Card/ProductCard'
 
@@ -14,6 +13,7 @@ import { ProductProps } from './props'
 import { theme, images } from '../../theme'
 import { Product } from '../../generated/graphql'
 import { VerifiedBadge } from '../../components/Product'
+import { QuantitySelectComponent } from '../../containers/ProductView/AddToCartModal'
 
 const ProductComponentMobile: React.FC<ProductProps> = ({
   deals,
@@ -118,16 +118,10 @@ const ProductComponentMobile: React.FC<ProductProps> = ({
           </Flex>
         )}
         <Flex ml={marginLeft} mt={3}>
-          <Input
-            name="quantity"
-            type="text"
-            placeholder="Enter quantity eg. 3"
-            style={{
-              padding: 3,
-              border: `1px solid ${theme.colors.background}`,
-              width: '48%',
-              marginTop: '5px'
-            }}
+          <QuantitySelectComponent
+            count={1}
+            available={product?.availableUnits as number}
+            setProductQuantity={setProductQuantity}
           />
           <Text
             mt={3}
