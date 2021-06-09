@@ -207,7 +207,7 @@ const WishlistPage: React.FC = () => {
           />
           {products?.map((product: Product) => (
             <ProductCard
-              width={isTabletOrMobile ? '100%' : '70%'}
+              width={isTabletOrMobile ? '100%' : '100%'}
               key={`${product.id}-${Math.random()}`}
               isWishlist
               product={product}

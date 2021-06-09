@@ -142,10 +142,11 @@ const ProductComponent: React.FC<ProductProps> = ({
               <Flex mt={3}>
                 <MapPin />
                 <Text ml={3} fontSize="14px">
-                  {`Delivered from ${product?.business &&
+                  {`Delivered from ${
+                    product?.business &&
                     product?.business?.address &&
                     product?.business?.address[0]?.address
-                    }`}
+                  }`}
                 </Text>
               </Flex>
             )}

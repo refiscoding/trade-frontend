@@ -1,6 +1,9 @@
+import * as React from 'react'
+
+import { useMediaQuery } from 'react-responsive'
 import { Flex, Image, Text } from '@chakra-ui/core'
 import { FlexProps } from '@chakra-ui/core/dist/Flex'
-import * as React from 'react'
+
 import { images } from '../../../theme'
 
 type ProductManagementCardProps = FlexProps & {
@@ -9,11 +12,24 @@ type ProductManagementCardProps = FlexProps & {
 }
 
 const ProductManagementCard: React.FC<ProductManagementCardProps> = ({ title, caption }) => {
+  const isTinyPhone = useMediaQuery({ query: '(max-width: 20em)' })
+  const isSmallPhone = useMediaQuery({ query: '(max-width: 25em)' })
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
+
+  const mobileCardWidth = isTinyPhone
+    ? '320px'
+    : isSmallPhone
+    ? '350px'
+    : isTabletOrMobile
+    ? '400px'
+    : '600px'
+  const mobileCardHeight = isTinyPhone ? '320px' : isSmallPhone ? '290px' : '270px'
+
   return (
     <Flex
       flexDirection="column"
-      width="330px"
-      height="185px"
+      minWidth={mobileCardWidth}
+      height={mobileCardHeight}
       bg="white"
       boxShadow="0 2px 4px 0 rgba(0,0,0,0.1)"
       borderRadius="8px"
@@ -22,8 +38,8 @@ const ProductManagementCard: React.FC<ProductManagementCardProps> = ({ title, ca
       <Text m="15px" fontWeight={600} fontSize="14px">
         {title}
       </Text>
-      <Flex width="100%" flexDirection="column" alignItems="center">
-        <Image m={2} width="70px" height="auto" src={images.filesIcon} />
+      <Flex width="100%" flexDirection="column" alignItems="center" margin="auto">
+        <Image width="70px" height="auto" src={images.filesIcon} />
         <Text fontSize="12px">{caption}</Text>
       </Flex>
     </Flex>
