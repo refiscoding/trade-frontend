@@ -1,4 +1,15 @@
-import { Bell, Briefcase, HelpCircle, Home, Lock, Star, User, Users } from 'react-feather'
+import {
+  Bell,
+  Briefcase,
+  HelpCircle,
+  Home,
+  Lock,
+  Star,
+  User,
+  Users,
+  LogOut,
+  UserPlus
+} from 'react-feather'
 import React from 'react'
 
 export type NavItem = {
@@ -56,7 +67,7 @@ export const LOGOUT_NAV_ITEM: NavItem[] = [
   {
     to: `/`,
     title: 'Logout',
-    Icon: Lock
+    Icon: LogOut
   }
 ]
 
@@ -64,11 +75,11 @@ export const AUTH_NAV_ITEMS: NavItem[] = [
   {
     to: `/register`,
     title: 'Sign Up',
-    Icon: Lock
+    Icon: UserPlus
   },
   {
     to: `/login`,
     title: 'Login',
     Icon: Lock
-  },
+  }
 ]

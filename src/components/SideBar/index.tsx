@@ -63,12 +63,11 @@ const SideBar: React.FC<SideBarProps> = ({
 
   const { refetch: refetchNotifications } = useFetchUserNotificationsQuery({
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
-  });
+  })
 
   React.useEffect(() => {
-    refetchNotifications();
-  }, [refetchNotifications]);
-
+    refetchNotifications()
+  }, [refetchNotifications])
 
   const handleNavItems = () => {
     const updatedNavItems = navItems
@@ -167,7 +166,7 @@ const SideBar: React.FC<SideBarProps> = ({
             {...props}
           />
         ))}
-        <Flex flexDirection="column" mt={isAuthenticated ? "170px" : "130px"} width="100%">
+        <Flex flexDirection="column" mt={isAuthenticated ? '310px' : '270px'} width="100%">
           {(authSection as NavItem[]).map((props) => (
             <SideBarItem
               handleClick={handleAuth}
