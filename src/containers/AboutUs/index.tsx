@@ -1,20 +1,20 @@
 import * as React from 'react'
 
-import styled from "@emotion/styled";
+import styled from '@emotion/styled'
 
 import { useHistory } from 'react-router'
-import { useMediaQuery } from "react-responsive";
+import { useMediaQuery } from 'react-responsive'
 import { Flex, Text, useToast } from '@chakra-ui/core'
-import { ChevronRight, Facebook, Instagram, Twitter } from 'react-feather'
+import { ChevronRight, Facebook, Linkedin, Book, BookOpen } from 'react-feather'
 
 import Section from '../../components/Section'
 
-import { theme } from "../../theme";
+import { theme } from '../../theme'
 import { PageWrap } from '../../layouts'
 
-import { useFetchLegalitiesQuery } from '../../generated/graphql';
-import { ApolloError } from 'apollo-client';
-import { ERROR_TOAST } from '../../constants';
+import { useFetchLegalitiesQuery } from '../../generated/graphql'
+import { ApolloError } from 'apollo-client'
+import { ERROR_TOAST } from '../../constants'
 
 type LinkProps = {
   boxShadow: string
@@ -24,39 +24,61 @@ type LinkProps = {
 
 const Link = styled.a<LinkProps>`
   width: 100%;
-  padding: .8rem;
-  border-radius: .4rem;
-  margin-top: ${props => props.mt};
-  background: ${props => props.background};
-  box-shadow: ${props => props.boxShadow};
-`;
+  padding: 0.8rem;
+  border-radius: 0.4rem;
+  margin-top: ${(props) => props.mt};
+  background: ${(props) => props.background};
+  box-shadow: ${(props) => props.boxShadow};
+`
 
 const AboutUs: React.FC = () => {
-  const toast = useToast();
+  const toast = useToast()
   const history = useHistory()
 
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
 
   const { data: legalities } = useFetchLegalitiesQuery({
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
-  });
+  })
 
-  const privacyPolicyFile = legalities?.legality?.privacyPolicyFile?.url;
-  const termsAndConditionsFile = legalities?.legality?.termsAndConditionsFile?.url;
+  const privacyPolicyFile = legalities?.legality?.privacyPolicyFile?.url
+  const termsAndConditionsFile = legalities?.legality?.termsAndConditionsFile?.url
+
+  const facebookLink = 'https://www.facebook.com/TradeFed'
+  const linkedInLink = 'https://www.linkedin.com/company/tradefedsolutions/'
 
   return (
     <PageWrap title="About Us" alignSelf="center" width={isTabletOrMobile ? '100%' : '40%'}>
-      <Section my={1} title="About Us" bg="transparent" width="100%" >
-        <Link href={privacyPolicyFile} target="_blank" rel="noopener noreferrer" boxShadow={theme.boxShadowMedium} background={theme.colors.accent[50]}>
-          <Flex width="100%" justify="space-between">
-            <Text fontSize={12}>Privacy Policy</Text>
-            <ChevronRight />
+      <Section my={1} title="About Us" bg="transparent" width="100%">
+        <Link
+          href={privacyPolicyFile || ''}
+          target="_blank"
+          rel="noopener noreferrer"
+          boxShadow={theme.boxShadowMedium}
+          background={theme.colors.accent[50]}
+        >
+          <Flex>
+            <Book />
+            <Flex ml={3} width="100%" justify="space-between">
+              <Text fontSize={12}>Privacy Policy</Text>
+              <ChevronRight />
+            </Flex>
           </Flex>
         </Link>
-        <Link href={termsAndConditionsFile} target="_blank" rel="noopener noreferrer" boxShadow={theme.boxShadowMedium} background={theme.colors.accent[50]} mt="20px">
-          <Flex width="100%" justify="space-between">
-            <Text fontSize={12}>Terms of Service</Text>
-            <ChevronRight />
+        <Link
+          href={termsAndConditionsFile || ''}
+          target="_blank"
+          rel="noopener noreferrer"
+          boxShadow={theme.boxShadowMedium}
+          background={theme.colors.accent[50]}
+          mt="20px"
+        >
+          <Flex>
+            <BookOpen />
+            <Flex ml={3} width="100%" justify="space-between">
+              <Text fontSize={12}>Terms of Service</Text>
+              <ChevronRight />
+            </Flex>
           </Flex>
         </Link>
       </Section>
@@ -75,39 +97,36 @@ const AboutUs: React.FC = () => {
         </Text>
       </Section>
       <Flex mt={5} width="60%" alignSelf="center" justifyContent="space-around">
-        <Flex
-          justifyContent="center"
-          alignItems="center"
-          height="40px"
-          width="40px"
-          borderRadius="50%"
-          border="3px solid"
-          borderColor="black"
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={facebookLink}
+          style={{
+            border: '2px solid black',
+            borderRadius: '50%',
+            height: 50,
+            width: 50,
+            padding: 5,
+            position: 'relative'
+          }}
         >
-          <Facebook fill="black" />
-        </Flex>
-        <Flex
-          justifyContent="center"
-          alignItems="center"
-          height="40px"
-          width="40px"
-          borderRadius="50%"
-          border="3px solid"
-          borderColor="black"
+          <Facebook style={{ position: 'absolute', top: 10, left: 10 }} fill="black" />
+        </a>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={linkedInLink}
+          style={{
+            border: '2px solid black',
+            borderRadius: '50%',
+            height: 50,
+            width: 50,
+            padding: 5,
+            position: 'relative'
+          }}
         >
-          <Twitter fill="black" />
-        </Flex>
-        <Flex
-          justifyContent="center"
-          alignItems="center"
-          height="40px"
-          width="40px"
-          borderRadius="50%"
-          border="3px solid"
-          borderColor="black"
-        >
-          <Instagram strokeWidth="3px" stroke="black" />
-        </Flex>
+          <Linkedin style={{ position: 'absolute', top: 10, left: 10 }} fill="black" />
+        </a>
       </Flex>
     </PageWrap>
   )
