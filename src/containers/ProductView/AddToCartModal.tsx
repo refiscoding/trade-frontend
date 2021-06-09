@@ -29,17 +29,24 @@ type AddToCartModalProps = FlexProps & {
   handleGoToCartButtonClicked: () => void
   handleCancelButtonClicked: () => void
   product: any
+  productQuantity: number
+  setProductQuantity: React.Dispatch<React.SetStateAction<number>>
 }
 type CartModalProductComponentProps = FlexProps & {
   product: any
   noTitle?: boolean
+  productQuantity: number
 }
 type QuantityComponentProps = FlexProps & {
   count: number | undefined
   available?: number | undefined
+  setProductQuantity: React.Dispatch<React.SetStateAction<number>>
 }
 
-const CartModalProductComponent: React.FC<CartModalProductComponentProps> = ({ product }) => {
+const CartModalProductComponent: React.FC<CartModalProductComponentProps> = ({
+  product,
+  productQuantity
+}) => {
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   const maxSellCost = get(product, 'maxSellCost') as number
   const tradeFedCost = get(product, 'tradeFedCost') as number
@@ -82,6 +89,9 @@ const CartModalProductComponent: React.FC<CartModalProductComponentProps> = ({ p
         <Flex mb={2}>
           <Text fontSize="12px">{product?.shortDescription}</Text>
         </Flex>
+        <Flex mb={2}>
+          <Text fontSize="12px">{`${productQuantity} units added`}</Text>
+        </Flex>
         <Flex width="100%">
           <Text
             fontSize="12px"
@@ -93,7 +103,11 @@ const CartModalProductComponent: React.FC<CartModalProductComponentProps> = ({ p
   )
 }
 
-export const QuantitySelectComponent: React.FC<QuantityComponentProps> = ({ count, available }) => {
+export const QuantitySelectComponent: React.FC<QuantityComponentProps> = ({
+  count,
+  available,
+  setProductQuantity
+}) => {
   const [currentNumber, setCurrentNumber] = React.useState<number>(1)
   const [currentNumberColor, setCurrentNumberColor] = React.useState<string>(theme.colors.blueText)
 
@@ -118,6 +132,11 @@ export const QuantitySelectComponent: React.FC<QuantityComponentProps> = ({ coun
       setCurrentNumber(count as number)
     }
   }, [count])
+
+  React.useEffect(() => {
+    setProductQuantity(currentNumber)
+  }, [currentNumber, setProductQuantity])
+
   React.useEffect(() => {
     if (available) {
       if (currentNumber < available) {
@@ -145,6 +164,8 @@ const AddToCartModal: React.FC<AddToCartModalProps> = ({
   handleContinueShoppingButtonClicked,
   handleGoToCartButtonClicked,
   handleCancelButtonClicked,
+  setProductQuantity,
+  productQuantity,
   product
 }) => {
   return (
@@ -156,8 +177,11 @@ const AddToCartModal: React.FC<AddToCartModalProps> = ({
     >
       <Flex padding={5} pb={0}>
         <Grid gridTemplateRows="150px 1fr 1fr 1fr">
-          <CartModalProductComponent product={product} />
-          {/* <QuantitySelectComponent count={quantity} /> */}
+          <CartModalProductComponent product={product} productQuantity={productQuantity} />
+          {/* <QuantitySelectComponent
+            count={productQuantity}
+            setProductQuantity={setProductQuantity}
+          /> */}
           <Button
             width="100%"
             mt={4}

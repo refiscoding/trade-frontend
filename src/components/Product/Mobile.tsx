@@ -19,7 +19,9 @@ const ProductComponentMobile: React.FC<ProductProps> = ({
   deals,
   product,
   isPreview,
+  productQuantity,
   productPackaging,
+  setProductQuantity,
   handleAddToCartClicked,
   handleAddToWishlistClicked
 }) => {

@@ -18,15 +18,24 @@ import {
 type ProductProps = {
   product?: any
   setShowAddToCartModal: () => void
+  setCurrentNumber: React.Dispatch<React.SetStateAction<number>>
+  currentNumber: number
 }
 
-const ProductComponent: React.FC<ProductProps> = ({ product, setShowAddToCartModal }) => {
+const ProductComponent: React.FC<ProductProps> = ({
+  product,
+  setShowAddToCartModal,
+  setCurrentNumber,
+  currentNumber
+}) => {
   const toast = useToast()
   const location = useLocation()
   const history = useHistory()
   const isWebViewport = useMediaQuery({
     query: '(min-width: 75em)'
   })
+  // const [currentNumber, setCurrentNumber] = React.useState<string>('')
+
   const addProductPage = location?.pathname?.split('/')[1] === 'add-product'
   const [addProductToWishlist] = useAddProductToWishlistMutation({
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
@@ -59,7 +68,9 @@ const ProductComponent: React.FC<ProductProps> = ({ product, setShowAddToCartMod
   }
   const handleAddToCartClicked = async (id: string) => {
     if (!addProductPage) {
-      await addProductToCart({ variables: { input: { productToAdd: id } } })
+      await addProductToCart({
+        variables: { input: { productToAdd: id, quantity: `${currentNumber}` } }
+      })
       !loading && setShowAddToCartModal()
     }
   }
@@ -67,6 +78,8 @@ const ProductComponent: React.FC<ProductProps> = ({ product, setShowAddToCartMod
   const productPackaging = productPackagingType?.length > 1 ? 'pack' : product?.packaging
   const productImages = product?.productImages?.map((image: UploadFile) => image?.url)
   const isPreview = !product?.coverImage?.preview
+
+  console.log('Wagwaaan', currentNumber)
 
   return (
     <React.Fragment>
@@ -76,6 +89,8 @@ const ProductComponent: React.FC<ProductProps> = ({ product, setShowAddToCartMod
           product={product}
           isPreview={isPreview}
           productImages={productImages}
+          productQuantity={currentNumber}
+          setProductQuantity={setCurrentNumber}
           productPackaging={productPackaging}
           handleAddToCartClicked={handleAddToCartClicked}
           handleAddToWishlistClicked={handleAddToWishlistClicked}
@@ -86,6 +101,8 @@ const ProductComponent: React.FC<ProductProps> = ({ product, setShowAddToCartMod
           product={product}
           isPreview={isPreview}
           productImages={productImages}
+          productQuantity={currentNumber}
+          setProductQuantity={setCurrentNumber}
           productPackaging={productPackaging}
           handleAddToCartClicked={handleAddToCartClicked}
           handleAddToWishlistClicked={handleAddToWishlistClicked}

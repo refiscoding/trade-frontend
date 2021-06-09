@@ -18,6 +18,7 @@ const ProductView: React.FC = () => {
   const toast = useToast()
   const history = useHistory()
 
+  const [currentNumber, setCurrentNumber] = React.useState<number>(1)
   const [showAddToCartModal, setShowAddToCartModal] = React.useState<boolean | undefined>()
 
   const { data } = useFindProductQuery({
@@ -42,7 +43,12 @@ const ProductView: React.FC = () => {
 
   return (
     <PageWrap alignItems="center" title="Product" bg={theme.colors.background}>
-      <ProductComponent product={product} setShowAddToCartModal={setShowAddCartModal} />
+      <ProductComponent
+        product={product}
+        setShowAddToCartModal={setShowAddCartModal}
+        setCurrentNumber={setCurrentNumber}
+        currentNumber={currentNumber}
+      />
       <Flex ml="1rem">
         <Footer />
       </Flex>
@@ -52,6 +58,8 @@ const ProductView: React.FC = () => {
           handleGoToCartButtonClicked={handleGoToCartButtonClicked}
           handleCancelButtonClicked={handleCancelButtonClicked}
           product={product}
+          productQuantity={currentNumber}
+          setProductQuantity={setCurrentNumber}
         />
       )}
     </PageWrap>

@@ -1,10 +1,7 @@
 import * as React from 'react'
-import styled from '@emotion/styled'
 
 import { get } from 'lodash'
-import { Minus, Plus } from 'react-feather'
-
-import { Flex, Image, Text, FlexProps, ButtonGroup, IconButton } from '@chakra-ui/core'
+import { Flex, Image, Text, FlexProps } from '@chakra-ui/core'
 
 import Input from '../../Input'
 import CardFooter from '../CardFooter'
@@ -29,18 +26,6 @@ type ProductRemovalValues = {
   id: string
   checked: boolean | undefined
 }
-
-const QuantityButton = styled.div`
-  border: 1px solid ${theme.colors.background};
-  border-radius: 5px;
-  cursor: pointer;
-  padding: 0 8px;
-  font-weight: 550;
-
-  :hover {
-    border: 1px solid ${theme.colors.brand[500]};
-  }
-`
 
 const ProductCard: React.FC<ProductCardProps> = ({
   product,
@@ -160,7 +145,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
           {isCart && (
             <Flex mt={2} alignItems="center" height="20px">
               <Flex>
-                <QuantitySelectComponent count={productsOnly && productsOnly[0]?.quantity} />
+                <QuantitySelectComponent
+                  count={productsOnly && productsOnly[0]?.quantity}
+                  setProductQuantity={() => {
+                    return
+                  }}
+                />
               </Flex>
             </Flex>
           )}

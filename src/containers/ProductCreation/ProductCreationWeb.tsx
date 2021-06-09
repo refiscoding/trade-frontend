@@ -243,6 +243,10 @@ const ProductCreationWebFlow: React.FC<ProductCreationProps> = ({
                   setShowAddToCartModal={() => {
                     return
                   }}
+                  setCurrentNumber={() => {
+                    return
+                  }}
+                  currentNumber={1}
                 />
               </Flex>
             )}

@@ -20,7 +20,9 @@ const ProductComponent: React.FC<ProductProps> = ({
   product,
   isPreview,
   productImages,
+  productQuantity,
   productPackaging,
+  setProductQuantity,
   handleAddToCartClicked,
   handleAddToWishlistClicked
 }) => {
@@ -151,7 +153,11 @@ const ProductComponent: React.FC<ProductProps> = ({
               </Flex>
             )}
             <Flex mt={3}>
-              <QuantitySelectComponent count={1} available={product?.availableUnits as number} />
+              <QuantitySelectComponent
+                count={1}
+                available={product?.availableUnits as number}
+                setProductQuantity={setProductQuantity}
+              />
               <Text
                 mt={2}
                 ml={3}
