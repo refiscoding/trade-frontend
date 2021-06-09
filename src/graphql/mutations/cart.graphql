@@ -41,4 +41,19 @@ mutation fromCartToWishlist($input: FromCartToWishlistInput!) {
   }
 }
 
+mutation decrementItemQuantityMutation($input: DecrementQuantityInput!) {
+   decrementItemQuantity(input: $input) {
+    payload {
+      product {
+       ...product
+      }
+      cart {
+        ...cart
+      }
+    }
+    error
+  }
+}
+
+
 

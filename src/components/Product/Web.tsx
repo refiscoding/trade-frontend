@@ -5,15 +5,15 @@ import { useHistory } from 'react-router-dom'
 import { MapPin, Briefcase } from 'react-feather'
 import { Flex, Image, Text, Button, Grid, Tag } from '@chakra-ui/core'
 
-import Input from '../../components/Input'
 import Section from '../../components/Section'
 import ProductCard from '../../components/Card/ProductCard'
 
 import { ProductProps } from './props'
 import { images, theme } from '../../theme'
 import { Product } from '../../generated/graphql'
-import { useAppContext } from '../../context/AppProvider'
 import { VerifiedBadge } from '../../components/Product'
+import { useAppContext } from '../../context/AppProvider'
+import { QuantitySelectComponent } from '../../containers/ProductView/AddToCartModal'
 
 const ProductComponent: React.FC<ProductProps> = ({
   deals,
@@ -42,7 +42,7 @@ const ProductComponent: React.FC<ProductProps> = ({
 
   const businessAddress = addresses ? addresses[0]?.address : ''
 
-  const textColor = '#355EC0'
+  const textColor = theme.colors.blueText
   const coverImageWidth = drawerOpen ? '415px' : '450px'
   const coverImageHeight = drawerOpen ? '435px' : '435px'
 
@@ -151,25 +151,15 @@ const ProductComponent: React.FC<ProductProps> = ({
               </Flex>
             )}
             <Flex mt={3}>
-              <Input
-                name="quantity"
-                type="text"
-                placeholder="Enter quantity eg. 3"
-                style={{
-                  padding: 3,
-                  border: `1px solid ${theme.colors.background}`,
-                  width: '40%',
-                  marginTop: '15px'
-                }}
-              />
+              <QuantitySelectComponent count={1} available={product?.availableUnits as number} />
               <Text
-                mt={5}
+                mt={2}
                 ml={3}
                 color={textColor}
                 fontSize={12}
                 fontWeight={600}
               >{`${product?.availableUnits} units`}</Text>
-              <Text mt={5} ml={1} fontSize={12}>{`available`}</Text>
+              <Text mt={2} ml={1} fontSize={12}>{`available`}</Text>
             </Flex>
             <Flex flexWrap="wrap">
               <Button

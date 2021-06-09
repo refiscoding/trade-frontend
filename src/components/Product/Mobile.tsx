@@ -42,7 +42,7 @@ const ProductComponentMobile: React.FC<ProductProps> = ({
   const addresses = get(product, 'business.address')
   const businessAddress = addresses ? addresses[0]?.address : ''
 
-  const textColor = '#355EC0'
+  const textColor = theme.colors.blueText
 
   return (
     <Flex flexDirection="column">
