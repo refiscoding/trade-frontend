@@ -8,7 +8,6 @@ import CardFooter from '../CardFooter'
 import AddToWishlistButton from './AddToWishlistButton'
 
 import { Card } from '../../index'
-import { theme } from '../../../theme'
 import { CartProduct } from '../../../containers/Cart'
 import { Product, Maybe, Scalars } from '../../../generated/graphql'
 import { QuantitySelectComponent } from '../../../containers/ProductView/AddToCartModal'

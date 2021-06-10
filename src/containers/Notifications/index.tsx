@@ -33,10 +33,6 @@ const NotificationsPage: React.FC<NotificationsPageProps> = () => {
     query: '(min-width: 75em)'
   })
 
-  const isTinnyPhoneViewport = useMediaQuery({
-    query: '(min-width: 20em)'
-  })
-
   const handleBackArrow = () => {
     history.push('/')
   }
