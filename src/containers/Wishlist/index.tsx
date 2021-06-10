@@ -65,6 +65,7 @@ const WishlistPageHeader: React.FC<WishlistPageHeaderProps> = ({
 }
 
 const WishlistPage: React.FC = () => {
+  const discountedPriceMarker = 4000
   const toast = useToast()
   const history = useHistory()
   const [editing, setEditing] = React.useState<boolean | undefined>()
@@ -109,7 +110,7 @@ const WishlistPage: React.FC = () => {
       limit: 3,
       where: {
         // eslint-disable-next-line @typescript-eslint/camelcase
-        tradeFedCost_lt: 30
+        tradeFedCost_lt: discountedPriceMarker
       }
     },
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })

@@ -38,11 +38,7 @@ const Home: React.FC = () => {
   })
 
   const products = get(productData, 'products', null) as Product[]
-  const deals: Product[] = slice(
-    reverse(sortBy(products, [(product) => product?.discount])),
-    0,
-    3
-  )
+  const deals: Product[] = slice(reverse(sortBy(products, [(product) => product?.discount])), 0, 3)
 
   const navigateToProduct = (id: string | undefined) => {
     history.push(`/product/${id}`)
@@ -64,7 +60,7 @@ const Home: React.FC = () => {
             image={category?.categoryImage?.url}
             header={category?.name}
           />
-          <Section card title="Today’s Best Deals" >
+          <Section card title="Today’s Best Deals">
             {deals?.map((product: Product) => (
               <ProductCard key={product.id} product={product} handleClick={navigateToProduct} />
             ))}
