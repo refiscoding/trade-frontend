@@ -3,6 +3,7 @@ import * as React from 'react'
 import { isEmpty } from 'lodash'
 import { Form, Formik } from 'formik'
 import { ChevronRight } from 'react-feather'
+import { useMediaQuery } from 'react-responsive'
 import { Flex, Grid, Image, Tag, Spinner, Button } from '@chakra-ui/core'
 
 import { theme, images } from '../../theme'
@@ -83,10 +84,10 @@ const DeliveryItemsComponent: React.FC<DeliveryItemsComponentProps> = ({
 }) => {
   const actionTextStyle = { textDecoration: 'underline', cursor: 'pointer' }
 
-  const addressDetails = selectedAddress?.address?.split(",") ?? [];
-  const addressStrings = addressDetails[0]?.split("-");
-  const streetAddress = addressStrings[0]?.trim();
-  const buildingOrComplex = addressStrings[1]?.trim();
+  const addressDetails = selectedAddress?.address?.split(',') ?? []
+  const addressStrings = addressDetails[0]?.split('-')
+  const streetAddress = addressStrings[0]?.trim()
+  const buildingOrComplex = addressStrings[1]?.trim()
   return (
     <Grid
       p={5}
@@ -110,13 +111,10 @@ const DeliveryItemsComponent: React.FC<DeliveryItemsComponentProps> = ({
       </Flex>
       <Flex flexDirection="column">
         <Flex justify="space-between">
-          <Text mb={3} fontSize={14}>{selectedAddress?.name} </Text>
-          <Tag
-            fontSize={10}
-            size="sm"
-            background={theme.colors.tag}
-            color={theme.colors.tagText}
-          >
+          <Text mb={3} fontSize={14}>
+            {selectedAddress?.name}{' '}
+          </Text>
+          <Tag fontSize={10} size="sm" background={theme.colors.tag} color={theme.colors.tagText}>
             {selectedAddress?.type?.toUpperCase()}
           </Tag>
         </Flex>
@@ -124,7 +122,9 @@ const DeliveryItemsComponent: React.FC<DeliveryItemsComponentProps> = ({
         <Text fontSize={14}>{buildingOrComplex} </Text>
         <Text fontSize={14}>{addressDetails[1]} </Text>
         <Text fontSize={14}>{addressDetails[2]} </Text>
-        <Text mt={3} fontSize={14}>{selectedAddress?.postalCode} </Text>
+        <Text mt={3} fontSize={14}>
+          {selectedAddress?.postalCode}{' '}
+        </Text>
       </Flex>
     </Grid>
   )
@@ -140,18 +140,40 @@ type DeliveryInfoComponentProps = {
   setSelectedDeliveryTimeslot: React.Dispatch<React.SetStateAction<string | undefined>>
 }
 
-const DeliveryInfoComponent: React.FC<DeliveryInfoComponentProps> = ({ timeSlots, setSelectedDeliveryDate, setSelectedDeliveryTimeslot, selectedDeliveryTimeslot, setNextClicked, nextClicked, selectedDeliveryDate }) => {
+const DeliveryInfoComponent: React.FC<DeliveryInfoComponentProps> = ({
+  timeSlots,
+  setSelectedDeliveryDate,
+  setSelectedDeliveryTimeslot,
+  selectedDeliveryTimeslot,
+  setNextClicked,
+  nextClicked,
+  selectedDeliveryDate
+}) => {
+  const isTinyPhone = useMediaQuery({ query: '(max-width: 20em)' })
+  const isSmallPhone = useMediaQuery({ query: '(max-width: 25em)' })
+
+  const containerWidth = isTinyPhone ? '100%' : isSmallPhone ? '105%' : '105%'
+  const containerMarginLeft = isTinyPhone ? '-2.2rem' : isSmallPhone ? '-2rem' : '-1.2rem'
   return (
-    <Flex flexDirection="column">
-      <Flex
-        p={3}
-        pr={0}
-        borderRadius={5}
-        background={theme.colors.accent[50]}
-        boxShadow={theme.boxShadowMedium}
-      >
-        <DeliveryDetails selectedDeliveryDate={selectedDeliveryDate} setNextClicked={setNextClicked} nextClicked={nextClicked} mobileFlow timeSlots={timeSlots} setSelectedDeliveryDate={setSelectedDeliveryDate} setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot} selectedDeliveryTimeslot={selectedDeliveryTimeslot} />
-      </Flex>
+    <Flex
+      p={3}
+      pr={0}
+      ml={containerMarginLeft}
+      borderRadius={5}
+      background={theme.colors.accent[50]}
+      boxShadow={theme.boxShadowMedium}
+      width={containerWidth}
+    >
+      <DeliveryDetails
+        selectedDeliveryDate={selectedDeliveryDate}
+        setNextClicked={setNextClicked}
+        nextClicked={nextClicked}
+        mobileFlow
+        timeSlots={timeSlots}
+        setSelectedDeliveryDate={setSelectedDeliveryDate}
+        setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot}
+        selectedDeliveryTimeslot={selectedDeliveryTimeslot}
+      />
     </Flex>
   )
 }
@@ -183,7 +205,7 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
   selectedDeliveryTimeslot,
   showCheckoutSignatoryModal,
   setSelectedDeliveryTimeslot,
-  setShowCheckoutSignatoryModal,
+  setShowCheckoutSignatoryModal
 }) => {
   const [showPaymentOptions, setShowPaymentOptions] = React.useState<boolean>()
   const [showCheckoutItemsModal, setShowCheckoutItemsModal] = React.useState<boolean>()
@@ -211,110 +233,105 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
     setShowPaymentOptions(true)
   }
 
-  const deliveryDetailsIncluded = selectedAddress && selectedDeliveryTimeslot;
+  const deliveryDetailsIncluded = selectedAddress && selectedDeliveryTimeslot
 
   return (
-    <React.Fragment>
-      <PageWrap title="Checkout" alignSelf="center" width="100%">
-        {showDeleteCardModal && (
-          <DeleteItemsModal
-
-            confirmationText={confirmationTextCard}
-            handleCancelButtonClicked={() => { }}
-            handleDeleteButtonClicked={() => { }}
-          />
-        )}
-        {showCheckoutItemsModal && (
-          <CheckoutItemsModal
-            products={cartProducts}
-            setShowCheckoutModal={setShowCheckoutItemsModal}
-          />
-        )}
-        {showCheckoutSignatoryModal && (
-          <CheckoutSignatoryModal
-            setShowCheckoutModal={setShowCheckoutSignatoryModal}
-          />
-        )}
-        <Flex width="100%" mb={4} flexDirection="column">
-          <H3 textAlign="left" fontSize={18} fontWeight={600}>
-            Select Delivery Address
-          </H3>
-        </Flex>
-        <Formik
-          validationSchema={DeliveryAddressValidation}
-          initialValues={initialDeliveryAddressValues}
-          onSubmit={() => { }}
-        >
-          {({ errors }) => {
-            return (
-              <Form style={{ width: '100%' }}>
-                <Stepper activeStep={active}>
-                  <ActionButton setActive={setActiveStep}>
-                    <Text fontSize={12}>Add a Delivery Address</Text>
-                    <ChevronRight />
-                  </ActionButton>
-                  <DeliveryAddressForm />
-                  <DeliveryItemsComponent
-                    selectedAddress={selectedAddress}
-                    handleViewDeliveryItemsClicked={handleViewDeliveryItemsClicked}
-                  />
-                  {!showPaymentOptions && (
-                    <SelectPaymentComponent setShowPaymentOptions={setShowPaymentOptions} />
-                  )}
-                  {!showPaymentOptions && <CardInfo />}
-                </Stepper>
-                <Flex>
-                  {showPaymentOptions ? (
-                    <SelectPayment mobileFlow setShowPaymentOptions={showPayments} />
-                  ) : (
-                    <React.Fragment>
-                      {firstStage && !numberOfAddresses ? (
-                        <NoData header={noAddressDataHeader} caption={noAddressDataCaption} />
-                      ) : confirmPaymentStage && !numberOfCards ? (
-                        <NoData header={noCardDataHeader} caption={noCardDataCaption} />
-                      ) : firstStage ? (
-                        <DeliveryAddresses
-                          mobileFlow
-                          addresses={addresses}
-                          setActive={setActiveStep}
-                          confirmationTextAddress={confirmationTextAddress}
-                          setSelectedAddress={setSelectedAddress}
+    <PageWrap title="Checkout" alignSelf="center" width="100%">
+      {showDeleteCardModal && (
+        <DeleteItemsModal
+          confirmationText={confirmationTextCard}
+          handleCancelButtonClicked={() => { }}
+          handleDeleteButtonClicked={() => { }}
+        />
+      )}
+      {showCheckoutItemsModal && (
+        <CheckoutItemsModal
+          products={cartProducts}
+          setShowCheckoutModal={setShowCheckoutItemsModal}
+        />
+      )}
+      {showCheckoutSignatoryModal && (
+        <CheckoutSignatoryModal setShowCheckoutModal={setShowCheckoutSignatoryModal} />
+      )}
+      <Flex width="100%" mb={4} flexDirection="column">
+        <H3 textAlign="left" fontSize={18} fontWeight={600}>
+          Select Delivery Address
+        </H3>
+      </Flex>
+      <Formik
+        validationSchema={DeliveryAddressValidation}
+        initialValues={initialDeliveryAddressValues}
+        onSubmit={() => { }}
+      >
+        {({ errors }) => {
+          return (
+            <Form style={{ width: '100%' }}>
+              <Stepper activeStep={active}>
+                <ActionButton setActive={setActiveStep}>
+                  <Text fontSize={12}>Add a Delivery Address</Text>
+                  <ChevronRight />
+                </ActionButton>
+                <DeliveryAddressForm />
+                <DeliveryItemsComponent
+                  selectedAddress={selectedAddress}
+                  handleViewDeliveryItemsClicked={handleViewDeliveryItemsClicked}
+                />
+                {!showPaymentOptions && (
+                  <SelectPaymentComponent setShowPaymentOptions={setShowPaymentOptions} />
+                )}
+                {!showPaymentOptions && <CardInfo />}
+              </Stepper>
+              <Flex>
+                {showPaymentOptions ? (
+                  <SelectPayment mobileFlow setShowPaymentOptions={showPayments} />
+                ) : (
+                  <Flex width="100%">
+                    {firstStage && !numberOfAddresses ? (
+                      <NoData header={noAddressDataHeader} caption={noAddressDataCaption} />
+                    ) : confirmPaymentStage && !numberOfCards ? (
+                      <NoData header={noCardDataHeader} caption={noCardDataCaption} />
+                    ) : firstStage ? (
+                      <DeliveryAddresses
+                        mobileFlow
+                        addresses={addresses}
+                        setActive={setActiveStep}
+                        confirmationTextAddress={confirmationTextAddress}
+                        setSelectedAddress={setSelectedAddress}
+                      />
+                    ) : addDeliveryAddressStage ? (
+                      <NextButton
+                        type="submit"
+                        active={active}
+                        disabled={!isEmpty(errors)}
+                        setActive={() => setActiveStep(0)}
+                      >
+                        NEXT
+                      </NextButton>
+                    ) : confirmOrderStage ? (
+                      <Flex flexDirection="column">
+                        <DeliveryInfoComponent
+                          timeSlots={timeSlots}
+                          nextClicked={nextClicked}
+                          setNextClicked={setNextClicked}
+                          selectedDeliveryDate={selectedDeliveryDate}
+                          setSelectedDeliveryDate={setSelectedDeliveryDate}
+                          selectedDeliveryTimeslot={selectedDeliveryTimeslot}
+                          setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot}
                         />
-                      ) : addDeliveryAddressStage ? (
                         <NextButton
-                          type="submit"
                           active={active}
-                          disabled={!isEmpty(errors)}
-                          setActive={() => setActiveStep(0)}
+                          disabled={false}
+                          setActive={() => {
+                            if (deliveryDetailsIncluded) {
+                              setActiveStep(3)
+                            }
+                          }}
                         >
                           NEXT
                         </NextButton>
-                      ) : confirmOrderStage ? (
-                        <Flex flexDirection="column">
-                          <DeliveryInfoComponent
-                            timeSlots={timeSlots}
-                            nextClicked={nextClicked}
-                            setNextClicked={setNextClicked}
-                            selectedDeliveryDate={selectedDeliveryDate}
-                            setSelectedDeliveryDate={setSelectedDeliveryDate}
-                            selectedDeliveryTimeslot={selectedDeliveryTimeslot}
-                            setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot}
-                          />
-                          <NextButton
-                            active={active}
-                            disabled={false}
-                            setActive={
-                              () => {
-                                if (deliveryDetailsIncluded) {
-                                  setActiveStep(3)
-                                }
-                              }
-                            }
-                          >
-                            NEXT
-                          </NextButton>
-                        </Flex>
-                      ) : selectPaymentStage && (
+                      </Flex>
+                    ) : (
+                      selectPaymentStage && (
                         <Flex flexDirection="column">
                           <OrderSummary
                             mobileFlow
@@ -333,9 +350,7 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
                             variant="solid"
                             onClick={() => handlePay()}
                           >
-                            {
-                              createOrderLoading && <Spinner />
-                            }
+                            {createOrderLoading && <Spinner />}
                             {`PROCEED TO PAYMENT`}
                           </Button>
                           <Text
@@ -348,16 +363,16 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
                             Change Payment Method
                           </Text>
                         </Flex>
-                      )}
-                    </React.Fragment>
-                  )}
-                </Flex>
-              </Form>
-            )
-          }}
-        </Formik>
-      </PageWrap>
-    </React.Fragment>
+                      )
+                    )}
+                  </Flex>
+                )}
+              </Flex>
+            </Form>
+          )
+        }}
+      </Formik>
+    </PageWrap>
   )
 }
 

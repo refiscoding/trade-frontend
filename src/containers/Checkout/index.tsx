@@ -15,7 +15,12 @@ import { TimeSlot } from './AddressComponent'
 import { timeSlots, cards } from './dummyData'
 import { useAuthContext } from '../../context/AuthProvider'
 import { ERROR_TOAST, mapsScriptUrl } from '../../constants'
-import { useFetchUsersCartQuery, ComponentLocationAddress, useCreateCheckoutOrderMutation, ComponentCartCartProduct } from '../../generated/graphql';
+import {
+  useFetchUsersCartQuery,
+  ComponentCartCartProduct,
+  ComponentLocationAddress,
+  useCreateCheckoutOrderMutation
+} from '../../generated/graphql'
 
 export const DeliveryAddressValidation = Yup.object().shape({
   street: Yup.string().required('Street Address is required'),
@@ -93,18 +98,22 @@ const CheckoutPage: React.FC = () => {
   >()
   const [showDeleteItemsModal, setShowDeleteItemsModal] = React.useState<boolean | undefined>()
   const [showDeleteCardModal, setShowDeleteCardModal] = React.useState<boolean | undefined>()
-  const [showCheckoutSignatoryModal, setShowCheckoutSignatoryModal] = React.useState<boolean | undefined>()
+  const [showCheckoutSignatoryModal, setShowCheckoutSignatoryModal] = React.useState<
+    boolean | undefined
+  >()
   const [selectedDeliveryDate, setSelectedDeliveryDate] = React.useState<Date | Date[]>(new Date())
-  const [selectedDeliveryTimeslot, setSelectedDeliveryTimeslot] = React.useState<string | undefined>()
+  const [selectedDeliveryTimeslot, setSelectedDeliveryTimeslot] = React.useState<
+    string | undefined
+  >()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
 
   const [createOrder, { loading: createOrderLoading }] = useCreateCheckoutOrderMutation({
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
     onCompleted: async ({ createCheckoutOrder }) => {
-      const transactionPaymentUrl = createCheckoutOrder.payload?.fnbPaymentOptionsUrl;
-      window.open(transactionPaymentUrl, "_blank", "noopener, noreferrer, resizable");
+      const transactionPaymentUrl = createCheckoutOrder.payload?.fnbPaymentOptionsUrl
+      window.open(transactionPaymentUrl, '_blank', 'noopener, noreferrer, resizable')
     }
-  });
+  })
 
   const noAddressDataHeader = 'No Delivery Addresses Here...'
   const noCardDataHeader = 'No Payment Cards Here...'
@@ -155,7 +164,7 @@ const CheckoutPage: React.FC = () => {
         }
       })
     }
-  };
+  }
 
   return (
     <PageWrap title="Checkout" script={mapsScriptUrl}>
