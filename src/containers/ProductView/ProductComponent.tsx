@@ -79,8 +79,6 @@ const ProductComponent: React.FC<ProductProps> = ({
   const productImages = product?.productImages?.map((image: UploadFile) => image?.url)
   const isPreview = !product?.coverImage?.preview
 
-  console.log('Wagwaaan', currentNumber)
-
   return (
     <React.Fragment>
       {isWebViewport ? (

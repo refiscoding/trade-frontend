@@ -155,6 +155,8 @@ const ProductComponent: React.FC<ProductProps> = ({
             <Flex mt={3}>
               <QuantitySelectComponent
                 count={1}
+                isCart={false}
+                productId={product?.id}
                 available={product?.availableUnits as number}
                 setProductQuantity={setProductQuantity}
               />

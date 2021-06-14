@@ -2,12 +2,18 @@ import * as React from 'react'
 import styled from '@emotion/styled'
 
 import { get } from 'lodash'
+import { ApolloError } from 'apollo-client'
 import { useMediaQuery } from 'react-responsive'
-import { Image, Grid, Button, Flex, FlexProps } from '@chakra-ui/core'
+import { Image, Grid, Button, Flex, FlexProps, useToast } from '@chakra-ui/core'
 
-import { Text } from '../../typography'
 import { theme } from '../../theme'
+import { Text } from '../../typography'
 import { ModalWrap } from '../../components'
+import { ERROR_TOAST } from '../../constants'
+import {
+  useIncrementItemQuantityMutation,
+  useDecrementItemQuantityMutation
+} from '../../generated/graphql'
 
 const QuantityButton = styled.div`
   border: 1px solid ${theme.colors.background};
@@ -38,6 +44,8 @@ type CartModalProductComponentProps = FlexProps & {
   productQuantity: number
 }
 type QuantityComponentProps = FlexProps & {
+  isCart: boolean
+  productId: string
   count: number | undefined
   available?: number | undefined
   setProductQuantity: React.Dispatch<React.SetStateAction<number>>
@@ -105,33 +113,65 @@ const CartModalProductComponent: React.FC<CartModalProductComponentProps> = ({
 
 export const QuantitySelectComponent: React.FC<QuantityComponentProps> = ({
   count,
+  isCart,
   available,
+  productId,
   setProductQuantity
 }) => {
-  const [currentNumber, setCurrentNumber] = React.useState<number>(1)
+  const toast = useToast()
+  const [currentNumber, setCurrentNumber] = React.useState<number>(count || 1)
   const [currentNumberColor, setCurrentNumberColor] = React.useState<string>(theme.colors.blueText)
+
+  const [incrementItem] = useIncrementItemQuantityMutation({
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
+    awaitRefetchQueries: true
+  })
+  const [decrementItem] = useDecrementItemQuantityMutation({
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
+    awaitRefetchQueries: true
+  })
 
   const errorColor = '#f53131'
 
-  const increment = () => {
-    if (available) {
-      const outOfStock = currentNumber >= available
-      if (outOfStock) {
-        setCurrentNumberColor(errorColor)
-      } else {
-        setCurrentNumber((currentNumber || 1) + 1)
+  const increment = async () => {
+    if (isCart) {
+      await incrementItem({
+        variables: {
+          input: {
+            productToReduce: productId
+          }
+        }
+      })
+    } else {
+      if (available) {
+        const outOfStock = currentNumber >= available
+        if (outOfStock) {
+          setCurrentNumberColor(errorColor)
+        } else {
+          setCurrentNumber((currentNumber || 1) + 1)
+        }
       }
     }
   }
-  const decrement = () => {
-    setCurrentNumber((currentNumber === 1 ? 2 : currentNumber) - 1)
+  const decrement = async () => {
+    if (isCart) {
+      await decrementItem({
+        variables: {
+          input: {
+            productToReduce: productId
+          }
+        }
+      })
+    } else {
+      setCurrentNumber((currentNumber === 1 ? 2 : currentNumber) - 1)
+    }
   }
 
   React.useEffect(() => {
-    if (count) {
+    if (isCart) {
       setCurrentNumber(count as number)
     }
-  }, [count])
+  }, [count, isCart])
 
   React.useEffect(() => {
     setProductQuantity(currentNumber)
@@ -146,7 +186,7 @@ export const QuantitySelectComponent: React.FC<QuantityComponentProps> = ({
   }, [available, currentNumber])
 
   return (
-    <React.Fragment>
+    <Flex>
       <QuantityButton onClick={decrement}>-</QuantityButton>
       <Text
         mx={3}
@@ -156,7 +196,7 @@ export const QuantitySelectComponent: React.FC<QuantityComponentProps> = ({
         fontWeight={600}
       >{`${currentNumber}`}</Text>
       <QuantityButton onClick={increment}>+</QuantityButton>
-    </React.Fragment>
+    </Flex>
   )
 }
 
@@ -164,7 +204,6 @@ const AddToCartModal: React.FC<AddToCartModalProps> = ({
   handleContinueShoppingButtonClicked,
   handleGoToCartButtonClicked,
   handleCancelButtonClicked,
-  setProductQuantity,
   productQuantity,
   product
 }) => {
@@ -178,10 +217,6 @@ const AddToCartModal: React.FC<AddToCartModalProps> = ({
       <Flex padding={5} pb={0}>
         <Grid gridTemplateRows="150px 1fr 1fr 1fr">
           <CartModalProductComponent product={product} productQuantity={productQuantity} />
-          {/* <QuantitySelectComponent
-            count={productQuantity}
-            setProductQuantity={setProductQuantity}
-          /> */}
           <Button
             width="100%"
             mt={4}

@@ -145,6 +145,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <Flex mt={2} alignItems="center" height="20px">
               <Flex>
                 <QuantitySelectComponent
+                  isCart
+                  productId={product?.id || ''}
                   count={productsOnly && productsOnly[0]?.quantity}
                   setProductQuantity={() => {
                     return
