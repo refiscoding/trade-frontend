@@ -41,9 +41,7 @@ const ProductComponent: React.FC<ProductProps> = ({
   const discount = Math.round(((maxSellCost - tradeFedCost) / maxSellCost) * 100)
 
   const addresses = get(product, 'business.address')
-
   const businessAddress = addresses ? addresses[0]?.address : ''
-
   const textColor = theme.colors.blueText
   const coverImageWidth = drawerOpen ? '415px' : '450px'
   const coverImageHeight = drawerOpen ? '435px' : '435px'
