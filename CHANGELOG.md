@@ -1,3 +1,10 @@
+## [1.4.1](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.4.0...v1.4.1) (2021-06-15)
+
+
+### Bug Fixes
+
+* **footer:** fix footer links ([7d3fc5d](http://bitbucket.org/sovtech/tradefed-frontend/commits/7d3fc5d68007598895bd650f13878b9a678cd060))
+
 # [1.4.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.3.0...v1.4.0) (2021-06-11)
 
 
