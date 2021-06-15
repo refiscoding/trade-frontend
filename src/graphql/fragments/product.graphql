@@ -3,8 +3,6 @@
 # import '/fragments/category.graphql'
 fragment product on Product {
     id
-    created_at
-    updated_at
     name
     description
     shortDescription

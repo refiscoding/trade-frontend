@@ -1,9 +1,10 @@
-import { Flex, Image, Text } from '@chakra-ui/core'
 import * as React from 'react'
-import { ColorProps } from 'styled-system'
-import images from '../../theme/images'
-import dayjs from 'dayjs';
+import dayjs from 'dayjs'
+
 import { useHistory } from 'react-router'
+import { ColorProps } from 'styled-system'
+import { Flex, Text } from '@chakra-ui/core'
+import { Facebook, Linkedin } from 'react-feather'
 
 type FooterProps = ColorProps & {
   removePadding?: boolean
@@ -33,8 +34,12 @@ const footerItems = [
 ]
 
 const Footer: React.FC<FooterProps> = ({ removePadding }) => {
-  const currentYear = dayjs().format('YYYY');
+  const currentYear = dayjs().format('YYYY')
   const history = useHistory()
+
+  const facebookLink = 'https://www.facebook.com/TradeFed'
+  const linkedInLink = 'https://www.linkedin.com/company/tradefedsolutions/'
+
   return (
     <Flex
       width="100vw"
@@ -44,12 +49,47 @@ const Footer: React.FC<FooterProps> = ({ removePadding }) => {
       mt={10}
       mb="-1rem"
       alignItems="center"
-      ml={removePadding ? "-16px" : 0}
+      ml={removePadding ? '-16px' : 0}
     >
-      <Flex m={2} mt={4} width="50%" justifyContent="space-evenly">
-        <Image width="30px" height="30px" src={images.FacebookFooter} />
-        <Image width="30px" height="30px" src={images.TwitterFooter} />
-        <Image width="30px" height="30px" src={images.InstagramFooter} />
+      <Flex mt={3} width="20%" alignSelf="center" justifyContent="space-around">
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={facebookLink}
+          style={{
+            border: '2px solid white',
+            borderRadius: '50%',
+            height: 50,
+            width: 50,
+            padding: 5,
+            position: 'relative'
+          }}
+        >
+          <Facebook
+            style={{ position: 'absolute', top: 10, left: 10 }}
+            fill="white"
+            stroke="white"
+          />
+        </a>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href={linkedInLink}
+          style={{
+            border: '2px solid white',
+            borderRadius: '50%',
+            height: 50,
+            width: 50,
+            padding: 5,
+            position: 'relative'
+          }}
+        >
+          <Linkedin
+            style={{ position: 'absolute', top: 10, left: 10 }}
+            fill="white"
+            stroke="white"
+          />
+        </a>
       </Flex>
       <Flex m={2} justifyContent="space-evenly">
         {footerItems.map((item, i) => (

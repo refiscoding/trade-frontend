@@ -2,7 +2,7 @@ import { get } from 'lodash'
 import * as React from 'react'
 import { useHistory } from 'react-router-dom'
 import { ApolloError } from 'apollo-client'
-import { useMediaQuery } from "react-responsive";
+import { useMediaQuery } from 'react-responsive'
 import { Flex, Grid, GridProps, useToast, Button, Spinner } from '@chakra-ui/core'
 
 import DeleteItemsModal from '../../components/DeleteItemsModal'
@@ -22,7 +22,7 @@ import {
   useProductQuery,
   useFetchUsersCartQuery,
   useFromCartToWishlistMutation,
-  useRemoveProductsFromCartMutation,
+  useRemoveProductsFromCartMutation
 } from '../../generated/graphql'
 
 export type CartProduct = {
@@ -60,24 +60,23 @@ const CartPageHeader: React.FC<CartPageHeaderProps> = ({
         <H3 textAlign="left" fontSize={18} fontWeight={600}>
           My Cart
         </H3>
-        {
-          isTabletOrMobile
-            && !editing
-            ? (
-              <Button justifySelf="end" width="70px" onClick={onClick} border={`1px solid ${theme.colors.brand[500]}`} background="white">
-                <Text fontSize="12px">
-                  EDIT
-                </Text>
-              </Button>
-            )
-            : isTabletOrMobile && (
-              <Button width="70px" variantColor="brand" onClick={onClick}>
-                <Text fontSize="12px">
-                  DONE
-                </Text>
-              </Button>
-            )
-        }
+        {isTabletOrMobile && !editing ? (
+          <Button
+            justifySelf="end"
+            width="70px"
+            onClick={onClick}
+            border={`1px solid ${theme.colors.brand[500]}`}
+            background="white"
+          >
+            <Text fontSize="12px">EDIT</Text>
+          </Button>
+        ) : (
+          isTabletOrMobile && (
+            <Button width="70px" variantColor="brand" onClick={onClick}>
+              <Text fontSize="12px">DONE</Text>
+            </Button>
+          )
+        )}
       </Flex>
       {isTabletOrMobile && (
         <Flex width="100%" mb={3} justifyContent="space-between">
@@ -89,6 +88,7 @@ const CartPageHeader: React.FC<CartPageHeaderProps> = ({
 }
 
 const CartPage: React.FC = () => {
+  const discountedPriceMarker = 4000
   const toast = useToast()
   const history = useHistory()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
@@ -129,9 +129,9 @@ const CartPage: React.FC = () => {
       }
     },
     awaitRefetchQueries: true
-  });
+  })
 
-  const products = get(userCart, 'findCart.payload.products', null);
+  const products = get(userCart, 'findCart.payload.products', null)
   const noCart = get(userCart, 'findCart.payload', null)
   const productsOnly = products?.map((entry: CartProduct) => entry.product)
   const cartTotal = get(userCart, 'findCart.payload.total', null)
@@ -141,7 +141,8 @@ const CartPage: React.FC = () => {
     variables: {
       limit: 3,
       where: {
-        tradeFedCost_lt: 30
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        tradeFedCost_lt: discountedPriceMarker
       }
     },
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
@@ -156,7 +157,9 @@ const CartPage: React.FC = () => {
   })
   const deals = get(productData, 'products', null) as Product[]
 
-  const handleCartProductClickedEditing = (id: Scalars['ID']) => { return; }
+  const handleCartProductClickedEditing = (id: Scalars['ID']) => {
+    return
+  }
   const handleCartProductClickedNormal = async (id: Scalars['ID']) => {
     const productToRemove = {
       productToMove: [id]
@@ -208,7 +211,7 @@ const CartPage: React.FC = () => {
     refetch()
   }, [refetch])
 
-  const confirmationText = `You are about to delete these items in your cart? Once they are removed, you’ll have to re-add them to your cart manually.`;
+  const confirmationText = `You are about to delete these items in your cart? Once they are removed, you’ll have to re-add them to your cart manually.`
 
   return (
     <PageWrap
@@ -231,7 +234,7 @@ const CartPage: React.FC = () => {
             numberOfItems={itemsCount}
             cartTotal={cartTotal}
           />
-          <Flex width={isTabletOrMobile ? "100%" : "80%"} justifyContent="space-between">
+          <Flex width={isTabletOrMobile ? '100%' : '80%'} justifyContent="space-between">
             <Flex width="100%" flexDirection="column">
               {productsOnly?.map((product: Product) => (
                 <ProductCard
@@ -240,8 +243,9 @@ const CartPage: React.FC = () => {
                   isWishlist={false}
                   isCart
                   product={product}
+                  products={products}
                   handleClick={editing ? handleCartProductClickedEditing : navigateToProduct}
-                  editing={editing}
+                  editing={editing || false}
                   handleIconClick={handleCartProductClickedNormal}
                 />
               ))}

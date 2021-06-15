@@ -17,7 +17,10 @@ mutation removeProductsFromCart($input: RemoveProductFromCartInput!) {
         ...cart
       }
       removedItems {
-        ...product
+        quantity
+        product {
+          ...product
+        }
       }
         missingItems
       }
@@ -41,4 +44,30 @@ mutation fromCartToWishlist($input: FromCartToWishlistInput!) {
   }
 }
 
+mutation decrementItemQuantity($input: ChangeQuantityInput!) {
+   decrementItemQuantity(input: $input) {
+    payload {
+      product {
+        ...product
+      }
+      cart {
+        ...cart
+      }
+    }
+    error
+  }
+}
 
+mutation incrementItemQuantity($input: ChangeQuantityInput!) {
+   incrementItemQuantity(input: $input) {
+    payload {
+      product {
+        ...product
+      }
+      cart {
+        ...cart
+      }
+    }
+    error
+  }
+}

@@ -20,7 +20,6 @@ import { useAuthContext } from '../../context/AuthProvider'
 import { ERROR_TOAST, SEARCH_INDEX, searchClient } from '../../constants'
 import { Category, Product, useCategoryQuery, useProductQuery } from '../../generated/graphql'
 
-
 type filterParams = {
   minPrice: string
   maxPrice: string
@@ -69,11 +68,7 @@ const Home: React.FC = () => {
 
   const categories = get(data, 'categories', null) as Category[]
   const products = get(productData, 'products', null) as Product[]
-  const deals: Product[] = slice(
-    reverse(sortBy(products, [(product) => product?.discount])),
-    0,
-    3
-  )
+  const deals: Product[] = slice(reverse(sortBy(products, [(product) => product?.discount])), 0, 3)
 
   React.useEffect(() => {
     if (isAuthenticated && !user?.profileCompleted) {
@@ -119,14 +114,13 @@ const Home: React.FC = () => {
     >
       <InstantSearch indexName={SEARCH_INDEX} searchClient={searchClient}>
         <Flex flexDirection="column" width="100%" alignItems="center">
-          {
-            isTabletOrMobile &&
+          {isTabletOrMobile && (
             <SearchBar
               handleFilter={handleFilter}
               handleSearch={handleSearch}
               handleReset={handleReset}
             />
-          }
+          )}
           {isFiltered ? (
             <Section title="All filtered items" borderBottomWidth={10} maxWidth={'1100px'}>
               {products?.length > 0 ? (

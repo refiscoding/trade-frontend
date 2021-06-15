@@ -1,19 +1,19 @@
-import * as React from 'react';
+import * as React from 'react'
 
-import { isEmpty } from 'lodash';
-import { Button, Flex } from '@chakra-ui/core';
-import { Form, Formik, FormikProps } from 'formik';
+import { isEmpty } from 'lodash'
+import { Button, Flex } from '@chakra-ui/core'
+import { Form, Formik, FormikProps } from 'formik'
 
-import ProductInfo from './productInfo';
-import ProductDetails from './productDetails';
-import ProductComponent from '../ProductView/ProductComponent';
+import ProductInfo from './productInfo'
+import ProductDetails from './productDetails'
+import ProductComponent from '../ProductView/ProductComponent'
 
-import { PageWrap } from '../../layouts';
-import { formatError } from '../../utils';
-import { H3, Text } from '../../typography';
-import { MotionFlex, Stepper } from '../../components';
+import { PageWrap } from '../../layouts'
+import { formatError } from '../../utils'
+import { H3, Text } from '../../typography'
+import { MotionFlex, Stepper } from '../../components'
 
-import { ProductFormValidation, initialValues, ProductValues, ProductCreationProps } from ".";
+import { ProductFormValidation, initialValues, ProductValues, ProductCreationProps } from '.'
 
 const ProductCreationMobileFlow: React.FC<ProductCreationProps> = ({
   active,
@@ -26,7 +26,6 @@ const ProductCreationMobileFlow: React.FC<ProductCreationProps> = ({
   handleSubmitButton,
   imageValues: imageByType
 }) => {
-
   return (
     <PageWrap title="Add Product" alignSelf="center" width={'100%'}>
       <Flex width="100%" mb={4} flexDirection="column">
@@ -51,24 +50,37 @@ const ProductCreationMobileFlow: React.FC<ProductCreationProps> = ({
         {({ isSubmitting, status, values, errors }: FormikProps<ProductValues>) => (
           <Form style={{ width: '100%' }}>
             <Stepper activeStep={active}>
-              <ProductInfo packagingError={errors?.packaging} values={values} categories={mappedCategories} handleSetTags={handleSetTags}/>
-              <ProductDetails values={values} setImage={handleImages} imageValues={imageByType}/>
+              <ProductInfo
+                packagingError={errors?.packaging || ''}
+                values={values}
+                categories={mappedCategories}
+                handleSetTags={handleSetTags}
+              />
+              <ProductDetails values={values} setImage={handleImages} imageValues={imageByType} />
               <Flex
                 position="relative"
                 left={0}
                 flexDirection="column"
                 alignItems="center"
-                width={"100%"}
+                width={'100%'}
               >
                 <ProductComponent
                   product={{
                     ...mapProducts(values),
                     coverImage: {
                       preview: true,
-                      url: imageByType?.coverImage ? window.URL.createObjectURL(imageByType?.coverImage) : ""
+                      url: imageByType?.coverImage
+                        ? window.URL.createObjectURL(imageByType?.coverImage)
+                        : ''
                     }
                   }}
-                  setShowAddToCartModal={() => {}}
+                  setShowAddToCartModal={() => {
+                    return
+                  }}
+                  setCurrentNumber={() => {
+                    return
+                  }}
+                  currentNumber={1}
                 />
               </Flex>
             </Stepper>

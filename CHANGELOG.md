@@ -1,3 +1,18 @@
+## [1.4.1](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.4.0...v1.4.1) (2021-06-15)
+
+
+### Bug Fixes
+
+* **footer:** fix footer links ([7d3fc5d](http://bitbucket.org/sovtech/tradefed-frontend/commits/7d3fc5d68007598895bd650f13878b9a678cd060))
+
+# [1.4.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.3.0...v1.4.0) (2021-06-11)
+
+
+### Features
+
+* **google-anayltics:** implements google analytics ([e52ef96](http://bitbucket.org/sovtech/tradefed-frontend/commits/e52ef9662b38cc4ef82a970928ae3de392b4d936))
+* **hotjar:** implements hotjar integration ([21ee812](http://bitbucket.org/sovtech/tradefed-frontend/commits/21ee812b776dbfb992b6823e0f75077572f5eff1))
+
 # [1.3.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.2.1...v1.3.0) (2021-06-07)
 
 

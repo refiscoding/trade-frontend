@@ -1,27 +1,42 @@
-import * as React from 'react';
-import { useHistory, useLocation } from 'react-router';
-import { useToast } from '@chakra-ui/core';
+import * as React from 'react'
+import { useHistory, useLocation } from 'react-router'
+import { useToast } from '@chakra-ui/core'
 import { ApolloError } from 'apollo-client'
-import { useMediaQuery } from "react-responsive";
+import { useMediaQuery } from 'react-responsive'
 import { sortBy, reverse, slice, get } from 'lodash'
 
-import { ProductMobile, ProductWeb } from "../../components/Product";
-import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants/index';
-import { useAddProductToWishlistMutation, useAddProductToCartMutation, Product, useProductQuery, UploadFile } from "../../generated/graphql";
+import { ProductMobile, ProductWeb } from '../../components/Product'
+import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants/index'
+import {
+  useAddProductToWishlistMutation,
+  useAddProductToCartMutation,
+  Product,
+  useProductQuery,
+  UploadFile
+} from '../../generated/graphql'
 
 type ProductProps = {
   product?: any
   setShowAddToCartModal: () => void
-};
+  setCurrentNumber: React.Dispatch<React.SetStateAction<number>>
+  currentNumber: number
+}
 
-const ProductComponent: React.FC<ProductProps> = ({ product, setShowAddToCartModal }) => {
-  const toast = useToast();
-  const location = useLocation();
-  const history = useHistory();
+const ProductComponent: React.FC<ProductProps> = ({
+  product,
+  setShowAddToCartModal,
+  setCurrentNumber,
+  currentNumber
+}) => {
+  const toast = useToast()
+  const location = useLocation()
+  const history = useHistory()
   const isWebViewport = useMediaQuery({
-    query: "(min-width: 75em)"
-  });
-  const addProductPage = location?.pathname?.split("/")[1] === "add-product";
+    query: '(min-width: 75em)'
+  })
+  // const [currentNumber, setCurrentNumber] = React.useState<string>('')
+
+  const addProductPage = location?.pathname?.split('/')[1] === 'add-product'
   const [addProductToWishlist] = useAddProductToWishlistMutation({
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
     onCompleted: async () => {
@@ -29,9 +44,9 @@ const ProductComponent: React.FC<ProductProps> = ({ product, setShowAddToCartMod
         description: 'Item successfully added to your wish list!',
         ...SUCCESS_TOAST
       })
-      history.push("/wishlist");
+      history.push('/wishlist')
     }
-  });
+  })
   const [addProductToCart, { loading }] = useAddProductToCartMutation({
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
     onCompleted: async () => {
@@ -40,59 +55,57 @@ const ProductComponent: React.FC<ProductProps> = ({ product, setShowAddToCartMod
         ...SUCCESS_TOAST
       })
     }
-  });
+  })
   const { data: productData } = useProductQuery({
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
-  });
+  })
   const products = get(productData, 'products', null) as Product[]
-  const deals: Product[] = slice(
-    reverse(sortBy(products, [(product) => product?.discount])),
-    0,
-    3
-  )
+  const deals: Product[] = slice(reverse(sortBy(products, [(product) => product?.discount])), 0, 3)
   const handleAddToWishlistClicked = async (id: string) => {
     if (!addProductPage) {
-      await addProductToWishlist({ variables: { input: { productToAdd: id } } });
-    };
-  };
+      await addProductToWishlist({ variables: { input: { productToAdd: id } } })
+    }
+  }
   const handleAddToCartClicked = async (id: string) => {
     if (!addProductPage) {
-      await addProductToCart({ variables: { input: { productToAdd: id } } });
-      !loading && setShowAddToCartModal();
-    };
-  };
-  const productPackagingType = (product?.packaging?.split("per")) ?? [];
-  const productPackaging = productPackagingType?.length > 1 ? "pack" : product?.packaging;
-  const productImages = product?.productImages?.map((image: UploadFile) => image?.url);
+      await addProductToCart({
+        variables: { input: { productToAdd: id, quantity: `${currentNumber}` } }
+      })
+      !loading && setShowAddToCartModal()
+    }
+  }
+  const productPackagingType = product?.packaging?.split('per') ?? []
+  const productPackaging = productPackagingType?.length > 1 ? 'pack' : product?.packaging
+  const productImages = product?.productImages?.map((image: UploadFile) => image?.url)
   const isPreview = !product?.coverImage?.preview
 
   return (
     <React.Fragment>
-      {
-        isWebViewport
-          ? (
-            <ProductWeb
-              deals={deals}
-              product={product}
-              isPreview={isPreview}
-              productImages={productImages}
-              productPackaging={productPackaging}
-              handleAddToCartClicked={handleAddToCartClicked}
-              handleAddToWishlistClicked={handleAddToWishlistClicked}
-            />
-          )
-          : (
-            <ProductMobile
-              deals={deals}
-              product={product}
-              isPreview={isPreview}
-              productImages={productImages}
-              productPackaging={productPackaging}
-              handleAddToCartClicked={handleAddToCartClicked}
-              handleAddToWishlistClicked={handleAddToWishlistClicked}
-            />
-          )
-      }
+      {isWebViewport ? (
+        <ProductWeb
+          deals={deals}
+          product={product}
+          isPreview={isPreview}
+          productImages={productImages}
+          productQuantity={currentNumber}
+          setProductQuantity={setCurrentNumber}
+          productPackaging={productPackaging}
+          handleAddToCartClicked={handleAddToCartClicked}
+          handleAddToWishlistClicked={handleAddToWishlistClicked}
+        />
+      ) : (
+        <ProductMobile
+          deals={deals}
+          product={product}
+          isPreview={isPreview}
+          productImages={productImages}
+          productQuantity={currentNumber}
+          setProductQuantity={setCurrentNumber}
+          productPackaging={productPackaging}
+          handleAddToCartClicked={handleAddToCartClicked}
+          handleAddToWishlistClicked={handleAddToWishlistClicked}
+        />
+      )}
     </React.Fragment>
   )
 }

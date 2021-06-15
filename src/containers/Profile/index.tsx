@@ -1,10 +1,10 @@
 import * as React from 'react'
 import dayjs from 'dayjs'
 
-import { ChevronRight } from 'react-feather'
 import { useHistory } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import { Flex, Image, Text } from '@chakra-ui/core'
+import { ChevronRight, User, Clipboard, Briefcase, MapPin } from 'react-feather'
 
 import { PageWrap } from '../../layouts'
 import { H3, H5 } from '../../typography'
@@ -35,7 +35,7 @@ const Profile: React.FC<ProfileProps> = () => {
     history.push('/orders')
   }
   const handleAddressBook = () => {
-    history.push('/addresses');
+    history.push('/addresses')
   }
 
   return (
@@ -72,7 +72,7 @@ const Profile: React.FC<ProfileProps> = () => {
       <Flex
         mt={5}
         pl={5}
-        height="50px"
+        height="70px"
         borderRadius="10px"
         boxShadow="0 2px 4px 0 rgba(0,0,0,0.25)"
         width="100%"
@@ -81,15 +81,16 @@ const Profile: React.FC<ProfileProps> = () => {
         onClick={() => navigateToDetails()}
         backgroundColor="white"
       >
-        <Flex width="80%">
-          <Text fontSize={12}>Personal Information & Preference</Text>
+        <User />
+        <Flex width="100%" ml={3}>
+          <Text fontSize={12}>Personal Information</Text>
         </Flex>
         <ChevronRight />
       </Flex>
       <Flex
         mt={5}
         pl={5}
-        height="50px"
+        height="70px"
         borderRadius="10px"
         boxShadow="0 2px 4px 0 rgba(0,0,0,0.25)"
         width="100%"
@@ -98,7 +99,8 @@ const Profile: React.FC<ProfileProps> = () => {
         onClick={() => navigateToOrderHistory()}
         backgroundColor="white"
       >
-        <Flex width="80%">
+        <Clipboard />
+        <Flex width="100%" ml={3}>
           <Text fontSize={12}>My Order History</Text>
         </Flex>
         <ChevronRight />
@@ -106,7 +108,7 @@ const Profile: React.FC<ProfileProps> = () => {
       <Flex
         mt={5}
         pl={5}
-        height="50px"
+        height="70px"
         borderRadius="10px"
         boxShadow="0 2px 4px 0 rgba(0,0,0,0.25)"
         width="100%"
@@ -115,7 +117,8 @@ const Profile: React.FC<ProfileProps> = () => {
         onClick={() => handleBecomeSeller()}
         backgroundColor="white"
       >
-        <Flex width="80%">
+        <Briefcase />
+        <Flex width="100%" ml={3}>
           <Text fontSize={12}>{isSellerApproved ? 'Product Management' : 'Become a Seller'}</Text>
         </Flex>
         <ChevronRight />
@@ -123,7 +126,7 @@ const Profile: React.FC<ProfileProps> = () => {
       <Flex
         mt={5}
         pl={5}
-        height="50px"
+        height="70px"
         borderRadius="10px"
         boxShadow="0 2px 4px 0 rgba(0,0,0,0.25)"
         width="100%"
@@ -132,7 +135,8 @@ const Profile: React.FC<ProfileProps> = () => {
         onClick={() => handleAddressBook()}
         backgroundColor="white"
       >
-        <Flex width="80%">
+        <MapPin />
+        <Flex width="100%" ml={3}>
           <Text fontSize={12}>{`My Address Book`}</Text>
         </Flex>
         <ChevronRight />
