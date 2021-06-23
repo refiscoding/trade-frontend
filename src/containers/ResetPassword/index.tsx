@@ -3,7 +3,7 @@ import * as React from 'react'
 import { Form, Formik, FormikProps } from 'formik'
 import { Button, Flex, useToast, Grid } from '@chakra-ui/core'
 import { useHistory, useLocation } from 'react-router-dom'
-import { useMediaQuery } from "react-responsive";
+import { useMediaQuery } from 'react-responsive'
 
 import strapiHelpers from '../../utils/strapiHelpers'
 
@@ -30,8 +30,7 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
   const toast = useToast()
   const location = useLocation()
   const history = useHistory()
-  const isWebView = useMediaQuery({ query: '(min-width: 40em)' });
-
+  const isWebView = useMediaQuery({ query: '(min-width: 40em)' })
 
   const INITIAL_VALUES = {
     password: '',
@@ -39,11 +38,11 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
     code: new URLSearchParams(location.search).get('code') as string
   }
 
-  const ctaContainerSize = isWebView ? "164px 164px" : "180px 180px";
+  const ctaContainerSize = isWebView ? '164px 164px' : '180px 180px'
 
   const handleCancelClicked = () => {
-    history.push("/login");
-  };
+    history.push('/login')
+  }
 
   return (
     <PageWrap
@@ -80,13 +79,12 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
           {({ isSubmitting, status }: FormikProps<typeof INITIAL_VALUES>) => (
             <Form style={{ width: '100%' }}>
               <Flex mb={10}>
-                <Text textAlign="center" color={theme.colors.dimText}>Please enter and confirm your new account password.</Text>
+                <Text textAlign="center" color={theme.colors.dimText}>
+                  Please enter and confirm your new account password.
+                </Text>
               </Flex>
               <ConnectedPasswordGroup name="password" placeholder="Password" />
-              <ConnectedPasswordGroup
-                name="confirmPassword"
-                placeholder="Confirm Password"
-              />
+              <ConnectedPasswordGroup name="confirmPassword" placeholder="Confirm Password" />
               {status && (
                 <MotionFlex
                   animate={{ opacity: 1 }}
@@ -100,16 +98,30 @@ const ResetPassword: React.FC<ResetPasswordProps> = () => {
                   </Text>
                 </MotionFlex>
               )}
-              <Grid gridTemplateColumns={ctaContainerSize} justifyContent="center" justifyItems="center" justifySelf="center">
-                <Button justifySelf="start" mt={10} width="95%" onClick={() => handleCancelClicked()} border={`1px solid ${theme.colors.brand[500]}`} background="white">
-                  <Text fontSize="12px">
-                    CANCEL
-                  </Text>
+              <Grid
+                gridTemplateColumns={ctaContainerSize}
+                justifyContent="center"
+                justifyItems="center"
+                justifySelf="center"
+              >
+                <Button
+                  justifySelf="start"
+                  mt={10}
+                  width="95%"
+                  onClick={() => handleCancelClicked()}
+                  border={`1px solid ${theme.colors.brand[500]}`}
+                  background="white"
+                >
+                  <Text fontSize="12px">CANCEL</Text>
                 </Button>
-                <Button isLoading={isSubmitting} type="submit" mt={10} width="95%" variantColor="brand">
-                  <Text fontSize="12px">
-                    SAVE PASSWORD
-                  </Text>
+                <Button
+                  isLoading={isSubmitting}
+                  type="submit"
+                  mt={10}
+                  width="95%"
+                  variantColor="brand"
+                >
+                  <Text fontSize="12px">SAVE PASSWORD</Text>
                 </Button>
               </Grid>
             </Form>

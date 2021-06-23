@@ -2,13 +2,13 @@ import * as Yup from 'yup'
 import * as React from 'react'
 
 import { Mail } from 'react-feather'
-import { useMediaQuery } from "react-responsive";
+import { useMediaQuery } from 'react-responsive'
 import { Form, Formik, FormikProps } from 'formik'
 import { LocationDescriptorObject } from 'history'
 import { Button, Flex, Image, Grid } from '@chakra-ui/core'
 import { Link, useHistory, useLocation } from 'react-router-dom'
 
-import Input from "../../components/Input";
+import Input from '../../components/Input'
 
 import { images, theme } from '../../theme'
 import { PageWrap } from '../../layouts'
@@ -16,7 +16,7 @@ import { formatError } from '../../utils'
 import { H3, Text } from '../../typography'
 import { MotionFlex, SideSlider } from '../../components'
 import { useAuthContext } from '../../context/AuthProvider'
-import { ConnectedFormGroup, ConnectedPasswordGroup } from '../../components/FormElements';
+import { ConnectedFormGroup, ConnectedPasswordGroup } from '../../components/FormElements'
 
 const LoginFormValidation = Yup.object().shape({
   email: Yup.string()
@@ -38,7 +38,7 @@ type InitialValues = {
 
 const Login: React.FC<LoginProps> = () => {
   const { login, isAuthenticated } = useAuthContext()
-  const [rememberMeChecked, setRememberMeChecked] = React.useState<boolean>(false);
+  const [rememberMeChecked, setRememberMeChecked] = React.useState<boolean>(false)
 
   const history = useHistory()
   const location = useLocation<{ email?: string; redirectTo?: LocationDescriptorObject }>()
@@ -56,12 +56,10 @@ const Login: React.FC<LoginProps> = () => {
   }, [isAuthenticated])
 
   const handleRememberMeClicked = () => {
-    setRememberMeChecked(!rememberMeChecked);
-  };
+    setRememberMeChecked(!rememberMeChecked)
+  }
 
-  const rememberMeContainer = isTabletOrMobile ? "170px 165px" : "145px 165px";
-
-  console.log("==>", rememberMeChecked)
+  const rememberMeContainer = isTabletOrMobile ? '170px 165px' : '145px 165px'
 
   return (
     <PageWrap
@@ -126,9 +124,7 @@ const Login: React.FC<LoginProps> = () => {
                       <Input type="checkbox" name="rememberMe" onChange={handleRememberMeClicked} />
                     </Flex>
                     <Flex align="center" justify="center">
-                      <Text>
-                        Remember Me
-                      </Text>
+                      <Text>Remember Me</Text>
                     </Flex>
                   </Flex>
                   <Flex justifySelf="end">

@@ -1,8 +1,8 @@
 import * as Yup from 'yup'
-import * as React from 'react';
-import { Mail } from 'react-feather';
-import { useHistory } from "react-router";
-import { useMediaQuery } from "react-responsive";
+import * as React from 'react'
+import { Mail } from 'react-feather'
+import { useHistory } from 'react-router'
+import { useMediaQuery } from 'react-responsive'
 import { Form, Formik, FormikProps } from 'formik'
 import { Button, Flex, useToast, Image, Grid } from '@chakra-ui/core'
 
@@ -29,14 +29,14 @@ type InitialValues = {
 }
 
 const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
-  const toast = useToast();
-  const history = useHistory();
-  const isWebView = useMediaQuery({ query: '(min-width: 40em)' });
-  const ctaContainerSize = isWebView ? "164px 164px" : "180px 180px";
+  const toast = useToast()
+  const history = useHistory()
+  const isWebView = useMediaQuery({ query: '(min-width: 40em)' })
+  const ctaContainerSize = isWebView ? '164px 164px' : '180px 180px'
 
   const handleCancelClicked = () => {
-    history.push("/login");
-  };
+    history.push('/login')
+  }
   return (
     <PageWrap
       align="center"
@@ -95,16 +95,30 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
               <Flex width="100%" justify="center" mb={10} mt={10}>
                 <Image width="50%" height="50%" src={images.MailBox} />
               </Flex>
-              <Grid gridTemplateColumns={ctaContainerSize} justifyContent="center" justifyItems="center" justifySelf="center">
-                <Button justifySelf="start" mt={4} width="95%" onClick={() => handleCancelClicked()} border={`1px solid ${theme.colors.brand[500]}`} background="white">
-                    <Text fontSize="12px">
-                      CANCEL
-                    </Text>
+              <Grid
+                gridTemplateColumns={ctaContainerSize}
+                justifyContent="center"
+                justifyItems="center"
+                justifySelf="center"
+              >
+                <Button
+                  justifySelf="start"
+                  mt={4}
+                  width="95%"
+                  onClick={() => handleCancelClicked()}
+                  border={`1px solid ${theme.colors.brand[500]}`}
+                  background="white"
+                >
+                  <Text fontSize="12px">CANCEL</Text>
                 </Button>
-                <Button isLoading={isSubmitting} type="submit" mt={4} width="95%" variantColor="brand">
-                    <Text fontSize="12px">
-                      NEXT
-                    </Text>
+                <Button
+                  isLoading={isSubmitting}
+                  type="submit"
+                  mt={4}
+                  width="95%"
+                  variantColor="brand"
+                >
+                  <Text fontSize="12px">NEXT</Text>
                 </Button>
               </Grid>
             </Form>
@@ -115,4 +129,4 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = () => {
   )
 }
 
-export default ForgotPassword;
+export default ForgotPassword

@@ -6,7 +6,7 @@ import { Button, Flex, useToast, Image } from '@chakra-ui/core'
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete'
 
 import { formatError } from '../../utils'
-import { images } from "../../theme"
+import { images } from '../../theme'
 import { H3, Text } from '../../typography'
 import { MotionFlex } from '../../components'
 import { ERROR_TOAST } from '../../constants'
@@ -43,22 +43,25 @@ type SelectedSuggestion = {
   street: string
   surburb: string
   cityOrTown: string
-};
+}
 
 const morphAddressString = (addressString: string) => {
-  const locationDetails = addressString?.split(",")
+  const locationDetails = addressString?.split(',')
   const selectedLocation = {
     street: locationDetails[0],
     surburb: locationDetails[1] && locationDetails[1]?.trim(),
     cityOrTown: locationDetails[2] && locationDetails[2]?.trim()
-  };
+  }
   return selectedLocation
-};
+}
 
-
-
-const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle, buttonLabel, editItem }) => {
-  const addressString = (editItem ? editItem?.address : '') ?? '';
+const UserDetails: React.FC<AddressProps> = ({
+  handleUserDetails,
+  hideTitle,
+  buttonLabel,
+  editItem
+}) => {
+  const addressString = (editItem ? editItem?.address : '') ?? ''
   const addressObject = editItem && morphAddressString(addressString)
 
   const initialValues = {
@@ -71,7 +74,7 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle, but
     type: editItem?.type || 'Residential',
     name: editItem?.name || ''
   }
-  const [defaultValues, setDefaultValues] = useState<AddressValues>(initialValues);
+  const [defaultValues, setDefaultValues] = useState<AddressValues>(initialValues)
   const {
     value,
     suggestions: { status, data },
@@ -89,12 +92,12 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle, but
   }
 
   const handleSelect = ({ description }: any) => () => {
-    const locationDetails = description?.split(",")
+    const locationDetails = description?.split(',')
     const selectedLocation = {
       street: locationDetails[0],
       surburb: locationDetails[1] && locationDetails[1]?.trim(),
       cityOrTown: locationDetails[2] && locationDetails[2]?.trim()
-    };
+    }
     setValue(description, false)
     clearSuggestions()
 
@@ -113,7 +116,6 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle, but
         })
       })
       .catch((error) => {
-        console.log('Error:', error)
         toast({
           description: 'Something went wrong while updating your address',
           ...ERROR_TOAST
@@ -154,8 +156,8 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle, but
   }
 
   const handleUseCurrentLocation = () => {
-    console.log("TODO: Use current location")
-  };
+    console.log('TODO: Use current location')
+  }
 
   return (
     <React.Fragment>
@@ -170,7 +172,10 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle, but
       <Formik
         validationSchema={AddressFormValidation}
         initialValues={defaultValues}
-        onSubmit={async ({ complex, suburb, city, postalCode, name }, { setStatus, setSubmitting }) => {
+        onSubmit={async (
+          { complex, suburb, city, postalCode, name },
+          { setStatus, setSubmitting }
+        ) => {
           setStatus(null)
           try {
             setSubmitting(true)
@@ -183,7 +188,12 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle, but
       >
         {({ isSubmitting, status }: FormikProps<AddressValues>) => (
           <Form style={{ width: '100%' }}>
-            <ConnectedFormGroup label="Address Name*" name="name" type="text" placeholder="Eg. Mum's Place" />
+            <ConnectedFormGroup
+              label="Address Name*"
+              name="name"
+              type="text"
+              placeholder="Eg. Mum's Place"
+            />
 
             <Flex flexDirection="column" position="relative">
               <ConnectedFormGroup
@@ -208,7 +218,13 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle, but
                 </Flex>
               )}
               <Flex justify="space-between" mb={4}>
-                <Text onClick={handleUseCurrentLocation} style={{ cursor: "pointer", textDecoration: "underline" }} fontSize={12}>Use My Current Location</Text>
+                <Text
+                  onClick={handleUseCurrentLocation}
+                  style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                  fontSize={12}
+                >
+                  Use My Current Location
+                </Text>
                 <Image justifySelf="end" width="40%" src={images.PoweredByGoogle} />
               </Flex>
             </Flex>
@@ -218,9 +234,24 @@ const UserDetails: React.FC<AddressProps> = ({ handleUserDetails, hideTitle, but
               type="text"
               placeholder="Eg. Complex/Building Name, Unit Number or Floor"
             />
-            <ConnectedFormGroup label="Suburb*" name="suburb" type="text" placeholder="Eg. Langaville" />
-            <ConnectedFormGroup label="City / Town*" name="city" type="text" placeholder="Eg. Brakpan" />
-            <ConnectedFormGroup label="Postal Code*" name="postalCode" type="text" placeholder="Eg. 1540" />
+            <ConnectedFormGroup
+              label="Suburb*"
+              name="suburb"
+              type="text"
+              placeholder="Eg. Langaville"
+            />
+            <ConnectedFormGroup
+              label="City / Town*"
+              name="city"
+              type="text"
+              placeholder="Eg. Brakpan"
+            />
+            <ConnectedFormGroup
+              label="Postal Code*"
+              name="postalCode"
+              type="text"
+              placeholder="Eg. 1540"
+            />
             {status && (
               <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
                 <Text textAlign="right" color="red.500">
