@@ -73,6 +73,12 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
   }
   const setShowPaymentsOption = () => {}
 
+  const stepsMap = [
+    'Select Delivery Address',
+    'Set Delivery Date and Time',
+    'Confirm Order and Pay'
+  ]
+
   return (
     <PageWrap
       title="Checkout"
@@ -105,7 +111,7 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
             <Grid gridTemplateRows="20px 45px">
               <Flex justify="space-between">
                 <H3 textAlign="left" fontSize={18} fontWeight={600}>
-                  Select Delivery Address
+                  {stepsMap[active]}
                 </H3>
                 <Text
                   fontSize="12px"

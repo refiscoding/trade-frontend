@@ -235,13 +235,20 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
 
   const deliveryDetailsIncluded = selectedAddress && selectedDeliveryTimeslot
 
+  const stepsMap = [
+    'Select Delivery Address',
+    'Add Delivery Address',
+    'Set Delivery Date and Time',
+    'Confirm Order and Pay'
+  ]
+
   return (
     <PageWrap title="Checkout" alignSelf="center" width="100%">
       {showDeleteCardModal && (
         <DeleteItemsModal
           confirmationText={confirmationTextCard}
-          handleCancelButtonClicked={() => { }}
-          handleDeleteButtonClicked={() => { }}
+          handleCancelButtonClicked={() => {}}
+          handleDeleteButtonClicked={() => {}}
         />
       )}
       {showCheckoutItemsModal && (
@@ -255,13 +262,13 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
       )}
       <Flex width="100%" mb={4} flexDirection="column">
         <H3 textAlign="left" fontSize={18} fontWeight={600}>
-          Select Delivery Address
+          {showPaymentOptions ? 'Select Payment Method' : stepsMap[active]}
         </H3>
       </Flex>
       <Formik
         validationSchema={DeliveryAddressValidation}
         initialValues={initialDeliveryAddressValues}
-        onSubmit={() => { }}
+        onSubmit={() => {}}
       >
         {({ errors }) => {
           return (

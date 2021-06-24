@@ -6,3 +6,13 @@ query fetchUserCheckoutOrders {
     }
   }
 }
+
+query fetchOneUserCheckoutOrder($input: FetchOneOrderInput!){
+  fetchOneUserCheckoutOrder(input: $input){
+    payload {
+      ...order
+    }
+    error
+  }
+}
+

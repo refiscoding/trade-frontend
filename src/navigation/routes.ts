@@ -38,6 +38,7 @@ const Support = lazy(() => import('../containers/Support'))
 const Notifications = lazy(() => import('../containers/Notifications'))
 const Returns = lazy(() => import('../containers/Returns'))
 const AddressBook = lazy(() => import('../containers/AddressBook'))
+const ValidatePayment = lazy(() => import('../containers/Payment'))
 
 const PRIVATE_ROUTES: PrivateRouteObject[] = [
   {
@@ -237,6 +238,12 @@ const PUBLIC_ROUTES = [
     path: '/user-onboarding-intro',
     component: onBoardingIntro,
     title: 'Profile Details'
+  },
+  {
+    exact: false,
+    path: '/transactions/validate',
+    component: ValidatePayment,
+    title: 'Validating Payment'
   }
 ]
 

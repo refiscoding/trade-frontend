@@ -5,6 +5,7 @@ import { get } from 'lodash'
 import { useToast } from '@chakra-ui/core'
 import { ApolloError } from 'apollo-client'
 import { useMediaQuery } from 'react-responsive'
+import { useLocation, useHistory } from 'react-router'
 
 import CheckoutWebFlow from './CheckoutFlowWeb'
 import CheckoutMobileFlow from './CheckoutFlowMobile'
@@ -19,7 +20,8 @@ import {
   useFetchUsersCartQuery,
   ComponentCartCartProduct,
   ComponentLocationAddress,
-  useCreateCheckoutOrderMutation
+  useCreateCheckoutOrderMutation,
+  useFetchOneUserCheckoutOrderQuery
 } from '../../generated/graphql'
 
 export const DeliveryAddressValidation = Yup.object().shape({
@@ -92,6 +94,8 @@ export type CheckoutProps = {
 const CheckoutPage: React.FC = () => {
   const { user } = useAuthContext()
   const toast = useToast()
+  const location = useLocation()
+  const history = useHistory()
   const [active, setActive] = React.useState<number>(0)
   const [selectedAddress, setSelectedAddress] = React.useState<
     ComponentLocationAddress | undefined
@@ -115,6 +119,9 @@ const CheckoutPage: React.FC = () => {
     }
   })
 
+  const failedPayment = (new URLSearchParams(location.search).get('status') as string) === 'failed'
+  const failedPaymentOrder = new URLSearchParams(location.search).get('order') as string
+
   const noAddressDataHeader = 'No Delivery Addresses Here...'
   const noCardDataHeader = 'No Payment Cards Here...'
   const noAddressDataCaption = `
@@ -134,6 +141,15 @@ const CheckoutPage: React.FC = () => {
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
   })
 
+  const { data: userOrder } = useFetchOneUserCheckoutOrderQuery({
+    variables: {
+      input: {
+        id: failedPaymentOrder
+      }
+    },
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
+  })
+
   const setActiveStep = (step: number) => {
     setActive(step)
   }
@@ -143,6 +159,19 @@ const CheckoutPage: React.FC = () => {
   const checkoutTotal = get(userCart, 'findCart.payload.total', null)
 
   const addresses = user?.address as ComponentLocationAddress[]
+
+  const orderAddress = userOrder?.fetchOneUserCheckoutOrder?.payload?.deliveryAddress
+
+  const failedOrderAddress = addresses.filter((address: ComponentLocationAddress) => {
+    if (orderAddress) {
+      const lat = address.lat === orderAddress?.lat
+      const lng = address.lng === orderAddress?.lng
+      if (lat && lng) {
+        return address
+      }
+    }
+    return {}
+  })
 
   const handlePay = async () => {
     if (products) {
@@ -156,7 +185,10 @@ const CheckoutPage: React.FC = () => {
           type: selectedAddress?.type,
           name: selectedAddress?.name
         },
-        deliveryDate: selectedDeliveryDate
+        deliveryDate: selectedDeliveryDate,
+        validationRedirect: `${process.env.REACT_APP_CLIENT_HOST}/orders`,
+        successURL: `${process.env.REACT_APP_CLIENT_HOST}/checkout-success`,
+        failureURL: `${process.env.REACT_APP_CLIENT_HOST}/checkout`
       }
       await createOrder({
         variables: {
@@ -166,12 +198,29 @@ const CheckoutPage: React.FC = () => {
     }
   }
 
+  React.useEffect(() => {
+    // TODO: 'Need to check auth status, if available, proceed else authenticate user'
+    const orderAddress = failedOrderAddress[0]
+    const failedOrderDate = userOrder?.fetchOneUserCheckoutOrder?.payload?.deliveryDate
+    if (failedPayment) {
+      setSelectedAddress(orderAddress)
+      setSelectedDeliveryDate(new Date(failedOrderDate))
+      setSelectedDeliveryTimeslot('1')
+      if (isTabletOrMobile) {
+        setActiveStep(3)
+      } else {
+        setActiveStep(2)
+      }
+      history.replace('/checkout')
+    }
+  }, [userOrder, failedOrderAddress, failedPayment, history, isTabletOrMobile])
+
   return (
     <PageWrap title="Checkout" script={mapsScriptUrl}>
       {isTabletOrMobile ? (
         <CheckoutMobileFlow
-          active={active}
           cards={cards}
+          active={active}
           addresses={addresses}
           timeSlots={timeSlots}
           handlePay={handlePay}
@@ -200,8 +249,8 @@ const CheckoutPage: React.FC = () => {
         />
       ) : (
         <CheckoutWebFlow
-          active={active}
           cards={cards}
+          active={active}
           addresses={addresses}
           timeSlots={timeSlots}
           handlePay={handlePay}
