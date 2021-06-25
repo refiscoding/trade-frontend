@@ -17,9 +17,6 @@ const ProductManagementCard: React.FC<ProductManagementCardProps> = ({ title, ca
   const isTinyPhone = useMediaQuery({ query: '(max-width: 20em)' })
   const isSmallPhone = useMediaQuery({ query: '(max-width: 25em)' })
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
-  const isWebViewport = useMediaQuery({
-    query: '(min-width: 40em)'
-  })
 
   const mobileCardWidth = isTinyPhone
     ? '320px'
@@ -39,8 +36,8 @@ const ProductManagementCard: React.FC<ProductManagementCardProps> = ({ title, ca
   return (
     <Flex
       flexDirection="column"
-      minWidth={isWebViewport ? '100%' : mobileCardWidth}
-      height={mobileCardHeight}
+      minWidth={!isTabletOrMobile ? '100%' : mobileCardWidth}
+      minHeight={!isTabletOrMobile ? '350px' : mobileCardHeight}
       bg="white"
       boxShadow={theme.boxShadowLight}
       borderRadius="8px"
