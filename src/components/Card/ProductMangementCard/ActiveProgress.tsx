@@ -6,6 +6,8 @@ import { Flex, FlexProps } from '@chakra-ui/core'
 
 import { ACTIVE_PRODUCT_PROGRESS } from '../../../constants'
 
+import { theme } from '../../../theme'
+
 type ActiveProgressCardProps = FlexProps & {}
 
 const ActiveProgressCard: React.FC<ActiveProgressCardProps> = () => {
@@ -50,12 +52,14 @@ const ActiveProgressCard: React.FC<ActiveProgressCardProps> = () => {
       ]
     },
     fill: {
-      colors: ['#3ACF2F', '#74a970', '#9C27B0']
+      colors: [`${theme.colors.greenFill}`]
     },
     dataLabels: {
       enabled: true,
-      formatter: (val: string) => `${val}%`,
-      offsetX: -10
+      formatter: (val: number) => {
+        return !(val === 10) ? `${val}% Sold` : ``
+      },
+      offsetX: -20
     }
   }
   const series = [

@@ -5,6 +5,7 @@ import Chart from 'react-apexcharts'
 import { Flex, FlexProps } from '@chakra-ui/core'
 
 import { TOTAL_UNITS_SOLD } from '../../../constants'
+import { theme } from '../../../theme'
 
 type TotalUnitsCardProps = FlexProps & {}
 
@@ -35,6 +36,9 @@ const TotalUnitsCard: React.FC<TotalUnitsCardProps> = () => {
         'Nov',
         'Dev'
       ]
+    },
+    fill: {
+      colors: [`${theme.colors.brand[500]}`]
     }
   }
   const series = [
