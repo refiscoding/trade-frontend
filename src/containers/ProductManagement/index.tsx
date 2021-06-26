@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+import { useHistory } from 'react-router'
 import { DateRangePicker } from 'react-dates'
 import { useMediaQuery } from 'react-responsive'
 import { ChevronRight, Clock } from 'react-feather'
@@ -37,6 +38,7 @@ const OlderActiveProduct = () => {
   )
 }
 const ActiveProduct = () => {
+  const history = useHistory()
   const sold = 9
 
   const slowMover = sold <= 10
@@ -68,6 +70,10 @@ const ActiveProduct = () => {
         background: '',
         color: ''
       }
+
+  const viewMoreActiveProductStats = () => {
+    history.push('/product-analysis')
+  }
 
   return (
     <Flex
@@ -168,7 +174,13 @@ const ActiveProduct = () => {
               <Text fontSize={`12px`} fontWeight={550}>
                 R 2000.00
               </Text>
-              <Text mr={3} color={theme.colors.blueText} fontSize={`12px`} fontWeight={550}>
+              <Text
+                mr={3}
+                color={theme.colors.blueText}
+                fontSize={`12px`}
+                fontWeight={550}
+                onClick={() => viewMoreActiveProductStats()}
+              >
                 View More
               </Text>
             </Flex>
