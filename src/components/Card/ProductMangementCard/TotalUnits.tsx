@@ -2,14 +2,22 @@ import * as React from 'react'
 
 import Chart from 'react-apexcharts'
 
+import { useMediaQuery } from 'react-responsive'
+
 import { Flex, FlexProps } from '@chakra-ui/core'
 
-import { TOTAL_UNITS_SOLD } from '../../../constants'
 import { theme } from '../../../theme'
+import { TOTAL_UNITS_SOLD } from '../../../constants'
 
 type TotalUnitsCardProps = FlexProps & {}
 
 const TotalUnitsCard: React.FC<TotalUnitsCardProps> = () => {
+  const isTinyPhone = useMediaQuery({ query: '(max-width: 20em)' })
+  const isSmallPhone = useMediaQuery({ query: '(max-width: 25em)' })
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
+
+  const chartWidth = isTinyPhone ? 280 : isSmallPhone ? 350 : isTabletOrMobile ? 360 : 600
+
   const options = {
     chart: {
       id: TOTAL_UNITS_SOLD
@@ -38,7 +46,7 @@ const TotalUnitsCard: React.FC<TotalUnitsCardProps> = () => {
       ]
     },
     fill: {
-      colors: [`${theme.colors.brand[500]}`]
+      colors: [`${theme.colors.blueText}`]
     }
   }
   const series = [
@@ -49,7 +57,7 @@ const TotalUnitsCard: React.FC<TotalUnitsCardProps> = () => {
   ]
   return (
     <Flex>
-      <Chart options={options} series={series} type="bar" width={500} height={320} />
+      <Chart options={options} series={series} type="bar" width={chartWidth} height={320} />
     </Flex>
   )
 }

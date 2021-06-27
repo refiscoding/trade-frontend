@@ -3,8 +3,8 @@ import * as React from 'react'
 import { useHistory } from 'react-router'
 import { DateRangePicker } from 'react-dates'
 import { useMediaQuery } from 'react-responsive'
-import { ChevronRight, Clock } from 'react-feather'
 import { Flex, Grid, Image, Tag } from '@chakra-ui/core'
+import { ChevronRight, Clock, ArrowLeft } from 'react-feather'
 
 import CardFooter from '../../components/Card/CardFooter'
 import ProductManagementCard from '../../components/Card/ProductMangementCard'
@@ -71,8 +71,8 @@ const ActiveProduct = () => {
         color: ''
       }
 
-  const viewMoreActiveProductStats = () => {
-    history.push('/product-analysis')
+  const viewMoreActiveProductStats = (id: number) => {
+    history.push(`/product-analysis/${id}`)
   }
 
   return (
@@ -94,7 +94,7 @@ const ActiveProduct = () => {
           <Image
             width="100%"
             height="100%"
-            src={'http://localhost:1337/uploads/yuvraj_singh_Rjj_Emr24h_M_unsplash_f91dc39bca.jpg'}
+            src={'uploads/yuvraj_singh_Rjj_Emr24h_M_unsplash_f91dc39bca.jpg'}
             borderTopLeftRadius={3}
             borderBottomLeftRadius={3}
           />
@@ -179,7 +179,7 @@ const ActiveProduct = () => {
                 color={theme.colors.blueText}
                 fontSize={`12px`}
                 fontWeight={550}
-                onClick={() => viewMoreActiveProductStats()}
+                onClick={() => viewMoreActiveProductStats(1)}
               >
                 View More
               </Text>
@@ -205,11 +205,18 @@ const productManagementItems = [
 type ProductManagementProps = {}
 
 const ProductManagement: React.FC<ProductManagementProps> = () => {
+  const [showOlderActiveProducts, setShowOlderActiveProducts] = React.useState<boolean>()
+
   const isWebViewport = useMediaQuery({
     query: '(min-width: 40em)'
   })
   const hasOlderActiveProducts = true
+  const hasActiveProducts = true
   const hasData = true
+
+  const handleBackToProductManagement = () => {
+    setShowOlderActiveProducts(false)
+  }
 
   return (
     <PageWrap alignItems={isWebViewport ? '' : 'center'} title="Product Management">
@@ -293,27 +300,87 @@ const ProductManagement: React.FC<ProductManagementProps> = () => {
           </Grid>
         </Flex>
       ) : (
-        <Flex flexDirection="column">
-          {productManagementItems.map((item, key) => (
-            <ProductManagementCard key={key} caption={item.caption} title={item.title} />
-          ))}
-          {hasOlderActiveProducts && (
-            <Flex
-              mt={5}
-              pl={5}
-              height="50px"
-              borderRadius="10px"
-              boxShadow="0 2px 4px 0 rgba(0,0,0,0.25)"
-              justify="space-between"
-              alignItems="center"
-              onClick={() => console.log('TODO: Handle Older Products')}
-              backgroundColor="white"
-            >
-              <Flex width="100%" ml={3}>
-                <Text fontSize={12}>View Older Products</Text>
+        <Flex flexDirection="column" width={`100%`} justify="center">
+          {showOlderActiveProducts ? (
+            <Flex flexDirection="column">
+              <Flex cursor="pointer" onClick={handleBackToProductManagement}>
+                <ArrowLeft />
+                <Flex ml={3}>Product Management</Flex>
               </Flex>
-              <ChevronRight />
+              <Flex flexDirection="column">
+                <Text mt={3} mr={2} fontSize={12}>
+                  Select Date Range:
+                </Text>
+                <DateRangePicker
+                  startDate={null}
+                  endDate={null}
+                  startDateId="start"
+                  endDateId="end"
+                  onDatesChange={() => console.log('TODO: Add Handler')}
+                  focusedInput={null}
+                  onFocusChange={() => console.log('TODO: Add Handler')}
+                />
+              </Flex>
+              <Flex
+                mt={3}
+                flexDirection="column"
+                boxShadow={theme.boxShadowMedium}
+                borderRadius={5}
+                background={theme.colors.accent[50]}
+                width={`100%`}
+                p={3}
+              >
+                <Flex width={`100%`} flexDirection="column">
+                  <OlderActiveProduct />
+                  <OlderActiveProduct />
+                  <OlderActiveProduct />
+                  <OlderActiveProduct />
+                </Flex>
+              </Flex>
             </Flex>
+          ) : (
+            <React.Fragment>
+              {productManagementItems.map((item, key) => (
+                <ProductManagementCard key={key} caption={item.caption} title={item.title} />
+              ))}
+              {hasActiveProducts && (
+                <Flex
+                  background={theme.colors.accent[50]}
+                  borderRadius={5}
+                  boxShadow={theme.boxShadowLight}
+                  mt={4}
+                  p={4}
+                  flexDirection="column"
+                >
+                  <Text fontWeight={600} fontSize="14px">
+                    Active Products
+                  </Text>
+                  <Flex flexDirection="column" height={`250px`} overflowY={`scroll`}>
+                    <ActiveProduct />
+                    <ActiveProduct />
+                    <ActiveProduct />
+                  </Flex>
+                </Flex>
+              )}
+              {hasOlderActiveProducts && (
+                <Flex
+                  mt={5}
+                  pl={5}
+                  height="50px"
+                  borderRadius="10px"
+                  boxShadow="0 2px 4px 0 rgba(0,0,0,0.25)"
+                  justify="space-between"
+                  alignItems="center"
+                  onClick={() => setShowOlderActiveProducts(true)}
+                  backgroundColor="white"
+                >
+                  <Flex width="100%" ml={3}>
+                    <Text fontSize={12}>View Older Products</Text>
+                  </Flex>
+                  <ChevronRight />
+                </Flex>
+              )}
+            </React.Fragment>
           )}
         </Flex>
       )}

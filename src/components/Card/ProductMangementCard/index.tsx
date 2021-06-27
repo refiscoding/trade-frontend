@@ -19,11 +19,11 @@ const ProductManagementCard: React.FC<ProductManagementCardProps> = ({ title, ca
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
 
   const mobileCardWidth = isTinyPhone
-    ? '320px'
+    ? '290px'
     : isSmallPhone
-    ? '350px'
+    ? '330px'
     : isTabletOrMobile
-    ? '400px'
+    ? '380px'
     : '600px'
   const mobileCardHeight = isTinyPhone ? '320px' : isSmallPhone ? '290px' : '270px'
 

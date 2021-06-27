@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 import Chart from 'react-apexcharts'
+import { useMediaQuery } from 'react-responsive'
 
 import { Flex, FlexProps } from '@chakra-ui/core'
 
@@ -11,6 +12,12 @@ import { theme } from '../../../theme'
 type ActiveProgressCardProps = FlexProps & {}
 
 const ActiveProgressCard: React.FC<ActiveProgressCardProps> = () => {
+  const isTinyPhone = useMediaQuery({ query: '(max-width: 20em)' })
+  const isSmallPhone = useMediaQuery({ query: '(max-width: 25em)' })
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
+
+  const chartWidth = isTinyPhone ? 280 : isSmallPhone ? 350 : isTabletOrMobile ? 400 : 650
+
   const options = {
     chart: {
       id: ACTIVE_PRODUCT_PROGRESS
@@ -34,9 +41,7 @@ const ActiveProgressCard: React.FC<ActiveProgressCardProps> = () => {
         'Lamborghini',
         'Mercedes Benz',
         'Jaguar',
-        'Porsche',
-        'Toyota',
-        'Hyundai'
+        'Porsche'
       ]
     },
     annotations: {
@@ -65,12 +70,12 @@ const ActiveProgressCard: React.FC<ActiveProgressCardProps> = () => {
   const series = [
     {
       name: ACTIVE_PRODUCT_PROGRESS,
-      data: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+      data: [10, 20, 30, 40, 50, 80, 90, 100]
     }
   ]
   return (
     <Flex>
-      <Chart options={options} series={series} type="bar" width={500} height={320} />
+      <Chart options={options} series={series} type="bar" width={chartWidth} height={320} />
     </Flex>
   )
 }
