@@ -78,7 +78,7 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
               <Text fontSize="14px" fontWeight={600}>
                 Total Units
               </Text>
-              <TotalUnits />
+              <TotalUnits totalUnitsChartData={'{}'} />
             </Flex>
           </Flex>
           <Flex
@@ -289,7 +289,7 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
               </Text>
             </Flex>
             <Flex>
-              <TotalUnits />
+              <TotalUnits totalUnitsChartData={'{}'} />
             </Flex>
           </Flex>
         </Flex>

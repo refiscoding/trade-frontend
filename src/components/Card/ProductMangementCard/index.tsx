@@ -1,12 +1,19 @@
 import * as React from 'react'
 
+import { ApolloError } from 'apollo-boost'
 import { useMediaQuery } from 'react-responsive'
-import { Flex, Image, Text } from '@chakra-ui/core'
 import { FlexProps } from '@chakra-ui/core/dist/Flex'
+import { Flex, Image, Text, useToast } from '@chakra-ui/core'
 
 import { images, theme } from '../../../theme'
 import { TotalUnits, ActiveProgress, ActiveProducts } from './charts'
-import { TOTAL_UNITS_SOLD, ACTIVE_PRODUCT_PROGRESS, ACTIVE_PRODUCTS } from '../../../constants'
+import { useFindGrandTotalUnitsSoldPerMonthQuery } from '../../../generated/graphql'
+import {
+  TOTAL_UNITS_SOLD,
+  ACTIVE_PRODUCT_PROGRESS,
+  ACTIVE_PRODUCTS,
+  ERROR_TOAST
+} from '../../../constants'
 
 type ProductManagementCardProps = FlexProps & {
   title: string
@@ -14,9 +21,11 @@ type ProductManagementCardProps = FlexProps & {
 }
 
 const ProductManagementCard: React.FC<ProductManagementCardProps> = ({ title, caption }) => {
+  const toast = useToast()
   const isTinyPhone = useMediaQuery({ query: '(max-width: 20em)' })
   const isSmallPhone = useMediaQuery({ query: '(max-width: 25em)' })
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
+  const [totalUnitsChartData, setTotalUnitsChartData] = React.useState<string>('{}')
 
   const mobileCardWidth = isTinyPhone
     ? '290px'
@@ -33,6 +42,16 @@ const ProductManagementCard: React.FC<ProductManagementCardProps> = ({ title, ca
   const activeProgress = title === ACTIVE_PRODUCT_PROGRESS
   const activeProducts = title === ACTIVE_PRODUCTS
 
+  const { data: totalUnitsData } = useFindGrandTotalUnitsSoldPerMonthQuery({
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
+  })
+
+  React.useEffect(() => {
+    const totalUnitsResponse = totalUnitsData?.findGrandTotalUnitsSoldPerMonth?.payload
+    if (totalUnitsResponse) {
+      setTotalUnitsChartData(totalUnitsResponse)
+    }
+  }, [totalUnitsData, setTotalUnitsChartData])
   return (
     <Flex
       flexDirection="column"
@@ -49,7 +68,7 @@ const ProductManagementCard: React.FC<ProductManagementCardProps> = ({ title, ca
       <Flex width="100%" flexDirection="column" alignItems="center" margin="auto">
         {hasData ? (
           <React.Fragment>
-            {totalUnits && <TotalUnits />}
+            {totalUnits && <TotalUnits totalUnitsChartData={totalUnitsChartData} />}
             {activeProgress && <ActiveProgress />}
             {activeProducts && <ActiveProducts />}
           </React.Fragment>

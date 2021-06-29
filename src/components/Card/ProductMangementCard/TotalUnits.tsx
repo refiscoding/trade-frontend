@@ -9,12 +9,15 @@ import { Flex, FlexProps } from '@chakra-ui/core'
 import { theme } from '../../../theme'
 import { TOTAL_UNITS_SOLD } from '../../../constants'
 
-type TotalUnitsCardProps = FlexProps & {}
+type TotalUnitsCardProps = FlexProps & {
+  totalUnitsChartData: string
+}
 
-const TotalUnitsCard: React.FC<TotalUnitsCardProps> = () => {
+const TotalUnitsCard: React.FC<TotalUnitsCardProps> = ({ totalUnitsChartData }) => {
   const isTinyPhone = useMediaQuery({ query: '(max-width: 20em)' })
   const isSmallPhone = useMediaQuery({ query: '(max-width: 25em)' })
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
+  const data = JSON.parse(totalUnitsChartData)
 
   const chartWidth = isTinyPhone ? 280 : isSmallPhone ? 350 : isTabletOrMobile ? 360 : 600
 
@@ -30,20 +33,7 @@ const TotalUnitsCard: React.FC<TotalUnitsCardProps> = () => {
       }
     },
     xaxis: {
-      categories: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dev'
-      ]
+      categories: Object.keys(data)
     },
     fill: {
       colors: [`${theme.colors.blueText}`]
@@ -52,7 +42,7 @@ const TotalUnitsCard: React.FC<TotalUnitsCardProps> = () => {
   const series = [
     {
       name: TOTAL_UNITS_SOLD,
-      data: [30, 40, 35, 50, 49, 60, 70, 91, 125]
+      data: Object.values(data)
     }
   ]
   return (

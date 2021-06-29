@@ -5,6 +5,20 @@ import algoliasearch from 'algoliasearch/lite'
 export const TOTAL_UNITS_SOLD = 'Total Units Sold'
 export const ACTIVE_PRODUCT_PROGRESS = 'Active Product Progress'
 export const ACTIVE_PRODUCTS = 'Active Products'
+export const MONTHS_OF_THE_YEAR = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dev'
+]
 
 export const APP_NAME = 'TradeFed'
 
