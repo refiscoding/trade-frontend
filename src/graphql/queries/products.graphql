@@ -11,8 +11,8 @@ query findGrandTotalUnitsSoldPerMonth {
   }
 }
 
-query findActiveProducts {
-  findActiveProducts {
+query findActiveProducts($old: Boolean) {
+  findActiveProducts(old: $old) {
     payload 
     error
   }

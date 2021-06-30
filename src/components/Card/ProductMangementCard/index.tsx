@@ -53,8 +53,6 @@ const ProductManagementCard: React.FC<ProductManagementCardProps> = ({ title, ca
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
   })
 
-  // console.log('===>', activeProductsChartData)
-
   React.useEffect(() => {
     const totalUnitsResponse = totalUnitsData?.findGrandTotalUnitsSoldPerMonth?.payload
     if (totalUnitsResponse) {

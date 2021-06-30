@@ -1,9 +1,14 @@
 import * as React from 'react'
 
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+
+import { get } from 'lodash'
 import { useHistory } from 'react-router'
+import { ApolloError } from 'apollo-boost'
 import { DateRangePicker } from 'react-dates'
 import { useMediaQuery } from 'react-responsive'
-import { Flex, Grid, Image, Tag } from '@chakra-ui/core'
+import { Flex, Grid, Image, Tag, useToast } from '@chakra-ui/core'
 import { ChevronRight, Clock, ArrowLeft } from 'react-feather'
 
 import CardFooter from '../../components/Card/CardFooter'
@@ -12,9 +17,16 @@ import ProductManagementCard from '../../components/Card/ProductMangementCard'
 import { Text } from '../../typography'
 import { PageWrap } from '../../layouts'
 import { theme, images } from '../../theme'
-import { TOTAL_UNITS_SOLD, ACTIVE_PRODUCT_PROGRESS } from '../../constants'
+import { useFindActiveProductsQuery, Product } from '../../generated/graphql'
+import { TOTAL_UNITS_SOLD, ACTIVE_PRODUCT_PROGRESS, ERROR_TOAST } from '../../constants'
 
-const OlderActiveProduct = () => {
+dayjs.extend(relativeTime)
+
+type OlderActiveProductProps = {
+  product: Product
+}
+
+const OlderActiveProduct: React.FC<OlderActiveProductProps> = ({ product }) => {
   return (
     <Flex
       borderRadius={5}
@@ -23,13 +35,17 @@ const OlderActiveProduct = () => {
       flexDirection="column"
       border={`1px solid ${theme.colors.background}`}
     >
-      <Flex justify="space-between" alignItems="center">
-        <Text fontWeight={600}>BMW</Text>
-        <Text fontWeight={600}>R 200.00</Text>
+      <Flex alignItems="center">
+        <Flex width={`100%`}>
+          <Text fontWeight={600}>{product?.name}</Text>
+        </Flex>
+        <Flex width={`100%`} justifySelf="end">
+          <Text fontWeight={600}>{`${product?.currency} ${product?.tradeFedCost}.00`}</Text>
+        </Flex>
         <Flex>
           <Flex mr={3} p={2} background={theme.colors.background} borderRadius={3}>
             <Clock />
-            <Text ml={3}>12/09/21</Text>
+            <Text ml={3}>{`${dayjs(product?.created_at).format('DD/MM/YYYY')}`}</Text>
           </Flex>
           <ChevronRight />
         </Flex>
@@ -37,14 +53,28 @@ const OlderActiveProduct = () => {
     </Flex>
   )
 }
-const ActiveProduct = () => {
+type ActiveProductProps = {
+  product: Product
+  sold: number
+  totalUnitsSold: number
+  remainingUnits: number
+}
+const ActiveProduct: React.FC<ActiveProductProps> = ({
+  product,
+  sold,
+  totalUnitsSold,
+  remainingUnits
+}) => {
   const history = useHistory()
-  const sold = 9
 
   const slowMover = sold <= 10
   const mover = sold > 10 && sold <= 49
   const averageMover = sold > 49 && sold <= 70
   const fastMove = sold > 70
+  const maxSellCost = get(product, 'maxSellCost') as number
+  const tradeFedCost = get(product, 'tradeFedCost') as number
+
+  const discount = Math.round(((maxSellCost - tradeFedCost) / maxSellCost) * 100)
 
   const tagColors = slowMover
     ? {
@@ -71,7 +101,7 @@ const ActiveProduct = () => {
         color: ''
       }
 
-  const viewMoreActiveProductStats = (id: number) => {
+  const viewMoreActiveProductStats = (id: string) => {
     history.push(`/product-analysis/${id}`)
   }
 
@@ -90,15 +120,15 @@ const ActiveProduct = () => {
         height="150px"
         flexDirection="row"
       >
-        <Flex width="50%" position="relative" onClick={() => {}}>
+        <Flex width="50%" position="relative">
           <Image
             width="100%"
             height="100%"
-            src={'uploads/yuvraj_singh_Rjj_Emr24h_M_unsplash_f91dc39bca.jpg'}
+            src={product?.coverImage?.url || ''}
             borderTopLeftRadius={3}
             borderBottomLeftRadius={3}
           />
-          {true ? (
+          {discount ? (
             <Flex
               alignItems="center"
               justifyContent="center"
@@ -114,15 +144,15 @@ const ActiveProduct = () => {
                 Save
               </Text>
               <Text color="white" fontSize="14px" fontWeight={600}>
-                {`${20}%`}
+                {`${discount}%`}
               </Text>
             </Flex>
           ) : null}
         </Flex>
         <CardFooter paddingLeft={2} width={`100%`} bg="white" height="100%" justifyContent="center">
           <Flex justify="space-between" width={`100%`}>
-            <Text onClick={() => {}} my={2} fontSize="14px" fontWeight={600}>
-              {`BWM`}
+            <Text my={2} fontSize="14px" fontWeight={600}>
+              {product?.name}
             </Text>
             <Tag
               height="40%"
@@ -144,7 +174,9 @@ const ActiveProduct = () => {
                 Listed On:{' '}
               </Text>
               <Text fontSize={`12px`} ml={2}>
-                12/09/21 (2 days ago)
+                {`${dayjs(product?.created_at).format('DD/MM/YYYY')} (${dayjs(
+                  product?.created_at
+                ).fromNow()})`}
               </Text>
             </Flex>
             <Flex alignItems="center" height="20px">
@@ -152,7 +184,7 @@ const ActiveProduct = () => {
                 Units Sold:{' '}
               </Text>
               <Text fontSize={`12px`} ml={2}>
-                120
+                {`${totalUnitsSold}`}
               </Text>
             </Flex>
             <Flex alignItems="center" height="20px">
@@ -160,7 +192,7 @@ const ActiveProduct = () => {
                 Units Left:{' '}
               </Text>
               <Text fontSize={`12px`} ml={2}>
-                12
+                {`${remainingUnits}`}
               </Text>
             </Flex>
             <Flex
@@ -172,14 +204,14 @@ const ActiveProduct = () => {
               cursor="pointer"
             >
               <Text fontSize={`12px`} fontWeight={550}>
-                R 2000.00
+                {`${product?.currency} ${product?.tradeFedCost}.00`}
               </Text>
               <Text
                 mr={3}
                 color={theme.colors.blueText}
                 fontSize={`12px`}
                 fontWeight={550}
-                onClick={() => viewMoreActiveProductStats(1)}
+                onClick={() => viewMoreActiveProductStats(product?.id)}
               >
                 View More
               </Text>
@@ -205,7 +237,10 @@ const productManagementItems = [
 type ProductManagementProps = {}
 
 const ProductManagement: React.FC<ProductManagementProps> = () => {
+  const toast = useToast()
   const [showOlderActiveProducts, setShowOlderActiveProducts] = React.useState<boolean>()
+  const [activeProductsChartData, setActiveProductsChartData] = React.useState<string>('{}')
+  const [oldActiveProductsChartData, setOldActiveProductsChartData] = React.useState<string>('{}')
 
   const isWebViewport = useMediaQuery({
     query: '(min-width: 40em)'
@@ -217,6 +252,44 @@ const ProductManagement: React.FC<ProductManagementProps> = () => {
   const handleBackToProductManagement = () => {
     setShowOlderActiveProducts(false)
   }
+
+  const { data: activeProductsData } = useFindActiveProductsQuery({
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
+  })
+  const { data: oldActiveProductsData } = useFindActiveProductsQuery({
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
+    variables: { old: true }
+  })
+
+  console.log('Old', oldActiveProductsChartData)
+
+  React.useEffect(() => {
+    const activeProductsResponse = activeProductsData?.findActiveProducts?.payload
+    if (activeProductsResponse) {
+      setActiveProductsChartData(activeProductsResponse)
+    }
+  }, [activeProductsData, setActiveProductsChartData])
+  React.useEffect(() => {
+    const oldActiveProductsResponse = oldActiveProductsData?.findActiveProducts?.payload
+    if (oldActiveProductsResponse) {
+      setOldActiveProductsChartData(oldActiveProductsResponse)
+    }
+  }, [oldActiveProductsData, setOldActiveProductsChartData])
+
+  const activeProducts = JSON.parse(activeProductsChartData)
+  const activeItems = Object.keys(activeProducts)
+    .map((row) => {
+      const item = activeProducts[row]
+      return item
+    })
+    .reverse()
+  const oldActiveProducts = JSON.parse(oldActiveProductsChartData)
+  const oldActiveItems = Object.keys(oldActiveProducts)
+    .map((row) => {
+      const item = oldActiveProducts[row]
+      return item
+    })
+    .reverse()
 
   return (
     <PageWrap alignItems={isWebViewport ? '' : 'center'} title="Product Management">
@@ -242,10 +315,15 @@ const ProductManagement: React.FC<ProductManagementProps> = () => {
                 {hasData ? (
                   <Flex mx={4} flexDirection="column">
                     <Flex flexDirection="column" height={`250px`} overflowY={`scroll`}>
-                      <ActiveProduct />
-                      <ActiveProduct />
-                      <ActiveProduct />
-                      <ActiveProduct />
+                      {activeItems?.map((item, index) => (
+                        <ActiveProduct
+                          key={`${index}_item`}
+                          sold={item.soldUnits}
+                          totalUnitsSold={item.count}
+                          remainingUnits={item.remainingUnits}
+                          product={item.product}
+                        />
+                      ))}
                     </Flex>
                   </Flex>
                 ) : (
@@ -286,7 +364,9 @@ const ProductManagement: React.FC<ProductManagementProps> = () => {
                 {hasData ? (
                   <Flex mx={4} flexDirection="column">
                     <Flex flexDirection="column" height={`250px`} overflowY={`scroll`}>
-                      <OlderActiveProduct />
+                      {oldActiveItems?.map((item, index) => (
+                        <OlderActiveProduct key={`${index}_item`} product={item.product} />
+                      ))}
                     </Flex>
                   </Flex>
                 ) : (
@@ -331,10 +411,9 @@ const ProductManagement: React.FC<ProductManagementProps> = () => {
                 p={3}
               >
                 <Flex width={`100%`} flexDirection="column">
-                  <OlderActiveProduct />
-                  <OlderActiveProduct />
-                  <OlderActiveProduct />
-                  <OlderActiveProduct />
+                  {oldActiveItems?.map((item, index) => (
+                    <OlderActiveProduct key={`${index}_item`} product={item.product} />
+                  ))}
                 </Flex>
               </Flex>
             </Flex>
@@ -356,9 +435,15 @@ const ProductManagement: React.FC<ProductManagementProps> = () => {
                     Active Products
                   </Text>
                   <Flex flexDirection="column" height={`250px`} overflowY={`scroll`}>
-                    <ActiveProduct />
-                    <ActiveProduct />
-                    <ActiveProduct />
+                    {activeItems?.map((item, index) => (
+                      <ActiveProduct
+                        key={`${index}_item`}
+                        sold={item.soldUnits}
+                        totalUnitsSold={item.count}
+                        remainingUnits={item.remainingUnits}
+                        product={item.product}
+                      />
+                    ))}
                   </Flex>
                 </Flex>
               )}

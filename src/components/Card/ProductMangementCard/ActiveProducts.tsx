@@ -34,8 +34,6 @@ const OlderActiveProduct = () => {
 }
 
 const ActiveProductsCard: React.FC<ActiveProductsCardProps> = ({ activeProductsChartData }) => {
-  const data = JSON.parse(activeProductsChartData)
-  console.log('JSON', data)
   return (
     <Flex>
       <OlderActiveProduct />
