@@ -9,14 +9,40 @@ import { ACTIVE_PRODUCT_PROGRESS } from '../../../constants'
 
 import { theme } from '../../../theme'
 
-type ActiveProgressCardProps = FlexProps & {}
+type ActiveProgressCardProps = FlexProps & {
+  activeProductsChartData: string
+}
 
-const ActiveProgressCard: React.FC<ActiveProgressCardProps> = () => {
+const ActiveProgressCard: React.FC<ActiveProgressCardProps> = ({ activeProductsChartData }) => {
   const isTinyPhone = useMediaQuery({ query: '(max-width: 20em)' })
   const isSmallPhone = useMediaQuery({ query: '(max-width: 25em)' })
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
+  const data = JSON.parse(activeProductsChartData)
 
   const chartWidth = isTinyPhone ? 280 : isSmallPhone ? 350 : isTabletOrMobile ? 400 : 650
+  const items = Object.keys(data).map((row) => {
+    const item = data[row]
+    const sold = item.soldUnits
+    const name = item.product.name
+    return {
+      [name]: sold
+    }
+  })
+
+  const cts: string[] = []
+  const vls: number[] = []
+
+  const categories = items
+    .map((item: Record<string, any>) => {
+      return [...cts, Object.keys(item)[0]]
+    })
+    .flat()
+
+  const values = items
+    .map((item: Record<number, any>) => {
+      return [...vls, Object.values(item)[0]]
+    })
+    .flat()
 
   const options = {
     chart: {
@@ -31,18 +57,7 @@ const ActiveProgressCard: React.FC<ActiveProgressCardProps> = () => {
       }
     },
     xaxis: {
-      categories: [
-        'BMW',
-        'Hammer',
-        'Jeep',
-        'Tesla',
-        'Land Rover',
-        'Land Cruiser',
-        'Lamborghini',
-        'Mercedes Benz',
-        'Jaguar',
-        'Porsche'
-      ]
+      categories
     },
     annotations: {
       xaxis: [
@@ -51,7 +66,7 @@ const ActiveProgressCard: React.FC<ActiveProgressCardProps> = () => {
           x2: 100,
           fillColor: '#9fcdff',
           label: {
-            text: 'Hotcake (Almost Out)'
+            text: 'High Mover'
           }
         }
       ]
@@ -70,7 +85,7 @@ const ActiveProgressCard: React.FC<ActiveProgressCardProps> = () => {
   const series = [
     {
       name: ACTIVE_PRODUCT_PROGRESS,
-      data: [10, 20, 30, 40, 50, 80, 90, 100]
+      data: values
     }
   ]
   return (

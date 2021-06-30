@@ -6,7 +6,9 @@ import { ChevronRight, Clock } from 'react-feather'
 import { theme } from '../../../theme'
 import { Text } from '../../../typography'
 
-type ActiveProductsCardProps = FlexProps & {}
+type ActiveProductsCardProps = FlexProps & {
+  activeProductsChartData: string
+}
 
 const OlderActiveProduct = () => {
   return (
@@ -31,7 +33,9 @@ const OlderActiveProduct = () => {
   )
 }
 
-const ActiveProductsCard: React.FC<ActiveProductsCardProps> = () => {
+const ActiveProductsCard: React.FC<ActiveProductsCardProps> = ({ activeProductsChartData }) => {
+  const data = JSON.parse(activeProductsChartData)
+  console.log('JSON', data)
   return (
     <Flex>
       <OlderActiveProduct />

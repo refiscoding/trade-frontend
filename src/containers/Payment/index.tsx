@@ -68,7 +68,7 @@ const CheckoutPaymentValidation: React.FC = () => {
       const orderNumber = validateTransaction?.transaction?.order?.orderNumber
 
       const failed = /FAILED/.test(status)
-      const succeeded = /SUCCESS/.test(status)
+      const succeeded = /APPROVED/.test(status)
       const pending = /PROCESSING/.test(status)
 
       switch (true) {

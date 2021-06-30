@@ -11,3 +11,10 @@ query findGrandTotalUnitsSoldPerMonth {
   }
 }
 
+query findActiveProducts {
+  findActiveProducts {
+    payload 
+    error
+  }
+}
+
