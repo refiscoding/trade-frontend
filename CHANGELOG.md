@@ -1,3 +1,10 @@
+# [1.6.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.5.0...v1.6.0) (2021-07-01)
+
+
+### Features
+
+* **validationURL:** add host to url ([c035bb7](http://bitbucket.org/sovtech/tradefed-frontend/commits/c035bb7f65855ed45be8b53b57c7567344ce5a24))
+
 # [1.5.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.4.1...v1.5.0) (2021-07-01)
 
 
