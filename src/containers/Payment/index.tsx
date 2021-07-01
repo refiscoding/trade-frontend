@@ -62,7 +62,7 @@ const CheckoutPaymentValidation: React.FC = () => {
       txnToken: transaction ? transaction : txnToken
     },
     onCompleted: ({ validateTransaction }) => {
-      const status = validateTransaction?.status
+      const status = validateTransaction?.status ?? ''
       const orderId = validateTransaction?.transaction?.order?.id
       const orderNumber = validateTransaction?.transaction?.order?.orderNumber
 
