@@ -1,20 +1,23 @@
 import * as React from 'react'
-import { get } from "lodash";
+import { get } from 'lodash'
 import { ApolloError } from 'apollo-boost'
 import { AnimatePresence } from 'framer-motion'
 import { Flex, useToast } from '@chakra-ui/core'
 import { useMediaQuery } from 'react-responsive'
 
-import { theme } from '../../../theme';
+import { theme } from '../../../theme'
 import { Text } from '../../../typography'
 import { MenuItem, Tooltip } from './styles'
 import { ERROR_TOAST } from '../../../constants'
 import { useAppContext } from '../../../context/AppProvider'
-import { useFetchUserNotificationsQuery, useFetchUsersWhishlistQuery } from '../../../generated/graphql'
+import {
+  useFetchUserNotificationsQuery,
+  useFetchUsersWhishlistQuery
+} from '../../../generated/graphql'
 
 type SideBarItemProps = {
-  to: string;
-  mt?: number;
+  to: string
+  mt?: number
   title: string
   color: string
   Icon: React.FC
@@ -30,7 +33,7 @@ type CounterProps = {
   Icon: React.FC
   count: number
   color: string
-};
+}
 
 const NotificationsCounter: React.FC<CounterProps> = ({ Icon, count, color }) => {
   return (
@@ -49,14 +52,12 @@ const NotificationsCounter: React.FC<CounterProps> = ({ Icon, count, color }) =>
         top="0"
         left="20px"
       >
-        {
-          count > 9 ? '9+' : count
-        }
+        {count > 9 ? '9+' : count}
       </Flex>
       <Icon />
     </Flex>
-  );
-};
+  )
+}
 
 const SideBarItem: React.FC<SideBarItemProps> = ({
   to,
@@ -69,7 +70,7 @@ const SideBarItem: React.FC<SideBarItemProps> = ({
   accentColor,
   handleClick,
   tooltipColor,
-  closeOnNavigate,
+  closeOnNavigate
 }) => {
   const { drawerOpen, toggleDrawer } = useAppContext()
 
@@ -88,29 +89,31 @@ const SideBarItem: React.FC<SideBarItemProps> = ({
         x: { stiffness: 200 }
       }
     }
-  };
+  }
 
-  const wishlistIcon = title === "My Wish List";
-  const notificationsIcon = title === "Notifications";
+  const wishlistIcon = title === 'My Wish List'
+  const notificationsIcon = title === 'Notifications'
 
-  const toast = useToast();
+  const toast = useToast()
 
-  const { data: userNotifications, refetch: refetchNotifications } = useFetchUserNotificationsQuery({
-    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
-  });
+  const { data: userNotifications, refetch: refetchNotifications } = useFetchUserNotificationsQuery(
+    {
+      onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
+    }
+  )
   const { data: userWishlist, refetch: refetchWishlist } = useFetchUsersWhishlistQuery({
-    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
-  });
-  const notifications = get(userNotifications, "findUserNotifications.payload");
-  const products = get(userWishlist, 'findOneWishlist.payload.products', null);
-  const hasWishlist = userWishlist?.findOneWishlist?.payload;
-  const hasWishlistProducts = hasWishlist?.products?.length;
-  const hasNotifications = notifications?.length;
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
+  })
+  const notifications = get(userNotifications, 'findUserNotifications.payload')
+  const products = get(userWishlist, 'findOneWishlist.payload.products', null)
+  const hasWishlist = userWishlist?.findOneWishlist?.payload
+  const hasWishlistProducts = hasWishlist?.products?.length
+  const hasNotifications = notifications?.length
 
   React.useEffect(() => {
-    refetchNotifications();
+    refetchNotifications()
     refetchWishlist()
-  }, [refetchNotifications, refetchWishlist]);
+  }, [refetchNotifications, refetchWishlist])
 
   return (
     <MenuItem
@@ -137,17 +140,25 @@ const SideBarItem: React.FC<SideBarItemProps> = ({
         className="sidebar-nav-item-wrapper"
       >
         <Flex className="icon-wrap" mx={3}>
-          {
-            notificationsIcon
-              ? hasNotifications
-                ? <NotificationsCounter count={notifications?.length} Icon={Icon} color="#CF2121" />
-                : <Icon />
-              : wishlistIcon
-                ? hasWishlistProducts
-                  ? <NotificationsCounter count={products?.length} Icon={Icon} color={theme.colors.brand[500]} />
-                  : <Icon />
-                : <Icon />
-          }
+          {notificationsIcon ? (
+            hasNotifications ? (
+              <NotificationsCounter count={notifications?.length} Icon={Icon} color="#CF2121" />
+            ) : (
+              <Icon />
+            )
+          ) : wishlistIcon ? (
+            hasWishlistProducts ? (
+              <NotificationsCounter
+                count={products?.length}
+                Icon={Icon}
+                color={theme.colors.brand[500]}
+              />
+            ) : (
+              <Icon />
+            )
+          ) : (
+            <Icon />
+          )}
         </Flex>
         <AnimatePresence>
           {drawerOpen && (
