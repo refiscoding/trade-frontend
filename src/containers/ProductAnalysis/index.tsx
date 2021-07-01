@@ -1,26 +1,40 @@
 import * as React from 'react'
 
-import { PageWrap } from '../../layouts'
-import { useHistory } from 'react-router-dom'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+
+import { get } from 'lodash'
+import { ApolloError } from 'apollo-boost'
 import { ArrowLeft, Clock } from 'react-feather'
 import { useMediaQuery } from 'react-responsive'
-import { Flex, Image, Text } from '@chakra-ui/core'
+import { useHistory, useParams } from 'react-router-dom'
+import { Flex, Image, Text, useToast, Spinner } from '@chakra-ui/core'
 
 import { theme } from '../../theme'
+import { PageWrap } from '../../layouts'
+import { ERROR_TOAST } from '../../constants'
 import { TotalUnits } from '../../components/Card/ProductMangementCard/charts'
+import {
+  useFindActiveProductsQuery,
+  useFindProductTotalUnitsSoldPerMonthQuery
+} from '../../generated/graphql'
+
+dayjs.extend(relativeTime)
 
 type ProductManagementAnalysisProps = {}
+type ParamType = {
+  id: string
+}
 
 const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () => {
+  const params: ParamType = useParams()
+
+  const toast = useToast()
   const history = useHistory()
 
   const isWebViewport = useMediaQuery({
     query: '(min-width: 40em)'
   })
-
-  const maxSellCost = 3000
-  const tradeFedCost = 2500
-  const discount = Math.round(((maxSellCost - tradeFedCost) / maxSellCost) * 100)
 
   const isSmallPhone = useMediaQuery({ query: '(max-width: 25em)' })
   const isTinyPhone = useMediaQuery({ query: '(max-width: 20em)' })
@@ -30,11 +44,50 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
   const handleBackToProductManagement = () => {
     history.push('/product-management')
   }
-  const images = [
-    '/uploads/yuvraj_singh_Rjj_Emr24h_M_unsplash_f91dc39bca.jpg',
-    '/uploads/yuvraj_singh_Rjj_Emr24h_M_unsplash_f91dc39bca.jpg',
-    '/uploads/yuvraj_singh_Rjj_Emr24h_M_unsplash_f91dc39bca.jpg'
-  ]
+
+  const { loading, data } = useFindProductTotalUnitsSoldPerMonthQuery({
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
+    variables: {
+      id: params.id
+    }
+  })
+
+  const { data: activeProductsData } = useFindActiveProductsQuery({
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
+  })
+
+  const chartData = data?.findProductTotalUnitsSoldPerMonth?.payload
+  const productData = activeProductsData?.findActiveProducts?.payload
+  const productItem = chartData?.product
+  const productStats = chartData?.stats ?? '{}'
+  const productDataStats = productData ?? '{}'
+  const stats = JSON.parse(productDataStats)[`${params.id}`]
+  const sold = stats && stats['soldUnits']
+  const remaining = stats && stats['remainingUnits']
+  const count = stats && stats['count']
+  const productImages = productItem?.productImages?.map((image) => image?.url)
+  const productCover = productItem?.coverImage?.url
+  const productImagesCount = productImages?.length
+  const imageHeight = productImagesCount === 1 ? '40%' : productImagesCount === 2 ? '60%' : '100%'
+  const maxSellCost = get(productItem, 'maxSellCost') as number
+  const tradeFedCost = get(productItem, 'tradeFedCost') as number
+  const discount = Math.round(((maxSellCost - tradeFedCost) / maxSellCost) * 100)
+
+  const slowMover = sold <= 10
+  const mover = sold > 10 && sold <= 49
+  const averageMover = sold > 49 && sold <= 70
+  const fastMove = sold > 70
+
+  const textColor = slowMover
+    ? theme.colors.background
+    : mover
+    ? theme.colors.tagText
+    : averageMover
+    ? '#f0943d'
+    : fastMove
+    ? theme.colors.greenFill
+    : ''
+
   return (
     <PageWrap
       alignItems={isWebViewport ? '' : 'center'}
@@ -58,15 +111,15 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
                   borderBottomLeftRadius={3}
                   width="100%"
                   height="100%"
-                  src={'/uploads/yuvraj_singh_Rjj_Emr24h_M_unsplash_f91dc39bca.jpg'}
+                  src={productCover || ''}
                 />
               </Flex>
               <Flex ml={3} pb={3} width={`30%`} flexDirection="column">
-                {images?.map((product: string | undefined) => (
+                {productImages?.map((product: string | undefined) => (
                   <Image
                     key={product || `${Math.random()}`}
                     width="100%"
-                    height="100%"
+                    height={imageHeight}
                     objectFit="cover"
                     src={product || ''}
                     mt={3}
@@ -78,7 +131,7 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
               <Text fontSize="14px" fontWeight={600}>
                 Total Units
               </Text>
-              <TotalUnits totalUnitsChartData={'{}'} />
+              {loading ? <Spinner /> : <TotalUnits totalUnitsChartData={productStats} />}
             </Flex>
           </Flex>
           <Flex
@@ -92,42 +145,48 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
             <Flex width="100%" justify="space-between">
               <Flex width="100%">
                 <Text fontSize={14} fontWeight={600}>
-                  Product Details
+                  {`Product Details (${loading ? '' : productItem?.name})`}
                 </Text>
               </Flex>
-              <Flex width="100%">
-                <Flex p={2} background={theme.colors.background} borderRadius={3}>
-                  <Clock />
-                  <Text ml={3}>12/09/21</Text>
+              {loading ? (
+                <Spinner />
+              ) : (
+                <Flex ml={3} width="100%">
+                  <Flex p={2} background={theme.colors.background} borderRadius={3}>
+                    <Clock />
+                    <Text ml={3}>{`${dayjs(productItem?.created_at).format('DD/MM/YYYY')}`}</Text>
+                  </Flex>
                 </Flex>
-              </Flex>
+              )}
             </Flex>
             <Flex mt={3} justify="space-between">
-              <Flex width="100%">Descriptipn</Flex>
-              <Flex justify="space-between" width="100%">
+              <Flex width="100%">
+                <Text fontSize={`11px`}>{`${loading ? '' : productItem?.description}`}</Text>
+              </Flex>
+              <Flex ml={3} justify="space-between" width="100%">
                 <Flex width={`100%`} flexDirection="column">
                   <Flex alignItems="center" height="20px">
                     <Text fontSize={`12px`} fontWeight={550}>
                       Sold:{' '}
                     </Text>
-                    <Text fontSize={`12px`} ml={2}>
-                      80%
+                    <Text fontSize={`12px`} ml={2} color={textColor}>
+                      {`${sold >= 100 ? `Sold Out` : `${sold}%`}`}
                     </Text>
                   </Flex>
                   <Flex alignItems="center" height="20px">
                     <Text fontSize={`12px`} fontWeight={550}>
                       Listed On:{' '}
                     </Text>
-                    <Text fontSize={`12px`} ml={2}>
-                      2 days ago
-                    </Text>
+                    <Text fontSize={`12px`} ml={2}>{`${dayjs(
+                      productItem?.created_at
+                    ).fromNow()}`}</Text>
                   </Flex>
                   <Flex alignItems="center" height="20px">
                     <Text fontSize={`12px`} fontWeight={550}>
                       Units Sold:{' '}
                     </Text>
                     <Text fontSize={`12px`} ml={2}>
-                      120
+                      {`${count}`}
                     </Text>
                   </Flex>
                   <Flex alignItems="center" height="20px">
@@ -135,7 +194,7 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
                       Units Left:{' '}
                     </Text>
                     <Text fontSize={`12px`} ml={2}>
-                      12
+                      {`${remaining}`}
                     </Text>
                   </Flex>
                   <Flex
@@ -147,7 +206,7 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
                     cursor="pointer"
                   >
                     <Text fontSize={`12px`} fontWeight={550}>
-                      R 2000.00
+                      {`${productItem?.currency} ${productItem?.tradeFedCost}.00`}
                     </Text>
                     <Text
                       mr={3}
@@ -155,7 +214,7 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
                       fontSize={`12px`}
                       fontWeight={550}
                       cursor="pointer"
-                      onClick={() => history.push('/product/1')}
+                      onClick={() => history.push(`/product/${productItem?.id}`)}
                     >
                       View
                     </Text>

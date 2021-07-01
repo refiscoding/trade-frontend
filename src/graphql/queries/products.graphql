@@ -18,3 +18,16 @@ query findActiveProducts($old: Boolean) {
   }
 }
 
+query findProductTotalUnitsSoldPerMonth($id: ID!) {
+  findProductTotalUnitsSoldPerMonth(id: $id) {
+    payload {
+      stats
+      product {
+      ...product
+      }
+    }
+    error
+  }
+}
+
+

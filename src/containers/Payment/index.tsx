@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+import { ApolloError } from 'apollo-boost'
 import { useToast } from '@chakra-ui/core'
 import { useHistory } from 'react-router-dom'
 
@@ -7,10 +8,8 @@ import InfoPage from '../../components/InfoPage'
 
 import { images } from '../../theme'
 import { PageWrap } from '../../layouts'
-
-import { useValidateTransactionQuery } from '../../generated/graphql'
-import { ApolloError } from 'apollo-boost'
 import { ERROR_TOAST } from '../../constants'
+import { useValidateTransactionQuery } from '../../generated/graphql'
 
 type ParamsType = {
   txnToken: string

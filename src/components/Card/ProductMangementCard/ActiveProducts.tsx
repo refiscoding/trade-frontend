@@ -25,7 +25,7 @@ const OlderActiveProduct = () => {
           <Flex mr={3} p={2} background={theme.colors.background} borderRadius={3}>
             <Clock />
             <Text ml={3}>12/09/21</Text>
-          </Flex>
+          </Flex> 
           <ChevronRight />
         </Flex>
       </Flex>

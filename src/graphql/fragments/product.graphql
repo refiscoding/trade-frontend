@@ -36,4 +36,5 @@ fragment product on Product {
     productImages {
         ...uploadFile
     }
+    created_at
 }
