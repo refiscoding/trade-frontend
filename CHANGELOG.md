@@ -1,3 +1,29 @@
+# [1.5.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.4.1...v1.5.0) (2021-07-01)
+
+
+### Bug Fixes
+
+* **app:** fix linting errors ([1fde99c](http://bitbucket.org/sovtech/tradefed-frontend/commits/1fde99cf2d6e8670d18ce89afd644cfd5f2118fb))
+* **header:** fix linting ([a9db669](http://bitbucket.org/sovtech/tradefed-frontend/commits/a9db66954ab08fb0a9dff225689b665ef0244084))
+* **product:** adjust proportions for div ([0a6c32c](http://bitbucket.org/sovtech/tradefed-frontend/commits/0a6c32cccd74a0d3371e061c7e8b72237fdf1cd0))
+
+
+### Features
+
+* **checkout:** add orderNumber to success screen ([2a61fe7](http://bitbucket.org/sovtech/tradefed-frontend/commits/2a61fe78ed33e3fe2235adf847675badd8aaf769))
+* **payment:** validate payment ([d680134](http://bitbucket.org/sovtech/tradefed-frontend/commits/d6801346fa0873790269ea1e271d21d14939bce2))
+* **productManagement:** add active product progress ([7a6359c](http://bitbucket.org/sovtech/tradefed-frontend/commits/7a6359cb15064f64569976ea6ae9d2b0d12e86f5))
+* **productManagement:** add active products ([e44fd8a](http://bitbucket.org/sovtech/tradefed-frontend/commits/e44fd8ac0ceee006477aceccfe74a802d7ef4336))
+* **productManagement:** add charts ([fdba42f](http://bitbucket.org/sovtech/tradefed-frontend/commits/fdba42ffb9ce9874caa18dccaa70359066942965))
+* **productManagement:** add older active products ([166e862](http://bitbucket.org/sovtech/tradefed-frontend/commits/166e862fa8105bf36886c80a80ff67f185713b83))
+* **productManagement:** fetch dashboard stats ([4f12268](http://bitbucket.org/sovtech/tradefed-frontend/commits/4f1226882335b744e879320ac8ad7c8dd5b7b961))
+* **productManagement:** fetch total units query ([b5519cd](http://bitbucket.org/sovtech/tradefed-frontend/commits/b5519cd58eb45e1708dbc454828085d1c0611c33))
+* **productManagement:** product stats ([f540da6](http://bitbucket.org/sovtech/tradefed-frontend/commits/f540da66f3fd92151d148b7e9c4a54fc528ceeec))
+* **productManagement:** separate web and mobile UX ([f037df8](http://bitbucket.org/sovtech/tradefed-frontend/commits/f037df80e5c10045c181ff1c842b1e8a410bb950))
+* **productManagement:** setup component tree ([9d59177](http://bitbucket.org/sovtech/tradefed-frontend/commits/9d591770f31cb91c7adacb89fdff4ce1d9b1992d))
+* **productManagement:** setup single product ([350a329](http://bitbucket.org/sovtech/tradefed-frontend/commits/350a3298cf9669bc449654690b3d0a2fa43b63dd))
+* **totalUnits:** add stats to chart ([53761ce](http://bitbucket.org/sovtech/tradefed-frontend/commits/53761ce55ca444fc82f885d191b5098ce2f7b7bb))
+
 ## [1.4.1](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.4.0...v1.4.1) (2021-06-15)
 
 
