@@ -174,6 +174,7 @@ const CheckoutPage: React.FC = () => {
   })
 
   const handlePay = async () => {
+    const HOST = `https://${process.env.REACT_APP_STAGE}.tradefed.sovtech.org`
     if (products) {
       const orderInput = {
         deliveryAddress: {
@@ -186,7 +187,7 @@ const CheckoutPage: React.FC = () => {
           name: selectedAddress?.name
         },
         deliveryDate: selectedDeliveryDate,
-        validationRedirect: `${process.env.REACT_APP_CLIENT_HOST}/orders`,
+        validationRedirect: `${HOST}/orders`,
         successURL: `${process.env.REACT_APP_CLIENT_HOST}/checkout-success`,
         failureURL: `${process.env.REACT_APP_CLIENT_HOST}/checkout`
       }
