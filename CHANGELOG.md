@@ -1,3 +1,11 @@
+## [1.6.1](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.6.0...v1.6.1) (2021-07-01)
+
+
+### Bug Fixes
+
+* **deploy:** add defensive fallback for string ([67ab790](http://bitbucket.org/sovtech/tradefed-frontend/commits/67ab790b4b9f6779ceaea70075cd1c6343578400))
+* **sider:** revert icons ([d6295d7](http://bitbucket.org/sovtech/tradefed-frontend/commits/d6295d7d598b23ad8cacb90423fe27526f82456c))
+
 # [1.6.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.5.0...v1.6.0) (2021-07-01)
 
 
