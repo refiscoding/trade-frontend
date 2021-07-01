@@ -192,7 +192,7 @@ const ProductComponent: React.FC<ProductProps> = ({
         </Grid>
       </Flex>
       <Grid
-        gridTemplateRows="1fr 1fr"
+        // gridTemplateRows="1fr 1fr"
         backgroundColor="white"
         borderRadius={3}
         padding={10}
@@ -204,9 +204,11 @@ const ProductComponent: React.FC<ProductProps> = ({
           <Text fontSize="17px" fontWeight={600}>
             About This Product
           </Text>
-          <Text fontSize="12px">{product?.description}</Text>
+          <Text fontSize="12px" mb={3}>
+            {product?.description}
+          </Text>
         </div>
-        <Grid gridTemplateColumns="1fr 1fr" columnGap="20px">
+        <Grid gridTemplateColumns="1fr 1fr" columnGap="20px" mt={3}>
           <div
             style={{ border: `1px solid ${theme.colors.background}`, padding: 15, borderRadius: 3 }}
           >

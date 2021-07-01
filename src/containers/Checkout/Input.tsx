@@ -1,14 +1,14 @@
-import styled from "@emotion/styled";
+import styled from '@emotion/styled'
 
-const Input = styled.input``;
+const Input = styled.input``
 
 export const AddressInput = styled.input`
-    align-self: center;
-    cursor: pointer;
-`;
+  align-self: center;
+  cursor: pointer;
+`
 
 export const Label = styled.div`
-    margin-left: .5rem;
-`;
+  margin-left: 0.5rem;
+`
 
-export default Input;
+export default Input

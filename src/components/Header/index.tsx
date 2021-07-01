@@ -1,26 +1,24 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
 
-import { get } from "lodash";
+import { get } from 'lodash'
 import { motion } from 'framer-motion'
 import { ApolloError } from 'apollo-boost'
 import { ShoppingCart } from 'react-feather'
 import { useMediaQuery } from 'react-responsive'
-import { InstantSearch } from "react-instantsearch-dom";
+import { InstantSearch } from 'react-instantsearch-dom'
 import { Flex, Image, Text, useToast } from '@chakra-ui/core'
 import { color, ColorProps, space, SpaceProps } from 'styled-system'
 import { RouteComponentProps, withRouter, useHistory } from 'react-router'
 
 import SideBarButton from '../SideBar/SideBarButton'
 
-import { SearchBar } from "../index";
+import { SearchBar } from '../index'
 import { images, theme } from '../../theme'
 import { useAppContext } from '../../context/AppProvider'
-import { useAuthContext } from "../../context/AuthProvider";
-import { SEARCH_INDEX, searchClient, ERROR_TOAST } from "../../constants";
-import {
-  useFetchUsersCartQuery,
-} from '../../generated/graphql'
+import { useAuthContext } from '../../context/AuthProvider'
+import { SEARCH_INDEX, searchClient, ERROR_TOAST } from '../../constants'
+import { useFetchUsersCartQuery } from '../../generated/graphql'
 
 type HeaderProps = RouteComponentProps &
   ColorProps & {
@@ -37,7 +35,7 @@ type HeaderContProps = SpaceProps &
     open?: boolean
   }
 
-const HeaderCont = styled(motion.div) <HeaderContProps>`
+const HeaderCont = styled(motion.div)<HeaderContProps>`
   ${space};
   ${color};
   top: 0;
@@ -61,21 +59,21 @@ const HeaderCont = styled(motion.div) <HeaderContProps>`
 
 const Header: React.FC<HeaderProps> = ({ ...rest }) => {
   const { user } = useAuthContext()
-  const history = useHistory();
-  const toast = useToast();
+  const history = useHistory()
+  const toast = useToast()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   const { drawerOpen, toggleDrawer } = useAppContext()
   const isSellerApproved = user?.isSeller === 'approved'
 
   const { data: userCart, refetch: refetchCart } = useFetchUsersCartQuery({
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
-  });
+  })
 
-  const cart = get(userCart, "findCart.payload");
-  const cartProducts = get(userCart, "findCart.payload.products");
+  const cart = get(userCart, 'findCart.payload')
+  const cartProducts = get(userCart, 'findCart.payload.products')
 
-  const numberOfItems = cartProducts?.length;
-  const hasProducts = numberOfItems > 0;
+  const numberOfItems = cartProducts?.length
+  const hasProducts = numberOfItems > 0
 
   const handleCartIconClicked = () => {
     history.push('/cart')
@@ -101,8 +99,8 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
   }
 
   React.useEffect(() => {
-    refetchCart();
-  }, [refetchCart]);
+    refetchCart()
+  }, [refetchCart])
 
   return (
     <HeaderCont pr={4} pl={drawerOpen ? 'calc(186px + 1rem)' : '1rem'} {...rest}>
@@ -114,13 +112,21 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
           justifyContent={isTabletOrMobile ? 'center' : 'flex-start'}
           pl={5}
         >
-          <Image cursor="pointer" onClick={handleLogoClicked} mr={5} width={isTabletOrMobile ? '100%' : '30%'} src={images['TradeFedFullLogo']} />
+          <Image
+            cursor="pointer"
+            onClick={handleLogoClicked}
+            mr={5}
+            width={isTabletOrMobile ? '100%' : '30%'}
+            src={images['TradeFedFullLogo']}
+          />
         </Flex>
-        <Flex
-          display={isTabletOrMobile ? "none" : "flex"}
-          width={isTabletOrMobile ? 0 : '55%'}
-        >
-          <Flex width={drawerOpen ? '50%' : '40%'} alignItems="center" justifyContent="space-between" px={5}>
+        <Flex display={isTabletOrMobile ? 'none' : 'flex'} width={isTabletOrMobile ? 0 : '55%'}>
+          <Flex
+            width={drawerOpen ? '50%' : '40%'}
+            alignItems="center"
+            justifyContent="space-between"
+            px={5}
+          >
             <Text
               color="brand.500"
               fontSize="14px"
@@ -130,46 +136,33 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
             >
               {isSellerApproved ? 'Product Management' : 'Become a Seller'}
             </Text>
-            <Text
-              color="brand.500"
-              fontSize="14px"
-              cursor="pointer"
-              onClick={handleMyaccount}
-            >
+            <Text color="brand.500" fontSize="14px" cursor="pointer" onClick={handleMyaccount}>
               My Account
             </Text>
           </Flex>
           <Flex width="65%" mr={4}>
-            <SearchBar
-              handleFilter={handleFilter}
-              handleSearch={() => { }}
-              handleReset={() => { }}
-            />
+            <SearchBar handleFilter={handleFilter} handleSearch={() => {}} handleReset={() => {}} />
           </Flex>
         </Flex>
         <Flex flexDirection="column" mr={5}>
-          {
-            cart && hasProducts && (
-              <Flex
-                backgroundColor={theme.colors.brand[500]}
-                height="25px"
-                width="25px"
-                color={theme.colors.accent[50]}
-                textAlign="center"
-                justify="center"
-                align="center"
-                borderRadius="50%"
-                fontSize="12px"
-                position="absolute"
-                top="4px"
-                right="21px"
-              >
-                {
-                  numberOfItems > 9 ? '9+' : numberOfItems
-                }
-              </Flex>
-            )
-          }
+          {cart && hasProducts && (
+            <Flex
+              backgroundColor={theme.colors.brand[500]}
+              height="25px"
+              width="25px"
+              color={theme.colors.accent[50]}
+              textAlign="center"
+              justify="center"
+              align="center"
+              borderRadius="50%"
+              fontSize="12px"
+              position="absolute"
+              top="4px"
+              right="21px"
+            >
+              {numberOfItems > 9 ? '9+' : numberOfItems}
+            </Flex>
+          )}
           <ShoppingCart onClick={handleCartIconClicked} />
         </Flex>
       </InstantSearch>

@@ -18,7 +18,7 @@ const AddressesComponent: React.FC<AddressesProps> = ({
   setActive,
   mobileFlow,
   setSelectedAddress,
-  confirmationTextAddress,
+  confirmationTextAddress
 }) => {
   const [activateButton, setActivateButton] = React.useState<boolean>(true)
 

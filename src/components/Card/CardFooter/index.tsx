@@ -5,11 +5,7 @@ import * as React from 'react'
 type CardFooterProps = FlexProps
 
 const CardFooter: React.FC<CardFooterProps> = ({ children, ...rest }) => {
-  return (
-    <Flex {...rest}>
-      {children}
-    </Flex>
-  )
+  return <Flex {...rest}>{children}</Flex>
 }
 
 export default CardFooter

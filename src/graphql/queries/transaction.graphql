@@ -1,0 +1,12 @@
+# import '/fragments/transaction.graphql'
+
+query validateTransaction($txnToken: String!) {
+  validateTransaction(txnToken: $txnToken){
+    status
+    statusCode
+    transaction {
+      ...transaction
+    }
+    error
+  }
+}

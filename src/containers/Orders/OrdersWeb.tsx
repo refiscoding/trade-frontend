@@ -45,6 +45,7 @@ const OrdersPageWeb: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => 
   const handleReturnOrderClicked = () => {
     history.push('/returns')
   }
+
   return (
     <PageWrap
       title="Orders"

@@ -166,7 +166,7 @@ const SideBar: React.FC<SideBarProps> = ({
             {...props}
           />
         ))}
-        <Flex flexDirection="column" mt={isAuthenticated ? '310px' : '270px'} width="100%">
+        <Flex flexDirection="column" width="100%">
           {(authSection as NavItem[]).map((props) => (
             <SideBarItem
               handleClick={handleAuth}

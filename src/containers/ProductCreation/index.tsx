@@ -1,18 +1,18 @@
-import * as Yup from 'yup';
-import * as React from 'react';
+import * as Yup from 'yup'
+import * as React from 'react'
 
-import { get } from 'lodash';
-import { AxiosResponse } from "axios";
-import { useToast } from '@chakra-ui/core';
-import { useHistory } from 'react-router-dom';
-import { useMediaQuery } from "react-responsive";
+import { get } from 'lodash'
+import { AxiosResponse } from 'axios'
+import { useToast } from '@chakra-ui/core'
+import { useHistory } from 'react-router-dom'
+import { useMediaQuery } from 'react-responsive'
 
-import strapiHelpers from "../../utils/strapiHelpers";
-import ProductCreationWebFlow from "./ProductCreationWeb";
-import ProductCreationMobileFlow from "./ProductCreationMobile";
+import strapiHelpers from '../../utils/strapiHelpers'
+import ProductCreationWebFlow from './ProductCreationWeb'
+import ProductCreationMobileFlow from './ProductCreationMobile'
 
-import { Options } from '../Seller/businessInfo';
-import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants';
+import { Options } from '../Seller/businessInfo'
+import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
 import {
   Category,
   UploadFile,
@@ -21,7 +21,6 @@ import {
   Enum_Product_Packaging as packagingEnum,
   Enum_Componentproductvariantsvariants_Variants as variantsEnum
 } from '../../generated/graphql'
-
 
 export const ProductFormValidation = Yup.object().shape({
   name: Yup.string().required('A name is required'),
@@ -59,7 +58,7 @@ export type ProductValues = {
   length: string
   width: string
   weight: string
-};
+}
 
 export const initialValues = {
   name: '',
@@ -76,42 +75,42 @@ export const initialValues = {
   length: '',
   width: '',
   weight: ''
-};
+}
 
 type PriceItem = {
-  currency: string,
-  retailPricePerUnit: number,
+  currency: string
+  retailPricePerUnit: number
   pricePerUnit: number
-};
+}
 type SizeItem = {
-  height: number,
-  productLength: number,
-  width: number,
+  height: number
+  productLength: number
+  width: number
   weight: number
-};
+}
 type VariantsItem = {
-  variants: variantsEnum | undefined,
+  variants: variantsEnum | undefined
   quantity: number
-};
+}
 
 type MappedProduct = {
-  name: string,
-  shortDescription: string,
-  description: string,
-  tags: string,
-  price: PriceItem,
-  availableUnits: number,
-  packaging: packagingEnum | undefined,
-  productPrice: number,
-  size: SizeItem,
-  features: string,
-  variants: VariantsItem,
+  name: string
+  shortDescription: string
+  description: string
+  tags: string
+  price: PriceItem
+  availableUnits: number
+  packaging: packagingEnum | undefined
+  productPrice: number
+  size: SizeItem
+  features: string
+  variants: VariantsItem
   categories: string[]
-};
+}
 
 export type ProductCreationProps = {
   active: number
-  imageValues?: ImageByType 
+  imageValues?: ImageByType
   formValues: ProductValues
   mappedCategories: Options[]
   uploading: boolean
@@ -121,35 +120,35 @@ export type ProductCreationProps = {
   handleImages: (imageFiles: File[], type: string, pop?: boolean) => void
   handleNextButton: () => void
   mapProducts: (values: ProductValues) => MappedProduct
-};
+}
 
 export type ImageByType = {
-  productImages?: File[],
+  productImages?: File[]
   coverImage?: File
 }
 
 const ProductCreation: React.FC = () => {
-  const toast = useToast();
-  const history = useHistory();
-  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' });
+  const toast = useToast()
+  const history = useHistory()
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
 
-  const [active, setActive] = React.useState(0);
-  const [imageByType, setImageByType] = React.useState<ImageByType>();
-  const [tags, setTags] = React.useState<Array<string>>([]);
-  const [uploading, setUploading] = React.useState<boolean>(false);
-  
-  const [formValues, setFormValues] = React.useState<ProductValues>(initialValues);
+  const [active, setActive] = React.useState(0)
+  const [imageByType, setImageByType] = React.useState<ImageByType>()
+  const [tags, setTags] = React.useState<Array<string>>([])
+  const [uploading, setUploading] = React.useState<boolean>(false)
+
+  const [formValues, setFormValues] = React.useState<ProductValues>(initialValues)
 
   const { data } = useCategoryQuery({
     onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST })
-  });
+  })
 
-  const categories = get(data, 'categories', null) as Category[];
+  const categories = get(data, 'categories', null) as Category[]
 
   const mappedCategories = categories?.map((category: Category) => ({
     label: category.name,
     value: category.id
-  })) as Options[];
+  })) as Options[]
 
   const [AddProduct] = useAddProductMutation({
     onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
@@ -157,48 +156,55 @@ const ProductCreation: React.FC = () => {
       toast({ description: 'Product details updated!', ...SUCCESS_TOAST })
       history.push('/upload-product-success')
     }
-  });
+  })
 
   const handleUpload = async () => {
-    const imagesArray = (imageByType?.productImages && [...imageByType.productImages]) || [];
-    const productImages = (imagesArray.map((file: File) => strapiHelpers.upload(file))) || [];
-    setUploading(true);
+    const imagesArray = (imageByType?.productImages && [...imageByType.productImages]) || []
+    const productImages = imagesArray.map((file: File) => strapiHelpers.upload(file)) || []
+    setUploading(true)
     try {
-      const coverImage = imageByType?.coverImage && await strapiHelpers.upload(imageByType.coverImage) as AxiosResponse;
-      const uploadArr = await Promise.all(productImages);
-      const uploads = uploadArr.map((upload: AxiosResponse) => upload.data[0]);
-      setUploading(false);
+      const coverImage =
+        imageByType?.coverImage &&
+        ((await strapiHelpers.upload(imageByType.coverImage)) as AxiosResponse)
+      const uploadArr = await Promise.all(productImages)
+      const uploads = uploadArr.map((upload: AxiosResponse) => upload.data[0])
+      setUploading(false)
       return {
         coverImage: coverImage?.data[0],
         productImages: uploads
-      };
+      }
     } catch (e) {
-      setUploading(false);
-      console.log("Upload Exception; ", e)
+      setUploading(false)
+      console.log('Upload Exception; ', e)
       toast({
         description: 'Something went wrong while uploading your file.',
         ...ERROR_TOAST
-      });
-      return false;
+      })
+      return false
     }
-  };
+  }
 
   const handleImages = (imageFiles: File[], type: string, pop?: boolean) => {
-    const imagesArray = Array.from(imageFiles);
-    if(pop){
-      if(type === 'multi'){
-        setImageByType({ ...imageByType, productImages: imagesArray });
+    const imagesArray = Array.from(imageFiles)
+    if (pop) {
+      if (type === 'multi') {
+        setImageByType({ ...imageByType, productImages: imagesArray })
       } else {
-        setImageByType({ ...imageByType, coverImage: imagesArray[0] });
+        setImageByType({ ...imageByType, coverImage: imagesArray[0] })
       }
-      return;
+      return
     }
-    if(type === 'multi'){
-      setImageByType((prevState?: ImageByType) => ({ ...imageByType, productImages: prevState?.productImages ? [...prevState.productImages, ...imagesArray] : imagesArray }));
+    if (type === 'multi') {
+      setImageByType((prevState?: ImageByType) => ({
+        ...imageByType,
+        productImages: prevState?.productImages
+          ? [...prevState.productImages, ...imagesArray]
+          : imagesArray
+      }))
     } else {
-      setImageByType({ ...imageByType, coverImage: imagesArray[0] });
+      setImageByType({ ...imageByType, coverImage: imagesArray[0] })
     }
-  };
+  }
 
   const handleNextButton = () => {
     if (active === 0) {
@@ -210,19 +216,19 @@ const ProductCreation: React.FC = () => {
     if (active === 2) {
       setActive(1)
     }
-  };
+  }
   const handleSetTags = (tags: string[]) => {
-    setTags(tags);
-  };
+    setTags(tags)
+  }
 
   const mapProducts = (values: ProductValues) => {
     return {
       name: values.name,
       shortDescription: values.shortDescription,
       description: values.description,
-      tags: tags?.join(","),
+      tags: tags?.join(','),
       price: {
-        currency: 'R',
+        currency: 'ZAR',
         retailPricePerUnit: parseInt(values.retailPricePerUnit),
         pricePerUnit: parseInt(values.pricePerUnit)
       },
@@ -235,14 +241,14 @@ const ProductCreation: React.FC = () => {
         width: parseInt(values.width),
         weight: parseInt(values.weight)
       },
-      features: "", // [...values.features],
+      features: '', // [...values.features],
       variants: {
         variants: values.variations,
         quantity: 0
       },
       categories: [...values.category]
     }
-  };
+  }
 
   const handleSubmitButton = (items: ProductValues) => {
     if (active === 1) {
@@ -250,54 +256,55 @@ const ProductCreation: React.FC = () => {
     }
     if (active === 2) {
       const postProduct = async () => {
-        const uploadedData = await handleUpload();
-        const coverImage = (uploadedData && uploadedData?.coverImage?.id) || "";
-        const productImages = (uploadedData && uploadedData?.productImages?.map((image: UploadFile) => image.id)) || [];
-        await AddProduct({ variables: { input: {
-          ...mapProducts(items),
-          coverImage: coverImage,
-          productImages: productImages
-        }}})
+        const uploadedData = await handleUpload()
+        const coverImage = (uploadedData && uploadedData?.coverImage?.id) || ''
+        const productImages =
+          (uploadedData && uploadedData?.productImages?.map((image: UploadFile) => image.id)) || []
+        await AddProduct({
+          variables: {
+            input: {
+              ...mapProducts(items),
+              coverImage: coverImage,
+              productImages: productImages
+            }
+          }
+        })
       }
       postProduct()
     }
-  };
+  }
 
   return (
     <React.Fragment>
-      {
-        isTabletOrMobile
-        ? (
-            <ProductCreationMobileFlow
-              active={active}
-              uploading={uploading}
-              mappedCategories={mappedCategories}
-              handleSetTags={handleSetTags}
-              handleImages={handleImages}
-              imageValues={imageByType}
-              mapProducts={mapProducts}
-              handleNextButton={handleNextButton}
-              formValues={formValues}
-              setFormValues={setFormValues}
-              handleSubmitButton={handleSubmitButton}
-            />
-          )
-        : (
-            <ProductCreationWebFlow 
-              active={active}
-              uploading={uploading}
-              mappedCategories={mappedCategories}
-              handleSetTags={handleSetTags}
-              handleImages={handleImages}
-              imageValues={imageByType}
-              mapProducts={mapProducts}
-              handleNextButton={handleNextButton}
-              formValues={formValues}
-              setFormValues={setFormValues}
-              handleSubmitButton={handleSubmitButton}
-            />
-          )
-      }
+      {isTabletOrMobile ? (
+        <ProductCreationMobileFlow
+          active={active}
+          uploading={uploading}
+          mappedCategories={mappedCategories}
+          handleSetTags={handleSetTags}
+          handleImages={handleImages}
+          imageValues={imageByType}
+          mapProducts={mapProducts}
+          handleNextButton={handleNextButton}
+          formValues={formValues}
+          setFormValues={setFormValues}
+          handleSubmitButton={handleSubmitButton}
+        />
+      ) : (
+        <ProductCreationWebFlow
+          active={active}
+          uploading={uploading}
+          mappedCategories={mappedCategories}
+          handleSetTags={handleSetTags}
+          handleImages={handleImages}
+          imageValues={imageByType}
+          mapProducts={mapProducts}
+          handleNextButton={handleNextButton}
+          formValues={formValues}
+          setFormValues={setFormValues}
+          handleSubmitButton={handleSubmitButton}
+        />
+      )}
     </React.Fragment>
   )
 }

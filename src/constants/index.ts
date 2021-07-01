@@ -2,6 +2,24 @@ import { IToast } from '@chakra-ui/core'
 import { UploadFile } from '../generated/graphql'
 import algoliasearch from 'algoliasearch/lite'
 
+export const TOTAL_UNITS_SOLD = 'Total Units Sold'
+export const ACTIVE_PRODUCT_PROGRESS = 'Active Product Progress'
+export const ACTIVE_PRODUCTS = 'Active Products'
+export const MONTHS_OF_THE_YEAR = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dev'
+]
+
 export const APP_NAME = 'TradeFed'
 
 export const STRAPI_USER_STORAGE_KEY = 'strapi-user'
@@ -15,7 +33,8 @@ export const searchClient = algoliasearch(
 
 export const SEARCH_INDEX = `${process.env.REACT_APP_STAGE}_TRADEFED`
 
-export const zendeskWidgetScriptUrl = `https://static.zdassets.com/ekr/snippet.js?key=${process.env.REACT_APP_ZENDESK_WIDGET_KEY}` || '';
+export const zendeskWidgetScriptUrl =
+  `https://static.zdassets.com/ekr/snippet.js?key=${process.env.REACT_APP_ZENDESK_WIDGET_KEY}` || ''
 
 export const mapsScriptUrl =
   `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}&libraries=places` ||
@@ -48,20 +67,20 @@ export const notificationsMap = {
   onboarding: {
     EMAIL_VERIFICATION: 'EMAIL_VERIFICATION',
     SIGNUP_COMPLETE: 'SIGNUP_COMPLETE',
-    RESET_PASSWORD: 'RESET_PASSWORD',
+    RESET_PASSWORD: 'RESET_PASSWORD'
   },
   seller: {
     MERCHANT_REQUEST: 'MERCHANT_REQUEST',
     MERCHANT_REQUEST_APPROVED: 'MERCHANT_REQUEST_APPROVED',
-    MERCHANT_REQUEST_REJECTED: 'MERCHANT_REQUEST_REJECTED',
+    MERCHANT_REQUEST_REJECTED: 'MERCHANT_REQUEST_REJECTED'
   },
   order: {
     STALE_WISHLIST: 'STALE_WISHLIST',
     STALE_CART: 'STALE_CART',
     ORDER_RETURNED: 'ORDER_RETURNED',
-    ORDER_CREATED: 'ORDER_CREATED',
-  },
-};
+    ORDER_CREATED: 'ORDER_CREATED'
+  }
+}
 
 export const DATE_FORMAT = 'DD/MM/YYYY'
 

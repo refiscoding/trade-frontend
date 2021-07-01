@@ -35,17 +35,21 @@ type AddressDetailsComponentProps = {
 }
 
 const AddressDetailsComponent: React.FC<AddressDetailsComponentProps> = ({ address }) => {
-  const addressDetails = address?.address?.split(",") ?? [];
-  const addressStrings = addressDetails[0]?.split("-");
-  const streetAddress = addressStrings[0]?.trim();
-  const buildingOrComplex = addressStrings[1]?.trim();
+  const addressDetails = address?.address?.split(',') ?? []
+  const addressStrings = addressDetails[0]?.split('-')
+  const streetAddress = addressStrings[0]?.trim()
+  const buildingOrComplex = addressStrings[1]?.trim()
   return (
     <React.Fragment>
-      <Text mt={3} fontSize={14}>{streetAddress} </Text>
+      <Text mt={3} fontSize={14}>
+        {streetAddress}{' '}
+      </Text>
       <Text fontSize={14}>{buildingOrComplex} </Text>
       <Text fontSize={14}>{addressDetails[1]} </Text>
       <Text fontSize={14}>{addressDetails[2]} </Text>
-      <Text mt={3} fontSize={14}>{address?.postalCode} </Text>
+      <Text mt={3} fontSize={14}>
+        {address?.postalCode}{' '}
+      </Text>
     </React.Fragment>
   )
 }

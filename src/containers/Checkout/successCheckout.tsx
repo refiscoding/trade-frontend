@@ -1,13 +1,19 @@
 import * as React from 'react'
-import InfoPage from '../../components/InfoPage'
-import { PageWrap } from '../../layouts'
-import { images } from '../../theme'
+
+import { useLocation } from 'react-router'
 import { useHistory } from 'react-router-dom'
 
+import InfoPage from '../../components/InfoPage'
+
+import { images } from '../../theme'
+import { PageWrap } from '../../layouts'
+
 const CheckoutSuccess: React.FC = () => {
-  const history = useHistory();
-  // TODO: Integrete with value from backend after payment success
-  const orderNumber = "TFED-ighjkhjk";
+  const history = useHistory()
+  const location = useLocation()
+
+  const orderNumber = new URLSearchParams(location.search).get('order') as string
+
   return (
     <PageWrap
       title="Checkout Success"
@@ -21,11 +27,11 @@ const CheckoutSuccess: React.FC = () => {
         header="Payment Successful!"
         caption={`
           We have received your payment for order ${orderNumber}.
-          You will receive an invoice in your email with the summary.
+          We have sent an invoice to your email with the summary.
           One of our representatives will also contact you to facilitate delivery to the pickup point.
         `}
         action={() => history.push('/')}
-        actionText="OK"
+        actionText="TAKE ME HOME"
       />
     </PageWrap>
   )

@@ -23,6 +23,7 @@ const Seller = lazy(() => import('../containers/Seller'))
 const SellerApproval = lazy(() => import('../containers/Seller/seller-approval'))
 const ProductView = lazy(() => import('../containers/ProductView'))
 const ProductManagement = lazy(() => import('../containers/ProductManagement'))
+const ProductManagementAnalysis = lazy(() => import('../containers/ProductAnalysis'))
 const ProductCreation = lazy(() => import('../containers/ProductCreation'))
 const ProductFilter = lazy(() => import('../containers/ProductFilter'))
 const Wishlist = lazy(() => import('../containers/Wishlist'))
@@ -38,6 +39,7 @@ const Support = lazy(() => import('../containers/Support'))
 const Notifications = lazy(() => import('../containers/Notifications'))
 const Returns = lazy(() => import('../containers/Returns'))
 const AddressBook = lazy(() => import('../containers/AddressBook'))
+const ValidatePayment = lazy(() => import('../containers/Payment'))
 
 const PRIVATE_ROUTES: PrivateRouteObject[] = [
   {
@@ -67,6 +69,13 @@ const PRIVATE_ROUTES: PrivateRouteObject[] = [
     breadcrumb: 'Product Management',
     component: ProductManagement,
     title: 'Product Management'
+  },
+  {
+    exact: false,
+    path: '/product-analysis/:id',
+    breadcrumb: 'Product Analysis',
+    component: ProductManagementAnalysis,
+    title: 'Product Analysis'
   },
   {
     exact: false,
@@ -237,6 +246,12 @@ const PUBLIC_ROUTES = [
     path: '/user-onboarding-intro',
     component: onBoardingIntro,
     title: 'Profile Details'
+  },
+  {
+    exact: false,
+    path: '/transactions/validate',
+    component: ValidatePayment,
+    title: 'Validating Payment'
   }
 ]
 

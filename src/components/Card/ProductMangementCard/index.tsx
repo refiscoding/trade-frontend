@@ -1,10 +1,22 @@
 import * as React from 'react'
 
+import { ApolloError } from 'apollo-boost'
 import { useMediaQuery } from 'react-responsive'
-import { Flex, Image, Text } from '@chakra-ui/core'
 import { FlexProps } from '@chakra-ui/core/dist/Flex'
+import { Flex, Image, Text, useToast } from '@chakra-ui/core'
 
-import { images } from '../../../theme'
+import { images, theme } from '../../../theme'
+import { TotalUnits, ActiveProgress, ActiveProducts } from './charts'
+import {
+  useFindActiveProductsQuery,
+  useFindGrandTotalUnitsSoldPerMonthQuery
+} from '../../../generated/graphql'
+import {
+  TOTAL_UNITS_SOLD,
+  ACTIVE_PRODUCT_PROGRESS,
+  ACTIVE_PRODUCTS,
+  ERROR_TOAST
+} from '../../../constants'
 
 type ProductManagementCardProps = FlexProps & {
   title: string
@@ -12,26 +24,54 @@ type ProductManagementCardProps = FlexProps & {
 }
 
 const ProductManagementCard: React.FC<ProductManagementCardProps> = ({ title, caption }) => {
+  const toast = useToast()
   const isTinyPhone = useMediaQuery({ query: '(max-width: 20em)' })
   const isSmallPhone = useMediaQuery({ query: '(max-width: 25em)' })
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
+  const [totalUnitsChartData, setTotalUnitsChartData] = React.useState<string>('{}')
+  const [activeProductsChartData, setActiveProductsChartData] = React.useState<string>('{}')
 
   const mobileCardWidth = isTinyPhone
-    ? '320px'
+    ? '290px'
     : isSmallPhone
-    ? '350px'
+    ? '330px'
     : isTabletOrMobile
-    ? '400px'
+    ? '380px'
     : '600px'
   const mobileCardHeight = isTinyPhone ? '320px' : isSmallPhone ? '290px' : '270px'
 
+  const hasData = true
+
+  const totalUnits = title === TOTAL_UNITS_SOLD
+  const activeProgress = title === ACTIVE_PRODUCT_PROGRESS
+  const activeProducts = title === ACTIVE_PRODUCTS
+
+  const { data: totalUnitsData } = useFindGrandTotalUnitsSoldPerMonthQuery({
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
+  })
+  const { data: activeProductsData } = useFindActiveProductsQuery({
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
+  })
+
+  React.useEffect(() => {
+    const totalUnitsResponse = totalUnitsData?.findGrandTotalUnitsSoldPerMonth?.payload
+    if (totalUnitsResponse) {
+      setTotalUnitsChartData(totalUnitsResponse)
+    }
+  }, [totalUnitsData, setTotalUnitsChartData])
+  React.useEffect(() => {
+    const activeProductsResponse = activeProductsData?.findActiveProducts?.payload
+    if (activeProductsResponse) {
+      setActiveProductsChartData(activeProductsResponse)
+    }
+  }, [activeProductsData, setActiveProductsChartData])
   return (
     <Flex
       flexDirection="column"
-      minWidth={mobileCardWidth}
-      height={mobileCardHeight}
+      minWidth={!isTabletOrMobile ? '100%' : mobileCardWidth}
+      minHeight={!isTabletOrMobile ? '350px' : mobileCardHeight}
       bg="white"
-      boxShadow="0 2px 4px 0 rgba(0,0,0,0.1)"
+      boxShadow={theme.boxShadowLight}
       borderRadius="8px"
       my={2}
     >
@@ -39,8 +79,18 @@ const ProductManagementCard: React.FC<ProductManagementCardProps> = ({ title, ca
         {title}
       </Text>
       <Flex width="100%" flexDirection="column" alignItems="center" margin="auto">
-        <Image width="70px" height="auto" src={images.filesIcon} />
-        <Text fontSize="12px">{caption}</Text>
+        {hasData ? (
+          <React.Fragment>
+            {totalUnits && <TotalUnits totalUnitsChartData={totalUnitsChartData} />}
+            {activeProgress && <ActiveProgress activeProductsChartData={activeProductsChartData} />}
+            {activeProducts && <ActiveProducts activeProductsChartData={activeProductsChartData} />}
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            <Image width="70px" height="auto" src={images.filesIcon} />
+            <Text fontSize="12px">{caption}</Text>
+          </React.Fragment>
+        )}
       </Flex>
     </Flex>
   )

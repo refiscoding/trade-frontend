@@ -33,9 +33,11 @@ export default {
   AmericanExpressPayment: require('../assets/images/AmericanExpressPayment.png'),
   parcel: require('../assets/images/parcel.svg'),
   pdfFile: require('../assets/images/pdf-file.svg'),
+  processingPayment: require('../assets/images/processingPayment.svg'),
+  processingPaymentError: require('../assets/images/processingPaymentError.svg'),
   notifications: {
     info: require('../assets/images/InfoIconNotifications.svg'),
     error: require('../assets/images/WarningIcon.svg'),
-    success: require('../assets/images/SuccessIcon.svg'),
+    success: require('../assets/images/SuccessIcon.svg')
   }
 }

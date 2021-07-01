@@ -1,13 +1,14 @@
 import * as React from 'react'
-import { Button, Flex, Image } from '@chakra-ui/core'
+import { Button, Flex, Image, CircularProgress } from '@chakra-ui/core'
 import { ColorProps } from 'styled-system'
-import { useMediaQuery } from "react-responsive";
+import { useMediaQuery } from 'react-responsive'
 
-import { images } from '../../theme'
+import { images, theme } from '../../theme'
 import { H3 } from '../../typography'
 
 type InfoPageProps = ColorProps & {
   hasLogo?: boolean
+  loading?: boolean
   image: string
   caption: string
   header: string
@@ -16,20 +17,21 @@ type InfoPageProps = ColorProps & {
 }
 
 const InfoPage: React.FC<InfoPageProps> = ({
-  hasLogo,
   image,
-  caption,
-  header,
   action,
+  header,
+  hasLogo,
+  loading,
+  caption,
   actionText
 }) => {
   const isWebViewport = useMediaQuery({
-    query: "(min-width: 40em)"
-  });
-  const logoWidth = isWebViewport ? "35%" : "80%";
-  const ctaButtonWidth = isWebViewport ? "35%" : "100%";
-  const ctaButtonMargin = isWebViewport ? "1em" : "0";
-  const imageHeight = isWebViewport ? "40vh" : "55vh";
+    query: '(min-width: 40em)'
+  })
+  const logoWidth = isWebViewport ? '35%' : '80%'
+  const ctaButtonWidth = isWebViewport ? '35%' : '100%'
+  const ctaButtonMargin = isWebViewport ? '1em' : '0'
+  const imageHeight = isWebViewport ? '40vh' : '55vh'
   return (
     <Flex width="100%" align="center" justify="center" flexDirection="column">
       {hasLogo && <Image mr={5} width={logoWidth} height="auto" src={images['TradeFedFullLogo']} />}
@@ -42,11 +44,19 @@ const InfoPage: React.FC<InfoPageProps> = ({
           {caption}
         </Flex>
       </Flex>
-      {action && (
-        <Button onClick={action} mt={4} width={ctaButtonWidth} ml={ctaButtonMargin} type="submit" variantColor="brand">
+      {action && !loading && (
+        <Button
+          onClick={action}
+          mt={4}
+          width={ctaButtonWidth}
+          ml={ctaButtonMargin}
+          type="submit"
+          variantColor="brand"
+        >
           {actionText}
         </Button>
       )}
+      {action && loading && <CircularProgress isIndeterminate color={theme.colors.brand[500]} />}
     </Flex>
   )
 }
