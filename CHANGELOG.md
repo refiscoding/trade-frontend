@@ -1,3 +1,12 @@
+## [1.6.2](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.6.1...v1.6.2) (2021-07-05)
+
+
+### Bug Fixes
+
+* **build:** remove unused code ([09bc62d](http://bitbucket.org/sovtech/tradefed-frontend/commits/09bc62d8ce5eb05e9270a6d3e163ddb42a8b2d98))
+* **cart:** replace 'Edit' with 'Done' ([26cf609](http://bitbucket.org/sovtech/tradefed-frontend/commits/26cf6091777b6658c6726bf4432884b634f8fbbc))
+* **order:** fix order total currency ([3ef870b](http://bitbucket.org/sovtech/tradefed-frontend/commits/3ef870be28243fd8d51caf69300d5f133abb6046))
+
 ## [1.6.1](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.6.0...v1.6.1) (2021-07-01)
 
 
