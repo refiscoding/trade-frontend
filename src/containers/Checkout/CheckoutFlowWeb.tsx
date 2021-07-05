@@ -19,7 +19,6 @@ import { theme } from '../../theme'
 import { PageWrap } from '../../layouts'
 import { Stepper } from '../../components'
 import { H3, Text } from '../../typography'
-import { mapsScriptUrl } from '../../constants'
 import { CheckoutProps, initialDeliveryAddressValues, DeliveryAddressValidation } from '.'
 import CheckoutSignatoryModal from './CheckoutSignatoryModal'
 import { ComponentCartCartProduct } from '../../generated/graphql'
@@ -80,15 +79,7 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
   ]
 
   return (
-    <PageWrap
-      title="Checkout"
-      alignSelf="center"
-      width="90%"
-      mt={20}
-      pt={0}
-      p={0}
-      script={mapsScriptUrl}
-    >
+    <PageWrap title="Checkout" alignSelf="center" width="90%" mt={20} pt={0} p={0}>
       <Flex width="100%">
         {showDeleteCardModal && (
           <DeleteItemsModal

@@ -13,7 +13,6 @@ import { OrdersPageProps } from '.'
 import { theme } from '../../theme'
 import { PageWrap } from '../../layouts'
 import { H3, Text } from '../../typography'
-import { mapsScriptUrl } from '../../constants'
 import { Order } from '../../generated/graphql'
 
 const OrdersPageWeb: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => {
@@ -47,15 +46,7 @@ const OrdersPageWeb: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => 
   }
 
   return (
-    <PageWrap
-      title="Orders"
-      alignSelf="center"
-      width="90%"
-      mt={20}
-      pt={0}
-      p={0}
-      script={mapsScriptUrl}
-    >
+    <PageWrap title="Orders" alignSelf="center" width="90%" mt={20} pt={0} p={0}>
       <Flex width="100%">
         <Flex width="100%" flexDirection="column">
           <Grid
