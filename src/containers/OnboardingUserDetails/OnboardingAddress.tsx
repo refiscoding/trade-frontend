@@ -155,10 +155,6 @@ const UserDetails: React.FC<AddressProps> = ({
     })
   }
 
-  const handleUseCurrentLocation = () => {
-    console.log('TODO: Use current location')
-  }
-
   return (
     <React.Fragment>
       {!hideTitle && (
