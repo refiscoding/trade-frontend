@@ -5,3 +5,15 @@ query fetchFAQs {
     Answer
   }
 }
+
+query fetchReturnActions {
+  orderReturnActions {
+    Action
+  }
+}
+
+query fetchReturnReasons {
+  orderReturnReasons {
+    Reason
+  }
+}
