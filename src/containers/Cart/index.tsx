@@ -277,7 +277,7 @@ const CartPage: React.FC = () => {
                   border={`1px solid ${theme.colors.brand[500]}`}
                   background="white"
                 >
-                  EDIT
+                  {editing ? 'DONE' : 'EDIT'}
                 </Button>
                 <Button
                   alignSelf="center"
