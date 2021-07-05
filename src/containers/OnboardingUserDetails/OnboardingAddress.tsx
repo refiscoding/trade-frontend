@@ -218,13 +218,13 @@ const UserDetails: React.FC<AddressProps> = ({
                 </Flex>
               )}
               <Flex justify="space-between" mb={4}>
-                <Text
+                {/* <Text
                   onClick={handleUseCurrentLocation}
                   style={{ cursor: 'pointer', textDecoration: 'underline' }}
                   fontSize={12}
                 >
                   Use My Current Location
-                </Text>
+                </Text> */}
                 <Image justifySelf="end" width="40%" src={images.PoweredByGoogle} />
               </Flex>
             </Flex>
