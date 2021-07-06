@@ -10,7 +10,7 @@ import {
 import { Options } from '../Seller/businessInfo'
 import { Field, FieldArray } from 'formik'
 import { Text } from '../../typography'
-import {PlusSquare, XCircle} from 'react-feather'
+import { PlusSquare, XCircle } from 'react-feather'
 import { ProductValues } from './index'
 
 type ProductInfoTypes = {
@@ -42,7 +42,7 @@ const packagingItems = [
     label: 'Per Item',
     value: 'item'
   }
-];
+]
 
 const currency = [
   {
@@ -51,11 +51,20 @@ const currency = [
   }
 ]
 
-const ProductInfo: React.FC<ProductInfoTypes> = ({ categories, values, handleSetTags, packagingError }) => {
+const ProductInfo: React.FC<ProductInfoTypes> = ({
+  categories,
+  values,
+  handleSetTags,
+  packagingError
+}) => {
   return (
     <Flex flexDirection="column">
       <ConnectedFormGroup label="Product Name" name="name" type="text" />
-      <ConnectedTextArea label="Short Product Description" name="shortDescription" handleSetTags={() => {}}/>
+      <ConnectedTextArea
+        label="Short Product Description"
+        name="shortDescription"
+        handleSetTags={() => {}}
+      />
       <FormLabel htmlFor="category">List Product Category</FormLabel>
       <FieldArray
         name="category"
@@ -65,12 +74,12 @@ const ProductInfo: React.FC<ProductInfoTypes> = ({ categories, values, handleSet
             <Flex flexDirection="column">
               {userCategories?.map((category: string, index: number) => (
                 <Flex key={index} alignItems="center">
-                  <ConnectedSelect placeholder="Select a category" name={`category.[${index}]`} options={categories} />
-                  <Flex
-                    ml={2}
-                    mb={4}
-                    onClick={() => arrayHelpers.remove(index)}
-                  >
+                  <ConnectedSelect
+                    placeholder="Select a category"
+                    name={`category.[${index}]`}
+                    options={categories}
+                  />
+                  <Flex ml={2} mb={4} onClick={() => arrayHelpers.remove(index)}>
                     <XCircle />
                   </Flex>
                 </Flex>
@@ -85,9 +94,13 @@ const ProductInfo: React.FC<ProductInfoTypes> = ({ categories, values, handleSet
           )
         }}
       />
-      <ConnectedTextArea label="Add Tags" name="tags" hasTags handleSetTags={handleSetTags}/>
+      <ConnectedTextArea label="Add Tags" name="tags" hasTags handleSetTags={handleSetTags} />
       <ConnectedNumberInput label="Minimum Selling Price*" name="pricePerUnit" unit={currency} />
-      <ConnectedNumberInput label="Maximum Selling Price*" name="retailPricePerUnit" unit={currency} />
+      <ConnectedNumberInput
+        label="Maximum Selling Price*"
+        name="retailPricePerUnit"
+        unit={currency}
+      />
       <ConnectedFormGroup
         label="How many units are available to sell?"
         name="availableUnits"
@@ -100,10 +113,12 @@ const ProductInfo: React.FC<ProductInfoTypes> = ({ categories, values, handleSet
           <Text ml={2}>{item.label}</Text>
         </Flex>
       ))}
-      {
-        packagingError && <Text color="red.500">{ packagingError }</Text>
-      }
-      <ConnectedFormGroup label="How many items are in a pack?" name="itemsPerPackage" type="text" />
+      {packagingError && <Text color="red.500">{packagingError}</Text>}
+      <ConnectedFormGroup
+        label="How many items are in a pack?"
+        name="itemsPerPackage"
+        type="text"
+      />
     </Flex>
   )
 }
