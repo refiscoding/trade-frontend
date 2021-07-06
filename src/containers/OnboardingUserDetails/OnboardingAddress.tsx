@@ -91,7 +91,7 @@ const UserDetails: React.FC<AddressProps> = ({
     setValue(e.target.value)
   }
 
-  const handleSelect = ({ description }: any) => () => {
+  const handleSelect = ({ description }: any, setFieldValue: any) => () => {
     const locationDetails = description?.split(',')
     const selectedLocation = {
       street: locationDetails[0],
@@ -99,6 +99,8 @@ const UserDetails: React.FC<AddressProps> = ({
       cityOrTown: locationDetails[2] && locationDetails[2]?.trim()
     }
     setValue(description, false)
+    setFieldValue('city', selectedLocation?.cityOrTown)
+    setFieldValue('suburb', selectedLocation?.surburb)
     clearSuggestions()
 
     getGeocode({
@@ -123,7 +125,7 @@ const UserDetails: React.FC<AddressProps> = ({
       })
   }
 
-  const renderSuggestions = () =>
+  const renderSuggestions = (setFieldValue: any) =>
     data.map((suggestion) => {
       const suggestedplaces = suggestion
       return (
@@ -132,7 +134,7 @@ const UserDetails: React.FC<AddressProps> = ({
           bg="white"
           p={2}
           key={suggestedplaces.place_id}
-          onClick={handleSelect(suggestion)}
+          onClick={handleSelect(suggestion, setFieldValue)}
         >
           <Text fontWeight={600}>{suggestedplaces.structured_formatting.main_text}</Text>
           <Text>{suggestedplaces.structured_formatting.secondary_text}</Text>
@@ -182,7 +184,7 @@ const UserDetails: React.FC<AddressProps> = ({
           }
         }}
       >
-        {({ isSubmitting, status }: FormikProps<AddressValues>) => (
+        {({ isSubmitting, status, setFieldValue }: FormikProps<AddressValues>) => (
           <Form style={{ width: '100%' }}>
             <ConnectedFormGroup
               label="Address Name*"
@@ -210,7 +212,7 @@ const UserDetails: React.FC<AddressProps> = ({
                   width="100%"
                   bottom={-200}
                 >
-                  {renderSuggestions()}
+                  {renderSuggestions(setFieldValue)}
                 </Flex>
               )}
               <Flex justify="space-between" mb={4}>

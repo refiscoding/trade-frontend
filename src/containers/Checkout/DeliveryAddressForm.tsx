@@ -27,18 +27,20 @@ type DetailsInput = {
 
 const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = ({ editItem }) => {
   const { setUser } = useAuthContext()
-  const [addressTypeChecked, setAddressTypeChecked] = React.useState<Maybe<Enum_Componentlocationaddress_Type> | undefined>();
+  const [addressTypeChecked, setAddressTypeChecked] = React.useState<
+    Maybe<Enum_Componentlocationaddress_Type> | undefined
+  >()
   const toast = useToast()
 
   useEffect(() => {
     editItem && setAddressTypeChecked(editItem.type)
   }, [editItem])
 
-  const addressTypeCheck = 'Residential';
+  const addressTypeCheck = 'Residential'
 
   const handleAddressTypeChanged = (addressType: string) => {
-    const bus = addressType === 'Business';
-    const res = addressType === 'Residential';
+    const bus = addressType === 'Business'
+    const res = addressType === 'Residential'
     if (bus) {
       setAddressTypeChecked(Enum_Componentlocationaddress_Type?.Business)
     } else if (res) {
@@ -100,7 +102,7 @@ const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = ({ editItem }) =
     {
       name: 'Residential'
     }
-  ];
+  ]
 
   return (
     <Flex flexDirection="column">
