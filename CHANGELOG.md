@@ -1,3 +1,12 @@
+# [1.7.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.6.2...v1.7.0) (2021-07-06)
+
+
+### Features
+
+* **orders:** return order UI ([77264e2](http://bitbucket.org/sovtech/tradefed-frontend/commits/77264e21d2e22594be680b5d0bd8d39fad679fb3))
+* **returns:** add mutation ([c6b0126](http://bitbucket.org/sovtech/tradefed-frontend/commits/c6b01264dfbe8d5e7e8cfd62daedd2189ac15bee))
+* **returns:** add return actions and reasons ([bdfbfb0](http://bitbucket.org/sovtech/tradefed-frontend/commits/bdfbfb04fdc06ca96803a89fd4d48cf47c8f1369))
+
 ## [1.6.2](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.6.1...v1.6.2) (2021-07-05)
 
 
