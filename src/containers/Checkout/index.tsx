@@ -15,7 +15,7 @@ import { PageWrap } from '../../layouts'
 import { TimeSlot } from './AddressComponent'
 import { timeSlots, cards } from './dummyData'
 import { useAuthContext } from '../../context/AuthProvider'
-import { ERROR_TOAST, mapsScriptUrl } from '../../constants'
+import { ERROR_TOAST } from '../../constants'
 import {
   useFetchUsersCartQuery,
   ComponentCartCartProduct,
@@ -217,7 +217,7 @@ const CheckoutPage: React.FC = () => {
   }, [userOrder, failedOrderAddress, failedPayment, history, isTabletOrMobile])
 
   return (
-    <PageWrap title="Checkout" script={mapsScriptUrl}>
+    <PageWrap title="Checkout">
       {isTabletOrMobile ? (
         <CheckoutMobileFlow
           cards={cards}

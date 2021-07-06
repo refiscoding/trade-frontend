@@ -15,7 +15,7 @@ import DeleteItemsButton from '../Wishlist/DeleteItemsButton'
 import { theme } from '../../theme'
 import { PageWrap } from '../../layouts'
 import { H3, Text } from '../../typography'
-import { ERROR_TOAST, mapsScriptUrl, SUCCESS_TOAST } from '../../constants'
+import { ERROR_TOAST, SUCCESS_TOAST, mapsScriptUrl } from '../../constants'
 import {
   Product,
   Scalars,
@@ -24,6 +24,7 @@ import {
   useFromCartToWishlistMutation,
   useRemoveProductsFromCartMutation
 } from '../../generated/graphql'
+import { useScript } from '../../hooks'
 
 export type CartProduct = {
   quantity: number
@@ -92,6 +93,7 @@ const CartPage: React.FC = () => {
   const toast = useToast()
   const history = useHistory()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
+  useScript(mapsScriptUrl)
 
   const [editing, setEditing] = React.useState<boolean | undefined>()
   const [showDeleteItemsModal, setShowDeleteItemsModal] = React.useState<boolean | undefined>()
@@ -214,13 +216,7 @@ const CartPage: React.FC = () => {
   const confirmationText = `You are about to delete these items in your cart? Once they are removed, you’ll have to re-add them to your cart manually.`
 
   return (
-    <PageWrap
-      script={mapsScriptUrl}
-      title="My Cart"
-      align="center"
-      backgroundSize="cover"
-      justify="center"
-    >
+    <PageWrap title="My Cart" align="center" backgroundSize="cover" justify="center">
       {loading || movingLoading ? (
         <Spinner />
       ) : emptyCartProducts || !noCart ? (
