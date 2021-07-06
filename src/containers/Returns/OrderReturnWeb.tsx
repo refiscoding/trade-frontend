@@ -4,10 +4,11 @@ import dayjs from 'dayjs'
 import RelativeTime from 'dayjs/plugin/relativeTime'
 
 import { get } from 'lodash'
+import { Form, Formik } from 'formik'
 import { ArrowLeft } from 'react-feather'
+import { ApolloError } from 'apollo-boost'
 import { useHistory } from 'react-router-dom'
-import { Form, Formik, FormikProps } from 'formik'
-import { Flex, Grid, Button, Spinner, Tag, Image } from '@chakra-ui/core'
+import { Flex, Grid, Button, Spinner, Tag, Image, useToast } from '@chakra-ui/core'
 
 import NoData from '../Checkout/NoDataScreen'
 
@@ -15,12 +16,14 @@ import { theme } from '../../theme'
 import { OrderReturnsProps } from '.'
 import { PageWrap } from '../../layouts'
 import { H3, Text } from '../../typography'
-import { Order, Maybe, Product } from '../../generated/graphql'
+import { Order, Maybe, Product, useRequestForReturnMutation } from '../../generated/graphql'
 import {
   ConnectedFormGroup,
   ConnectedTextArea,
   ConnectedSelect
 } from '../../components/FormElements'
+import { formatError } from '../../utils'
+import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
 
 dayjs.extend(RelativeTime)
 
@@ -133,11 +136,14 @@ const OrderReturns: React.FC<OrderReturnsProps> = ({
   noActiveOrdersCaption
 }) => {
   const history = useHistory()
+  const toast = useToast()
 
   const [values, setValues] = React.useState<Values>()
   const [orderToReturn, setOrderToReturn] = React.useState<Order>()
   const [productToReturn, setProductToReturn] = React.useState<Maybe<Product> | undefined>()
   const [currentPage, setCurrentPage] = React.useState<string>('past')
+  const [currentAction, setCurrentAction] = React.useState<string>('')
+  const [currentReason, setCurrentReason] = React.useState<string>('')
   const [selectedOrderToReturn, setSelectedOrderToReturn] = React.useState<boolean>()
 
   const cancelStyles = {
@@ -161,16 +167,11 @@ const OrderReturns: React.FC<OrderReturnsProps> = ({
     setOrderToReturn(theOrder)
     setSelectedOrderToReturn(true)
   }
+
   const goBackToOrders = () => {
     setSelectedOrderToReturn(false)
   }
 
-  const initialValues = {
-    returnOrderId: orderToReturn?.orderNumber || '',
-    returnProductName: productToReturn?.name || '',
-    returnReason: '',
-    returnAction: ''
-  }
   const refundableProducts = orderToReturn?.items?.filter((order) => order?.product?.isRefundable)
   const nonRefundableProducts = orderToReturn?.items?.filter(
     (order) => !order?.product?.isRefundable
@@ -180,6 +181,30 @@ const OrderReturns: React.FC<OrderReturnsProps> = ({
 
   const message = `Hi TradeFed, I would like to request a return of ${productToReturn?.name} from Order# ${orderToReturn?.orderNumber}. I have indicated my reason and preferred action. Looking forward to hearing from you. Thanks in advance!`
   const returnComment = (orderToReturn && productToReturn && message) ?? ''
+
+  const handleReasonChanged = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    event.persist()
+    const rsn = event?.target?.value
+    setCurrentReason(rsn)
+  }
+
+  const handleActionChanged = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    event.persist()
+    const actn = event?.target?.value
+    setCurrentAction(actn)
+  }
+
+  const [requestForReturn, { loading: returnLoading }] = useRequestForReturnMutation({
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
+    onCompleted: ({ placeItemReturnRequest }) => {
+      const msg = placeItemReturnRequest?.payload as string
+      toast({ description: msg, ...SUCCESS_TOAST })
+      setTimeout(() => {
+        history.push('/orders')
+      }, 1000)
+    }
+  })
+
   return (
     <PageWrap title="Order Returns" alignSelf="center">
       <Grid
@@ -239,8 +264,31 @@ const OrderReturns: React.FC<OrderReturnsProps> = ({
                 ACTIVE
               </Button>
             </Flex>
-            <Formik initialValues={initialValues} onSubmit={() => {}}>
-              {({ isSubmitting, status }: FormikProps<Values>) => (
+            <Formik
+              initialValues={{}}
+              onSubmit={async (items, { setStatus, setSubmitting }) => {
+                const input = {
+                  input: {
+                    action: String(currentAction),
+                    reason: String(currentReason),
+                    product: productToReturn?.id as string,
+                    comment: returnComment,
+                    orderNumber: orderToReturn?.orderNumber as string
+                  }
+                }
+                setStatus(null)
+                try {
+                  setSubmitting(true)
+                  requestForReturn({
+                    variables: input
+                  })
+                  setSubmitting(false)
+                } catch (error) {
+                  setStatus(formatError(error))
+                }
+              }}
+            >
+              {({ isSubmitting, status }) => (
                 <Form style={{ width: '100%' }}>
                   <ConnectedFormGroup
                     type="text"
@@ -254,17 +302,21 @@ const OrderReturns: React.FC<OrderReturnsProps> = ({
                     label="Product Name"
                     name="returnProductName"
                     placeholder="Eg. Ngala Lamp Stand"
-                    value={`${productToReturn?.name || ''}`}
+                    value={`${productToReturn ? `${productToReturn?.name}` : ''}`}
                   />
                   <ConnectedSelect
                     options={reasons}
+                    onChange={handleReasonChanged}
                     name="returnReason"
                     label="Why would like to return the order?* "
+                    placeholder="Select reason for return"
                   />
                   <ConnectedSelect
                     options={actions}
+                    onChange={handleActionChanged}
                     name="returnAction"
                     label="What would you like to be done?* "
+                    placeholder="Select preferred action to be taken"
                   />
                   <ConnectedTextArea
                     minHeight={`180px`}
@@ -274,7 +326,13 @@ const OrderReturns: React.FC<OrderReturnsProps> = ({
                     label="Comment(Optional)"
                     placeholder="Comments (Any additional information)"
                   />
-                  <Button mt={4} width="100%" type="submit" variantColor="brand">
+                  <Button
+                    mt={4}
+                    width="100%"
+                    type="submit"
+                    variantColor="brand"
+                    isLoading={returnLoading}
+                  >
                     RETURN
                   </Button>
                 </Form>
@@ -318,9 +376,7 @@ const OrderReturns: React.FC<OrderReturnsProps> = ({
                       justify="space-between"
                       py={4}
                     >
-                      <Text fontSize={12} onClick={() => handleOrderClicked(order?.orderNumber)}>
-                        {order?.orderNumber}
-                      </Text>
+                      <Text fontSize={12}>{order?.orderNumber}</Text>
                       <Text fontSize={12}>{dayjs(order?.deliveryDate).fromNow()}</Text>
                       <Text fontSize={12}>{order?.deliveryAddress?.name || 'Home'}</Text>
                     </Flex>

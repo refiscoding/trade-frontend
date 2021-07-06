@@ -78,11 +78,11 @@ const OrderReturns = () => {
 
   const actns = actions?.map((action: OrderReturnAction) => ({
     label: action?.Action as string,
-    value: action?.Action as string
+    value: action?.id as string
   }))
   const reasns = reasons?.map((reason: OrderReturnReason) => ({
     label: reason?.Reason as string,
-    value: reason?.Reason as string
+    value: reason?.id as string
   }))
 
   return (

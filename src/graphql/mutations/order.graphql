@@ -11,3 +11,10 @@ mutation createCheckoutOrder($input: CreateCheckoutOrderInput!) {
     error
   }
 }
+
+mutation requestForReturn($input: PlaceItemReturnRequestInput!){
+ placeItemReturnRequest(input: $input) {
+  payload 
+  error
+}
+}
