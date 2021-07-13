@@ -85,7 +85,7 @@ const PersonalDetailsComponent: React.FC<ProfileProps> = ({ user }) => {
           </Text>
         </Flex>
         <Flex width="70%" pl={5} pb={2} borderBottom="1px solid" borderColor="brand.50">
-          <Text fontSize={12}>{user?.phoneNumber}</Text>
+          <Text fontSize={12}>{`+27${user?.phoneNumber}`}</Text>
         </Flex>
       </Flex>
       <Flex width="100%" alignItems="center">

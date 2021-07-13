@@ -221,7 +221,7 @@ const OrderReturns: React.FC<OrderReturnsProps> = ({
             <H3 textAlign="left" fontSize={18} fontWeight={600}>
               Return an Order
             </H3>
-            <Text onClick={handleOrderHistoryClicked} fontSize={12} style={cancelStyles}>
+            <Text onClick={handleOrderHistoryClicked} fontSize={14} style={cancelStyles}>
               Order History
             </Text>
           </Flex>

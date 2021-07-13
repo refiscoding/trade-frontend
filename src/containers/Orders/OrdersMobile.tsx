@@ -121,7 +121,7 @@ const OrdersPage: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => {
               backgroundColor="white"
             >
               <Flex width="80%">
-                <Text fontSize={12}>Return an order?</Text>
+                <Text fontSize={14}>Return an order?</Text>
               </Flex>
               <ChevronRight />
             </Flex>

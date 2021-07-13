@@ -3,8 +3,6 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
 import { get } from 'lodash'
-import { ArrowLeft } from 'react-feather'
-import { useHistory } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import { Flex, Image, Grid, useToast } from '@chakra-ui/core'
 
@@ -27,15 +25,10 @@ dayjs.extend(relativeTime)
 type NotificationsPageProps = {}
 
 const NotificationsPage: React.FC<NotificationsPageProps> = () => {
-  const history = useHistory()
   const toast = useToast()
   const isWebViewport = useMediaQuery({
     query: '(min-width: 75em)'
   })
-
-  const handleBackArrow = () => {
-    history.push('/')
-  }
 
   const conatinerWidth = !isWebViewport ? '340px' : '600px'
 
@@ -77,12 +70,6 @@ const NotificationsPage: React.FC<NotificationsPageProps> = () => {
 
   return (
     <PageWrap title="Notifications" alignSelf="center">
-      <Flex onClick={handleBackArrow} mb={4} cursor="pointer">
-        <ArrowLeft />
-        <Text ml={3} fontWeight={600}>
-          {'Home'}
-        </Text>
-      </Flex>
       <Flex marginX="auto" flexDirection="column" width="100%">
         {!notificationsArray?.length && (
           <InfoPage

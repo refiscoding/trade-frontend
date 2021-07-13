@@ -8,6 +8,7 @@ import { Flex, Grid, Tag, Spinner, Button } from '@chakra-ui/core'
 import OrderItemsSummary from './OrderItems'
 import OrderComponent from './OrderComponent'
 import NoData from '../Checkout/NoDataScreen'
+import setOrderStatusAndColor from './setOrderStatusAndColor'
 
 import { OrdersPageProps } from '.'
 import { theme } from '../../theme'
@@ -45,6 +46,8 @@ const OrdersPageWeb: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => 
     history.push('/returns')
   }
 
+  const orderStatusAndColor = setOrderStatusAndColor(selectedOrder)
+
   return (
     <PageWrap title="Orders" alignSelf="center" width="90%" mt={20} pt={0} p={0}>
       <Flex width="100%">
@@ -74,7 +77,7 @@ const OrdersPageWeb: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => 
                     SHOP
                   </Button>
                 ) : (
-                  <Text onClick={handleReturnOrderClicked} fontSize={12} style={cancelStyles}>
+                  <Text onClick={handleReturnOrderClicked} fontSize={14} style={cancelStyles}>
                     Return an Order
                   </Text>
                 )}
@@ -164,20 +167,56 @@ const OrdersPageWeb: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => 
                       </Grid>
                       <Grid gridTemplateColumns="100px 250px">
                         <Text fontSize={14} fontWeight={600}>
-                          Payment
+                          Payment:
                         </Text>
                         <Text fontSize={14} ml={3}>
                           Credit & Debit
                         </Text>
                       </Grid>
                     </Flex>
-                    <Flex flexDirection="column" justifySelf="end" width="100%">
+                    <Flex justifySelf="end" width="100%">
+                      <Text fontSize={14} fontWeight={600}>
+                        Status:
+                      </Text>
+                      <Flex>
+                        <Tag
+                          fontSize={12}
+                          ml={2}
+                          alignSelf="start"
+                          size="sm"
+                          background={orderStatusAndColor?.colors?.background}
+                          color={orderStatusAndColor?.colors?.color}
+                        >
+                          {orderStatusAndColor?.status?.toUpperCase()}
+                        </Tag>
+                      </Flex>
+                    </Flex>
+                  </Grid>
+                  <Flex minHeight="435px" flexDirection="column">
+                    <OrderItemsSummary
+                      isMobile={false}
+                      items={selectedOrder?.items}
+                      total={selectedOrder?.orderTotal}
+                    />
+
+                    <Flex
+                      mt={4}
+                      flexDirection="column"
+                      justifySelf="start"
+                      width="100%"
+                      p={3}
+                      border={`1px solid ${theme.colors.background}`}
+                      borderRadius={5}
+                    >
+                      <Text fontWeight={600} mb={3}>
+                        TradeFed Pickup Point
+                      </Text>
                       <Tag
                         fontSize={12}
                         size="sm"
                         background="#c9cfd4"
-                        width="50%"
-                        display="inline-block"
+                        width="15%"
+                        justifySelf="start"
                       >
                         BUSINESS
                       </Tag>
@@ -187,13 +226,6 @@ const OrdersPageWeb: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => 
                       <Text fontSize={14}>{`${orderAddress[2]}`}</Text>
                       <Text fontSize={14}>{`${selectedOrder?.deliveryAddress?.postalCode}`}</Text>
                     </Flex>
-                  </Grid>
-                  <Flex minHeight="435px">
-                    <OrderItemsSummary
-                      isMobile={false}
-                      items={selectedOrder?.items}
-                      total={selectedOrder?.orderTotal}
-                    />
                   </Flex>
                 </Flex>
               ) : (

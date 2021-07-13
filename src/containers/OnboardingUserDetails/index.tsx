@@ -58,7 +58,18 @@ const Onboarding: React.FC = () => {
     setUserdetails({ ...userDetails, ...details })
 
     if (active === 2) {
-      await updateSelf({ variables: { input: { ...userDetails } } })
+      if (details.categories) {
+        await updateSelf({
+          variables: {
+            input: {
+              ...userDetails,
+              categories: details.categories
+            }
+          }
+        })
+      } else {
+        await updateSelf({ variables: { input: { ...userDetails } } })
+      }
     }
   }
 
