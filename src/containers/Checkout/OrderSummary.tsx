@@ -83,7 +83,10 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
           Order Total
         </Text>
         <Flex justifySelf="end">
-          <Text color={theme.colors.blueText} fontWeight={600}>{`R ${checkoutTotal}.00`}</Text>
+          <Text
+            color={theme.colors.blueText}
+            fontWeight={600}
+          >{`${cartProducts[0]?.product?.currency} ${checkoutTotal}.00`}</Text>
         </Flex>
       </Grid>
       <Grid mb={5} borderTop={`1px dashed #acacac}`}>

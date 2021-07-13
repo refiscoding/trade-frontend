@@ -20,6 +20,8 @@ dayjs.extend(RelativeTime)
 
 const OrderReturns: React.FC<OrderReturnsProps> = ({
   orders,
+  actions,
+  reasons,
   fetchingOrders,
   pastOrders,
   activeOrders,

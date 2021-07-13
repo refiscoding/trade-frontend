@@ -12,6 +12,7 @@ import { zendeskWidgetScriptUrl } from '../../constants'
 import { useHistory } from 'react-router-dom'
 import { useFetchFaQsQuery } from '../../generated/graphql'
 import { InfoPage } from '../../components'
+import { useScript } from '../../hooks'
 
 type UserSupportProps = {}
 type FAQOpion = Pick<Faq, 'id' | 'Question' | 'Answer'>
@@ -65,6 +66,7 @@ const UserSupport: React.FC<UserSupportProps> = () => {
   const history = useHistory()
   const [currentPage, setCurrentPage] = React.useState<string>()
   const isWebView = useMediaQuery({ query: '(min-width: 40em)' })
+  useScript(zendeskWidgetScriptUrl)
 
   const setPage = (page: string) => {
     setCurrentPage(page)
@@ -80,13 +82,7 @@ const UserSupport: React.FC<UserSupportProps> = () => {
   const { data: faqsData } = useFetchFaQsQuery()
 
   return (
-    <PageWrap
-      title="Support Page"
-      width="100%"
-      alignSelf="center"
-      script={zendeskWidgetScriptUrl}
-      script_id="ze-snippet"
-    >
+    <PageWrap title="Support Page" width="100%" alignSelf="center">
       <Flex onClick={handleBackArrow} mb={4}>
         <ArrowLeft />
         <Text ml={3} fontWeight={600}>

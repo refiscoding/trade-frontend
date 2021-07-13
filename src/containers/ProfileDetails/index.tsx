@@ -1,5 +1,9 @@
 import * as React from 'react'
+
 import { get } from 'lodash'
+import { Form, Formik } from 'formik'
+import { ArrowLeft } from 'react-feather'
+import { useHistory } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import { Button, Flex, Image, Text, useToast } from '@chakra-ui/core'
 
@@ -11,11 +15,8 @@ import { PageWrap } from '../../layouts'
 import { formatError } from '../../utils'
 import { useAuthContext } from '../../context/AuthProvider'
 import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
-import { Category, useCategoryQuery, useUpdateSelfMutation } from '../../generated/graphql'
 import { ConnectedFileUploader } from '../../components/FormElements'
-import { Form, Formik } from 'formik'
-import { ArrowLeft } from 'react-feather'
-import { useHistory } from 'react-router-dom'
+import { Category, useCategoryQuery, useUpdateSelfMutation } from '../../generated/graphql'
 
 type ProfileProps = {}
 

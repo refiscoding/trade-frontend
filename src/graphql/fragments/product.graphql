@@ -21,6 +21,7 @@ fragment product on Product {
     weight
     width
     lengths
+    isRefundable
     additionalInfo {
         url
     }

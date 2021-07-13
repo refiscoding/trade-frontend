@@ -1,5 +1,7 @@
 import * as React from 'react'
 
+import dayjs from 'dayjs'
+
 import { get } from 'lodash'
 import { ApolloError } from 'apollo-boost'
 import { useToast } from '@chakra-ui/core'
@@ -10,13 +12,22 @@ import ReturnsMobile from './OrderReturnMobile'
 
 import { PageWrap } from '../../layouts'
 import { ERROR_TOAST } from '../../constants'
-import { useFetchUserCheckoutOrdersQuery, Order } from '../../generated/graphql'
-import dayjs from 'dayjs'
+import { OptionType } from '../../components/FormElements/ConnectedSelect'
+import {
+  Order,
+  OrderReturnAction,
+  OrderReturnReason,
+  useFetchReturnActionsQuery,
+  useFetchReturnReasonsQuery,
+  useFetchUserCheckoutOrdersQuery
+} from '../../generated/graphql'
 
 export type OrderReturnsProps = {
   orders: Order[]
   pastOrders: Order[]
   activeOrders: Order[]
+  actions: OptionType[]
+  reasons: OptionType[]
   fetchingOrders: boolean
   noPastOrdersHeader: string
   noPastOrdersCaption: string
@@ -32,7 +43,17 @@ const OrderReturns = () => {
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
   })
 
+  const { data: returnReasons } = useFetchReturnReasonsQuery({
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
+  })
+
+  const { data: returnActions } = useFetchReturnActionsQuery({
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
+  })
+
   const orders = get(userOrders, 'findCheckoutOrders.payload')
+  const actions = get(returnActions, 'orderReturnActions') as OrderReturnAction[]
+  const reasons = get(returnReasons, 'orderReturnReasons') as OrderReturnReason[]
 
   const pastOrders = orders?.filter((order: Order) => {
     const today = dayjs(new Date())
@@ -55,11 +76,22 @@ const OrderReturns = () => {
   const noActiveOrdersHeader = 'No Active Orders'
   const noActiveOrdersCaption = "You currently haven't placed any orders that are active"
 
+  const actns = actions?.map((action: OrderReturnAction) => ({
+    label: action?.Action as string,
+    value: action?.id as string
+  }))
+  const reasns = reasons?.map((reason: OrderReturnReason) => ({
+    label: reason?.Reason as string,
+    value: reason?.id as string
+  }))
+
   return (
     <PageWrap title="Order Returns">
       {isWebView ? (
         <ReturnsWeb
           orders={orders}
+          actions={actns}
+          reasons={reasns}
           pastOrders={pastOrders}
           activeOrders={activeOrders}
           fetchingOrders={userOrdersLoading}
@@ -71,6 +103,8 @@ const OrderReturns = () => {
       ) : (
         <ReturnsMobile
           orders={orders}
+          actions={actns}
+          reasons={reasns}
           pastOrders={pastOrders}
           activeOrders={activeOrders}
           fetchingOrders={userOrdersLoading}

@@ -13,6 +13,7 @@ import { useAuthContext } from '../../context/AuthProvider'
 import { Flex, useToast } from '@chakra-ui/core'
 import { ERROR_TOAST, mapsScriptUrl, SUCCESS_TOAST } from '../../constants'
 import { useMediaQuery } from 'react-responsive'
+import { useScript } from '../../hooks'
 
 const userDetailsInitialValues = {
   firstName: '',
@@ -28,6 +29,7 @@ const Onboarding: React.FC = () => {
   const [userDetails, setUserdetails] = React.useState(userDetailsInitialValues)
   const toast = useToast()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
+  useScript(mapsScriptUrl)
 
   const { data } = useCategoryQuery({
     onError: (err: any) => formatError(err)
@@ -56,12 +58,23 @@ const Onboarding: React.FC = () => {
     setUserdetails({ ...userDetails, ...details })
 
     if (active === 2) {
-      await updateSelf({ variables: { input: { ...userDetails } } })
+      if (details.categories) {
+        await updateSelf({
+          variables: {
+            input: {
+              ...userDetails,
+              categories: details.categories
+            }
+          }
+        })
+      } else {
+        await updateSelf({ variables: { input: { ...userDetails } } })
+      }
     }
   }
 
   return (
-    <PageWrap pt={0} script={mapsScriptUrl} title="Onboarding Details" mt={10} width="100%">
+    <PageWrap pt={0} title="Onboarding Details" mt={10} width="100%">
       <Flex width={isTabletOrMobile ? '100%' : '40%'} flexDirection="column" alignSelf="center">
         <Stepper activeStep={active}>
           <OnboardingUserNames handleUserDetails={handleUserDetails} />

@@ -34,7 +34,6 @@ const ProductComponent: React.FC<ProductProps> = ({
   const isWebViewport = useMediaQuery({
     query: '(min-width: 75em)'
   })
-  // const [currentNumber, setCurrentNumber] = React.useState<string>('')
 
   const addProductPage = location?.pathname?.split('/')[1] === 'add-product'
   const [addProductToWishlist] = useAddProductToWishlistMutation({

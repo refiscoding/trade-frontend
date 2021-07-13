@@ -25,7 +25,7 @@ import * as Yup from 'yup'
 import PersonalInfo from './personalInfo'
 import BusinessInfo from './businessInfo'
 import { useEffect } from 'react'
-import { useMediaQuery } from "react-responsive";
+import { useMediaQuery } from 'react-responsive'
 import { images, theme } from '../../theme'
 
 const SellerFormValidation = Yup.object().shape({
@@ -48,8 +48,8 @@ const SellerFormValidation = Yup.object().shape({
   revenue: Yup.string().required('Revenue Range is required'),
   registrationNumber: Yup.string().required('Registration Number is required'),
   beeStatus: Yup.string().required('BEE Status is required'),
-  hazChem: Yup.string().required('Has Chem Status is required'),
-});
+  hazChem: Yup.string().required('Has Chem Status is required')
+})
 
 export type ErrorsObject = {
   isVatRegistered?: string | undefined
@@ -60,7 +60,7 @@ export type ErrorsObject = {
   registrationNumber?: string | undefined
   beeStatus?: string | undefined
   hazChem?: string | undefined
-};
+}
 
 type SellerValues = {
   firstName: string
@@ -104,7 +104,7 @@ const initialValues = {
   uniqueProducts: '',
   products: '' || undefined,
   hasPhysicalStore: '',
-  isRetailSupplier: '',
+  isRetailSupplier: ''
 }
 
 const Seller: React.FC = () => {
@@ -115,7 +115,7 @@ const Seller: React.FC = () => {
   const { data } = useCategoryQuery({
     onError: (err: any) => formatError(err)
   })
-  const { data: countriesData } = useFetchCountriesQuery();
+  const { data: countriesData } = useFetchCountriesQuery()
 
   const autofillDetails = {
     ...initialValues,
@@ -132,8 +132,8 @@ const Seller: React.FC = () => {
     }
   }, [history, user])
 
-  const categories: any = get(data, 'categories', []);
-  const countries: any = get(countriesData, 'countries', []);
+  const categories: any = get(data, 'categories', [])
+  const countries: any = get(countriesData, 'countries', [])
 
   const mappedCategories = categories.map((category: Category) => ({
     label: category.name,
@@ -186,7 +186,7 @@ const Seller: React.FC = () => {
       hasPhysicalStore,
       yearsOfOperation,
       registrationNumber,
-      businessPhoneNumber,
+      businessPhoneNumber
     } = values
     const businessInput = {
       name,
@@ -205,8 +205,8 @@ const Seller: React.FC = () => {
       isVatRegistered: Boolean(isVatRegistered),
       hasPhysicalStore: Boolean(hasPhysicalStore),
       isRetailSupplier: Boolean(isRetailSupplier),
-      yearsInOperation: parseInt(yearsOfOperation),
-    };
+      yearsInOperation: parseInt(yearsOfOperation)
+    }
 
     const userDetails = {
       firstName,
@@ -220,10 +220,24 @@ const Seller: React.FC = () => {
   }
 
   return (
-    <PageWrap pt={0} title="Seller Details" mt={10} width={isTabletOrMobile ? '100%' : '40%'} alignSelf="center">
+    <PageWrap
+      pt={0}
+      title="Seller Details"
+      mt={10}
+      width={isTabletOrMobile ? '100%' : '40%'}
+      alignSelf="center"
+    >
       <Flex width="100%" my={4} flexDirection="column" borderRadius={3}>
         <H3 textAlign="center">Apply to sell on TradeFed.</H3>
-        <Flex mt={3} background={theme.colors.info} p={2} width="100%" height="40px" alignItems="center" justifyItems="space-between">
+        <Flex
+          mt={3}
+          background={theme.colors.info}
+          p={2}
+          width="100%"
+          height="40px"
+          alignItems="center"
+          justifyItems="space-between"
+        >
           <Image src={images.infoIcon} height="50%" />
           <Text fontSize={12} ml={3}>
             To continue to be a seller, you need to go through a credit check process as well.
@@ -244,11 +258,15 @@ const Seller: React.FC = () => {
           }
         }}
       >
-        {({ isSubmitting, status, errors }: FormikProps<SellerValues>) => {
+        {({ isSubmitting, status, errors, values }: FormikProps<SellerValues>) => {
           return (
             <Form style={{ width: '100%' }}>
               <PersonalInfo />
-              <BusinessInfo categories={mappedCategories} countries={mappedCountries} errors={errors} />
+              <BusinessInfo
+                categories={mappedCategories}
+                countries={mappedCountries}
+                errors={errors}
+              />
               {status && (
                 <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
                   <Text textAlign="right" color="red.500">
@@ -256,13 +274,18 @@ const Seller: React.FC = () => {
                   </Text>
                 </MotionFlex>
               )}
-              <Button mt={4} width="100%" type="submit" variantColor="brand" isLoading={isSubmitting}>
+              <Button
+                mt={4}
+                width="100%"
+                type="submit"
+                variantColor="brand"
+                isLoading={isSubmitting}
+              >
                 SUBMIT
               </Button>
             </Form>
           )
-        }
-        }
+        }}
       </Formik>
     </PageWrap>
   )

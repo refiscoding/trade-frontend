@@ -18,7 +18,6 @@ const OrderSummaryComponent: React.FC<OrderItemsSummaryComponentProps> = ({
   items,
   isMobile
 }) => {
-  const rows = isMobile ? '30px 200px 1fr' : '30px 340px 1fr'
   return (
     <Grid
       border={`1px solid ${theme.colors.background}`}
@@ -26,7 +25,6 @@ const OrderSummaryComponent: React.FC<OrderItemsSummaryComponentProps> = ({
       p={4}
       flexDirection="column"
       width="100%"
-      gridTemplateRows={rows}
       background={isMobile ? theme.colors.accent[50] : ''}
       boxShadow={isMobile ? '0 2px 4px 0 rgba(0,0,0,0.25)' : ''}
       mt={isMobile ? 5 : 0}
