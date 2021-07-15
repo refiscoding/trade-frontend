@@ -137,12 +137,14 @@ const AddressComponent: React.FC<AddressComponentProps> = ({
         </ModalWrap>
       )}
       {!mobileFlow && (
-        <AddressInput
-          type="radio"
-          name="address"
-          value={address?.address || ''}
-          onChange={(event) => handleAddressSelected(event?.target?.value, event?.target?.checked)}
-        />
+        <Flex alignItems="center" cursor="pointer" padding="2px" transform="scale(1.5, 1.5)">
+          <AddressInput
+            type="radio"
+            name="address"
+            value={address?.address || ''}
+            onChange={(event) => handleAddressSelected(event?.target?.value, event?.target?.checked)}
+          />
+        </Flex>
       )}
       <Grid
         background={theme.colors.accent[50]}
