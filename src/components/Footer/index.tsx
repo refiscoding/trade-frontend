@@ -1,10 +1,15 @@
 import * as React from 'react'
+
 import dayjs from 'dayjs'
 
 import { useHistory } from 'react-router'
 import { ColorProps } from 'styled-system'
-import { Flex, Text } from '@chakra-ui/core'
+import { ApolloError } from 'apollo-client'
 import { Facebook, Linkedin } from 'react-feather'
+import { Flex, Text, useToast } from '@chakra-ui/core'
+
+import { ERROR_TOAST } from '../../constants'
+import { useFetchLegalitiesQuery } from '../../generated/graphql'
 
 type FooterProps = ColorProps & {
   removePadding?: boolean
@@ -36,9 +41,16 @@ const footerItems = [
 const Footer: React.FC<FooterProps> = ({ removePadding }) => {
   const currentYear = dayjs().format('YYYY')
   const history = useHistory()
+  const toast = useToast()
 
   const facebookLink = 'https://www.facebook.com/TradeFed'
   const linkedInLink = 'https://www.linkedin.com/company/tradefedsolutions/'
+
+  const { data: legalities } = useFetchLegalitiesQuery({
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
+  })
+
+  const termsAndConditionsFile = legalities?.legality?.termsAndConditionsFile?.url ?? ''
 
   return (
     <Flex
@@ -106,9 +118,11 @@ const Footer: React.FC<FooterProps> = ({ removePadding }) => {
           </Text>
         ))}
       </Flex>
-      <Text m={2} color="white" fontSize="10px" textTransform="uppercase">
-        T’s & C’s for Buyers and Sellers
-      </Text>
+      <a target="_blank" rel="noopener noreferrer" href={termsAndConditionsFile}>
+        <Text color="white" fontSize="10px" textTransform="uppercase">
+          T’s & C’s for Buyers and Sellers
+        </Text>
+      </a>
       <Text m={2} color="brand.100" fontSize="10px">
         {`© ${currentYear} TradeFed. All rights reserved`}
       </Text>

@@ -39,7 +39,7 @@ const SellerFormValidation = Yup.object().shape({
   name: Yup.string().required('Business Name is required'),
   category: Yup.string().required('Business Category is required'),
   isVatRegistered: Yup.boolean().required('VAT Registration Status is required'),
-  vatNumber: Yup.string().required('VAT Number is required'),
+  vatNumber: Yup.string(),
   uniqueProducts: Yup.string().required('Number of Unique Products is required'),
   products: Yup.string().required('Product Description is required'),
   hasPhysicalStore: Yup.string().required('Physical Presence is required'),
@@ -62,7 +62,7 @@ export type ErrorsObject = {
   hazChem?: string | undefined
 }
 
-type SellerValues = {
+export type SellerValues = {
   firstName: string
   lastName: string
   email: string
@@ -265,6 +265,7 @@ const Seller: React.FC = () => {
               <BusinessInfo
                 categories={mappedCategories}
                 countries={mappedCountries}
+                values={values}
                 errors={errors}
               />
               {status && (

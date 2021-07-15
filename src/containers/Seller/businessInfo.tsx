@@ -4,7 +4,7 @@ import { Flex, FormLabel } from '@chakra-ui/core'
 import { Field } from 'formik'
 
 import { theme } from '../../theme'
-import { ErrorsObject } from './index'
+import { ErrorsObject, SellerValues } from './index'
 import { H3, Text } from '../../typography'
 import {
   ConnectedFormGroup,
@@ -22,6 +22,7 @@ type businessTypes = {
   categories: Options[]
   countries: Options[]
   errors: ErrorsObject
+  values: SellerValues
 }
 
 const options = [
@@ -54,7 +55,8 @@ const beeStatuses = [
   'Level 8'
 ]
 
-const BusinessInfo: React.FC<businessTypes> = ({ categories, errors, countries }) => {
+const BusinessInfo: React.FC<businessTypes> = ({ categories, errors, countries, values }) => {
+  const saidYesToVATRegistered = values?.isVatRegistered === 'true'
   return (
     <React.Fragment>
       <Flex
@@ -114,7 +116,9 @@ const BusinessInfo: React.FC<businessTypes> = ({ categories, errors, countries }
         ))}
         {errors['isVatRegistered'] && <Text color="red.500">{errors['isVatRegistered']}</Text>}
 
-        <ConnectedFormGroup mt={3} label="VAT Number*" name="vatNumber" type="text" />
+        {saidYesToVATRegistered && (
+          <ConnectedFormGroup mt={3} label="VAT Number*" name="vatNumber" type="text" />
+        )}
 
         <FormLabel mt={2} htmlFor="revenue">
           Annual Turnover*

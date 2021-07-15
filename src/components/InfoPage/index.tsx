@@ -14,6 +14,7 @@ type InfoPageProps = ColorProps & {
   header: string
   action?: () => void
   actionText?: string
+  smallIcon?: boolean
 }
 
 const InfoPage: React.FC<InfoPageProps> = ({
@@ -22,6 +23,7 @@ const InfoPage: React.FC<InfoPageProps> = ({
   header,
   hasLogo,
   loading,
+  smallIcon,
   caption,
   actionText
 }) => {
@@ -35,7 +37,7 @@ const InfoPage: React.FC<InfoPageProps> = ({
   return (
     <Flex width="100%" align="center" justify="center" flexDirection="column">
       {hasLogo && <Image mr={5} width={logoWidth} height="auto" src={images['TradeFedFullLogo']} />}
-      <Image mr={5} width="80%" height={imageHeight} src={image} />
+      <Image mr={5} width={smallIcon ? '40%' : '80%'} height={imageHeight} src={image} />
       <Flex width="80%" mb={2} mt={4} align="center" justify="center" flexDirection="column">
         <H3 fontSize="20px" fontWeight={600}>
           {header}

@@ -17,7 +17,13 @@ import { Text } from '../../typography'
 
 import { Order } from '../../generated/graphql'
 
-const OrdersPage: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => {
+const OrdersPage: React.FC<OrdersPageProps> = ({
+  orders,
+  isFiltering,
+  setDateRange,
+  ordersLoading,
+  setIsFiltering
+}) => {
   const history = useHistory()
   const [selectedOrder, setSelectedOrder] = React.useState<Order | undefined>()
   const noOrders = !orders?.length
