@@ -138,8 +138,8 @@ const AddressComponent: React.FC<AddressComponentProps> = ({
       )}
       {!mobileFlow && (
         <AddressInput
-          type="checkbox"
-          name={address?.address || ''}
+          type="radio"
+          name="address"
           value={address?.address || ''}
           onChange={(event) => handleAddressSelected(event?.target?.value, event?.target?.checked)}
         />
