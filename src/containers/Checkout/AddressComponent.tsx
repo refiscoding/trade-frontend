@@ -1,18 +1,18 @@
 import * as React from 'react'
 
+import { ApolloError } from 'apollo-client'
 import { ChevronRight } from 'react-feather'
 import { Grid, GridProps, Flex, Tag, useToast } from '@chakra-ui/core'
 
-import { theme } from '../../theme'
 import { AddressInput } from './Input'
-import { Text } from '../../typography'
 import { ComponentLocationAddress, useDeleteAddressLazyQuery } from '../../generated/graphql'
 import DeleteItemsModal from '../../components/DeleteItemsModal'
 import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
+import { Text } from '../../typography'
+import { theme } from '../../theme'
 import { useAuthContext } from '../../context/AuthProvider'
-import ModalWrap from '../../components/ModalWrap'
 import DeliveryAddressForm from './DeliveryAddressForm'
-import { ApolloError } from 'apollo-client'
+import ModalWrap from '../../components/ModalWrap'
 
 export type TimeSlot = {
   id: string
