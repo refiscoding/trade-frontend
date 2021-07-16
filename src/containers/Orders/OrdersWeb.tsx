@@ -138,7 +138,11 @@ const OrdersPageWeb: React.FC<OrdersPageProps> = ({
                   )}
                 </Flex>
                 {isFiltering && (
-                  <Flex>{`${ordersLength ? `${ordersLength} results  found` : ''}`}</Flex>
+                  <Flex>{`${
+                    ordersLength
+                      ? `${ordersLength} ${ordersLength > 1 ? 'results' : 'result'} found`
+                      : ''
+                  }`}</Flex>
                 )}
                 <Flex flexDirection="column" overflowY="scroll" height={'500px'}>
                   {ordersLoading && <Spinner margin="auto" />}
@@ -196,9 +200,11 @@ const OrdersPageWeb: React.FC<OrdersPageProps> = ({
                         <Text fontSize={14} fontWeight={600}>
                           Paid:
                         </Text>
-                        <Text fontSize={14} ml={3}>{`${dayjs(selectedOrder?.paidDate).format(
-                          'LLLL'
-                        )}`}</Text>
+                        <Text fontSize={14} ml={3}>{`${
+                          selectedOrder?.paidDate
+                            ? dayjs(selectedOrder?.paidDate).format('LLLL')
+                            : 'Not Paid'
+                        }`}</Text>
                       </Grid>
                       <Grid gridTemplateColumns="100px 250px">
                         <Text fontSize={14} fontWeight={600}>
@@ -269,7 +275,7 @@ const OrdersPageWeb: React.FC<OrdersPageProps> = ({
                     isFiltering && noOrders
                       ? noFilterHeader
                       : isFiltering && !noOrders
-                      ? `${orders?.length} results found`
+                      ? `${orders?.length} ${orders?.length > 1 ? 'results' : 'result'} found`
                       : noOrderClickedHeader
                   }`}
                   caption={`${noOrderClickedCaption}`}

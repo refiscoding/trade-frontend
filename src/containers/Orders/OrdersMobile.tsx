@@ -80,9 +80,11 @@ const OrdersPage: React.FC<OrdersPageProps> = ({
                 <Text fontSize={12} fontWeight={600}>
                   Paid:
                 </Text>
-                <Text fontSize={12} ml={3}>{`${dayjs(selectedOrder?.paidDate).format(
-                  'LLLL'
-                )}`}</Text>
+                <Text fontSize={12} ml={3}>{`${
+                  selectedOrder?.paidDate
+                    ? dayjs(selectedOrder?.paidDate).format('LLLL')
+                    : 'Not Paid'
+                }`}</Text>
               </Grid>
               <Grid gridTemplateColumns="90px 1fr">
                 <Text fontSize={12} fontWeight={600}>
