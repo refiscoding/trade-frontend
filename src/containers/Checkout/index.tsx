@@ -71,6 +71,7 @@ export type CheckoutProps = {
   noCardDataCaption: string
   createOrderLoading: boolean
   noAddressDataHeader: string
+  beforeCheckoutText: string
   confirmationTextCard: string
   noAddressDataCaption: string
   confirmationTextAddress: string
@@ -136,8 +137,10 @@ const CheckoutPage: React.FC = () => {
     "You are about to remove one of your delivery address? Once you have removed it, you'll have to re-add it manually to your addresses"
   const confirmationTextCard =
     "You are about to remove one of your payment cards? Once you have removed it, you'll have to re-add it manually to your payment cards"
-
-  const { data: userCart } = useFetchUsersCartQuery({
+  const beforeCheckoutText = 
+    "Pleace note that the products in your cart come from different suppliers and might arrive not arrive on the same day. Each product has it’s own delivery fees associated."
+  
+    const { data: userCart } = useFetchUsersCartQuery({
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
   })
 
@@ -237,6 +240,7 @@ const CheckoutPage: React.FC = () => {
           showDeleteCardModal={showDeleteCardModal}
           showDeleteItemsModal={showDeleteItemsModal}
           noAddressDataCaption={noAddressDataCaption}
+          beforeCheckoutText={beforeCheckoutText}
           confirmationTextCard={confirmationTextCard}
           selectedDeliveryDate={selectedDeliveryDate}
           setShowDeleteCardModal={setShowDeleteCardModal}
@@ -267,6 +271,7 @@ const CheckoutPage: React.FC = () => {
           showDeleteCardModal={showDeleteCardModal}
           showDeleteItemsModal={showDeleteItemsModal}
           noAddressDataCaption={noAddressDataCaption}
+          beforeCheckoutText={beforeCheckoutText}
           confirmationTextCard={confirmationTextCard}
           selectedDeliveryDate={selectedDeliveryDate}
           setShowDeleteCardModal={setShowDeleteCardModal}
