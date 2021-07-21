@@ -9,37 +9,38 @@ export interface PrivateRouteObject extends RouteProps {
   title: string
 }
 
-const Profile = lazy(() => import('../containers/Profile'))
-const Login = lazy(() => import('../containers/Login'))
-const Register = lazy(() => import('../containers/Register'))
+const AboutUs = lazy(() => import('../containers/AboutUs'))
+const AddressBook = lazy(() => import('../containers/AddressBook'))
+const Cart = lazy(() => import('../containers/Cart'))
+const CategoryView = lazy(() => import('../containers/CategoryView'))
+const Checkout = lazy(() => import('../containers/Checkout'))
+const CheckoutSuccess = lazy(() => import('../containers/Checkout/successCheckout'))
 const ConfirmEmail = lazy(() => import('../containers/ConfirmEmail'))
 const ForgotPassword = lazy(() => import('../containers/ForgotPassword'))
-const ResetPassword = lazy(() => import('../containers/ResetPassword'))
 const Home = lazy(() => import('../containers/HomePage'))
-const Redirect = lazy(() => import('../containers/Redirect'))
-const UserDetails = lazy(() => import('../containers/OnboardingUserDetails'))
+const Login = lazy(() => import('../containers/Login'))
+const Notifications = lazy(() => import('../containers/Notifications'))
+const NucleusPayment = lazy(() => import('../containers/NucleusPayment'))
 const onBoardingIntro = lazy(() => import('../containers/OnboardingUserDetails/OnboardingIntro'))
-const Seller = lazy(() => import('../containers/Seller'))
-const SellerApproval = lazy(() => import('../containers/Seller/seller-approval'))
-const ProductView = lazy(() => import('../containers/ProductView'))
-const ProductManagement = lazy(() => import('../containers/ProductManagement'))
-const ProductManagementAnalysis = lazy(() => import('../containers/ProductAnalysis'))
+const Orders = lazy(() => import('../containers/Orders'))
 const ProductCreation = lazy(() => import('../containers/ProductCreation'))
 const ProductFilter = lazy(() => import('../containers/ProductFilter'))
-const Wishlist = lazy(() => import('../containers/Wishlist'))
-const CategoryView = lazy(() => import('../containers/CategoryView'))
+const ProductManagement = lazy(() => import('../containers/ProductManagement'))
+const ProductManagementAnalysis = lazy(() => import('../containers/ProductAnalysis'))
+const ProductView = lazy(() => import('../containers/ProductView'))
+const Profile = lazy(() => import('../containers/Profile'))
 const ProfileDetails = lazy(() => import('../containers/ProfileDetails'))
-const AboutUs = lazy(() => import('../containers/AboutUs'))
-const Cart = lazy(() => import('../containers/Cart'))
-const Checkout = lazy(() => import('../containers/Checkout'))
-const UploadSuccess = lazy(() => import('../containers/ProductCreation/upload-success'))
-const CheckoutSuccess = lazy(() => import('../containers/Checkout/successCheckout'))
-const Orders = lazy(() => import('../containers/Orders'))
-const Support = lazy(() => import('../containers/Support'))
-const Notifications = lazy(() => import('../containers/Notifications'))
+const Redirect = lazy(() => import('../containers/Redirect'))
+const Register = lazy(() => import('../containers/Register'))
+const ResetPassword = lazy(() => import('../containers/ResetPassword'))
 const Returns = lazy(() => import('../containers/Returns'))
-const AddressBook = lazy(() => import('../containers/AddressBook'))
+const Seller = lazy(() => import('../containers/Seller'))
+const SellerApproval = lazy(() => import('../containers/Seller/seller-approval'))
+const Support = lazy(() => import('../containers/Support'))
+const UploadSuccess = lazy(() => import('../containers/ProductCreation/upload-success'))
+const UserDetails = lazy(() => import('../containers/OnboardingUserDetails'))
 const ValidatePayment = lazy(() => import('../containers/Payment'))
+const Wishlist = lazy(() => import('../containers/Wishlist'))
 
 const PRIVATE_ROUTES: PrivateRouteObject[] = [
   {
@@ -195,6 +196,13 @@ const PRIVATE_ROUTES: PrivateRouteObject[] = [
     breadcrumb: 'Address Book',
     path: '/addresses',
     component: AddressBook
+  },
+  {
+    exact: false,
+    title: 'Before Checkout',
+    breadcrumb: 'Before Checkout',
+    path: '/before-checkout',
+    component: NucleusPayment
   }
 ]
 
