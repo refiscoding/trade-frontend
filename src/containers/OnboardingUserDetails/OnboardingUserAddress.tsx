@@ -55,7 +55,7 @@ const morphAddressString = (addressString: string) => {
   return selectedLocation
 }
 
-const UserDetails: React.FC<AddressProps> = ({
+const OnbordingUserAddress: React.FC<AddressProps> = ({
   handleUserDetails,
   hideTitle,
   buttonLabel,
@@ -161,7 +161,7 @@ const UserDetails: React.FC<AddressProps> = ({
     <React.Fragment>
       {!hideTitle && (
         <Flex width="100%" mb={4} flexDirection="column">
-          <H3 textAlign="left">Company Address</H3>
+          <H3 textAlign="left">User Address</H3>
           <Text textAlign="left" fontSize="14px">
             Fill out some information about yourself to get started.
           </Text>
@@ -267,4 +267,4 @@ const UserDetails: React.FC<AddressProps> = ({
   )
 }
 
-export default UserDetails
+export default OnbordingUserAddress
