@@ -4,7 +4,7 @@ import { Flex, FormLabel } from '@chakra-ui/core'
 import { Field } from 'formik'
 
 import { theme } from '../../theme'
-import { ErrorsObject } from './index'
+import { ErrorsObject, SellerValues, TouchedErrors } from './index'
 import { H3, Text } from '../../typography'
 import {
   ConnectedFormGroup,
@@ -22,6 +22,8 @@ type businessTypes = {
   categories: Options[]
   countries: Options[]
   errors: ErrorsObject
+  values: SellerValues
+  touched: TouchedErrors
 }
 
 const options = [
@@ -54,7 +56,8 @@ const beeStatuses = [
   'Level 8'
 ]
 
-const BusinessInfo: React.FC<businessTypes> = ({ categories, errors, countries }) => {
+const BusinessInfo: React.FC<businessTypes> = ({ categories, errors, countries, values, touched }) => {
+  const saidYesToVATRegistered = values?.isVatRegistered === 'true'
   return (
     <React.Fragment>
       <Flex
@@ -112,9 +115,11 @@ const BusinessInfo: React.FC<businessTypes> = ({ categories, errors, countries }
             <Text ml={2}>{item.label}</Text>
           </Flex>
         ))}
-        {errors['isVatRegistered'] && <Text color="red.500">{errors['isVatRegistered']}</Text>}
+        {touched['isVatRegistered'] && errors['isVatRegistered'] && <Text color="red.500">{errors['isVatRegistered']}</Text>}
 
-        <ConnectedFormGroup mt={3} label="VAT Number*" name="vatNumber" type="text" />
+        {saidYesToVATRegistered && (
+          <ConnectedFormGroup mt={3} label="VAT Number*" name="vatNumber" type="text" />
+        )}
 
         <FormLabel mt={2} htmlFor="revenue">
           Annual Turnover*
@@ -125,7 +130,7 @@ const BusinessInfo: React.FC<businessTypes> = ({ categories, errors, countries }
             <Text ml={2}>{item}</Text>
           </Flex>
         ))}
-        {errors['revenue'] && <Text color="red.500">{errors['revenue']}</Text>}
+        {touched['revenue'] && errors['revenue'] && <Text color="red.500">{errors['revenue']}</Text>}
 
         <FormLabel mt={3} htmlFor="beeStatus">
           BEE Status*
@@ -136,7 +141,8 @@ const BusinessInfo: React.FC<businessTypes> = ({ categories, errors, countries }
             <Text ml={2}>{item}</Text>
           </Flex>
         ))}
-        {errors['beeStatus'] && <Text color="red.500">{errors['beeStatus']}</Text>}
+        {touched['beeStatus'] && errors['beeStatus'] && <Text color="red.500">{errors['beeStatus']}</Text>}
+
       </Flex>
       <Flex
         flexDirection="column"
@@ -165,7 +171,7 @@ const BusinessInfo: React.FC<businessTypes> = ({ categories, errors, countries }
             <Text ml={2}>{item.name}</Text>
           </Flex>
         ))}
-        {errors['businessType'] && <Text color="red.500">{errors['businessType']}</Text>}
+        {touched['businessType'] && errors['businessType'] && <Text color="red.500">{errors['businessType']}</Text>}
 
         <FormLabel mt={3} htmlFor="hasPhysicalStore">
           Do you have a physical store?*{' '}
@@ -176,7 +182,7 @@ const BusinessInfo: React.FC<businessTypes> = ({ categories, errors, countries }
             <Text ml={2}>{item.label}</Text>
           </Flex>
         ))}
-        {errors['hasPhysicalStore'] && <Text color="red.500">{errors['hasPhysicalStore']}</Text>}
+        {touched['hasPhysicalStore'] && errors['hasPhysicalStore'] && <Text color="red.500">{errors['hasPhysicalStore']}</Text>}
 
         <FormLabel mt={3} htmlFor="isRetailSupplier">
           Are you a supplier to retail outlets?*{' '}
@@ -187,7 +193,7 @@ const BusinessInfo: React.FC<businessTypes> = ({ categories, errors, countries }
             <Text ml={2}>{item.label}</Text>
           </Flex>
         ))}
-        {errors['isRetailSupplier'] && <Text color="red.500">{errors['isRetailSupplier']}</Text>}
+        {touched['isRetailSupplier'] && errors['isRetailSupplier'] && <Text color="red.500">{errors['isRetailSupplier']}</Text>}
 
         <FormLabel mt={3} htmlFor="hazChem">
           Do you deal in chemical products?*
@@ -198,7 +204,8 @@ const BusinessInfo: React.FC<businessTypes> = ({ categories, errors, countries }
             <Text ml={2}>{item.label}</Text>
           </Flex>
         ))}
-        {errors['hazChem'] && <Text color="red.500">{errors['hazChem']}</Text>}
+        {touched['hazChem'] && errors['hazChem'] && <Text color="red.500">{errors['hazChem']}</Text>}
+        
       </Flex>
     </React.Fragment>
   )

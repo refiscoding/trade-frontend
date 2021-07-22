@@ -1,10 +1,13 @@
 import * as React from 'react'
+
 import dayjs from 'dayjs'
 import RelativeTime from 'dayjs/plugin/relativeTime'
 import LocalizedFormat from 'dayjs/plugin/localizedFormat'
 
 import { ChevronRight } from 'react-feather'
-import { Flex, Grid, Image } from '@chakra-ui/core'
+import { Flex, Grid, Image, Tag } from '@chakra-ui/core'
+
+import setOrderStatusAndColor from './setOrderStatusAndColor'
 
 import { Text } from '../../typography'
 import { theme, images } from '../../theme'
@@ -22,6 +25,8 @@ const OrderComponent: React.FC<OrderComponentProps> = ({ setSelectedOrder, order
   const handleOrderClicked = () => {
     setSelectedOrder(order)
   }
+  const orderStatusAndColor = setOrderStatusAndColor(order)
+
   return (
     <Grid
       borderRadius="10px"
@@ -43,9 +48,18 @@ const OrderComponent: React.FC<OrderComponentProps> = ({ setSelectedOrder, order
         pl={6}
         pb={3}
       >
-        <Text fontSize={14} fontWeight={600}>{`Delivered: ${dayjs(order?.deliveryDate).format(
-          'LLLL'
-        )}`}</Text>
+        <Text fontSize={14} fontWeight={600}>{`Order# ${order?.orderNumber}`}</Text>
+        <Flex alignSelf="start">
+          <Tag
+            fontSize={12}
+            mr={1}
+            size="sm"
+            background={orderStatusAndColor?.colors?.background}
+            color={orderStatusAndColor?.colors?.color}
+          >
+            {orderStatusAndColor?.status?.toUpperCase()}
+          </Tag>
+        </Flex>
         <ChevronRight />
       </Flex>
       {order?.signatory && (
@@ -55,11 +69,11 @@ const OrderComponent: React.FC<OrderComponentProps> = ({ setSelectedOrder, order
           >{`Signed by: ${order?.signatory?.name} (${order?.signatory?.relation})`}</Text>
         </Flex>
       )}
-      <Flex>
-        <Flex mt={3} ml={3}>
+      <Flex justify="space-between" width="100%">
+        <Flex mt={3} ml={3} width="70%">
           <Image height="50%" src={images.parcel} />
         </Flex>
-        <Flex flexDirection="column" mt={3}>
+        <Flex flexDirection="column" mt={3} width="100%" justifySelf="start">
           <Text fontSize={14}>{`${order?.deliveryAddress?.name}`}</Text>
           <Text fontSize={14}>{`${order?.deliveryAddress?.address}`}</Text>
           <Text fontSize={14}>{`${order?.deliveryAddress?.postalCode}`}</Text>

@@ -1,32 +1,33 @@
 import * as React from 'react'
+import * as Yup from 'yup'
 import { get } from 'lodash'
+import { useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
+import { useMediaQuery } from 'react-responsive'
 
-import { PageWrap } from '../../layouts'
-import { MotionFlex } from '../../components'
 import {
-  useCategoryQuery,
-  useUpdateSelfMutation,
-  useFetchCountriesQuery,
-  useCreateMyBusinessMutation,
   Category,
   Country,
   // eslint-disable-next-line @typescript-eslint/camelcase
   Enum_Business_Businesstype,
-  Maybe
+  Maybe,
+  useCategoryQuery,
+  useCreateMyBusinessMutation,
+  useFetchCountriesQuery,
+  useUpdateSelfMutation
 } from '../../generated/graphql'
-import { formatError } from '../../utils'
-import { useHistory } from 'react-router-dom'
-import { useAuthContext } from '../../context/AuthProvider'
 import { Button, Flex, useToast, Image } from '@chakra-ui/core'
 import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
 import { Form, Formik, FormikProps } from 'formik'
+import { formatError } from '../../utils'
 import { H3, Text } from '../../typography'
-import * as Yup from 'yup'
-import PersonalInfo from './personalInfo'
-import BusinessInfo from './businessInfo'
-import { useEffect } from 'react'
-import { useMediaQuery } from "react-responsive";
 import { images, theme } from '../../theme'
+import { MotionFlex } from '../../components'
+import { PageWrap } from '../../layouts'
+import { useAuthContext } from '../../context/AuthProvider'
+
+import BusinessInfo from './businessInfo'
+import PersonalInfo from './personalInfo'
 
 const SellerFormValidation = Yup.object().shape({
   firstName: Yup.string().required('First Name is required'),
@@ -39,7 +40,7 @@ const SellerFormValidation = Yup.object().shape({
   name: Yup.string().required('Business Name is required'),
   category: Yup.string().required('Business Category is required'),
   isVatRegistered: Yup.boolean().required('VAT Registration Status is required'),
-  vatNumber: Yup.string().required('VAT Number is required'),
+  vatNumber: Yup.string(),
   uniqueProducts: Yup.string().required('Number of Unique Products is required'),
   products: Yup.string().required('Product Description is required'),
   hasPhysicalStore: Yup.string().required('Physical Presence is required'),
@@ -48,8 +49,8 @@ const SellerFormValidation = Yup.object().shape({
   revenue: Yup.string().required('Revenue Range is required'),
   registrationNumber: Yup.string().required('Registration Number is required'),
   beeStatus: Yup.string().required('BEE Status is required'),
-  hazChem: Yup.string().required('Has Chem Status is required'),
-});
+  hazChem: Yup.string().required('Has Chem Status is required')
+})
 
 export type ErrorsObject = {
   isVatRegistered?: string | undefined
@@ -60,9 +61,20 @@ export type ErrorsObject = {
   registrationNumber?: string | undefined
   beeStatus?: string | undefined
   hazChem?: string | undefined
-};
+}
 
-type SellerValues = {
+export type TouchedErrors = {
+  isVatRegistered?: boolean | undefined
+  businessType?: boolean | undefined
+  hasPhysicalStore?: boolean | undefined
+  isRetailSupplier?: boolean | undefined
+  revenue?: boolean | undefined
+  registrationNumber?: boolean | undefined
+  beeStatus?: boolean | undefined
+  hazChem?: boolean | undefined
+}
+
+export type SellerValues = {
   firstName: string
   lastName: string
   email: string
@@ -104,7 +116,7 @@ const initialValues = {
   uniqueProducts: '',
   products: '' || undefined,
   hasPhysicalStore: '',
-  isRetailSupplier: '',
+  isRetailSupplier: ''
 }
 
 const Seller: React.FC = () => {
@@ -115,7 +127,7 @@ const Seller: React.FC = () => {
   const { data } = useCategoryQuery({
     onError: (err: any) => formatError(err)
   })
-  const { data: countriesData } = useFetchCountriesQuery();
+  const { data: countriesData } = useFetchCountriesQuery()
 
   const autofillDetails = {
     ...initialValues,
@@ -132,8 +144,8 @@ const Seller: React.FC = () => {
     }
   }, [history, user])
 
-  const categories: any = get(data, 'categories', []);
-  const countries: any = get(countriesData, 'countries', []);
+  const categories: any = get(data, 'categories', [])
+  const countries: any = get(countriesData, 'countries', [])
 
   const mappedCategories = categories.map((category: Category) => ({
     label: category.name,
@@ -186,7 +198,7 @@ const Seller: React.FC = () => {
       hasPhysicalStore,
       yearsOfOperation,
       registrationNumber,
-      businessPhoneNumber,
+      businessPhoneNumber
     } = values
     const businessInput = {
       name,
@@ -205,8 +217,8 @@ const Seller: React.FC = () => {
       isVatRegistered: Boolean(isVatRegistered),
       hasPhysicalStore: Boolean(hasPhysicalStore),
       isRetailSupplier: Boolean(isRetailSupplier),
-      yearsInOperation: parseInt(yearsOfOperation),
-    };
+      yearsInOperation: parseInt(yearsOfOperation)
+    }
 
     const userDetails = {
       firstName,
@@ -220,10 +232,24 @@ const Seller: React.FC = () => {
   }
 
   return (
-    <PageWrap pt={0} title="Seller Details" mt={10} width={isTabletOrMobile ? '100%' : '40%'} alignSelf="center">
+    <PageWrap
+      pt={0}
+      title="Seller Details"
+      mt={10}
+      width={isTabletOrMobile ? '100%' : '40%'}
+      alignSelf="center"
+    >
       <Flex width="100%" my={4} flexDirection="column" borderRadius={3}>
         <H3 textAlign="center">Apply to sell on TradeFed.</H3>
-        <Flex mt={3} background={theme.colors.info} p={2} width="100%" height="40px" alignItems="center" justifyItems="space-between">
+        <Flex
+          mt={3}
+          background={theme.colors.info}
+          p={2}
+          width="100%"
+          height="40px"
+          alignItems="center"
+          justifyItems="space-between"
+        >
           <Image src={images.infoIcon} height="50%" />
           <Text fontSize={12} ml={3}>
             To continue to be a seller, you need to go through a credit check process as well.
@@ -244,11 +270,17 @@ const Seller: React.FC = () => {
           }
         }}
       >
-        {({ isSubmitting, status, errors }: FormikProps<SellerValues>) => {
+        {({ isSubmitting, status, errors, values, touched }: FormikProps<SellerValues>) => {
           return (
             <Form style={{ width: '100%' }}>
               <PersonalInfo />
-              <BusinessInfo categories={mappedCategories} countries={mappedCountries} errors={errors} />
+              <BusinessInfo
+                categories={mappedCategories}
+                countries={mappedCountries}
+                values={values}
+                touched={touched}
+                errors={errors}
+              />
               {status && (
                 <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
                   <Text textAlign="right" color="red.500">
@@ -256,13 +288,18 @@ const Seller: React.FC = () => {
                   </Text>
                 </MotionFlex>
               )}
-              <Button mt={4} width="100%" type="submit" variantColor="brand" isLoading={isSubmitting}>
+              <Button
+                mt={4}
+                width="100%"
+                type="submit"
+                variantColor="brand"
+                isLoading={isSubmitting}
+              >
                 SUBMIT
               </Button>
             </Form>
           )
-        }
-        }
+        }}
       </Formik>
     </PageWrap>
   )

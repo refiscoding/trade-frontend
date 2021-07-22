@@ -4,7 +4,7 @@ import { isEmpty } from 'lodash'
 import { Form, Formik } from 'formik'
 import { ChevronRight } from 'react-feather'
 import { useMediaQuery } from 'react-responsive'
-import { Flex, Grid, Image, Tag, Spinner, Button } from '@chakra-ui/core'
+import { Flex, Grid, Image, Tag, Button } from '@chakra-ui/core'
 
 import { theme, images } from '../../theme'
 import { PageWrap } from '../../layouts'
@@ -13,18 +13,19 @@ import { H3, Text } from '../../typography'
 import { TimeSlot } from './AddressComponent'
 import { DeliveryAddressValidation, initialDeliveryAddressValues, CheckoutProps } from '.'
 
-import NextButton from './Button'
-import CardInfo from './CardInfo'
-import NoData from './NoDataScreen'
+import BeforeCheckoutModal from '../NucleusPayment/BeforeCheckoutModal'
 import ActionButton from './ActionButton'
-import OrderSummary from './OrderSummary'
-import DeliveryAddresses from './Addresses'
-import SelectPayment from './SelectPayment'
-import DeliveryDetails from './DeliveryDetails'
-import DeliveryAddressForm from './DeliveryAddressForm'
+import CardInfo from './CardInfo'
 import CheckoutItemsModal from './CheckoutProductsModal'
 import CheckoutSignatoryModal from './CheckoutSignatoryModal'
 import DeleteItemsModal from '../../components/DeleteItemsModal'
+import DeliveryAddresses from './Addresses'
+import DeliveryAddressForm from './DeliveryAddressForm'
+import DeliveryDetails from './DeliveryDetails'
+import NextButton from './Button'
+import NoData from './NoDataScreen'
+import OrderSummary from './OrderSummary'
+import SelectPayment from './SelectPayment'
 
 import { ComponentLocationAddress } from '../../generated/graphql'
 
@@ -192,6 +193,7 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
   noCardDataCaption,
   setSelectedAddress,
   createOrderLoading,
+  beforeCheckoutText,
   showDeleteCardModal,
   noAddressDataHeader,
   noAddressDataCaption,
@@ -207,6 +209,7 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
   setSelectedDeliveryTimeslot,
   setShowCheckoutSignatoryModal
 }) => {
+  const [showModal, setShowModal] = React.useState<boolean>(false)
   const [showPaymentOptions, setShowPaymentOptions] = React.useState<boolean>()
   const [showCheckoutItemsModal, setShowCheckoutItemsModal] = React.useState<boolean>()
   const [nextClicked, setNextClicked] = React.useState<boolean | undefined>()
@@ -235,6 +238,10 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
 
   const deliveryDetailsIncluded = selectedAddress && selectedDeliveryTimeslot
 
+  const handleNext = () => {
+    setShowModal(true)
+  }
+
   const stepsMap = [
     'Select Delivery Address',
     'Add Delivery Address',
@@ -255,6 +262,15 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
         <CheckoutItemsModal
           products={cartProducts}
           setShowCheckoutModal={setShowCheckoutItemsModal}
+        />
+      )}
+      {showModal && (
+        <BeforeCheckoutModal
+          checkoutTotal={checkoutTotal}
+          confirmationText={beforeCheckoutText}
+          handleProceedButtonClicked={handlePay}
+          createOrderLoading={createOrderLoading}
+          handleCancelButtonClicked={() => setShowModal(false)}
         />
       )}
       {showCheckoutSignatoryModal && (
@@ -355,10 +371,9 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
                             type="button"
                             variantColor="brand"
                             variant="solid"
-                            onClick={() => handlePay()}
+                            onClick={() => handleNext()}
                           >
-                            {createOrderLoading && <Spinner />}
-                            {`PROCEED TO PAYMENT`}
+                            {`CONTINUE`}
                           </Button>
                           <Text
                             mt={4}

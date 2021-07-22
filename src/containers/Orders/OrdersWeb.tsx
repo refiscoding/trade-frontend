@@ -2,22 +2,32 @@ import * as React from 'react'
 import dayjs from 'dayjs'
 
 import { useHistory } from 'react-router-dom'
-import { DateRangePicker } from 'react-dates'
 import { Flex, Grid, Tag, Spinner, Button } from '@chakra-ui/core'
 
 import OrderItemsSummary from './OrderItems'
 import OrderComponent from './OrderComponent'
 import NoData from '../Checkout/NoDataScreen'
+import setOrderStatusAndColor from './setOrderStatusAndColor'
 
 import { OrdersPageProps } from '.'
-import { theme } from '../../theme'
+import { theme, images } from '../../theme'
 import { PageWrap } from '../../layouts'
 import { H3, Text } from '../../typography'
 import { Order } from '../../generated/graphql'
 
-const OrdersPageWeb: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => {
+import SelectDateRangeForm from './DatePickerForm'
+
+const OrdersPageWeb: React.FC<OrdersPageProps> = ({
+  orders,
+  isFiltering,
+  setDateRange,
+  refetchUserOrders,
+  ordersLoading,
+  setIsFiltering
+}) => {
   const history = useHistory()
   const noOrders = !orders?.length
+  const fileIcon = images.filesIcon
 
   const [selectedOrder, setSelectedOrder] = React.useState<Order | undefined>()
 
@@ -27,9 +37,12 @@ const OrdersPageWeb: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => 
     color: theme.colors.blueText
   }
 
-  const noOrdersNoOrderClickedMessage =
-    'If you had orders, you would select one on the left and view its details here. For now, shop for products'
+  const noOrdersNoOrderClickedMessage = `If you had orders, you would select one on the left and view its details here. For now, ${
+    isFiltering ? 'change the date filters' : 'shop for products'
+  }`
   const noOrdersHeader = 'Shop for products'
+  const noFilterHeader = 'No results found'
+  const noFilterCaption = 'There were no orders in your history in the date range provided'
   const noOrdersCaption =
     "You currently don't have an order history. Complete an order and it will show up here"
 
@@ -44,6 +57,25 @@ const OrdersPageWeb: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => 
   const handleReturnOrderClicked = () => {
     history.push('/returns')
   }
+
+  const orderStatusAndColor = setOrderStatusAndColor(selectedOrder)
+
+  const ordersLength = orders?.length
+
+  const cancelFilters = () => {
+    setIsFiltering(false)
+    setDateRange({
+      endDate: null,
+      startDate: null
+    })
+    refetchUserOrders()
+  }
+
+  React.useEffect(() => {
+    if (isFiltering) {
+      setSelectedOrder(undefined)
+    }
+  }, [isFiltering, setSelectedOrder])
 
   return (
     <PageWrap title="Orders" alignSelf="center" width="90%" mt={20} pt={0} p={0}>
@@ -63,7 +95,7 @@ const OrdersPageWeb: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => 
                 <H3 textAlign="left" fontSize={18} fontWeight={600}>
                   My Order History
                 </H3>
-                {noOrders ? (
+                {noOrders && !isFiltering ? (
                   <Button
                     mb={4}
                     width="100px"
@@ -74,7 +106,7 @@ const OrdersPageWeb: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => 
                     SHOP
                   </Button>
                 ) : (
-                  <Text onClick={handleReturnOrderClicked} fontSize={12} style={cancelStyles}>
+                  <Text onClick={handleReturnOrderClicked} fontSize={14} style={cancelStyles}>
                     Return an Order
                   </Text>
                 )}
@@ -92,24 +124,34 @@ const OrdersPageWeb: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => 
               <Flex flexDirection="column">
                 <Flex mb={2}>
                   {!noOrders && (
-                    <Flex flexDirection="column">
-                      <Text>Select Date Range:</Text>
-                      <DateRangePicker
-                        startDate={null}
-                        endDate={null}
-                        startDateId="start"
-                        endDateId="end"
-                        onDatesChange={() => console.log('TODO: Add Handler')}
-                        focusedInput={null}
-                        onFocusChange={() => console.log('TODO: Add Handler')}
-                      />
-                    </Flex>
+                    <SelectDateRangeForm
+                      isFiltering={isFiltering}
+                      setIsFiltering={setIsFiltering}
+                      setDateRange={setDateRange}
+                      refetchUserOrders={refetchUserOrders}
+                    />
+                  )}
+                  {noOrders && (
+                    <Text onClick={cancelFilters} mr={3} fontSize={14} style={cancelStyles}>
+                      Clear
+                    </Text>
                   )}
                 </Flex>
+                {isFiltering && (
+                  <Flex>{`${
+                    ordersLength
+                      ? `${ordersLength} ${ordersLength > 1 ? 'results' : 'result'} found`
+                      : ''
+                  }`}</Flex>
+                )}
                 <Flex flexDirection="column" overflowY="scroll" height={'500px'}>
                   {ordersLoading && <Spinner margin="auto" />}
                   {noOrders ? (
-                    <NoData header={noOrdersHeader} caption={noOrdersCaption} />
+                    <NoData
+                      header={`${isFiltering ? noFilterHeader : noOrderClickedHeader}`}
+                      caption={`${isFiltering ? noFilterCaption : noOrdersCaption}`}
+                      image={`${isFiltering ? fileIcon : images.emptyWishlist}`}
+                    />
                   ) : (
                     orders?.map((order, index) => (
                       <OrderComponent
@@ -158,26 +200,64 @@ const OrdersPageWeb: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => 
                         <Text fontSize={14} fontWeight={600}>
                           Paid:
                         </Text>
-                        <Text fontSize={14} ml={3}>{`${dayjs(selectedOrder?.paidDate).format(
-                          'LLLL'
-                        )}`}</Text>
+                        <Text fontSize={14} ml={3}>{`${
+                          selectedOrder?.paidDate
+                            ? dayjs(selectedOrder?.paidDate).format('LLLL')
+                            : 'Not Paid'
+                        }`}</Text>
                       </Grid>
                       <Grid gridTemplateColumns="100px 250px">
                         <Text fontSize={14} fontWeight={600}>
-                          Payment
+                          Payment:
                         </Text>
                         <Text fontSize={14} ml={3}>
                           Credit & Debit
                         </Text>
                       </Grid>
                     </Flex>
-                    <Flex flexDirection="column" justifySelf="end" width="100%">
+                    <Flex justifySelf="end" width="100%">
+                      <Text fontSize={14} fontWeight={600}>
+                        Status:
+                      </Text>
+                      <Flex>
+                        <Tag
+                          fontSize={12}
+                          ml={2}
+                          alignSelf="start"
+                          size="sm"
+                          background={orderStatusAndColor?.colors?.background}
+                          color={orderStatusAndColor?.colors?.color}
+                        >
+                          {orderStatusAndColor?.status?.toUpperCase()}
+                        </Tag>
+                      </Flex>
+                    </Flex>
+                  </Grid>
+                  <Flex minHeight="435px" flexDirection="column">
+                    <OrderItemsSummary
+                      isMobile={false}
+                      items={selectedOrder?.items}
+                      total={selectedOrder?.orderTotal}
+                    />
+
+                    <Flex
+                      mt={4}
+                      flexDirection="column"
+                      justifySelf="start"
+                      width="100%"
+                      p={3}
+                      border={`1px solid ${theme.colors.background}`}
+                      borderRadius={5}
+                    >
+                      <Text fontWeight={600} mb={3}>
+                        TradeFed Pickup Point
+                      </Text>
                       <Tag
                         fontSize={12}
                         size="sm"
                         background="#c9cfd4"
-                        width="50%"
-                        display="inline-block"
+                        width="15%"
+                        justifySelf="start"
                       >
                         BUSINESS
                       </Tag>
@@ -187,17 +267,19 @@ const OrdersPageWeb: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => 
                       <Text fontSize={14}>{`${orderAddress[2]}`}</Text>
                       <Text fontSize={14}>{`${selectedOrder?.deliveryAddress?.postalCode}`}</Text>
                     </Flex>
-                  </Grid>
-                  <Flex minHeight="435px">
-                    <OrderItemsSummary
-                      isMobile={false}
-                      items={selectedOrder?.items}
-                      total={selectedOrder?.orderTotal}
-                    />
                   </Flex>
                 </Flex>
               ) : (
-                <NoData header={noOrderClickedHeader} caption={noOrderClickedCaption} />
+                <NoData
+                  header={`${
+                    isFiltering && noOrders
+                      ? noFilterHeader
+                      : isFiltering && !noOrders
+                      ? `${orders?.length} ${orders?.length > 1 ? 'results' : 'result'} found`
+                      : noOrderClickedHeader
+                  }`}
+                  caption={`${noOrderClickedCaption}`}
+                />
               )}
             </Flex>
           </Grid>

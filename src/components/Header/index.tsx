@@ -58,7 +58,7 @@ const HeaderCont = styled(motion.div)<HeaderContProps>`
 `
 
 const Header: React.FC<HeaderProps> = ({ ...rest }) => {
-  const { user } = useAuthContext()
+  const { user, isAuthenticated } = useAuthContext()
   const history = useHistory()
   const toast = useToast()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
@@ -145,7 +145,7 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
           </Flex>
         </Flex>
         <Flex flexDirection="column" mr={5}>
-          {cart && hasProducts && (
+          {cart && hasProducts && isAuthenticated && (
             <Flex
               backgroundColor={theme.colors.brand[500]}
               height="25px"

@@ -1,17 +1,24 @@
+import * as Yup from 'yup'
 import * as React from 'react'
-import { Button, Flex } from '@chakra-ui/core';
-import { useMediaQuery } from "react-responsive";
 
-import { ConnectedCheckbox, ConnectedFormGroup } from '../../components/FormElements'
+import { Button, Flex } from '@chakra-ui/core'
+import { useMediaQuery } from 'react-responsive'
 import { Form, Formik, FormikProps } from 'formik'
+
+import { Text } from '../../typography'
 import { formatError } from '../../utils'
 import { Category } from '../../generated/graphql'
-import * as Yup from 'yup'
+import {
+  ConnectedCheckbox,
+  ConnectedFormGroup,
+  ConnectedNumberInput
+} from '../../components/FormElements'
 
 const DetailsValidation = Yup.object().shape({
   firstName: Yup.string(),
   lastName: Yup.string(),
   email: Yup.string(),
+  idNumber: Yup.string().max(13, 'ID Number should be a maximum of 13 characters'),
   categories: Yup.array().of(Yup.string())
 })
 
@@ -26,7 +33,7 @@ type formProps = {
   categories?: Category[]
   handleUserDetails?: (values: profileValues) => void
   initialValues: profileValues
-};
+}
 
 const ProfileDetailForm: React.FC<formProps> = ({
   categories,
@@ -34,12 +41,13 @@ const ProfileDetailForm: React.FC<formProps> = ({
   initialValues
 }) => {
   const isWebViewport = useMediaQuery({
-    query: "(min-width: 40em)"
-  });
+    query: '(min-width: 40em)'
+  })
   const styles = {
-    width: isWebViewport ? "35%" : "100%",
-    justifySelf: isWebViewport ? "center" : "",
-  };
+    width: isWebViewport ? '35%' : '100%',
+    justifySelf: isWebViewport ? 'center' : ''
+  }
+
   return (
     <Flex flexDirection="column" width={styles.width} alignSelf={styles.justifySelf}>
       <Formik
@@ -60,10 +68,16 @@ const ProfileDetailForm: React.FC<formProps> = ({
           <Form style={{ width: '100%' }}>
             <ConnectedFormGroup label="Your First Name?" name="firstName" type="text" />
             <ConnectedFormGroup label="Your Last Name?" name="lastName" type="text" />
-            <ConnectedFormGroup label="Your Email Address?" name="email" type="text" isDisabled={true} />
-            <ConnectedFormGroup label="Your Phone Number?" name="phoneNumber" type="text" />
+            <ConnectedFormGroup
+              label="Your Email Address?"
+              name="email"
+              type="text"
+              isDisabled={true}
+            />
+            <ConnectedNumberInput label="Your Phone Number?" name="phoneNumber" unit="+27" />
             <ConnectedFormGroup label="Your ID Number?" name="idNumber" type="text" />
             {/* <ConnectedFormGroup label="Your Address?" name="address" type="text" /> */}
+            <Text my={3}>Your Interests?</Text>
             {categories?.map((item: any, i: number) => (
               <ConnectedCheckbox key={i} name="categories" label={item.name} value={item.id} />
             ))}

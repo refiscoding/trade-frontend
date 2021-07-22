@@ -13,6 +13,7 @@ import { ProductProps } from './props'
 import { theme, images } from '../../theme'
 import { Product } from '../../generated/graphql'
 import { VerifiedBadge } from '../../components/Product'
+import { useAuthContext } from '../../context/AuthProvider'
 import { QuantitySelectComponent } from '../../containers/ProductView/AddToCartModal'
 
 const ProductComponentMobile: React.FC<ProductProps> = ({
@@ -26,6 +27,7 @@ const ProductComponentMobile: React.FC<ProductProps> = ({
   handleAddToWishlistClicked
 }) => {
   const history = useHistory()
+  const { isAuthenticated } = useAuthContext()
 
   const isSmallPhone = useMediaQuery({ query: '(max-width: 25em)' })
   const isTinyPhone = useMediaQuery({ query: '(max-width: 20em)' })
@@ -94,7 +96,7 @@ const ProductComponentMobile: React.FC<ProductProps> = ({
           {`${product?.currency} ${product?.tradeFedCost}.00`}
         </Text>
         <Text ml={marginLeft} mt={-1} mb={1} fontSize="12px">
-          Retail: {`${product?.currency} ${product?.maxSellCost}`}
+          Retail: {`${product?.currency} ${product?.maxSellCost}.00`}
         </Text>
         <Text ml={marginLeft} fontSize="14px" color={textColor} fontWeight={600}>
           {`This item is sold per ${productPackaging}`}
@@ -117,29 +119,41 @@ const ProductComponentMobile: React.FC<ProductProps> = ({
             </Text>
           </Flex>
         )}
-        <Flex ml={marginLeft} mt={3}>
-          <QuantitySelectComponent
-            count={1}
-            isCart={false}
-            productId={product?.id}
-            available={product?.availableUnits as number}
-            setProductQuantity={setProductQuantity}
-          />
-          <Text
-            mt={3}
-            ml={3}
-            color={textColor}
-            fontSize={12}
-            fontWeight={600}
-          >{`${product?.availableUnits} units`}</Text>
-          <Text mt={3} ml={1} fontSize={12}>{`available`}</Text>
-        </Flex>
+        {product?.availableUnits ? (
+          <Flex ml={marginLeft} mt={3}>
+            <QuantitySelectComponent
+              count={1}
+              isCart={false}
+              productId={product?.id}
+              available={product?.availableUnits as number}
+              setProductQuantity={setProductQuantity}
+            />
+            <Text
+              mt={3}
+              ml={3}
+              color={textColor}
+              fontSize={12}
+              fontWeight={600}
+            >{`${product?.availableUnits} units`}</Text>
+            <Text mt={3} ml={1} fontSize={12}>{`available`}</Text>
+          </Flex>
+        ) : (
+          <Flex ml={marginLeft} mt={4} fontSize={12} fontWeight={600} color={textColor}>
+            No units available
+          </Flex>
+        )}
         <Grid ml={marginLeft} gridTemplateColumns="200px 200px">
           <Button
             justifySelf="start"
             mt={4}
             width={isSmallPhone ? '80%' : '90%'}
-            onClick={() => handleAddToWishlistClicked(product?.id)}
+            onClick={() => {
+              if (isAuthenticated) {
+                handleAddToWishlistClicked(product?.id)
+              } else {
+                history.push('/login')
+              }
+            }}
             border={`1px solid ${theme.colors.brand[500]}`}
             background="white"
           >
@@ -149,7 +163,14 @@ const ProductComponentMobile: React.FC<ProductProps> = ({
             mt={4}
             width={isSmallPhone ? '80%' : '90%'}
             variantColor="brand"
-            onClick={() => handleAddToCartClicked(product?.id)}
+            isDisabled={Boolean(!product?.availableUnits)}
+            onClick={() => {
+              if (isAuthenticated) {
+                handleAddToCartClicked(product?.id)
+              } else {
+                history.push('/login')
+              }
+            }}
           >
             <Text fontSize="12px">ADD TO CART</Text>
           </Button>

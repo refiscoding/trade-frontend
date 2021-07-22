@@ -17,7 +17,13 @@ import { Text } from '../../typography'
 
 import { Order } from '../../generated/graphql'
 
-const OrdersPage: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => {
+const OrdersPage: React.FC<OrdersPageProps> = ({
+  orders,
+  isFiltering,
+  setDateRange,
+  ordersLoading,
+  setIsFiltering
+}) => {
   const history = useHistory()
   const [selectedOrder, setSelectedOrder] = React.useState<Order | undefined>()
   const noOrders = !orders?.length
@@ -74,9 +80,11 @@ const OrdersPage: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => {
                 <Text fontSize={12} fontWeight={600}>
                   Paid:
                 </Text>
-                <Text fontSize={12} ml={3}>{`${dayjs(selectedOrder?.paidDate).format(
-                  'LLLL'
-                )}`}</Text>
+                <Text fontSize={12} ml={3}>{`${
+                  selectedOrder?.paidDate
+                    ? dayjs(selectedOrder?.paidDate).format('LLLL')
+                    : 'Not Paid'
+                }`}</Text>
               </Grid>
               <Grid gridTemplateColumns="90px 1fr">
                 <Text fontSize={12} fontWeight={600}>
@@ -121,7 +129,7 @@ const OrdersPage: React.FC<OrdersPageProps> = ({ orders, ordersLoading }) => {
               backgroundColor="white"
             >
               <Flex width="80%">
-                <Text fontSize={12}>Return an order?</Text>
+                <Text fontSize={14}>Return an order?</Text>
               </Flex>
               <ChevronRight />
             </Flex>

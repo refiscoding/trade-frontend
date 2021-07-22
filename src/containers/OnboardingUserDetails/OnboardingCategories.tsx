@@ -33,11 +33,11 @@ const UserDetails: React.FC<CategoriesProps> = ({ handleUserDetails, categories 
         initialValues={{
           categories: []
         }}
-        onSubmit={async ({ categories }, { setStatus, setSubmitting }) => {
+        onSubmit={async ({ categories: formCategories }, { setStatus, setSubmitting }) => {
           setStatus(null)
           try {
             setSubmitting(true)
-            handleUserDetails({ categories })
+            handleUserDetails({ categories: formCategories })
             setSubmitting(false)
           } catch (error) {
             setStatus(formatError(error))

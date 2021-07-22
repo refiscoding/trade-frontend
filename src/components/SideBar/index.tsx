@@ -32,14 +32,14 @@ type SideBarProps = ColorProps & {
 }
 
 const SideBar: React.FC<SideBarProps> = ({
-  accentColor,
   bg,
-  borderColor,
-  children,
   color,
-  hoverColor,
   navItems,
+  children,
   tooltipBg,
+  hoverColor,
+  accentColor,
+  borderColor,
   tooltipColor,
   closeOnNavigate
 }) => {

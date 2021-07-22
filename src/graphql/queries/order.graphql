@@ -1,6 +1,6 @@
 # import '/fragments/order.graphql'
-query fetchUserCheckoutOrders {
-  findCheckoutOrders {
+query fetchUserCheckoutOrders($input: FetchOrdersInput!) {
+  findCheckoutOrders(input: $input) {
     payload {
       ...order
     }

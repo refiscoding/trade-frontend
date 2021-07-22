@@ -70,8 +70,19 @@ const Onboarding: React.FC = () => {
     }
     setUserdetails({ ...userDetails, ...details })
 
-    if (shouldShowBusinessScreen ? active === 4 : active <= 2) {
-      await updateSelf({ variables: { input: { ...userDetails } } })
+    if (shouldShowBusinessScreen ? active === 4 : active === 2) {
+      if (details.categories) {
+        await updateSelf({
+          variables: {
+            input: {
+              ...userDetails,
+              categories: details.categories
+            }
+          }
+        })
+      } else {
+        await updateSelf({ variables: { input: { ...userDetails } } })
+      }
     }
   }
 
