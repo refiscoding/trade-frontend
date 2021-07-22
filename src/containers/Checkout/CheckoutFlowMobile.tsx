@@ -4,7 +4,7 @@ import { isEmpty } from 'lodash'
 import { Form, Formik } from 'formik'
 import { ChevronRight } from 'react-feather'
 import { useMediaQuery } from 'react-responsive'
-import { Flex, Grid, Image, Tag, Spinner, Button } from '@chakra-ui/core'
+import { Flex, Grid, Image, Tag, Button } from '@chakra-ui/core'
 
 import { theme, images } from '../../theme'
 import { PageWrap } from '../../layouts'
@@ -241,7 +241,7 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
   const handleNext = () => {
     setShowModal(true)
   }
-  
+
   const stepsMap = [
     'Select Delivery Address',
     'Add Delivery Address',
@@ -265,12 +265,14 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
         />
       )}
       {showModal && (
-          <BeforeCheckoutModal 
-            confirmationText={beforeCheckoutText}
-            handleCancelButtonClicked={() => setShowModal(false)}
-            handleProceedButtonClicked={() => {}}
-          />
-        )}
+        <BeforeCheckoutModal
+          checkoutTotal={checkoutTotal}
+          confirmationText={beforeCheckoutText}
+          handleProceedButtonClicked={handlePay}
+          createOrderLoading={createOrderLoading}
+          handleCancelButtonClicked={() => setShowModal(false)}
+        />
+      )}
       {showCheckoutSignatoryModal && (
         <CheckoutSignatoryModal setShowCheckoutModal={setShowCheckoutSignatoryModal} />
       )}
@@ -371,7 +373,6 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
                             variant="solid"
                             onClick={() => handleNext()}
                           >
-                            {createOrderLoading && <Spinner />}
                             {`CONTINUE`}
                           </Button>
                           <Text

@@ -6,8 +6,7 @@ import CardsContainer from './CardsContainer'
 import CardComponent, { Card } from './CardComponent'
 
 import { CartProduct } from '../Cart'
-import { ComponentLocationAddress } from '../../generated/graphql';
-
+import { ComponentLocationAddress } from '../../generated/graphql'
 
 type CardsProps = {
   cards: Card[]
@@ -57,9 +56,7 @@ const CardsComponent: React.FC<CardsProps> = ({
           variantColor="brand"
           onClick={handlePay}
         >
-          {
-            createOrderLoading && <Spinner height="25px" />
-          }
+          {createOrderLoading && <Spinner height="25px" />}
           {`PAY R ${checkoutTotal}.00`}
         </Button>
       )}

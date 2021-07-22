@@ -14,8 +14,10 @@ import { Card } from './CardComponent'
 import { PageWrap } from '../../layouts'
 import { TimeSlot } from './AddressComponent'
 import { timeSlots, cards } from './dummyData'
+import { useBrowserStorage } from '../../hooks'
 import { useAuthContext } from '../../context/AuthProvider'
-import { ERROR_TOAST } from '../../constants'
+import { StrapiLoginPayload } from '../../utils/strapiHelpers'
+import { ERROR_TOAST, STRAPI_USER_STORAGE_KEY } from '../../constants'
 import {
   useFetchUsersCartQuery,
   ComponentCartCartProduct,
@@ -23,6 +25,8 @@ import {
   useCreateCheckoutOrderMutation,
   useFetchOneUserCheckoutOrderQuery
 } from '../../generated/graphql'
+
+type UserStorage = StrapiLoginPayload | null
 
 export const DeliveryAddressValidation = Yup.object().shape({
   street: Yup.string().required('Street Address is required'),
@@ -137,10 +141,10 @@ const CheckoutPage: React.FC = () => {
     "You are about to remove one of your delivery address? Once you have removed it, you'll have to re-add it manually to your addresses"
   const confirmationTextCard =
     "You are about to remove one of your payment cards? Once you have removed it, you'll have to re-add it manually to your payment cards"
-  const beforeCheckoutText = 
-    "Pleace note that the products in your cart come from different suppliers and might arrive not arrive on the same day. Each product has it’s own delivery fees associated."
-  
-    const { data: userCart } = useFetchUsersCartQuery({
+  const beforeCheckoutText =
+    'Please note that the products in your cart come from different suppliers and might not arrive on the same day. Each product has its associated delivery fees.'
+
+  const { data: userCart } = useFetchUsersCartQuery({
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
   })
 
@@ -176,6 +180,9 @@ const CheckoutPage: React.FC = () => {
     return {}
   })
 
+  const userStorageHooks = useBrowserStorage<UserStorage>(STRAPI_USER_STORAGE_KEY, 'local')
+  const sessionStorageHooks = useBrowserStorage<UserStorage>(STRAPI_USER_STORAGE_KEY, 'session')
+
   const handlePay = async () => {
     const HOST = `https://${process.env.REACT_APP_STAGE}.tradefed.sovtech.org`
     if (products) {
@@ -194,6 +201,10 @@ const CheckoutPage: React.FC = () => {
         successURL: `${process.env.REACT_APP_CLIENT_HOST}/checkout-success`,
         failureURL: `${process.env.REACT_APP_CLIENT_HOST}/checkout`
       }
+      if (!userStorageHooks[0]) {
+        userStorageHooks[1](sessionStorageHooks[0])
+        sessionStorageHooks[2]()
+      }
       await createOrder({
         variables: {
           input: orderInput
@@ -203,12 +214,12 @@ const CheckoutPage: React.FC = () => {
   }
 
   React.useEffect(() => {
-    // TODO: 'Need to check auth status, if available, proceed else authenticate user'
     const orderAddress = failedOrderAddress[0]
     const failedOrderDate = userOrder?.fetchOneUserCheckoutOrder?.payload?.deliveryDate
+    const date = failedOrderDate ? new Date(failedOrderDate) : new Date()
     if (failedPayment) {
       setSelectedAddress(orderAddress)
-      setSelectedDeliveryDate(new Date(failedOrderDate))
+      setSelectedDeliveryDate(date)
       setSelectedDeliveryTimeslot('1')
       if (isTabletOrMobile) {
         setActiveStep(3)

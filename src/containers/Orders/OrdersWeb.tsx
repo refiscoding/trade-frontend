@@ -150,7 +150,7 @@ const OrdersPageWeb: React.FC<OrdersPageProps> = ({
                     <NoData
                       header={`${isFiltering ? noFilterHeader : noOrderClickedHeader}`}
                       caption={`${isFiltering ? noFilterCaption : noOrdersCaption}`}
-                      image={`${isFiltering ? fileIcon : null}`}
+                      image={`${isFiltering ? fileIcon : images.emptyWishlist}`}
                     />
                   ) : (
                     orders?.map((order, index) => (

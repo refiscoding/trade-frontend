@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 
 import { Form, Formik } from 'formik'
 import { useHistory } from 'react-router'
-import { Flex, Grid, Tag, Spinner } from '@chakra-ui/core'
+import { Flex, Grid, Tag } from '@chakra-ui/core'
 
 import { theme } from '../../theme'
 import { PageWrap } from '../../layouts'
@@ -100,10 +100,12 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
           <CheckoutSignatoryModal setShowCheckoutModal={setShowCheckoutSignatoryModal} />
         )}
         {showModal && (
-          <BeforeCheckoutModal 
+          <BeforeCheckoutModal
+            checkoutTotal={checkoutTotal}
             confirmationText={beforeCheckoutText}
+            handleProceedButtonClicked={handlePay}
+            createOrderLoading={createOrderLoading}
             handleCancelButtonClicked={() => setShowModal(false)}
-            handleProceedButtonClicked={() => {}}
           />
         )}
         <Flex width="100%" flexDirection="column">
@@ -196,7 +198,6 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                               disabled={false}
                               setActive={() => handleNext()}
                             >
-                              {createOrderLoading && <Spinner mr={3} />}
                               CONTINUE
                             </NextButton>
                           </Flex>
