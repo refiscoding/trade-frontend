@@ -1,0 +1,12 @@
+fragment return on ReturnRequest {
+    id
+    created_at
+    updated_at
+    order_return_reason {
+        Reason
+    }
+    order_return_action {
+        Action
+    }
+    comment
+}

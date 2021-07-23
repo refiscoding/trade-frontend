@@ -3,25 +3,27 @@ import styled from '@emotion/styled'
 
 import { Form, Formik } from 'formik'
 import { useHistory } from 'react-router'
-import { Flex, Grid, Tag, Spinner } from '@chakra-ui/core'
-
-import NextButton from './Button'
-import NoData from './NoDataScreen'
-import OrderSummary from './OrderSummary'
-import DeliveryAddresses from './Addresses'
-import SelectPayment from './SelectPayment'
-import DeliveryDetails from './DeliveryDetails'
-import DeliveryAddressForm from './DeliveryAddressForm'
-import ProductCard from '../../components/Card/ProductCard'
-import DeleteItemsModal from '../../components/DeleteItemsModal'
+import { Flex, Grid, Tag } from '@chakra-ui/core'
 
 import { theme } from '../../theme'
 import { PageWrap } from '../../layouts'
 import { Stepper } from '../../components'
 import { H3, Text } from '../../typography'
 import { CheckoutProps, initialDeliveryAddressValues, DeliveryAddressValidation } from '.'
-import CheckoutSignatoryModal from './CheckoutSignatoryModal'
 import { ComponentCartCartProduct } from '../../generated/graphql'
+
+import BeforeCheckoutModal from '../NucleusPayment/BeforeCheckoutModal'
+import CheckoutSignatoryModal from './CheckoutSignatoryModal'
+import DeleteItemsModal from '../../components/DeleteItemsModal'
+import DeliveryAddresses from './Addresses'
+import DeliveryAddressForm from './DeliveryAddressForm'
+import DeliveryDetails from './DeliveryDetails'
+import NextButton from './Button'
+import NoData from './NoDataScreen'
+import OrderSummary from './OrderSummary'
+import ProductCard from '../../components/Card/ProductCard'
+import SelectPayment from './SelectPayment'
+
 
 const StepperContainer = styled.div`
   margin-top: 15px;
@@ -45,6 +47,7 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
   noAddressDataHeader,
   showDeleteCardModal,
   noAddressDataCaption,
+  beforeCheckoutText,
   confirmationTextCard,
   setShowDeleteCardModal,
   confirmationTextAddress,
@@ -57,6 +60,7 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
   setShowCheckoutSignatoryModal
 }) => {
   const history = useHistory()
+  const [showModal, setShowModal] = React.useState<boolean>(false)
   const numberOfAddresses = addresses?.length
   const numberOfCards = cards?.length
   const cancelButtonStyles = { textDecoration: 'underline', cursor: 'pointer' }
@@ -71,6 +75,10 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
     history.push('/cart')
   }
   const setShowPaymentsOption = () => {}
+
+  const handleNext = () => {
+    setShowModal(true)
+  }
 
   const stepsMap = [
     'Select Delivery Address',
@@ -90,6 +98,15 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
         )}
         {showCheckoutSignatoryModal && (
           <CheckoutSignatoryModal setShowCheckoutModal={setShowCheckoutSignatoryModal} />
+        )}
+        {showModal && (
+          <BeforeCheckoutModal
+            checkoutTotal={checkoutTotal}
+            confirmationText={beforeCheckoutText}
+            handleProceedButtonClicked={handlePay}
+            createOrderLoading={createOrderLoading}
+            handleCancelButtonClicked={() => setShowModal(false)}
+          />
         )}
         <Flex width="100%" flexDirection="column">
           <Grid
@@ -179,10 +196,9 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                             <NextButton
                               active={active}
                               disabled={false}
-                              setActive={() => handlePay()}
+                              setActive={() => handleNext()}
                             >
-                              {createOrderLoading && <Spinner mr={3} />}
-                              PROCEED TO PAYMENT
+                              CONTINUE
                             </NextButton>
                           </Flex>
                         </Flex>

@@ -1,3 +1,17 @@
+# [1.8.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.7.1...v1.8.0) (2021-07-22)
+
+
+### Features
+
+* **payment:** re authenticate user ([502b139](http://bitbucket.org/sovtech/tradefed-frontend/commits/502b139f7ddf54fd48649cdac11534b488824702))
+
+## [1.7.1](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.7.0...v1.7.1) (2021-07-21)
+
+
+### Bug Fixes
+
+* Changed registration page UI ([10a5108](http://bitbucket.org/sovtech/tradefed-frontend/commits/10a5108ef325bb9ed59ba1d0a37df17b772ae941))
+
 # [1.7.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.6.2...v1.7.0) (2021-07-06)
 
 

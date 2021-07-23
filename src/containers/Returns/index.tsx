@@ -40,7 +40,13 @@ const OrderReturns = () => {
   const isWebView = useMediaQuery({ query: '(min-width: 40em)' })
 
   const { data: userOrders, loading: userOrdersLoading } = useFetchUserCheckoutOrdersQuery({
-    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
+    variables: {
+      input: {
+        endDate: null,
+        startDate: null
+      }
+    }
   })
 
   const { data: returnReasons } = useFetchReturnReasonsQuery({

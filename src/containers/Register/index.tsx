@@ -1,13 +1,22 @@
 import * as Yup from 'yup'
 import * as React from 'react'
 
-import { Mail } from 'react-feather';
-import { ApolloError } from 'apollo-boost';
-import { Form, Formik, FormikProps } from 'formik';
-import { Link, useHistory } from 'react-router-dom';
-import { Button, Flex, Image, useToast } from '@chakra-ui/core';
+import { Mail } from 'react-feather'
+import { ApolloError } from 'apollo-boost'
+import { Form, Formik, FormikProps } from 'formik'
+import { Link, useHistory } from 'react-router-dom'
+import {
+  Button,
+  Flex,
+  Image,
+  useToast,
+  Tabs,
+  TabList,
+  Tab,
+  Box
+} from '@chakra-ui/core'
 
-import Input from "../../components/Input";
+import Input from '../../components/Input'
 
 import { PageWrap } from '../../layouts'
 import { formatError } from '../../utils'
@@ -16,7 +25,7 @@ import { images, theme } from '../../theme'
 import { ERROR_TOAST } from '../../constants'
 import { MotionFlex, SideSlider } from '../../components'
 import { useAuthContext } from '../../context/AuthProvider'
-import { useFetchLegalitiesQuery } from '../../generated/graphql';
+import { useFetchLegalitiesQuery } from '../../generated/graphql'
 import { ConnectedFormGroup, ConnectedPasswordGroup } from '../../components/FormElements'
 
 type RegisterProps = {}
@@ -36,17 +45,17 @@ type RegisterValues = {
 }
 
 const baseUrl = process.env.REACT_APP_API_HOST
-const terms = "Terms & Conditions";
+const terms = 'Terms & Conditions'
 
 const Register: React.FC<RegisterProps> = () => {
-  const toast = useToast();
+  const toast = useToast()
   const { register, user, logout } = useAuthContext()
-  const [showError, setShowError] = React.useState<boolean | null>(false);
-  const [termsChecked, setTermsChecked] = React.useState<boolean | null>(false);
+  const [showError, setShowError] = React.useState<boolean | null>(false)
+  const [termsChecked, setTermsChecked] = React.useState<boolean | null>(false)
 
   const { data: legalities } = useFetchLegalitiesQuery({
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
-  });
+  })
 
   const history = useHistory()
 
@@ -58,14 +67,13 @@ const Register: React.FC<RegisterProps> = () => {
       logout && logout()
     }
     // eslint-disable-next-line
-  }, [user]);
+  }, [user])
 
   const handleTermsCheckboxClicked = () => {
-    setShowError(!termsChecked);
-    setTermsChecked(!termsChecked);
-  };
-  const termsAndConditionsLink = legalities?.legality?.termsAndConditionsFile?.url;
-
+    setShowError(!termsChecked)
+    setTermsChecked(!termsChecked)
+  }
+  const termsAndConditionsLink = legalities?.legality?.termsAndConditionsFile?.url
   return (
     <PageWrap
       align="center"
@@ -77,7 +85,8 @@ const Register: React.FC<RegisterProps> = () => {
       pt={0}
     >
       <SideSlider>
-        <Flex width="100%" flexDirection="column" pb={4}>
+        {/* <Box p="4" bg="#FFFAFA"> */}
+        <Flex width="100%" flexDirection="column" pb={4} color="white">
           <H3 textAlign="center" mb={4} fontWeight="bold" color={theme.colors.brand[500]}>
             Register
           </H3>
@@ -85,97 +94,118 @@ const Register: React.FC<RegisterProps> = () => {
             Hi there! Welcome to TradeFed.
           </Text>
         </Flex>
-        <Formik
-          validationSchema={RegisterFormValidation}
-          initialValues={{
-            email: '',
-            password: '',
-          }}
-          onSubmit={async ({ email, password }, { setStatus, setSubmitting }) => {
-            if (!termsChecked) {
-              setShowError(true);
-              return
-            } else {
-              setStatus(null)
-              try {
-                setSubmitting(true)
-                if (register) {
-                  await register(email, password)
+        <Tabs isFitted variant="enclosed" defaultIndex={1}>
+          <TabList>
+            <Tab _focus={{ borderColor: 'white' }} _selected={{ bg: 'gray.300' }}>
+              Business
+            </Tab>
+            <Tab _focus={{ borderColor: 'white' }} _selected={{ bg: 'gray.300' }}>
+              Individual
+            </Tab>
+          </TabList>
+        </Tabs>
+        <Box p="4" bg="gray.300">
+          <Formik
+            validationSchema={RegisterFormValidation}
+            initialValues={{
+              email: '',
+              password: ''
+            }}
+            onSubmit={async ({ email, password }, { setStatus, setSubmitting }) => {
+              if (!termsChecked) {
+                setShowError(true)
+                return
+              } else {
+                setStatus(null)
+                try {
+                  setSubmitting(true)
+                  if (register) {
+                    await register(email, password)
+                  }
+                  setSubmitting(false)
+                } catch (error) {
+                  setStatus(formatError(error))
                 }
-                setSubmitting(false)
-              } catch (error) {
-                setStatus(formatError(error))
               }
-            }
-          }}
-        >
-          {({ isSubmitting, status }: FormikProps<RegisterValues>) => (
-            <Form style={{ width: '100%' }}>
-              <ConnectedFormGroup icon={Mail} name="email" placeholder="Email" type="email" />
-              <ConnectedPasswordGroup name="password" placeholder="Password" />
-              {status && (
-                <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
-                  <Text textAlign="right" color="red.500">
-                    {status}
-                  </Text>
-                </MotionFlex>
-              )}
-              <Flex mb={5}>
-                <Flex mt={5} mr={3}>
-                  <Input type="checkbox" name="terms" onChange={handleTermsCheckboxClicked} />
+            }}
+          >
+            {({ isSubmitting, status }: FormikProps<RegisterValues>) => (
+              <Form style={{ width: '100%' }}>
+                <ConnectedFormGroup icon={Mail} name="email" placeholder="Email" type="email" />
+                <ConnectedPasswordGroup name="password" placeholder="Password" />
+                {status && (
+                  <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
+                    <Text textAlign="right" color="red.500">
+                      {status}
+                    </Text>
+                  </MotionFlex>
+                )}
+                <Flex mb={5}>
+                  <Flex mt={5} mr={3}>
+                    <Input type="checkbox" name="terms" onChange={handleTermsCheckboxClicked} />
+                  </Flex>
+                  <Flex
+                    mb={2}
+                    mt={4}
+                    align="center"
+                    justify="center"
+                    color={theme.colors.brand[500]}
+                  >
+                    <Text>
+                      I agree to the{' '}
+                      <a
+                        style={{ fontWeight: 600, textDecoration: 'underline' }}
+                        href={termsAndConditionsLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {terms}
+                      </a>
+                    </Text>
+                  </Flex>
                 </Flex>
-                <Flex mb={2} mt={4} align="center" justify="center" color={theme.colors.brand[500]}>
-                  <Text>
-                    I agree to the {' '}
-                    <a style={{ fontWeight: 600, textDecoration: "underline" }} href={termsAndConditionsLink} target="_blank" rel="noopener noreferrer">
-                      {terms}
-                    </a>
-                  </Text>
-                </Flex>
-              </Flex>
-              {
-                showError && !termsChecked && (
+                {showError && !termsChecked && (
                   <Text fontSize={12} color="red.500">
                     Kindly read and accept the terms and conditions
                   </Text>
-                )
-              }
-              <Button
-                mt={4}
-                width="100%"
-                type="submit"
-                variantColor="brand"
-                isLoading={isSubmitting}
-              >
-                SIGN UP
-              </Button>
-              <Flex mb={2} mt={4} align="center" justify="center" flexDirection="column">
-                <Text my={4} fontSize="14px">
-                  Or continue with social media
-                </Text>
-                <Flex width="100%" justifyContent="space-evenly" my={5}>
-                  <a href={`${baseUrl}/connect/facebook`}>
-                    <Image src={images['Facebook']} />
-                  </a>
-                  <a href={`${baseUrl}/connect/linkedin`}>
-                    <Image src={images['LinkedIn']} />
-                  </a>
-                  <a href={`${baseUrl}/connect/google`}>
-                    <Image src={images['GooglePlus']} />
-                  </a>
+                )}
+                <Button
+                  mt={4}
+                  width="100%"
+                  type="submit"
+                  variantColor="brand"
+                  isLoading={isSubmitting}
+                >
+                  SIGN UP
+                </Button>
+                <Flex mb={2} mt={4} align="center" justify="center" flexDirection="column">
+                  <Text my={4} fontSize="14px">
+                    Or continue with social media
+                  </Text>
+                  <Flex width="100%" justifyContent="space-evenly" my={5}>
+                    <a href={`${baseUrl}/connect/facebook`}>
+                      <Image src={images['Facebook']} />
+                    </a>
+                    <a href={`${baseUrl}/connect/linkedin`}>
+                      <Image src={images['LinkedIn']} />
+                    </a>
+                    <a href={`${baseUrl}/connect/google`}>
+                      <Image src={images['GooglePlus']} />
+                    </a>
+                  </Flex>
                 </Flex>
-              </Flex>
-              <Flex mb={2} mt={4} align="center" justify="center">
-                <Text>
-                  Already have an account?{' '}
-                  <Link style={{ fontWeight: 600 }} to="/login">
-                    Login
-                  </Link>{' '}
-                </Text>
-              </Flex>
-            </Form>
-          )}
-        </Formik>
+                <Flex mb={2} mt={4} align="center" justify="center">
+                  <Text>
+                    Already have an account?{' '}
+                    <Link style={{ fontWeight: 600 }} to="/login">
+                      Login
+                    </Link>{' '}
+                  </Text>
+                </Flex>
+              </Form>
+            )}
+          </Formik>
+        </Box>
       </SideSlider>
     </PageWrap>
   )

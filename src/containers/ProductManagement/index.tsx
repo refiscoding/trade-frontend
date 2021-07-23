@@ -261,8 +261,6 @@ const ProductManagement: React.FC<ProductManagementProps> = () => {
     variables: { old: true }
   })
 
-  console.log('Old', oldActiveProductsChartData)
-
   React.useEffect(() => {
     const activeProductsResponse = activeProductsData?.findActiveProducts?.payload
     if (activeProductsResponse) {
