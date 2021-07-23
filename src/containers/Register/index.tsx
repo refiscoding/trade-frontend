@@ -5,16 +5,7 @@ import { Mail } from 'react-feather'
 import { ApolloError } from 'apollo-boost'
 import { Form, Formik, FormikProps } from 'formik'
 import { Link, useHistory } from 'react-router-dom'
-import {
-  Button,
-  Flex,
-  Image,
-  useToast,
-  Tabs,
-  TabList,
-  Tab,
-  Box
-} from '@chakra-ui/core'
+import { Button, Flex, Image, useToast, Tabs, TabList, Tab, Box } from '@chakra-ui/core'
 
 import Input from '../../components/Input'
 

@@ -1,9 +1,10 @@
 import { Button, Flex, Image } from '@chakra-ui/core'
 import { Form, Formik, FormikProps } from 'formik'
 import * as React from 'react'
+import { position } from 'styled-system'
 import * as Yup from 'yup'
 import { MotionFlex } from '../../components'
-import { ConnectedFormGroup } from '../../components/FormElements'
+import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
 import { images } from '../../theme'
 import { H3, Text } from '../../typography'
 import { formatError } from '../../utils'
@@ -13,16 +14,40 @@ type NameProps = {
 }
 
 const NameFormValidation = Yup.object().shape({
+  accountType: Yup.string().required('Account type is required'),
   firstName: Yup.string().required('An first name is required'),
-  lastName: Yup.string().required('A last name is required')
+  lastName: Yup.string().required('A last name is required'),
+  position: Yup.string().required('please selects'),
+  workEmailAddress: Yup.string().required('A work email address is required'),
+  phoneNumber: Yup.string().required('A phone number is required'),
+  idNumber: Yup.string().required('Please provide identification number').max(13).min(1)
 })
 
 type NameValues = {
   firstName: string
   lastName: string
+  position: string
+  workEmailAddress: string
+  phoneNumber: string
+  idNumber: string
 }
 
 const UserDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
+  const [currentPosition, setCurrentPosition] = React.useState('')
+  const [currentAccountType, setCurrentAccountType] = React.useState('Individual')
+
+  const handlePositionChanged = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    event.persist()
+    const position = event?.target?.value
+    setCurrentPosition(position)
+  }
+
+  const handleAccountTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    event.persist()
+    const account = event?.target?.value
+    setCurrentAccountType(account)
+  }
+
   return (
     <React.Fragment>
       <Flex width="100%" mb={4} flexDirection="column">
@@ -35,16 +60,33 @@ const UserDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
         <Image width="60%" src={images['OnboardingDetails']} />
       </Flex>
       <Formik
-        validationSchema={NameFormValidation}
+        // validationSchema={NameFormValidation}
         initialValues={{
+          accountType: 'Invidivual',
           firstName: '',
-          lastName: ''
+          lastName: '',
+          position: 'CEO',
+          workEmailAddress: '',
+          phoneNumber: '',
+          idNumber: ''
         }}
-        onSubmit={async ({ firstName, lastName }, { setStatus, setSubmitting }) => {
+        onSubmit={async (
+          { firstName, lastName, workEmailAddress, phoneNumber, idNumber },
+          { setStatus, setSubmitting }
+        ) => {
           setStatus(null)
           try {
             setSubmitting(true)
-            handleUserDetails({ firstName, lastName })
+            handleUserDetails({
+              accountType: currentAccountType,
+              firstName,
+              lastName,
+              isBusiness: Boolean(currentAccountType.includes('Business') ? true : false),
+              position: currentPosition,
+              workEmailAddress,
+              phoneNumber,
+              idNumber
+            })
             setSubmitting(false)
           } catch (error) {
             setStatus(formatError(error))
@@ -53,8 +95,81 @@ const UserDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       >
         {({ isSubmitting, status }: FormikProps<NameValues>) => (
           <Form style={{ width: '100%' }}>
+            <ConnectedSelect
+              label="Are you signing up on behalf of a business or as an individual?"
+              onChange={handleAccountTypeChange}
+              name={'Account Type'}
+              options={[
+                {
+                  label: 'Individual',
+                  value: 'Individual'
+                },
+                {
+                  label: 'Business',
+                  value: 'Business'
+                }
+              ]}
+            />
             <ConnectedFormGroup label="What is your first name?*" name="firstName" type="text" />
             <ConnectedFormGroup label="What is your last name?*" name="lastName" type="text" />
+            {currentAccountType.includes('Business') && (
+              <ConnectedSelect
+                label="Select Position *"
+                onChange={handlePositionChanged}
+                name={'Position'}
+                options={[
+                  {
+                    label: 'CEO',
+                    value: 'CEO'
+                  },
+                  {
+                    label: 'Managing Director',
+                    value: 'Managing Director'
+                  },
+                  {
+                    label: 'Financial Manager',
+                    value: 'Financial Manager'
+                  },
+                  {
+                    label: 'Financial Director',
+                    value: 'Financial Director'
+                  },
+                  {
+                    label: 'Procurement Manager',
+                    value: 'Procurement Manager'
+                  },
+                  {
+                    label: 'Sales Manager',
+                    value: 'Sales Manager'
+                  },
+                  {
+                    label: 'Other',
+                    value: 'Other'
+                  }
+                ]}
+              />
+            )}
+            {currentAccountType.includes('Business') && (
+              <ConnectedFormGroup
+                label="if other, please specify position."
+                name="otherPosition"
+                type="text"
+              />
+            )}
+            {currentAccountType.includes('Business') && (
+              <ConnectedFormGroup
+                label="Work Email Address *"
+                name="workEmailAddress"
+                type="text"
+              />
+            )}
+            {currentAccountType.includes('Business') && (
+              <ConnectedFormGroup label="Cell Phone No *" name="phoneNumber" type="text" />
+            )}
+            {currentAccountType.includes('Business') && (
+              <ConnectedFormGroup label="ID/Passport Number *" name="idNumber" type="text" />
+            )}
+
             {status && (
               <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
                 <Text textAlign="right" color="red.500">

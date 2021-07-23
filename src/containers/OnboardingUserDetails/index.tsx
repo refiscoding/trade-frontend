@@ -6,6 +6,8 @@ import { Stepper } from '../../components'
 import OnboardingAddress from './OnboardingAddress'
 import OnboardingUserNames from './OnboardingUserNames'
 import OnboardingCategories from './OnboardingCategories'
+import OnboardingCompanyDetails from './OnboardingCompayDetails'
+import OnbordingUserAddress from './OnboardingUserAddress'
 import { useUpdateSelfMutation, useCategoryQuery } from '../../generated/graphql'
 import { formatError } from '../../utils'
 import { useHistory } from 'react-router-dom'
@@ -14,12 +16,18 @@ import { Flex, useToast } from '@chakra-ui/core'
 import { ERROR_TOAST, mapsScriptUrl, SUCCESS_TOAST } from '../../constants'
 import { useMediaQuery } from 'react-responsive'
 import { useScript } from '../../hooks'
+import OnboardingSecondaryContact from './OnboardingSecondaryContact'
 
 const userDetailsInitialValues = {
+  accountType: '',
   firstName: '',
   lastName: '',
   address: [],
-  categories: []
+  categories: [],
+  position: '',
+  workEmailAddress: '',
+  phoneNumber: '',
+  idNumber: ''
 }
 
 const Onboarding: React.FC = () => {
@@ -27,6 +35,7 @@ const Onboarding: React.FC = () => {
   const history = useHistory()
   const [active, setACtive] = React.useState(0)
   const [userDetails, setUserdetails] = React.useState(userDetailsInitialValues)
+  const [shouldShowBusinessScreen, setShouldShowBusinessScreen] = React.useState(false)
   const toast = useToast()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   useScript(mapsScriptUrl)
@@ -52,12 +61,16 @@ const Onboarding: React.FC = () => {
   })
 
   const handleUserDetails = async (details: any) => {
-    if (active <= 1) {
+    // decider to show if we should show company screens
+    details?.accountType &&
+      setShouldShowBusinessScreen(Boolean(details.accountType.includes('Business') ? true : false))
+
+    if (shouldShowBusinessScreen ? active <= 3 : active <= 1) {
       setACtive(active + 1)
     }
     setUserdetails({ ...userDetails, ...details })
 
-    if (active === 2) {
+    if (shouldShowBusinessScreen ? active === 4 : active === 2) {
       if (details.categories) {
         await updateSelf({
           variables: {
@@ -78,7 +91,17 @@ const Onboarding: React.FC = () => {
       <Flex width={isTabletOrMobile ? '100%' : '40%'} flexDirection="column" alignSelf="center">
         <Stepper activeStep={active}>
           <OnboardingUserNames handleUserDetails={handleUserDetails} />
-          <OnboardingAddress handleUserDetails={handleUserDetails} />
+          {shouldShowBusinessScreen && (
+            <OnboardingCompanyDetails handleUserDetails={handleUserDetails} />
+          )}
+          {shouldShowBusinessScreen ? (
+            <OnboardingAddress handleUserDetails={handleUserDetails} />
+          ) : (
+            <OnbordingUserAddress handleUserDetails={handleUserDetails} />
+          )}
+          {shouldShowBusinessScreen && (
+            <OnboardingSecondaryContact handleUserDetails={handleUserDetails} />
+          )}
           <OnboardingCategories categories={categories} handleUserDetails={handleUserDetails} />
         </Stepper>
       </Flex>
