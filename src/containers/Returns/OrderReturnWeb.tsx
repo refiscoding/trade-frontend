@@ -59,6 +59,8 @@ const OrderReturnProduct: React.FC<OrderReturnProductProps> = ({
       setProductToReturn(product)
     }
   }
+
+  console.log(`Product to return:`, product)
   return (
     <Flex
       mt={3}

@@ -1,6 +1,7 @@
 # import '/fragments/uploadFile.graphql'
 # import '/fragments/business.graphql'
 # import '/fragments/category.graphql'
+# import '/fragments/return.graphql'
 fragment product on Product {
     id
     name
@@ -36,6 +37,9 @@ fragment product on Product {
     }
     productImages {
         ...uploadFile
+    }
+    return_request {
+        ...return
     }
     created_at
 }
