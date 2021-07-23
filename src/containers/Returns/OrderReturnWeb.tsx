@@ -52,15 +52,16 @@ const OrderReturnProduct: React.FC<OrderReturnProductProps> = ({
   const maxSellCost = get(product, 'maxSellCost') as number
   const tradeFedCost = get(product, 'tradeFedCost') as number
 
+  const hasReturnRequest = product?.return_request
+
   const discount = Math.round(((maxSellCost - tradeFedCost) / maxSellCost) * 100)
 
   const handleProductClicked = () => {
-    if (setProductToReturn) {
+    if (setProductToReturn && !hasReturnRequest) {
       setProductToReturn(product)
     }
   }
 
-  console.log(`Product to return:`, product)
   return (
     <Flex
       mt={3}
@@ -69,7 +70,7 @@ const OrderReturnProduct: React.FC<OrderReturnProductProps> = ({
       position="relative"
       onClick={handleProductClicked}
       justifyContent="space-between"
-      cursor={refundable ? 'pointer' : 'not-allowed'}
+      cursor={refundable && !hasReturnRequest ? 'pointer' : 'not-allowed'}
       background={`${productToReturn === product?.id ? theme.colors.background : ''}`}
     >
       <Flex
@@ -110,15 +111,38 @@ const OrderReturnProduct: React.FC<OrderReturnProductProps> = ({
           ) : null}
         </Flex>
         <Flex width={`100%`} ml={'-2rem'} flexDirection="column">
-          <Text my={2} color={`${refundable ? '' : '#acacac'}`} fontSize="14px" fontWeight={600}>
-            {product?.name}
-          </Text>
+          <Flex justify="space-between">
+            <Text my={2} color={`${refundable ? '' : '#acacac'}`} fontSize="14px" fontWeight={600}>
+              {product?.name}
+            </Text>
+            {hasReturnRequest && (
+              <Flex mr={2}>
+                <Tag
+                  fontSize={12}
+                  mt={3}
+                  size="sm"
+                  justifySelf="start"
+                  background={theme.colors.tag}
+                  color={theme.colors.tagText}
+                >
+                  REQUESTED RETURN
+                </Tag>
+              </Flex>
+            )}
+          </Flex>
           <Text my={2} color={`${refundable ? '' : '#acacac'}`} fontSize="12px">
             {`Ordered: ${dayjs(orderDate).format('DD/MM/YYYY')} (${dayjs(orderDate).fromNow()})`}
           </Text>
-          <Text color={`${refundable ? '' : '#acacac'}`} fontSize="12px">
-            {`${product?.currency} ${product?.tradeFedCost}.00`}
-          </Text>
+          <Flex justify="space-between">
+            <Text color={`${refundable ? '' : '#acacac'}`} fontSize="12px">
+              {`${product?.currency} ${product?.tradeFedCost}.00`}
+            </Text>
+            {hasReturnRequest && (
+              <Flex mr={2}>
+                <Text fontSize={12}>Item has an active return request</Text>
+              </Flex>
+            )}
+          </Flex>
         </Flex>
       </Flex>
     </Flex>
