@@ -232,19 +232,21 @@ const CartPage: React.FC = () => {
           />
           <Flex width={isTabletOrMobile ? '100%' : '80%'} justifyContent="space-between">
             <Flex width="100%" flexDirection="column">
-              {productsOnly?.map((product: Product) => (
-                <ProductCard
-                  width={'100%'}
-                  key={`${product?.id}-${Math.random()}`}
-                  isWishlist={false}
-                  isCart
-                  product={product}
-                  products={products}
-                  handleClick={editing ? handleCartProductClickedEditing : navigateToProduct}
-                  editing={editing || false}
-                  handleIconClick={handleCartProductClickedNormal}
-                />
-              ))}
+              {productsOnly
+                ?.sort((a: Product, b: Product) => parseInt(a.id) - parseInt(b.id))
+                .map((product: Product) => (
+                  <ProductCard
+                    width={'100%'}
+                    key={`${product?.id}`}
+                    isWishlist={false}
+                    isCart
+                    product={product}
+                    products={products}
+                    handleClick={editing ? handleCartProductClickedEditing : navigateToProduct}
+                    editing={editing || false}
+                    handleIconClick={handleCartProductClickedNormal}
+                  />
+                ))}
             </Flex>
             {!isTabletOrMobile && (
               <Flex
