@@ -1,10 +1,9 @@
-import { Button, Flex, Image } from '@chakra-ui/core'
+import { Button, Flex } from '@chakra-ui/core'
 import { Form, Formik, FormikProps } from 'formik'
 import * as React from 'react'
 import * as Yup from 'yup'
 import { MotionFlex } from '../../components'
-import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
-import { images } from '../../theme'
+import { ConnectedFormGroup } from '../../components/FormElements'
 import { H3, Text } from '../../typography'
 import { formatError } from '../../utils'
 
