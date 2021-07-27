@@ -148,6 +148,7 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
           {cart && hasProducts && isAuthenticated && (
             <Flex
               backgroundColor={theme.colors.brand[500]}
+              cursor="pointer"
               height="25px"
               width="25px"
               color={theme.colors.accent[50]}
