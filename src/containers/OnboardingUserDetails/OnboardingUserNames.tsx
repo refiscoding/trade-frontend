@@ -1,8 +1,6 @@
 import { Button, Flex, Image } from '@chakra-ui/core'
 import { Form, Formik, FormikProps } from 'formik'
 import * as React from 'react'
-import { position } from 'styled-system'
-import * as Yup from 'yup'
 import { MotionFlex } from '../../components'
 import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
 import { images } from '../../theme'
@@ -12,16 +10,6 @@ import { formatError } from '../../utils'
 type NameProps = {
   handleUserDetails: (details: any) => void
 }
-
-const NameFormValidation = Yup.object().shape({
-  accountType: Yup.string().required('Account type is required'),
-  firstName: Yup.string().required('An first name is required'),
-  lastName: Yup.string().required('A last name is required'),
-  position: Yup.string().required('please selects'),
-  workEmailAddress: Yup.string().required('A work email address is required'),
-  phoneNumber: Yup.string().required('A phone number is required'),
-  idNumber: Yup.string().required('Please provide identification number').max(13).min(1)
-})
 
 type NameValues = {
   firstName: string
@@ -60,7 +48,6 @@ const UserDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
         <Image width="60%" src={images['OnboardingDetails']} />
       </Flex>
       <Formik
-        // validationSchema={NameFormValidation}
         initialValues={{
           accountType: 'Invidivual',
           firstName: '',
