@@ -19,7 +19,6 @@ import { useScript } from '../../hooks'
 import OnboardingSecondaryContact from './OnboardingSecondaryContact'
 
 const userDetailsInitialValues = {
-  accountType: '',
   firstName: '',
   lastName: '',
   address: [],
