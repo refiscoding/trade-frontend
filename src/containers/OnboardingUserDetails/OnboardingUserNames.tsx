@@ -49,7 +49,6 @@ const UserDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       </Flex>
       <Formik
         initialValues={{
-          accountType: 'Invidivual',
           firstName: '',
           lastName: '',
           position: 'CEO',
@@ -65,7 +64,6 @@ const UserDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
           try {
             setSubmitting(true)
             handleUserDetails({
-              accountType: currentAccountType,
               firstName,
               lastName,
               isBusiness: Boolean(currentAccountType.includes('Business') ? true : false),
