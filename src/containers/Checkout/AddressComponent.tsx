@@ -142,7 +142,9 @@ const AddressComponent: React.FC<AddressComponentProps> = ({
             type="radio"
             name="address"
             value={address?.address || ''}
-            onChange={(event) => handleAddressSelected(event?.target?.value, event?.target?.checked)}
+            onChange={(event) =>
+              handleAddressSelected(event?.target?.value, event?.target?.checked)
+            }
           />
         </Flex>
       )}

@@ -7,4 +7,5 @@ fragment address on ComponentLocationAddress {
   lat
   lng
   type
+  complex
 }

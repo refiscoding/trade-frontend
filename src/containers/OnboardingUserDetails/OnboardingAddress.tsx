@@ -47,8 +47,9 @@ type SelectedSuggestion = {
 
 const morphAddressString = (addressString: string) => {
   const locationDetails = addressString?.split(',')
+
   const selectedLocation = {
-    street: locationDetails[0],
+    street: locationDetails[0].split('-')[0].trim(),
     surburb: locationDetails[1] && locationDetails[1]?.trim(),
     cityOrTown: locationDetails[2] && locationDetails[2]?.trim()
   }
@@ -65,9 +66,10 @@ const UserDetails: React.FC<AddressProps> = ({
   const addressObject = editItem && morphAddressString(addressString)
 
   const initialValues = {
-    complex: '',
+    complex: editItem?.complex || '',
     suburb: addressObject?.surburb || '',
     city: addressObject?.cityOrTown || '',
+    address: addressObject?.street || '',
     postalCode: editItem?.postalCode || '',
     lat: editItem?.lat || 0,
     lng: editItem?.lng || 0,
@@ -152,7 +154,8 @@ const UserDetails: React.FC<AddressProps> = ({
         lng: defaultValues.lng,
         lat: defaultValues.lat,
         type: defaultValues.type,
-        name
+        name,
+        complex
       }
     })
   }
