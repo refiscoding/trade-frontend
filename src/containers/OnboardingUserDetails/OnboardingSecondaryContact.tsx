@@ -38,7 +38,7 @@ const OnboardingSecondaryContact: React.FC<NameProps> = ({ handleUserDetails }) 
       <Formik
         validationSchema={NameFormValidation}
         initialValues={{
-        accountType: 'Individual',
+          accountType: 'Individual',
           secondaryContactName: '',
           secondaryContactSurname: '',
           secondaryContactPhoneNumber: '',
