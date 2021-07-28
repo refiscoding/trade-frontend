@@ -31,10 +31,38 @@ const ActiveProgressCard: React.FC<ActiveProgressCardProps> = ({ activeProductsC
 
   const cts: string[] = []
   const vls: number[] = []
+  const annoationStyles = {
+    fillColor: '#9fcdff',
+    label: {
+      text: 'High Mover'
+    }
+  }
+
+  const offsetX = isTabletOrMobile ? 0 : -20
+  const horizontal = isTabletOrMobile ? false : true
+  const annotations = isTabletOrMobile
+    ? {
+        yaxis: [
+          {
+            y: 80,
+            y2: 100,
+            ...annoationStyles
+          }
+        ]
+      }
+    : {
+        xaxis: [
+          {
+            x: 80,
+            x2: 100,
+            ...annoationStyles
+          }
+        ]
+      }
 
   const categories = items
     .map((item: Record<string, any>) => {
-      return [...cts, Object.keys(item)[0]]
+      return [...cts, `${Object.keys(item)[0].slice(0, 11)}..`]
     })
     .flat()
 
@@ -50,27 +78,22 @@ const ActiveProgressCard: React.FC<ActiveProgressCardProps> = ({ activeProductsC
     },
     plotOptions: {
       bar: {
-        horizontal: true,
+        horizontal,
         dataLabels: {
           position: 'top'
         }
       }
     },
     xaxis: {
-      categories
+      categories,
+      min: 0,
+      max: 100
     },
-    annotations: {
-      xaxis: [
-        {
-          x: 80,
-          x2: 100,
-          fillColor: '#9fcdff',
-          label: {
-            text: 'High Mover'
-          }
-        }
-      ]
+    yaxis: {
+      min: 0,
+      max: 100
     },
+    annotations,
     fill: {
       colors: [`${theme.colors.greenFill}`]
     },
@@ -79,7 +102,7 @@ const ActiveProgressCard: React.FC<ActiveProgressCardProps> = ({ activeProductsC
       formatter: (val: number) => {
         return !(val === 10) ? `${val}% Sold` : ``
       },
-      offsetX: -20
+      offsetX
     }
   }
   const series = [

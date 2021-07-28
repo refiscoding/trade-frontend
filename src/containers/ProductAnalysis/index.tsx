@@ -169,7 +169,7 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
                     <Text fontSize={`12px`} fontWeight={550}>
                       Sold:{' '}
                     </Text>
-                    <Text fontSize={`12px`} ml={2} color={textColor}>
+                    <Text fontSize={`12px`} ml={2} color={textColor} fontWeight={600}>
                       {`${sold >= 100 ? `Sold Out` : `${sold}%`}`}
                     </Text>
                   </Flex>
@@ -231,12 +231,7 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
             <Flex ml={3}>Product Management</Flex>
           </Flex>
           <Flex mt={3} height="250px" width={`100%`} position="relative">
-            <Image
-              borderRadius={3}
-              width="100%"
-              height="100%"
-              src={'/uploads/yuvraj_singh_Rjj_Emr24h_M_unsplash_f91dc39bca.jpg'}
-            />
+            <Image borderRadius={3} width="100%" height="100%" src={productCover || ''} />
             {discount ? (
               <Flex
                 alignItems="center"
@@ -274,7 +269,7 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
               </Text>
               <Flex p={2} background={theme.colors.background} borderRadius={3}>
                 <Clock />
-                <Text ml={3}>12/09/21</Text>
+                <Text ml={3}>{`${dayjs(productItem?.created_at).format('DD/MM/YYYY')}`}</Text>
               </Flex>
             </Flex>
             <Flex width={`100%`} flexDirection="column">
@@ -282,24 +277,24 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
                 <Text fontSize={`12px`} fontWeight={550}>
                   Sold:{' '}
                 </Text>
-                <Text fontSize={`12px`} ml={2}>
-                  80%
+                <Text fontSize={`12px`} ml={2} color={textColor}>
+                  {`${sold >= 100 ? `Sold Out` : `${sold}%`}`}
                 </Text>
               </Flex>
               <Flex alignItems="center" height="20px">
                 <Text fontSize={`12px`} fontWeight={550}>
                   Listed On:{' '}
                 </Text>
-                <Text fontSize={`12px`} ml={2}>
-                  2 days ago
-                </Text>
+                <Text fontSize={`12px`} ml={2}>{`${dayjs(
+                  productItem?.created_at
+                ).fromNow()}`}</Text>
               </Flex>
               <Flex alignItems="center" height="20px">
                 <Text fontSize={`12px`} fontWeight={550}>
                   Units Sold:{' '}
                 </Text>
                 <Text fontSize={`12px`} ml={2}>
-                  120
+                {`${count}`}
                 </Text>
               </Flex>
               <Flex alignItems="center" height="20px">
@@ -307,7 +302,7 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
                   Units Left:{' '}
                 </Text>
                 <Text fontSize={`12px`} ml={2}>
-                  12
+                  {`${remaining}`}
                 </Text>
               </Flex>
               <Flex
@@ -319,7 +314,7 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
                 cursor="pointer"
               >
                 <Text fontSize={`12px`} fontWeight={550}>
-                  R 2000.00
+                  {`${productItem?.currency} ${productItem?.tradeFedCost}.00`}
                 </Text>
                 <Text
                   mr={3}
@@ -348,7 +343,7 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
               </Text>
             </Flex>
             <Flex>
-              <TotalUnits totalUnitsChartData={'{}'} />
+              <TotalUnits totalUnitsChartData={productStats} />
             </Flex>
           </Flex>
         </Flex>
