@@ -1,3 +1,10 @@
+## [1.9.1](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.9.0...v1.9.1) (2021-07-28)
+
+
+### Bug Fixes
+
+* **signup:** fix missing data on submit user ([0340cac](http://bitbucket.org/sovtech/tradefed-frontend/commits/0340cacf2a978bbe8fe4241ca02dbfb9c2e437fd))
+
 # [1.9.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.8.0...v1.9.0) (2021-07-28)
 
 
