@@ -144,7 +144,7 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
             <SearchBar handleFilter={handleFilter} handleSearch={() => {}} handleReset={() => {}} />
           </Flex>
         </Flex>
-        <Flex flexDirection="column" mr={5}>
+        <Flex flexDirection="column" cursor="pointer" mr={5}>
           {cart && hasProducts && isAuthenticated && (
             <Flex
               backgroundColor={theme.colors.brand[500]}
