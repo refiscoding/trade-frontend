@@ -1,3 +1,10 @@
+# [1.9.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.8.0...v1.9.0) (2021-07-28)
+
+
+### Features
+
+* **register:** add screens on sign up flow ([c23fdb6](http://bitbucket.org/sovtech/tradefed-frontend/commits/c23fdb6195496c6f095cc3e390178d36f82d38f1))
+
 # [1.8.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.7.1...v1.8.0) (2021-07-22)
 
 
