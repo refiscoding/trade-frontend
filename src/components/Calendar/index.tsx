@@ -28,7 +28,9 @@ const CalendarComponent: React.FC<CalendarComponentProps> = ({ setSelectedDelive
     }
     return ''
   }
-  return <Calendar tileClassName={setTileClassName} onChange={handleDateChanged} />
+  return (
+    <Calendar tileClassName={setTileClassName} onChange={handleDateChanged} minDate={new Date()} />
+  )
 }
 
 export default CalendarComponent
