@@ -13,9 +13,6 @@ const PersonalDetailsComponent: React.FC<ProfileProps> = ({ user }) => {
   const isWebViewport = useMediaQuery({
     query: '(min-width: 40em)'
   })
-
-  console.log("user :", user)
-
   const styles = {
     width: isWebViewport ? '40%' : '100%',
     justifySelf: isWebViewport ? 'center' : ''
