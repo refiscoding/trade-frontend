@@ -13,7 +13,6 @@ const PersonalDetailsComponent: React.FC<ProfileProps> = ({ user }) => {
   const isWebViewport = useMediaQuery({
     query: '(min-width: 40em)'
   })
-
   const styles = {
     width: isWebViewport ? '40%' : '100%',
     justifySelf: isWebViewport ? 'center' : ''
@@ -85,7 +84,11 @@ const PersonalDetailsComponent: React.FC<ProfileProps> = ({ user }) => {
           </Text>
         </Flex>
         <Flex width="70%" pl={5} pb={2} borderBottom="1px solid" borderColor="brand.50">
-          <Text fontSize={12}>{`+27${user?.phoneNumber}`}</Text>
+          {
+            user?.phoneNumber === "" ?
+            <Text fontSize={12}> - </Text> :
+            <Text fontSize={12}>{`+27${user?.phoneNumber}`}</Text>
+          }
         </Flex>
       </Flex>
       <Flex width="100%" alignItems="center">
@@ -95,7 +98,10 @@ const PersonalDetailsComponent: React.FC<ProfileProps> = ({ user }) => {
           </Text>
         </Flex>
         <Flex width="70%" pl={5} pb={2} borderBottom="1px solid" borderColor="brand.50">
-          <Text fontSize={12}>{user?.idNumber}</Text>
+          { 
+            user?.idNumber === "" ?
+            <Text fontSize={12}> - </Text> :
+            <Text fontSize={12}>{user?.idNumber}</Text>}
         </Flex>
       </Flex>
       {/* <Flex mt={2} width="100%" alignItems="center">
