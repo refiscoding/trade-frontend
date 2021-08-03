@@ -3,7 +3,7 @@ import * as React from 'react'
 import { useState } from 'react'
 import { Form, Formik, FormikProps } from 'formik'
 import { Button, Flex, useToast, Image } from '@chakra-ui/core'
-import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete'
+import usePlacesAutocomplete, { getGeocode, getLatLng, getZipCode } from 'use-places-autocomplete'
 
 import { formatError } from '../../utils'
 import { images } from '../../theme'
@@ -116,6 +116,28 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
           suburb: selectedLocation?.surburb,
           city: selectedLocation?.cityOrTown
         })
+      })
+      .catch((error) => {
+        toast({
+          description: 'Something went wrong while updating your address',
+          ...ERROR_TOAST
+        })
+      })
+
+    getGeocode({
+      address: description
+    })
+      .then((zipResults) => getZipCode(zipResults[0], false))
+      .then((zipCode) => {
+        if(zipCode) {
+          setFieldValue('postalCode', zipCode)
+          setDefaultValues({
+            ...defaultValues,
+            postalCode: zipCode
+          })
+        } else {
+          setFieldValue('postalCode', '-')
+        }
       })
       .catch((error) => {
         toast({
