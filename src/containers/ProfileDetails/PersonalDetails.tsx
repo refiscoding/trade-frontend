@@ -84,11 +84,11 @@ const PersonalDetailsComponent: React.FC<ProfileProps> = ({ user }) => {
           </Text>
         </Flex>
         <Flex width="70%" pl={5} pb={2} borderBottom="1px solid" borderColor="brand.50">
-          {
-            user?.phoneNumber === "" ?
-            <Text fontSize={12}> - </Text> :
+          {user?.phoneNumber === '' ? (
+            <Text fontSize={12}> - </Text>
+          ) : (
             <Text fontSize={12}>{`+27${user?.phoneNumber}`}</Text>
-          }
+          )}
         </Flex>
       </Flex>
       <Flex width="100%" alignItems="center">
@@ -98,10 +98,11 @@ const PersonalDetailsComponent: React.FC<ProfileProps> = ({ user }) => {
           </Text>
         </Flex>
         <Flex width="70%" pl={5} pb={2} borderBottom="1px solid" borderColor="brand.50">
-          { 
-            user?.idNumber === "" ?
-            <Text fontSize={12}> - </Text> :
-            <Text fontSize={12}>{user?.idNumber}</Text>}
+          {user?.idNumber === '' ? (
+            <Text fontSize={12}> - </Text>
+          ) : (
+            <Text fontSize={12}>{user?.idNumber}</Text>
+          )}
         </Flex>
       </Flex>
       {/* <Flex mt={2} width="100%" alignItems="center">
@@ -123,11 +124,15 @@ const PersonalDetailsComponent: React.FC<ProfileProps> = ({ user }) => {
           </Text>
         </Flex>
         <Flex width="70%" pl={5} pb={2} flexDirection="column">
-          {user?.categories?.map((category) => (
-            <Text key={category?.id} fontSize={12}>
-              {category?.name}
-            </Text>
-          ))}
+          {user?.categories?.length === 0 ? (
+            <Text fontSize={12}> - </Text>
+          ) : (
+            user?.categories?.map((category) => (
+              <Text key={category?.id} fontSize={12}>
+                {category?.name}
+              </Text>
+            ))
+          )}
         </Flex>
       </Flex>
     </Flex>

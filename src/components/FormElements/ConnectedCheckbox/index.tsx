@@ -7,11 +7,12 @@ import { LabelProps } from '../styles'
 export type ConnectedCheckboxProps = LabelProps &
   CheckboxProps & {
     reverse?: boolean
+    checked?: boolean
     label?: string
     name: string
   }
 
-const ConnectedCheckbox: React.FC<ConnectedCheckboxProps> = ({ reverse, label, ...rest }) => {
+const ConnectedCheckbox: React.FC<ConnectedCheckboxProps> = ({ reverse, label, checked, ...rest }) => {
   const [field, meta] = useField(rest.name)
 
   return (
@@ -28,6 +29,7 @@ const ConnectedCheckbox: React.FC<ConnectedCheckboxProps> = ({ reverse, label, .
         <Checkbox
           flexDirection={reverse ? 'row-reverse' : 'initial'}
           justifyContent="space-between"
+          defaultIsChecked={checked}
           {...field}
           id={field.name}
           {...rest}

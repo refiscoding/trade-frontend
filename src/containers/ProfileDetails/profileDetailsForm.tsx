@@ -47,6 +47,13 @@ const ProfileDetailForm: React.FC<formProps> = ({
     width: isWebViewport ? '35%' : '100%',
     justifySelf: isWebViewport ? 'center' : ''
   }
+  
+  const isInUserCategory = (categoryId: string) => {
+    if (!initialValues?.categories?.length) {
+      return false;
+    }
+    return initialValues.categories.some((id: string) => id === categoryId)
+  }
 
   return (
     <Flex flexDirection="column" width={styles.width} alignSelf={styles.justifySelf}>
@@ -79,7 +86,13 @@ const ProfileDetailForm: React.FC<formProps> = ({
             {/* <ConnectedFormGroup label="Your Address?" name="address" type="text" /> */}
             <Text my={3}>Your Interests?</Text>
             {categories?.map((item: any, i: number) => (
-              <ConnectedCheckbox key={i} name="categories" label={item.name} value={item.id} />
+              <ConnectedCheckbox
+                key={i}
+                name="categories"
+                checked={isInUserCategory(item.id)}
+                label={item.name}
+                value={item.id}
+              />
             ))}
             <Button my={4} width="100%" type="submit" variantColor="brand" isLoading={isSubmitting}>
               SAVE
