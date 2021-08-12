@@ -11,6 +11,7 @@ export interface PrivateRouteObject extends RouteProps {
 
 const AboutUs = lazy(() => import('../containers/AboutUs'))
 const AddressBook = lazy(() => import('../containers/AddressBook'))
+const BusinessOrders = lazy(() => import('../containers/BusinessOrders'))
 const Cart = lazy(() => import('../containers/Cart'))
 const CategoryView = lazy(() => import('../containers/CategoryView'))
 const Checkout = lazy(() => import('../containers/Checkout'))
@@ -133,6 +134,13 @@ const PRIVATE_ROUTES: PrivateRouteObject[] = [
     breadcrumb: 'My Wishlist',
     component: Wishlist,
     title: 'My Wishlist'
+  },
+  {
+    exact: false,
+    path: '/business-orders',
+    breadcrumb: 'My Business Orders',
+    component: BusinessOrders,
+    title: 'My Business Orders'
   },
   {
     exact: false,

@@ -1,14 +1,15 @@
 import {
   Bell,
   Briefcase,
+  Clipboard,
   HelpCircle,
   Home,
   Lock,
+  LogOut,
   Star,
   User,
+  UserPlus,
   Users,
-  LogOut,
-  UserPlus
 } from 'react-feather'
 import React from 'react'
 
@@ -34,6 +35,11 @@ export const NAV_ITEMS: NavItem[] = [
     to: `/wishlist`,
     title: 'My Wish List',
     Icon: Star
+  },
+  {
+    to: `/business-orders`,
+    title: 'My Business Orders',
+    Icon: Clipboard
   },
   {
     to: `/profile`,
