@@ -116,7 +116,7 @@ const UserSupport: React.FC<UserSupportProps> = () => {
             How can we help you?
           </H5>
           <Text color={theme.colors.dimText} textAlign="center" fontSize={14}>
-            Please check out our Frequetnly Asked Questions (FAQs) below or click on the help icon
+            Please check out our Frequently Asked Questions (FAQs) below or click on the help icon
             for live chat
           </Text>
           <Grid gridTemplateRows="50px 50px 50px">

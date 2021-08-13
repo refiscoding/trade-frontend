@@ -97,7 +97,7 @@ const BusinessOrdersPage: React.FC = () => {
         alignItems="center"
       >
         <BusinessOrdersPageHeader isTabletOrMobile={isTabletOrMobile} />
-        {/* To-Do: create usable seach box */}
+        {/* To-Do: create usable search box */}
         {/* <BusinessOrdersSearchBox handleSearch={() => {}} handleReset={() => {}} /> */}
         <Formik initialValues={{ search: '' }} onSubmit={() => {}}>
           <Form style={{ width: '80%' }}>

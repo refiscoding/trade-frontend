@@ -1,18 +1,17 @@
 import * as React from 'react'
 import dayjs from 'dayjs'
-
 import { Flex, Grid, Tag, Spinner } from '@chakra-ui/core'
 
-import OrderItemsSummary from '../Orders/OrderItems'
-import OrderComponent from '../Orders/OrderComponent'
-import NoData from '../Checkout/NoDataScreen'
-import setOrderStatusAndColor from '../Orders/setOrderStatusAndColor'
-
 import { BusinessOrdersProps } from '.'
-import { theme, images } from '../../theme'
+import { images, theme } from '../../theme'
+import { Order } from '../../generated/graphql'
 import { PageWrap } from '../../layouts'
 import { Text } from '../../typography'
-import { Order } from '../../generated/graphql'
+
+import BusinessOrderComponent from './BusinessOrderComponent'
+import NoData from '../Checkout/NoDataScreen'
+import OrderItemsSummary from '../Orders/OrderItems'
+import setOrderStatusAndColor from '../Orders/setOrderStatusAndColor'
 
 const BusinessOrdersPageWeb: React.FC<BusinessOrdersProps> = ({ orders, ordersLoading }) => {
   const noOrders = !orders?.length
@@ -50,7 +49,7 @@ const BusinessOrdersPageWeb: React.FC<BusinessOrdersProps> = ({ orders, ordersLo
               boxShadow={theme.boxShadowMedium}
             >
               <Flex flexDirection="column">
-                <Flex flexDirection="column" overflowY="scroll" height={'500px'}>
+                <Flex flexDirection="column" overflow="hidden" height={'500px'}>
                   {ordersLoading && <Spinner margin="auto" />}
                   {noOrders ? (
                     <NoData
@@ -60,7 +59,7 @@ const BusinessOrdersPageWeb: React.FC<BusinessOrdersProps> = ({ orders, ordersLo
                     />
                   ) : (
                     orders?.map((order, index) => (
-                      <OrderComponent
+                      <BusinessOrderComponent
                         key={`${index}_order_entry`}
                         setSelectedOrder={setSelectedOrder}
                         order={order}
