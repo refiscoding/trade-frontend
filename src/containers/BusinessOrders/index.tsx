@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Flex, FlexProps, Text, useToast } from '@chakra-ui/core'
 import { ApolloError, ApolloQueryResult } from 'apollo-boost'
 import { get } from 'lodash'
+import { Search } from 'react-feather'
 
 import { H3 } from '../../typography'
 import { PageWrap } from '../../layouts'
@@ -16,6 +17,9 @@ import {
 import BusinessOrdersWeb from './businessOrdersWeb'
 import { ERROR_TOAST } from '../../constants'
 import { Ranges } from '../Orders/DatePickerForm'
+import { Form, Formik } from 'formik'
+import { ConnectedFormGroup } from '../../components/FormElements'
+// import BusinessOrdersSearchBox from './BusinessOrdersSearchBox'
 
 type BusinessOrdersPageProps = FlexProps & {
   isTabletOrMobile: boolean
@@ -68,7 +72,7 @@ const BusinessOrdersPage: React.FC = () => {
     variables: { ...res }
   })
   const orders = get(userOrders, 'findCheckoutOrders.payload')
-  
+
   React.useEffect(() => {
     refetchUserOrders()
     setDateRange({
@@ -78,7 +82,12 @@ const BusinessOrdersPage: React.FC = () => {
   }, [refetchUserOrders, setDateRange])
 
   return (
-    <PageWrap title="My Business Orders">
+    <PageWrap
+      title="My Business Orders"
+      color="colors.white"
+      justifyContent="space-between"
+      minHeight="100vh"
+    >
       <Flex
         ml={isTabletOrMobile ? 0 : 5}
         mt={3}
@@ -88,11 +97,32 @@ const BusinessOrdersPage: React.FC = () => {
         alignItems="center"
       >
         <BusinessOrdersPageHeader isTabletOrMobile={isTabletOrMobile} />
-        <Flex justify="space-between">
+        {/* To-Do: create usable seach box */}
+        {/* <BusinessOrdersSearchBox handleSearch={() => {}} handleReset={() => {}} /> */}
+        <Formik initialValues={{ search: '' }} onSubmit={() => {}}>
+          <Form style={{ width: '80%' }}>
+            <ConnectedFormGroup
+              icon={Search}
+              name="search"
+              placeholder="Search Orders"
+              fontSize={12}
+              paddingLeft="40px"
+              borderColor="transparent"
+              bg="accent.600"
+              iconPosition="left"
+              onChange={() => {}}
+              onReset={() => {}}
+              value=""
+              mb={0}
+            />
+          </Form>
+        </Formik>
+        <Flex justify="space-between" mb="0">
           <H3 textAlign="left" fontSize={18} fontWeight={600}>
             <NavigationHeader />
           </H3>
         </Flex>
+        <Flex width="65%" mr={4}></Flex>
       </Flex>
       <BusinessOrdersWeb
         orders={orders}

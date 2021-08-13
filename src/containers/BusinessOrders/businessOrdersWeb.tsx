@@ -38,7 +38,7 @@ const BusinessOrdersPageWeb: React.FC<BusinessOrdersProps> = ({ orders, ordersLo
   const orderStatusAndColor = setOrderStatusAndColor(selectedOrder)
 
   return (
-    <PageWrap title="Orders" alignSelf="center" width="90%" mt={20} pt={0} p={0}>
+    <PageWrap title="My Business Orders" alignSelf="center" width="90%" mt={0} pt={0} p={0}>
       <Flex width="100%">
         <Flex width="100%" flexDirection="column">
           <Grid mt={5} gridTemplateColumns="400px 1fr">
@@ -145,7 +145,6 @@ const BusinessOrdersPageWeb: React.FC<BusinessOrdersProps> = ({ orders, ordersLo
                       items={selectedOrder?.items}
                       total={selectedOrder?.orderTotal}
                     />
-
                     <Flex
                       mt={4}
                       flexDirection="column"
