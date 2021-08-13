@@ -4,11 +4,12 @@ import {
   HelpCircle,
   Home,
   Lock,
-  Star,
-  User,
-  Users,
   LogOut,
-  UserPlus
+  Star,
+  Truck,
+  User,
+  UserPlus,
+  Users,
 } from 'react-feather'
 import React from 'react'
 
@@ -34,6 +35,11 @@ export const NAV_ITEMS: NavItem[] = [
     to: `/wishlist`,
     title: 'My Wish List',
     Icon: Star
+  },
+  {
+    to: `/business-orders`,
+    title: 'Business Orders',
+    Icon: Truck
   },
   {
     to: `/profile`,

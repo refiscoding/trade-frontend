@@ -13,7 +13,7 @@ type MenuItemProps = {
   color?: string
   accentcolor?: string
   hovercolor?: string
-  hoverAccent?: string
+  hoveraccent?: string
 }
 
 const { colors } = theme
@@ -72,7 +72,7 @@ export const MenuItem = styled(MotionLink)<MenuItemProps>`
     transition: background 0.2s ease;
     background: ${(props) => get(colors, props.hovercolor || '', props.hovercolor || 'pink')};
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    border-left: 5px solid ${(props) => get(colors, props.hoverAccent || '', props.hoverAccent || 'black')};
+    border-left: 5px solid ${(props) => get(colors, props.hoveraccent || '', props.hoveraccent || 'black')};
   }
   &:hover .sidebar-tooltip {
     opacity: 1;

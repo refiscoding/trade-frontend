@@ -120,7 +120,7 @@ const SideBarItem: React.FC<SideBarItemProps> = ({
       mt={mt}
       to={to}
       color={color}
-      hoverAccent={accentColor}
+      hoveraccent={accentColor}
       variants={variants}
       hovercolor={hoverColor}
       onClick={() => {
