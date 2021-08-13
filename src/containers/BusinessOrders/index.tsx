@@ -83,7 +83,7 @@ const BusinessOrdersPage: React.FC = () => {
 
   return (
     <PageWrap
-      title="My Business Orders"
+      title="Business Orders"
       color="colors.white"
       justifyContent="space-between"
       minHeight="100vh"

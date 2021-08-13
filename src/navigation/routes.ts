@@ -138,9 +138,9 @@ const PRIVATE_ROUTES: PrivateRouteObject[] = [
   {
     exact: false,
     path: '/business-orders',
-    breadcrumb: 'My Business Orders',
+    breadcrumb: 'Business Orders',
     component: BusinessOrders,
-    title: 'My Business Orders'
+    title: 'Business Orders'
   },
   {
     exact: false,

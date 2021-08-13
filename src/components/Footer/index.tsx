@@ -29,7 +29,7 @@ const footerItems = [
     url: '/wishlist'
   },
   {
-    title: 'My Business Orders',
+    title: 'Business Orders',
     url: '/business-orders'
   },
   {

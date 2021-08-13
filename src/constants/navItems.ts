@@ -1,12 +1,12 @@
 import {
   Bell,
   Briefcase,
-  Clipboard,
   HelpCircle,
   Home,
   Lock,
   LogOut,
   Star,
+  Truck,
   User,
   UserPlus,
   Users,
@@ -38,8 +38,8 @@ export const NAV_ITEMS: NavItem[] = [
   },
   {
     to: `/business-orders`,
-    title: 'My Business Orders',
-    Icon: Clipboard
+    title: 'Business Orders',
+    Icon: Truck
   },
   {
     to: `/profile`,
