@@ -16,6 +16,7 @@ const theme = {
     blueText: '#355EC0',
     background: '#efefef',
     dimText: '#6A6A6A',
+    bodyText: '#4F4F4F',
     errorText: '#e30017',
     greenFill: '#63C035',
     brand: {

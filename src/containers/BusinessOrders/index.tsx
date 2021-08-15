@@ -19,6 +19,7 @@ import { ERROR_TOAST } from '../../constants'
 import { Ranges } from '../Orders/DatePickerForm'
 import { Form, Formik } from 'formik'
 import { ConnectedFormGroup } from '../../components/FormElements'
+import BusinessOrderConfirmation from './BusinessOrderConfirmation'
 // import BusinessOrdersSearchBox from './BusinessOrdersSearchBox'
 
 type BusinessOrdersPageProps = FlexProps & {
@@ -124,12 +125,13 @@ const BusinessOrdersPage: React.FC = () => {
         </Flex>
         <Flex width="65%" mr={4}></Flex>
       </Flex>
-      <BusinessOrdersWeb
+      <BusinessOrderConfirmation />
+      {/* <BusinessOrdersWeb
         orders={orders}
         refetchUserOrders={refetchUserOrders}
         setDateRange={setDateRange}
         ordersLoading={userOrdersLoading}
-      />
+      /> */}
     </PageWrap>
   )
 }
