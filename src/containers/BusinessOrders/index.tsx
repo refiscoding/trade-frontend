@@ -56,6 +56,7 @@ const BusinessOrdersPage: React.FC = () => {
   const toast = useToast()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   const [dateRange, setDateRange] = React.useState<Ranges>()
+  const [activeTab, setActiveTab] = React.useState('all')
 
   const res = {
     input: {
@@ -81,6 +82,24 @@ const BusinessOrdersPage: React.FC = () => {
       startDate: null
     })
   }, [refetchUserOrders, setDateRange])
+
+  const renderTabContent = (activeTab: string) => {
+    switch (activeTab) {
+      case 'all':
+        return <BusinessOrderConfirmation />
+      case 'processing':
+        return (
+          <BusinessOrdersWeb
+            orders={orders}
+            refetchUserOrders={refetchUserOrders}
+            setDateRange={setDateRange}
+            ordersLoading={userOrdersLoading}
+          />
+        )
+      default:
+        return <BusinessOrderConfirmation />
+    }
+  }
 
   return (
     <PageWrap
@@ -120,18 +139,12 @@ const BusinessOrdersPage: React.FC = () => {
         </Formik>
         <Flex justify="space-between" mb="0">
           <H3 textAlign="left" fontSize={18} fontWeight={600}>
-            <NavigationHeader />
+            <NavigationHeader setActiveTab={setActiveTab} activeTab={activeTab} />
           </H3>
         </Flex>
         <Flex width="65%" mr={4}></Flex>
       </Flex>
-      <BusinessOrderConfirmation />
-      {/* <BusinessOrdersWeb
-        orders={orders}
-        refetchUserOrders={refetchUserOrders}
-        setDateRange={setDateRange}
-        ordersLoading={userOrdersLoading}
-      /> */}
+      {renderTabContent(activeTab)}
     </PageWrap>
   )
 }

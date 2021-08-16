@@ -135,7 +135,7 @@ const BusinessOrderConfirmation: React.FC<BusinessOrderConfirmationProps> = () =
           </Flex>
           <Flex flexDirection="column" mt={3} width="100%" alignItems="center">
             <Text fontSize={12} fontWeight={700}>
-              <Link href="#" cursor="pointer">
+              <Link href="#" cursor="pointer" borderBottom={`1px solid ${theme.colors.brand[500]}`}>
                 Unfortunately not available
               </Link>
             </Text>
