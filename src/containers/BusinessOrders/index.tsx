@@ -96,6 +96,8 @@ const BusinessOrdersPage: React.FC = () => {
             ordersLoading={userOrdersLoading}
           />
         )
+      case 'confirmation':
+        return <BusinessOrderConfirmation />
       default:
         return <BusinessOrderConfirmation />
     }
@@ -108,14 +110,7 @@ const BusinessOrdersPage: React.FC = () => {
       justifyContent="space-between"
       minHeight="100vh"
     >
-      <Flex
-        ml={isTabletOrMobile ? 0 : 5}
-        mt={3}
-        alignSelf="center"
-        width={isTabletOrMobile ? '100%' : '80%'}
-        flexDirection="column"
-        alignItems="center"
-      >
+      <Flex alignSelf="center" width="80%" flexDirection="column" alignItems="center">
         <BusinessOrdersPageHeader isTabletOrMobile={isTabletOrMobile} />
         {/* To-Do: create usable search box */}
         {/* <BusinessOrdersSearchBox handleSearch={() => {}} handleReset={() => {}} /> */}

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Button, Flex, Grid, Link } from '@chakra-ui/core'
+import { Button, Flex, Link } from '@chakra-ui/core'
 
 import { H3, Text } from '../../typography'
 import { PageWrap } from '../../layouts'
@@ -75,56 +75,69 @@ const BusinessOrderConfirmation: React.FC<BusinessOrderConfirmationProps> = () =
               Contact Number: 072 838 0502
             </Text>
           </Flex>
-          <Flex width="100%" pb={4} flexDirection="column">
-            <Text fontSize={12} fontWeight={700}>
-              Order Specifics (1):
-            </Text>
-            <Flex>
+          <Flex width="100%" pb={4}>
+            <Flex flexDirection="row">
               <Text fontSize={12} fontWeight={700}>
-                Product SKU:
+                Order Specifics (1):
               </Text>
-              <Text fontSize={12} pl={2}>
-                2343223456543
-              </Text>
-            </Flex>
-            <Flex>
-              <Text fontSize={12} fontWeight={700}>
-                Quantity:
-              </Text>
-              <Text fontSize={12} pl={2}>
-                2
-              </Text>
+              <Flex flexDirection="column" pl={2}>
+                <Flex>
+                  <Text fontSize={12} fontWeight={700}>
+                    Product SKU:
+                  </Text>
+                  <Text fontSize={12} pl={2}>
+                    2343223456543
+                  </Text>
+                </Flex>
+                <Flex>
+                  <Text fontSize={12} fontWeight={700}>
+                    Quantity:
+                  </Text>
+                  <Text fontSize={12} pl={2}>
+                    2
+                  </Text>
+                </Flex>
+              </Flex>
             </Flex>
           </Flex>
-          <Flex width="100%" pb={4}>
-            <Grid gridTemplateColumns="400px 1fr">
-              <Flex flexDirection="column">
+          <Flex width="100%" pb={4} flexDirection="row">
+            <Text fontSize={12} fontWeight={700}>
+              Dimensions:
+            </Text>
+            <Flex pl={2} flexDirection="column">
+              <Flex flexDirection="row">
                 <Text fontSize={12} fontWeight={700}>
-                  (H)
+                  Height:
                 </Text>
                 <Text fontSize={12} pl={2}>
                   23cm
                 </Text>
+              </Flex>
+              <Flex flexDirection="row">
                 <Text fontSize={12} fontWeight={700}>
-                  (W)
+                  Width:
                 </Text>
                 <Text fontSize={12} pl={2}>
                   225cm
                 </Text>
+              </Flex>
+              <Flex flexDirection="row">
                 <Text fontSize={12} fontWeight={700}>
-                  (L)
+                  Length:
                 </Text>
                 <Text fontSize={12} pl={2}>
                   290cm
                 </Text>
+              </Flex>
+              <Flex flexDirection="row">
                 <Text fontSize={12} fontWeight={700}>
-                  Weight
+                  Weight:
                 </Text>
                 <Text fontSize={12} pl={2}>
                   19kg
                 </Text>
               </Flex>
-            </Grid>
+            </Flex>
           </Flex>
         </Flex>
         <Flex justify="space-between" flexDirection="column" alignItems="center">
