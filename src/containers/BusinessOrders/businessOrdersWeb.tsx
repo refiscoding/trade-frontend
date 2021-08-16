@@ -6,7 +6,7 @@ import { BusinessOrdersProps } from '.'
 import { images, theme } from '../../theme'
 import { Order } from '../../generated/graphql'
 import { PageWrap } from '../../layouts'
-import { Text } from '../../typography'
+import { H3, Text } from '../../typography'
 
 import BusinessOrderComponent from './BusinessOrderComponent'
 import NoData from '../Checkout/NoDataScreen'
@@ -38,9 +38,12 @@ const BusinessOrdersPageWeb: React.FC<BusinessOrdersProps> = ({ orders, ordersLo
 
   return (
     <PageWrap title="Business Orders" alignSelf="center" width="90%" mt={0} pt={0} p={0}>
-      <Flex width="100%">
+      <H3 textAlign="left" fontSize={14} fontWeight={700}>
+        Orders In Process
+      </H3>
+      <Flex width="100%" mt={2}>
         <Flex width="100%" flexDirection="column">
-          <Grid mt={5} gridTemplateColumns="400px 1fr">
+          <Grid gridTemplateColumns="400px 1fr">
             <Flex
               p={4}
               mr={5}
@@ -71,7 +74,6 @@ const BusinessOrdersPageWeb: React.FC<BusinessOrdersProps> = ({ orders, ordersLo
             </Flex>
             <Flex
               p={4}
-              mr={5}
               borderRadius={5}
               background={theme.colors.accent[50]}
               boxShadow={theme.boxShadowMedium}
