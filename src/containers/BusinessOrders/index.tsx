@@ -21,6 +21,7 @@ import { Form, Formik } from 'formik'
 import { ConnectedFormGroup } from '../../components/FormElements'
 import BusinessOrderConfirmation from './BusinessOrderConfirmation'
 import ReadyForDispatch from './ReadyForDispatch'
+import DispatchedBusinessOrder from './DispatchedBusinessOrder'
 // import BusinessOrdersSearchBox from './BusinessOrdersSearchBox'
 
 type BusinessOrdersPageProps = FlexProps & {
@@ -96,6 +97,18 @@ const BusinessOrdersPage: React.FC = () => {
               ordersLoading={userOrdersLoading}
             />
             <BusinessOrderConfirmation />
+            <ReadyForDispatch
+              orders={orders}
+              refetchUserOrders={refetchUserOrders}
+              setDateRange={setDateRange}
+              ordersLoading={userOrdersLoading}
+            />
+            <DispatchedBusinessOrder
+              orders={orders}
+              refetchUserOrders={refetchUserOrders}
+              setDateRange={setDateRange}
+              ordersLoading={userOrdersLoading}
+            />
           </Flex>
         )
       case 'processing':
@@ -112,6 +125,15 @@ const BusinessOrdersPage: React.FC = () => {
       case 'ready':
         return (
           <ReadyForDispatch
+            orders={orders}
+            refetchUserOrders={refetchUserOrders}
+            setDateRange={setDateRange}
+            ordersLoading={userOrdersLoading}
+          />
+        )
+      case 'dispatched':
+        return (
+          <DispatchedBusinessOrder
             orders={orders}
             refetchUserOrders={refetchUserOrders}
             setDateRange={setDateRange}
