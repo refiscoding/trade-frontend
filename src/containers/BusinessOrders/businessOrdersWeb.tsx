@@ -18,6 +18,8 @@ const BusinessOrdersPageWeb: React.FC<BusinessOrdersProps> = ({ orders, ordersLo
 
   const [selectedOrder, setSelectedOrder] = React.useState<Order | undefined>()
 
+  const confirmationText = 'Before we pickup, just a gentle reminder that you need a label. '
+
   const noOrdersNoOrderClickedMessage =
     'If you had orders, you would select one on the left and view its details here. For now, shop for products'
   const noOrdersHeader = 'Shop for products'
@@ -66,6 +68,7 @@ const BusinessOrdersPageWeb: React.FC<BusinessOrdersProps> = ({ orders, ordersLo
                         key={`${index}_order_entry`}
                         setSelectedOrder={setSelectedOrder}
                         order={order}
+                        confirmationText={confirmationText}
                       />
                     ))
                   )}
