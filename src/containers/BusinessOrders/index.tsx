@@ -20,6 +20,8 @@ import { Ranges } from '../Orders/DatePickerForm'
 import { Form, Formik } from 'formik'
 import { ConnectedFormGroup } from '../../components/FormElements'
 import BusinessOrderConfirmation from './BusinessOrderConfirmation'
+import ReadyForDispatch from './ReadyForDispatch'
+import DispatchedBusinessOrder from './DispatchedBusinessOrder'
 // import BusinessOrdersSearchBox from './BusinessOrdersSearchBox'
 
 type BusinessOrdersPageProps = FlexProps & {
@@ -86,7 +88,29 @@ const BusinessOrdersPage: React.FC = () => {
   const renderTabContent = (activeTab: string) => {
     switch (activeTab) {
       case 'all':
-        return <BusinessOrderConfirmation />
+        return (
+          <Flex flexDirection="column" width="90%">
+            <BusinessOrdersWeb
+              orders={orders}
+              refetchUserOrders={refetchUserOrders}
+              setDateRange={setDateRange}
+              ordersLoading={userOrdersLoading}
+            />
+            <BusinessOrderConfirmation />
+            <ReadyForDispatch
+              orders={orders}
+              refetchUserOrders={refetchUserOrders}
+              setDateRange={setDateRange}
+              ordersLoading={userOrdersLoading}
+            />
+            <DispatchedBusinessOrder
+              orders={orders}
+              refetchUserOrders={refetchUserOrders}
+              setDateRange={setDateRange}
+              ordersLoading={userOrdersLoading}
+            />
+          </Flex>
+        )
       case 'processing':
         return (
           <BusinessOrdersWeb
@@ -98,18 +122,31 @@ const BusinessOrdersPage: React.FC = () => {
         )
       case 'confirmation':
         return <BusinessOrderConfirmation />
+      case 'ready':
+        return (
+          <ReadyForDispatch
+            orders={orders}
+            refetchUserOrders={refetchUserOrders}
+            setDateRange={setDateRange}
+            ordersLoading={userOrdersLoading}
+          />
+        )
+      case 'dispatched':
+        return (
+          <DispatchedBusinessOrder
+            orders={orders}
+            refetchUserOrders={refetchUserOrders}
+            setDateRange={setDateRange}
+            ordersLoading={userOrdersLoading}
+          />
+        )
       default:
         return <BusinessOrderConfirmation />
     }
   }
 
   return (
-    <PageWrap
-      title="Business Orders"
-      color="colors.white"
-      justifyContent="space-between"
-      minHeight="100vh"
-    >
+    <PageWrap title="Business Orders" color="colors.white" justifyContent="space-between">
       <Flex alignSelf="center" width="80%" flexDirection="column" alignItems="center">
         <BusinessOrdersPageHeader isTabletOrMobile={isTabletOrMobile} />
         {/* To-Do: create usable search box */}
