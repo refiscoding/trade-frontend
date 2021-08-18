@@ -1,16 +1,12 @@
 import * as React from 'react'
 import * as Yup from 'yup'
-import { get } from 'lodash'
-import { useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 
-import { Button, Flex, useToast, Image } from '@chakra-ui/core'
-import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
+import { Button, Flex } from '@chakra-ui/core'
 import { Form, Formik, FormikProps } from 'formik'
 import { formatError } from '../../utils'
 import { H3, Text } from '../../typography'
-import { images, theme } from '../../theme'
+import { theme } from '../../theme'
 import { MotionFlex } from '../../components'
 import { PageWrap } from '../../layouts'
 
@@ -99,28 +95,27 @@ const initialValues = {
 }
 
 const GenerateLabel: React.FC = () => {
-  const history = useHistory()
-  const toast = useToast()
+  
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   const autofillDetails = {
     ...initialValues
   }
   const handleSubmit = async (values: GenerateLabelValues) => {
-    const {
-      senderCompanyName,
-      senderAddress,
-      senderNumber,
-      receiverName,
-      receiverAddress,
-      receiverNumber,
-      date,
-      orderNumber,
-      parcelNumber,
-      weight,
-      height,
-      length,
-      width
-    } = values
+    // const {
+    //   senderCompanyName,
+    //   senderAddress,
+    //   senderNumber,
+    //   receiverName,
+    //   receiverAddress,
+    //   receiverNumber,
+    //   date,
+    //   orderNumber,
+    //   parcelNumber,
+    //   weight,
+    //   height,
+    //   length,
+    //   width
+    // } = values
   }
 
   return (
