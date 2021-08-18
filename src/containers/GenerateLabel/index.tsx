@@ -1,18 +1,26 @@
 import * as React from 'react'
 import * as Yup from 'yup'
+import styled from '@emotion/styled'
 import { useMediaQuery } from 'react-responsive'
+import { useReactToPrint } from 'react-to-print'
+import { useRef } from 'react'
 
 import { Button, Flex } from '@chakra-ui/core'
-import { Form, Formik, FormikProps } from 'formik'
-import { formatError } from '../../utils'
+import { Form, Formik } from 'formik'
 import { H3, Text } from '../../typography'
 import { theme } from '../../theme'
-import { MotionFlex } from '../../components'
 import { PageWrap } from '../../layouts'
 
 import SenderInfo from './SenderInfo'
 import ReceiverInfo from './ReceiverInfo'
 import PackageDetails from './PackageDetails'
+import PrintLabelComponent from './PrintLabelComponent'
+
+const PrintOutFlex = styled(Flex)`
+  @media screen {
+    display: none;
+  }
+`
 
 const GenerateLabelFormValidation = Yup.object().shape({
   senderCompanyName: Yup.string().required('Company Name is required'),
@@ -62,61 +70,39 @@ export type TouchedErrors = {
   width?: boolean | string
 }
 
-export type GenerateLabelValues = {
-  senderCompanyName: string
-  senderAddress: string
-  senderNumber: string
-  receiverName: string
-  receiverAddress: string
-  receiverNumber: string
-  date: string
-  orderNumber: string
-  parcelNumber: string
-  weight: string
-  height: string
-  length: string
-  width: string
-}
-
 const initialValues = {
-  senderCompanyName: '',
-  senderAddress: '',
-  senderNumber: '',
-  receiverName: '',
-  receiverAddress: '',
-  receiverNumber: '',
+  senderCompanyName: 'TradeFed',
+  senderAddress: 'Pretoria',
+  senderNumber: '7343334456',
+  receiverName: 'New User',
+  receiverAddress: 'New Address',
+  receiverNumber: '7343334567',
   date: '',
-  orderNumber: '',
-  parcelNumber: '',
-  weight: '',
-  height: '',
-  length: '',
-  width: ''
+  orderNumber: 'TSA0001',
+  parcelNumber: '1234567',
+  weight: '2kg',
+  height: '40cm',
+  length: '100cm',
+  width: '50cm'
 }
 
 const GenerateLabel: React.FC = () => {
-  
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   const autofillDetails = {
     ...initialValues
   }
-  const handleSubmit = async (values: GenerateLabelValues) => {
-    // const {
-    //   senderCompanyName,
-    //   senderAddress,
-    //   senderNumber,
-    //   receiverName,
-    //   receiverAddress,
-    //   receiverNumber,
-    //   date,
-    //   orderNumber,
-    //   parcelNumber,
-    //   weight,
-    //   height,
-    //   length,
-    //   width
-    // } = values
-  }
+
+  const printLabel = useRef(null)
+
+  const reactToPrintContent = React.useCallback(() => {
+    return printLabel.current
+    // eslint-disable-next-line
+  }, [printLabel.current])
+
+  const handlePrint = useReactToPrint({
+    content: reactToPrintContent,
+    documentTitle: 'Print Label'
+  })
 
   return (
     <PageWrap
@@ -146,41 +132,22 @@ const GenerateLabel: React.FC = () => {
       <Formik
         validationSchema={GenerateLabelFormValidation}
         initialValues={autofillDetails}
-        onSubmit={async (items, { setStatus, setSubmitting }) => {
-          setStatus(null)
-          try {
-            setSubmitting(true)
-            await handleSubmit(items)
-            setSubmitting(false)
-          } catch (error) {
-            setStatus(formatError(error))
-          }
-        }}
+        onSubmit={() => {}}
       >
-        {({ isSubmitting, status, errors, values, touched }: FormikProps<GenerateLabelValues>) => {
+        {() => {
           return (
             <Form style={{ width: '100%' }}>
               <SenderInfo />
               <ReceiverInfo />
-              <PackageDetails 
+              <PackageDetails
               // values={values} touched={touched} errors={errors}
               />
-              {status && (
-                <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
-                  <Text textAlign="right" color="red.500">
-                    {status}
-                  </Text>
-                </MotionFlex>
-              )}
-              <Button
-                mt={4}
-                width="100%"
-                type="submit"
-                variantColor="brand"
-                isLoading={isSubmitting}
-              >
+              <Button mt={4} width="100%" type="submit" variantColor="brand" onClick={handlePrint}>
                 GENERATE & DOWNLOAD
               </Button>
+              <PrintOutFlex ref={printLabel}>
+                <PrintLabelComponent />
+              </PrintOutFlex>
             </Form>
           )
         }}
