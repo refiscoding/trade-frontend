@@ -18,6 +18,7 @@ const Checkout = lazy(() => import('../containers/Checkout'))
 const CheckoutSuccess = lazy(() => import('../containers/Checkout/successCheckout'))
 const ConfirmEmail = lazy(() => import('../containers/ConfirmEmail'))
 const ForgotPassword = lazy(() => import('../containers/ForgotPassword'))
+const GenerateLabel = lazy(() => import('../containers/GenerateLabel'))
 const Home = lazy(() => import('../containers/HomePage'))
 const Login = lazy(() => import('../containers/Login'))
 const Notifications = lazy(() => import('../containers/Notifications'))
@@ -141,6 +142,13 @@ const PRIVATE_ROUTES: PrivateRouteObject[] = [
     breadcrumb: 'Business Orders',
     component: BusinessOrders,
     title: 'Business Orders'
+  },
+  {
+    exact: false,
+    path: '/generate-label',
+    breadcrumb: 'Generate Label',
+    component: GenerateLabel,
+    title: 'Generate Label'
   },
   {
     exact: false,

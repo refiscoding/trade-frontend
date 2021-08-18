@@ -3,7 +3,7 @@ import { InputProps } from '@chakra-ui/core/dist/Input'
 import { useField } from 'formik'
 import moment from 'moment'
 import * as React from 'react'
-import { isInclusivelyBeforeDay, SingleDatePicker } from 'react-dates'
+import { isInclusivelyAfterDay, SingleDatePicker } from 'react-dates'
 import 'react-dates/lib/css/_datepicker.css'
 import { DATE_FORMAT } from '../../../constants'
 import { Text } from '../../../typography'
@@ -55,7 +55,7 @@ const ConnectedDatePicker: React.FC<ConnectedDatePickerProps> = ({
           focused={focused}
           id={field.name}
           disabled={isDisabled}
-          isOutsideRange={(day) => !isInclusivelyBeforeDay(day, moment())}
+          isOutsideRange={(day) => !isInclusivelyAfterDay(day, moment())}
           renderMonthElement={({ month, onMonthSelect, onYearSelect }) => {
             return (
               <Flex flexDirection="row" justifyContent="center">
