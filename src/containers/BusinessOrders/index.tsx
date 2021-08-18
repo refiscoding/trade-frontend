@@ -111,6 +111,8 @@ const BusinessOrdersPage: React.FC = () => {
             />
           </Flex>
         )
+      case 'confirmation':
+        return <BusinessOrderConfirmation />
       case 'processing':
         return (
           <BusinessOrdersWeb
@@ -120,8 +122,6 @@ const BusinessOrdersPage: React.FC = () => {
             ordersLoading={userOrdersLoading}
           />
         )
-      case 'confirmation':
-        return <BusinessOrderConfirmation />
       case 'ready':
         return (
           <ReadyForDispatch

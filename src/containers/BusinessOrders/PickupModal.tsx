@@ -6,6 +6,7 @@ import { FlexProps } from '@chakra-ui/core/dist/Flex'
 import { images } from '../../theme'
 import ModalWrap from '../../components/ModalWrap'
 import { Text } from '../../typography'
+import { useHistory } from 'react-router-dom'
 
 type PickupModalProps = FlexProps & {
   handleCancelButtonClicked: () => void
@@ -17,6 +18,12 @@ const PickupModal: React.FC<PickupModalProps> = ({
   confirmationText,
   handleCancelButtonClicked
 }) => {
+  const history = useHistory()
+
+  const handleGenerateLabel = () => {
+    history.push('/generate-label')
+  }
+
   return (
     <ModalWrap title="Polite Notice" isOpen={true} onClose={handleCancelButtonClicked} isCentered>
       <Grid gridTemplateRows="repeat(1fr, 2)" justifyItems="center" padding={5}>
@@ -29,7 +36,7 @@ const PickupModal: React.FC<PickupModalProps> = ({
         <Button width="100%" onClick={() => {}} mt={4} variantColor="gray" variant="outline">
           USE OWN LABEL
         </Button>
-        <Button mt={4} width="100%" variantColor="brand" onClick={() => {}}>
+        <Button mt={4} width="100%" variantColor="brand" onClick={handleGenerateLabel}>
           GENERATE LABEL
         </Button>
       </Grid>
