@@ -1,5 +1,6 @@
 import * as React from 'react'
 import * as Yup from 'yup'
+import styled from '@emotion/styled'
 import { useMediaQuery } from 'react-responsive'
 import { useReactToPrint } from 'react-to-print'
 import { useRef } from 'react'
@@ -14,6 +15,12 @@ import SenderInfo from './SenderInfo'
 import ReceiverInfo from './ReceiverInfo'
 import PackageDetails from './PackageDetails'
 import PrintLabelComponent from './PrintLabelComponent'
+
+const PrintOutFlex = styled(Flex)`
+  @media screen {
+    display: none;
+  }
+`
 
 const GenerateLabelFormValidation = Yup.object().shape({
   senderCompanyName: Yup.string().required('Company Name is required'),
@@ -138,9 +145,9 @@ const GenerateLabel: React.FC = () => {
               <Button mt={4} width="100%" type="submit" variantColor="brand" onClick={handlePrint}>
                 GENERATE & DOWNLOAD
               </Button>
-              <Flex ref={printLabel}>
+              <PrintOutFlex ref={printLabel}>
                 <PrintLabelComponent />
-              </Flex>
+              </PrintOutFlex>
             </Form>
           )
         }}
