@@ -38,6 +38,7 @@ export default {
   sellerAprroval: require('../assets/images/seller-approval.svg'),
   signUpPageBanner: require('../assets/images/signUpBanner.jpg'),
   TradeFedFullLogo: require('../assets/images/tradeFed-full-logo.png'),
+  TradeFedLogo: require('../assets/images/tradefed-logo.svg'),
   TwitterFooter: require('../assets/images/twitter.png'),
   uploadProductSuccess: require('../assets/images/success-upload.svg'),
   visaCardPayment: require('../assets/images/VisaPayment.svg')

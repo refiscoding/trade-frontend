@@ -43,6 +43,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-table": "^7.1.0",
+    "react-to-print": "^2.13.0",
     "styled-system": "^5.1.5",
     "typescript": "~3.7.2",
     "use-places-autocomplete": "^1.7.1",
