@@ -10,6 +10,7 @@ export default {
   Facebook: require('../assets/images/Facebook.svg'),
   FacebookFooter: require('../assets/images/facebook.png'),
   filesIcon: require('../assets/images/files.svg'),
+  flame: require('../assets/images/flame.svg'),
   FNBPayment: require('../assets/images/FNBPayment.png'),
   GooglePlus: require('../assets/images/GooglePlus.svg'),
   heroImg: require('../assets/images/hero-img.png'),
@@ -35,11 +36,14 @@ export default {
   processingPaymentError: require('../assets/images/processingPaymentError.svg'),
   productDetailsStep: require('../assets/images/product_details_step.svg'),
   productInfoStep: require('../assets/images/product_info_step.svg'),
+  recycle: require('../assets/images/recycle.svg'),
   sellerAprroval: require('../assets/images/seller-approval.svg'),
   signUpPageBanner: require('../assets/images/signUpBanner.jpg'),
   TradeFedFullLogo: require('../assets/images/tradeFed-full-logo.png'),
   TradeFedLogo: require('../assets/images/tradefed-logo.svg'),
   TwitterFooter: require('../assets/images/twitter.png'),
+  umbrella: require('../assets/images/umbrella.svg'),
   uploadProductSuccess: require('../assets/images/success-upload.svg'),
-  visaCardPayment: require('../assets/images/VisaPayment.svg')
+  visaCardPayment: require('../assets/images/VisaPayment.svg'),
+  wineGlass: require('../assets/images/wine-glass.svg')
 }
