@@ -17,6 +17,7 @@ const CategoryView = lazy(() => import('../containers/CategoryView'))
 const Checkout = lazy(() => import('../containers/Checkout'))
 const CheckoutSuccess = lazy(() => import('../containers/Checkout/successCheckout'))
 const ConfirmEmail = lazy(() => import('../containers/ConfirmEmail'))
+const CurrentOrders = lazy(() => import('../containers/BusinessOrders/CurrentOrders'))
 const ForgotPassword = lazy(() => import('../containers/ForgotPassword'))
 const GenerateLabel = lazy(() => import('../containers/GenerateLabel'))
 const Home = lazy(() => import('../containers/HomePage'))
@@ -184,6 +185,13 @@ const PRIVATE_ROUTES: PrivateRouteObject[] = [
     breadcrumb: 'Orders',
     path: '/orders',
     component: Orders
+  },
+  {
+    exact: true,
+    title: 'Current Orders',
+    breadcrumb: 'Current Orders',
+    path: '/current-orders',
+    component: CurrentOrders
   },
   {
     exact: false,
