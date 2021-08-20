@@ -2,42 +2,31 @@ import * as React from 'react'
 import dayjs from 'dayjs'
 import RelativeTime from 'dayjs/plugin/relativeTime'
 import LocalizedFormat from 'dayjs/plugin/localizedFormat'
-import { ChevronRight } from 'react-feather'
-import { Flex, Grid, Button, Link } from '@chakra-ui/core'
+import ProgressBar from '@ramonak/react-progress-bar'
+import { Flex, Grid, Image } from '@chakra-ui/core'
 
 import { Text } from '../../typography'
-import { theme } from '../../theme'
+import { images, theme } from '../../theme'
 import { Order } from '../../generated/graphql'
-import PickupModal from './PickupModal'
 
 dayjs.extend(RelativeTime)
 dayjs.extend(LocalizedFormat)
 
 type CurrentOrderComponentProps = {
-  confirmationText: string
   order: Order
   setSelectedOrder: (val: Order) => void
 }
 
 const CurrentOrderComponent: React.FC<CurrentOrderComponentProps> = ({
-  confirmationText,
   order,
-  setSelectedOrder,
+  setSelectedOrder
 }) => {
-  const [showModal, setShowModal] = React.useState<boolean>(false)
   const handleOrderClicked = () => {
     setSelectedOrder(order)
   }
 
   return (
     <Flex>
-      {showModal && (
-        <PickupModal
-          confirmationText={confirmationText}
-          handleProceedButtonClicked={()=> {}}
-          handleCancelButtonClicked={() => setShowModal(false)}
-        />
-      )}
       <Grid
         borderRadius="4px"
         boxShadow="0.8px 2px 4px rgba(0,0,0,0.25)"
@@ -47,41 +36,42 @@ const CurrentOrderComponent: React.FC<CurrentOrderComponentProps> = ({
         margin="1rem"
       >
         <Flex borderBottom={`1px solid ${theme.colors.background}`} mb={2} pb={3}>
-          <Text fontSize={16} fontWeight={600}>{`Order in Process - ${order?.orderNumber}`}</Text>
+          <Flex p={2}>
+            <Image height="80%" style={{ placeSelf: 'center' }} src={images.parcel} />
+          </Flex>
+          <Flex flexDirection="column">
+            <Text fontSize={12} fontWeight={600}>
+              Mathias' Parcel
+            </Text>
+            <Text fontSize={12}>{`Quantity: ${order.items?.length}`}</Text>
+            <Text fontSize={12}>{`Order date: ${dayjs(order?.orderDate).format(
+              'DD.MM.YYYY'
+            )}`}</Text>
+            <Text fontSize={14} fontWeight={600}>
+              {`R ${order?.orderTotal}`}
+            </Text>
+          </Flex>
         </Flex>
         <Flex
           justify="space-between"
-          borderBottom={`1px solid ${theme.colors.background}`}
-          pt={2}
-          pb={3}
+          width="100%"
+          flexDirection="column"
           cursor="pointer"
           onClick={handleOrderClicked}
         >
-          <Text fontSize={12} fontWeight={700}>
-            Order information
-          </Text>
-          <ChevronRight />
-        </Flex>
-        <Flex justify="space-between" width="100%" flexDirection="column">
-          <Flex mt={3} ml={3} width="90%">
-            <Button
-              type="submit"
-              mt={4}
-              width="95%"
-              variantColor="brand"
-              onClick={() => setShowModal(true)}
-            >
-              <Text fontSize="12px">READY FOR PICKUP</Text>
-            </Button>
-          </Flex>
-          <Flex flexDirection="column" mt={3} mb={3} width="100%" alignItems="center">
-            <Text fontSize={12} fontWeight={700}>
-              Something not right?{' '}
-              <Link href="#" cursor="pointer">
-                Contact Support
-              </Link>
+          <Flex pb={2}>
+            <Text fontSize={14} fontWeight={600}>
+              Parcel being processed
             </Text>
           </Flex>
+          <ProgressBar
+            width="100%"
+            completed={25}
+            borderRadius="4px"
+            bgColor="#3acf2f"
+            baseBgColor="#e7e7e7"
+            labelColor="transparent"
+          />
         </Flex>
       </Grid>
     </Flex>
