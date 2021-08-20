@@ -32,7 +32,8 @@ const Profile: React.FC<ProfileProps> = () => {
     history.push('/profile-details')
   }
   const navigateToOrderHistory = () => {
-    history.push('/orders')
+    // history.push('/orders')
+    history.push('/current-orders')
   }
   const handleAddressBook = () => {
     history.push('/addresses')
