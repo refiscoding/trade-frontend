@@ -1,14 +1,26 @@
 import * as React from 'react'
+import { ApolloError } from 'apollo-boost'
 
-import { Flex, FlexProps, Grid, Image } from '@chakra-ui/core'
+import { get } from 'lodash'
+import { Flex, FlexProps, Grid, Image, useToast } from '@chakra-ui/core'
 import { useBarcode } from 'react-barcodes'
 
 import { images, theme } from '../../theme'
 import { H3, Text } from '../../typography'
+import { useFetchLabelQuery } from '../../generated/graphql'
+import { ERROR_TOAST } from '../../constants'
 
 type PrintLabelComponentProps = FlexProps & {}
 
 const PrintLabelComponent: React.FC<PrintLabelComponentProps> = () => {
+  const toast = useToast()
+
+  const { data } = useFetchLabelQuery({
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
+    variables: { waybill: 'collection0008' }
+  })
+  const labelData = get(data, 'getLabel')
+  const label = labelData?.ResultSets?.[0]?.[0]
   const { inputRef } = useBarcode({
     value: 'react-barcodes',
     options: {
@@ -48,21 +60,24 @@ const PrintLabelComponent: React.FC<PrintLabelComponentProps> = () => {
             </H3>
             <Flex flexDirection="column">
               <Text fontSize="12px" fontWeight={400}>
-                Jack's Peanuts
+                {label?.ShipName || '-'}
               </Text>
               <Text fontSize="12px" fontWeight={400}>
-                018 938 8371
+                {label?.ShipTel === null ? '-' : label?.ShipTel}
               </Text>
             </Flex>
             <Flex flexDirection="column" mt={3}>
               <Text fontSize="12px" fontWeight={400}>
-                251 Johnson Street
+                {label?.ShipAddr1 || '-'}
               </Text>
               <Text fontSize="12px" fontWeight={400}>
-                Hatfield, 0081
+                {label?.ShipAddr2 || '-'}
               </Text>
               <Text fontSize="12px" fontWeight={400}>
-                Pretoria
+                {label?.ShipAddr3 || '-'}
+              </Text>
+              <Text fontSize="12px" fontWeight={400}>
+                {label?.ShipAddr4 || '-'}
               </Text>
             </Flex>
           </Flex>
@@ -72,21 +87,21 @@ const PrintLabelComponent: React.FC<PrintLabelComponentProps> = () => {
             </H3>
             <Flex flexDirection="column">
               <Text fontSize="12px" fontWeight={400}>
-                Nelly Smith
+                {label?.RecName || '-'}
               </Text>
               <Text fontSize="12px" fontWeight={400}>
-                072 838 0502
+                {label?.RecTel || '-'}
               </Text>
             </Flex>
             <Flex flexDirection="column" mt={3}>
               <Text fontSize="12px" fontWeight={400}>
-                96 Shell Street
+                {label?.RecAddr1 || '-'}
               </Text>
               <Text fontSize="12px" fontWeight={400}>
-                George, 2181
+                {label?.RecAddr2 || '-'}
               </Text>
               <Text fontSize="12px" fontWeight={400}>
-                Cape Town
+                {label?.RecAddr3 || '-'}
               </Text>
             </Flex>
           </Flex>
@@ -99,22 +114,22 @@ const PrintLabelComponent: React.FC<PrintLabelComponentProps> = () => {
           </H3>
           <Flex>
             <Text fontSize="12px" fontWeight={400} pb={2}>
-              W: 23cm
+              W: -
             </Text>
           </Flex>
           <Flex mt={1}>
             <Text fontSize="12px" fontWeight={400} pb={2}>
-              L: 45cm
+              L: -
             </Text>
           </Flex>
           <Flex mt={1}>
             <Text fontSize="12px" fontWeight={400} pb={2}>
-              H: 13cm
+              H: -
             </Text>
           </Flex>
           <Flex mt={1}>
             <Text fontSize="12px" fontWeight={400}>
-              Weight: 48kg
+              Weight: {label?.TotalKG || '-'}kg
             </Text>
           </Flex>
         </Flex>
@@ -156,6 +171,8 @@ const PrintLabelComponent: React.FC<PrintLabelComponentProps> = () => {
           </Grid>
         </Flex>
       </Flex>
+      {/* </Flex>
+      ))} */}
     </Flex>
   )
 }

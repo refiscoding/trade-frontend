@@ -1,0 +1,31 @@
+fragment label on Label {
+ ResultSets {
+      Waybill
+      Barcode
+      Reference
+      ShipAccnum
+      ShipName
+      ShipAddr1
+      ShipAddr2
+      ShipAddr3
+      ShipAddr4
+      ShipHub
+      ShipCon
+      ShipTel
+      RecAccnum
+      RecName
+      RecAddr1
+      RecAddr2
+      RecAddr3
+      RecAddr4
+      RecHub
+      RecCon
+      RecTel
+      Agent
+      Serv
+      Route
+      TotalKG
+      VolKG
+    }
+  ReturnValue
+}

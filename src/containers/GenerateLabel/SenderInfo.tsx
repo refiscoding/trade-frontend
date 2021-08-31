@@ -19,9 +19,26 @@ const SenderInfo: React.FC = () => {
       <H3 mb={4} fontWeight={550} textAlign="left">
         Sender Information
       </H3>
-      <ConnectedFormGroup label="Company Name*" name="senderCompanyName" type="text" />
-      <ConnectedFormGroup label="Physical Address(Origin):*" name="senderAddress" type="text" />
-      <ConnectedNumberInput label="Contact Number:*" name="senderNumber" unit="+27" />
+      <ConnectedFormGroup
+        label="Company Name"
+        name="senderCompanyName"
+        type="text"
+        isDisabled={true}
+      />
+      <ConnectedFormGroup
+        label="Street Address(Origin)"
+        name="senderStreetAddress"
+        type="text"
+        isDisabled={true}
+      />
+      <ConnectedFormGroup label="Suburb:" name="senderSuburb" type="text" isDisabled={true} />
+      <ConnectedFormGroup label="City / Town" name="senderTown" type="text" isDisabled={true} />
+      <ConnectedNumberInput
+        label="Contact Number:"
+        name="senderNumber"
+        unit="+27"
+        isDisabled={true}
+      />
     </Flex>
   )
 }

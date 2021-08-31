@@ -20,13 +20,21 @@ const ReceiverInfo: React.FC = () => {
       <H3 mb={4} fontWeight={550} textAlign="left">
         Receiver Information
       </H3>
-      <ConnectedFormGroup label="Receiver Name*" name="receiverName" type="text" />
+      <ConnectedFormGroup label="Receiver Name" name="receiverName" type="text" isDisabled={true} />
       <ConnectedFormGroup
-        label="Physical Address(Destination):*"
-        name="receiverAddress"
+        label="Street Address(Destination)"
+        name="receiverStreetAddress"
         type="text"
+        isDisabled={true}
       />
-      <ConnectedNumberInput label="Contact Number*" name="receiverNumber" unit="+27" />
+      <ConnectedFormGroup label="Suburb:" name="receiverSuburb" type="text" isDisabled={true} />
+      <ConnectedFormGroup label="City / Town" name="receiverTown" type="text" isDisabled={true} />
+      <ConnectedNumberInput
+        label="Contact Number"
+        name="receiverNumber"
+        unit="+27"
+        isDisabled={true}
+      />
     </Flex>
   )
 }

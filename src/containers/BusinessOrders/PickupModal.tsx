@@ -10,17 +10,19 @@ import { useHistory } from 'react-router-dom'
 
 type PickupModalProps = FlexProps & {
   handleCancelButtonClicked: () => void
-  handleProceedButtonClicked: () => void
+  handleSelectedLabelItem: () => void
   confirmationText: string
 }
 
 const PickupModal: React.FC<PickupModalProps> = ({
   confirmationText,
-  handleCancelButtonClicked
+  handleCancelButtonClicked,
+  handleSelectedLabelItem
 }) => {
   const history = useHistory()
 
   const handleGenerateLabel = () => {
+    handleSelectedLabelItem()
     history.push('/generate-label')
   }
 

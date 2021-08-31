@@ -1,0 +1,6 @@
+## import '/fragments/createWaybill.graphql'
+query fetchCreateWaybill($input: createWaybillInput) {
+    createWaybill(input: $input) {
+        ...waybill
+    }
+}

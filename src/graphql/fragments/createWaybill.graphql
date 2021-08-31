@@ -1,0 +1,5 @@
+fragment waybill on Waybill {
+    ResultSets {
+      SuccessMessage
+    }
+}

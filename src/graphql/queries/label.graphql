@@ -1,0 +1,6 @@
+# import '/fragments/label.graphql'
+query fetchLabel($waybill: String!) {
+    getLabel(waybill: $waybill) {
+        ...label    
+    }
+}
