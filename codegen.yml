@@ -1,5 +1,5 @@
 overwrite: true
-schema: ${REACT_APP_API_HOST_2}
+schema: ${REACT_APP_API_HOST}/graphql
 documents: 'src/graphql/**/*.graphql'
 generates:
   src/generated/graphql.tsx:
