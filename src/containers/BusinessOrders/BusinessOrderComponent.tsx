@@ -28,14 +28,22 @@ const BusinessOrderComponent: React.FC<BusinessOrderComponentProps> = ({
   const handleOrderClicked = () => {
     setSelectedOrder(order)
   }
+  const handleSelectedLabelItem = () => {
+    localStorage.setItem('generated_label', JSON.stringify(order, null, 2))
+  }
+  const clearSelectedLabelItem = () => {
+    localStorage.removeItem('generated_label')
+  }
 
   return (
     <Flex>
       {showModal && (
         <PickupModal
           confirmationText={confirmationText}
-          handleProceedButtonClicked={()=> {}}
-          handleCancelButtonClicked={() => setShowModal(false)}
+          handleSelectedLabelItem={handleSelectedLabelItem}
+          handleCancelButtonClicked={() => {
+            clearSelectedLabelItem()
+            setShowModal(false)}}
         />
       )}
       <Grid

@@ -1,4 +1,5 @@
 import * as React from 'react'
+import dayjs from 'dayjs'
 import * as Yup from 'yup'
 import styled from '@emotion/styled'
 import { useMediaQuery } from 'react-responsive'
@@ -24,10 +25,14 @@ const PrintOutFlex = styled(Flex)`
 
 const GenerateLabelFormValidation = Yup.object().shape({
   senderCompanyName: Yup.string().required('Company Name is required'),
-  senderAddress: Yup.string().required('Physical Address(Origin) is required'),
+  senderStreetAddress: Yup.string().required('Sender Street Address(Origin) is required'),
   senderNumber: Yup.string().required('Contact Number is required'),
+  senderSuburb: Yup.string().required('Sender Suburb is required'),
+  senderTown: Yup.string().required('Sender Town is required'),
   receiverName: Yup.string().required('Receiver Name is required'),
-  receiverAddress: Yup.string().required('Physical Address(Destination) is required'),
+  receiverStreetAddress: Yup.string().required('Receiver Street Address(Destination) is required'),
+  receiverSuburb: Yup.string().required('Receiver Suburb is required'),
+  receiverTown: Yup.string().required('Receiver Town is required'),
   receiverNumber: Yup.string().required('Contact Number is required'),
   date: Yup.string().required('Date is required'),
   orderNumber: Yup.string().required('Order Number is required'),
@@ -40,60 +45,89 @@ const GenerateLabelFormValidation = Yup.object().shape({
 
 export type ErrorsObject = {
   senderCompanyName?: string | undefined
-  senderAddress?: string | undefined
+  senderStreetAddress?: string | undefined
+  senderSuburb?: string | undefined
+  senderTown?: string | undefined
   senderNumber?: string | undefined
   receiverName?: string | undefined
-  receiverAddress?: string | undefined
+  receiverStreetAddress?: string | undefined
+  receiverSuburb?: string | undefined
+  receiverTown?: string | undefined
   receiverNumber?: string | undefined
   date?: string | undefined
   orderNumber?: string | undefined
-  parcelNumber?: boolean | string
-  weight?: boolean | string
-  height?: boolean | string
-  length?: boolean | string
-  width?: boolean | string
+  parcelNumber?: string | string
+  weight?: string | string
+  height?: string | string
+  length?: string | string
+  width?: string | string
 }
 
 export type TouchedErrors = {
-  senderCompanyName?: boolean | undefined
-  senderAddress?: boolean | undefined
-  senderNumber?: boolean | undefined
-  receiverName?: boolean | undefined
-  receiverAddress?: boolean | undefined
-  receiverNumber?: boolean | undefined
-  date?: boolean | undefined
-  orderNumber?: boolean | undefined
-  parcelNumber?: boolean | string
-  weight?: boolean | string
-  height?: boolean | string
-  length?: boolean | string
-  width?: boolean | string
+  senderCompanyName?: string | undefined
+  senderStreetAddress?: string | undefined
+  senderSuburb?: string | undefined
+  senderTown?: string | undefined
+  senderNumber?: string | undefined
+  receiverName?: string | undefined
+  receiverStreetAddress?: string | undefined
+  receiverSuburb?: string | undefined
+  receiverTown?: string | undefined
+  receiverNumber?: string | undefined
+  date?: string | undefined
+  orderNumber?: string | undefined
+  parcelNumber?: string | string
+  weight?: string | string
+  height?: string | string
+  length?: string | string
+  width?: string | string
 }
 
-const initialValues = {
-  senderCompanyName: 'TradeFed',
-  senderAddress: 'Pretoria',
-  senderNumber: '7343334456',
-  receiverName: 'New User',
-  receiverAddress: 'New Address',
-  receiverNumber: '7343334567',
-  date: '',
-  orderNumber: 'TSA0001',
-  parcelNumber: '1234567',
-  weight: '2kg',
-  height: '40cm',
-  length: '100cm',
-  width: '50cm'
+export type labelValues = {
+  senderCompanyName?: string
+  senderStreetAddress?: string
+  senderSuburb?: string
+  senderTown?: string
+  senderNumber?: string
+  receiverName?: string
+  receiverStreetAddress?: string
+  receiverSuburb?: string
+  receiverTown?: string
+  receiverNumber?: string
+  date?: string
+  orderNumber?: string
+  parcelNumber?: string
+  weight?: string
+  height?: string
+  length?: string
+  width?: string
 }
 
 const GenerateLabel: React.FC = () => {
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
+  const orderDetails = JSON.parse(localStorage.getItem('generated_label') || '')
+  const { deliveryAddress, orderNumber, deliveryDate } = orderDetails
+
   const autofillDetails = {
-    ...initialValues
+    senderCompanyName: '-',
+    senderStreetAddress: '-',
+    senderSuburb: '-',
+    senderTown: '-',
+    senderNumber: '-',
+    receiverName: deliveryAddress.name,
+    receiverStreetAddress: deliveryAddress.address,
+    receiverSuburb: '-',
+    receiverTown: '-',
+    receiverNumber: '-',
+    date: dayjs(deliveryDate).format('DD.MM.YYYY'),
+    orderNumber: orderNumber,
+    parcelNumber: '-',
+    weight: '-',
+    height: '-',
+    length: '-',
+    width: '-'
   }
-
   const printLabel = useRef(null)
-
   const reactToPrintContent = React.useCallback(() => {
     return printLabel.current
     // eslint-disable-next-line
@@ -139,9 +173,7 @@ const GenerateLabel: React.FC = () => {
             <Form style={{ width: '100%' }}>
               <SenderInfo />
               <ReceiverInfo />
-              <PackageDetails
-              // values={values} touched={touched} errors={errors}
-              />
+              <PackageDetails />
               <Button mt={4} width="100%" type="submit" variantColor="brand" onClick={handlePrint}>
                 GENERATE & DOWNLOAD
               </Button>
