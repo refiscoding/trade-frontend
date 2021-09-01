@@ -4,6 +4,8 @@ import { Button, Flex, Link } from '@chakra-ui/core'
 import { H3, Text } from '../../typography'
 import { PageWrap } from '../../layouts'
 import { theme } from '../../theme'
+import strapiHelpers from '../../utils/strapiHelpers'
+// import { UsersPermissionsUser } from '../../generated/graphql'
 
 type BusinessOrderConfirmationProps = {}
 
@@ -142,7 +144,12 @@ const BusinessOrderConfirmation: React.FC<BusinessOrderConfirmationProps> = () =
         </Flex>
         <Flex justify="space-between" flexDirection="column" alignItems="center">
           <Flex>
-            <Button type="submit" mt={4} variantColor="brand">
+            <Button
+              type="submit"
+              mt={4}
+              variantColor="brand"
+              onClick={strapiHelpers.sendOrderConfirmationEmail}
+            >
               <Text fontSize="12px">CONFIRM AVAILABILITY</Text>
             </Button>
           </Flex>

@@ -1,10 +1,10 @@
 import axios, { AxiosResponse } from 'axios'
 import { fetchJwt } from '.'
-import { CartProduct } from '../containers/Cart';
+import { CartProduct } from '../containers/Cart'
 import { ComponentLocationAddress, UploadFile, UsersPermissionsUser } from '../generated/graphql'
 
 const BASE = process.env.REACT_APP_API_HOST || ''
-const CLIENT_BASE = window.location.origin || '';
+const CLIENT_BASE = window.location.origin || ''
 
 export type StrapiLoginPayload = {
   jwt: string
@@ -16,7 +16,7 @@ const forgotPassword = async (email: string): Promise<AxiosResponse<any>> => {
     return await axios.post(BASE + '/auth/forgot-password', {
       email,
       url: `${CLIENT_BASE}/reset-password`
-    });
+    })
   } catch (error) {
     return Promise.reject(error)
   }
@@ -98,15 +98,16 @@ const sendOrderSummaryEmail = async (
   user: UsersPermissionsUser | undefined,
   address: ComponentLocationAddress | undefined,
   selectedDeliveryDate: Date | Date[],
-  checkoutTotal: number) => {
+  checkoutTotal: number
+) => {
   const data = {
     products: cartProducts,
     username: user?.firstName,
     email: user?.email,
     address,
     date: selectedDeliveryDate,
-    orderTotal: checkoutTotal,
-  };
+    orderTotal: checkoutTotal
+  }
   try {
     return await axios.post(`${BASE}/carts/orderSummaryEmail`, data, {
       headers: {
@@ -117,7 +118,29 @@ const sendOrderSummaryEmail = async (
   } catch (error) {
     return Promise.reject(error)
   }
+}
 
-};
+const sendOrderConfirmationEmail = async () => {
+  try {
+    return await axios.post(`${BASE}/business/orderConfirmationEmail`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${fetchJwt()}`
+      }
+    })
+  } catch (error) {
+    console.log('error', error)
+    return Promise.reject(error)
+  }
+}
 
-export default { forgotPassword, resetPassword, login, register, providerAuth, upload, sendOrderSummaryEmail }
+export default {
+  forgotPassword,
+  resetPassword,
+  login,
+  register,
+  providerAuth,
+  upload,
+  sendOrderSummaryEmail,
+  sendOrderConfirmationEmail
+}
