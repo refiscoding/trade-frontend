@@ -32,7 +32,7 @@ const DispatchedBusinessOrder: React.FC<BusinessOrdersProps> = ({ orders, orders
        You haven't selected any order to view its details.
        Selecting an order will have it displayed here
    `
-  const orderAddress = selectedOrder?.deliveryAddress?.address?.split(',') ?? []
+  const orderAddress = selectedOrder?.deliveryAddress ?? []
 
   const orderStatusAndColor = setOrderStatusAndColor(selectedOrder)
 
@@ -168,9 +168,9 @@ const DispatchedBusinessOrder: React.FC<BusinessOrdersProps> = ({ orders, orders
                         BUSINESS
                       </Tag>
                       <Text fontSize={14}>{`${selectedOrder?.deliveryAddress?.name}`}</Text>
-                      <Text fontSize={14}>{`${orderAddress[0]}`}</Text>
-                      <Text fontSize={14}>{`${orderAddress[1]}`}</Text>
-                      <Text fontSize={14}>{`${orderAddress[2]}`}</Text>
+                     <Text fontSize={14}>{selectedOrder?.deliveryAddress?.province}</Text>
+                      <Text fontSize={14}>{selectedOrder?.deliveryAddress?.city}</Text>
+                      <Text fontSize={14}>{selectedOrder?.deliveryAddress?.suburb}</Text>
                       <Text fontSize={14}>{`${selectedOrder?.deliveryAddress?.postalCode}`}</Text>
                     </Flex>
                   </Flex>

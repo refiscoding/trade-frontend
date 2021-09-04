@@ -28,31 +28,12 @@ const AddressFormValidation = Yup.object().shape({
 })
 
 type AddressValues = {
-  complex: string
-  suburb: string
+  province: string
   city: string
+  suburb: string
   postalCode: string
   name?: string
-  address?: string
-  lat?: number
-  lng?: number
   type?: string
-}
-
-type SelectedSuggestion = {
-  street: string
-  surburb: string
-  cityOrTown: string
-}
-
-const morphAddressString = (addressString: string) => {
-  const locationDetails = addressString?.split(',')
-  const selectedLocation = {
-    street: locationDetails[0],
-    surburb: locationDetails[1] && locationDetails[1]?.trim(),
-    cityOrTown: locationDetails[2] && locationDetails[2]?.trim()
-  }
-  return selectedLocation
 }
 
 const OnbordingUserAddress: React.FC<AddressProps> = ({
@@ -61,16 +42,11 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
   buttonLabel,
   editItem
 }) => {
-  const addressString = (editItem ? editItem?.address : '') ?? ''
-  const addressObject = editItem && morphAddressString(addressString)
-
   const initialValues = {
-    complex: '',
-    suburb: addressObject?.surburb || '',
-    city: addressObject?.cityOrTown || '',
+    province: editItem?.province || '',
+    city: editItem?.city || '',
+    suburb: editItem?.suburb || '',
     postalCode: editItem?.postalCode || '',
-    lat: editItem?.lat || 0,
-    lng: editItem?.lng || 0,
     type: editItem?.type || 'Residential',
     name: editItem?.name || ''
   }
@@ -91,88 +67,13 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
     setValue(e.target.value)
   }
 
-  const handleSelect = ({ description }: any, setFieldValue: any) => () => {
-    const locationDetails = description?.split(',')
-    const selectedLocation = {
-      street: locationDetails[0],
-      surburb: locationDetails[1] && locationDetails[1]?.trim(),
-      cityOrTown: locationDetails[2] && locationDetails[2]?.trim()
-    }
-    setValue(description, false)
-    setFieldValue('city', selectedLocation?.cityOrTown)
-    setFieldValue('suburb', selectedLocation?.surburb)
-    clearSuggestions()
-
-    getGeocode({
-      address: description
-    })
-      .then((results) => getLatLng(results[0]))
-      .then(({ lat, lng }) => {
-        setDefaultValues({
-          ...defaultValues,
-          address: description,
-          lat,
-          lng,
-          suburb: selectedLocation?.surburb,
-          city: selectedLocation?.cityOrTown
-        })
-      })
-      .catch((error) => {
-        toast({
-          description: 'Something went wrong while updating your address',
-          ...ERROR_TOAST
-        })
-      })
-
-    getGeocode({
-      address: description
-    })
-      .then((zipResults) => getZipCode(zipResults[0], false))
-      .then((zipCode) => {
-        if(zipCode) {
-          setFieldValue('postalCode', zipCode)
-          setDefaultValues({
-            ...defaultValues,
-            postalCode: zipCode
-          })
-        } else {
-          setFieldValue('postalCode', '-')
-        }
-      })
-      .catch((error) => {
-        toast({
-          description: 'Something went wrong while updating your address',
-          ...ERROR_TOAST
-        })
-      })
-  }
-
-  const renderSuggestions = (setFieldValue: any) =>
-    data.map((suggestion) => {
-      const suggestedplaces = suggestion
-      return (
-        <Flex
-          cursor="pointer"
-          bg="white"
-          p={2}
-          key={suggestedplaces.place_id}
-          onClick={handleSelect(suggestion, setFieldValue)}
-        >
-          <Text fontWeight={600}>{suggestedplaces.structured_formatting.main_text}</Text>
-          <Text>{suggestedplaces.structured_formatting.secondary_text}</Text>
-        </Flex>
-      )
-    })
-
-  const handleSubmit = ({ complex, suburb, city, postalCode, name }: AddressValues) => {
-    const address = `${value} - ${complex}, ${suburb}, ${city}`
-
+  const handleSubmit = ({ province, suburb, city, postalCode, name }: AddressValues) => {
     handleUserDetails({
       address: {
-        address: defaultValues.address || address,
+        province,
+        city,
+        suburb,
         postalCode,
-        lng: defaultValues.lng,
-        lat: defaultValues.lat,
         type: defaultValues.type,
         name
       }
@@ -193,13 +94,13 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
         validationSchema={AddressFormValidation}
         initialValues={defaultValues}
         onSubmit={async (
-          { complex, suburb, city, postalCode, name },
+          { province, suburb, city, postalCode, name },
           { setStatus, setSubmitting }
         ) => {
           setStatus(null)
           try {
             setSubmitting(true)
-            handleSubmit({ complex, suburb, city, postalCode, name })
+            handleSubmit({ province, suburb, city, postalCode, name })
             setSubmitting(false)
           } catch (error) {
             setStatus(formatError(error))
@@ -234,7 +135,7 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
                   width="100%"
                   bottom={-200}
                 >
-                  {renderSuggestions(setFieldValue)}
+                  {/* {renderSuggestions(setFieldValue)} */}
                 </Flex>
               )}
               <Flex justify="space-between" mb={4}>

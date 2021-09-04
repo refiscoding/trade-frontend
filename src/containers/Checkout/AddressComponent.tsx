@@ -35,20 +35,16 @@ type AddressDetailsComponentProps = {
 }
 
 const AddressDetailsComponent: React.FC<AddressDetailsComponentProps> = ({ address }) => {
-  const addressDetails = address?.address?.split(',') ?? []
-  const addressStrings = addressDetails[0]?.split('-')
-  const streetAddress = addressStrings[0]?.trim()
-  const buildingOrComplex = addressStrings[1]?.trim()
   return (
     <React.Fragment>
       <Text mt={3} fontSize={14}>
-        {streetAddress}{' '}
+        {address?.name || '-'}
       </Text>
-      <Text fontSize={14}>{buildingOrComplex} </Text>
-      <Text fontSize={14}>{addressDetails[1]} </Text>
-      <Text fontSize={14}>{addressDetails[2]} </Text>
+      <Text fontSize={14}>{address.province || '-'} </Text>
+      <Text fontSize={14}>{address.city || '-'} </Text>
+      <Text fontSize={14}>{address.suburb || '-'} </Text>
       <Text mt={3} fontSize={14}>
-        {address?.postalCode}{' '}
+        {address?.postalCode}
       </Text>
     </React.Fragment>
   )
@@ -86,7 +82,7 @@ const AddressComponent: React.FC<AddressComponentProps> = ({
   }
 
   const handleAddressSelected = (addressName: string, checked: boolean) => {
-    const selectedOneFromAll = allAddresses?.filter((address) => addressName === address?.address)
+    const selectedOneFromAll = allAddresses?.filter((address) => addressName === address?.name)
     const candidateAddress = selectedOneFromAll[0]
 
     if (checked) {
@@ -141,7 +137,7 @@ const AddressComponent: React.FC<AddressComponentProps> = ({
           <AddressInput
             type="radio"
             name="address"
-            value={address?.address || ''}
+            value={address?.name || ''}
             onChange={(event) =>
               handleAddressSelected(event?.target?.value, event?.target?.checked)
             }
