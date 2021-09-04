@@ -1,8 +1,9 @@
-fragment hubCode on hubCodes {
+fragment hubCode on HubCodes {
     ResultSets {
-        province
-        city
-        suburb
-        postalCode
+        HubCode
+        Suburb
+        City
+        Province
+        PostalCode
     }
 }

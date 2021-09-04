@@ -1,6 +1,6 @@
 # import '/fragments/hubCodes.graphql'
 query getHubCodes($province: String!) {
     getHubCodes(province: $province) {
-        ...hubCode    
+        ...hubCode
     }
 }
