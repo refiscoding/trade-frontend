@@ -1,17 +1,18 @@
-import * as Yup from 'yup'
 import * as React from 'react'
-import { useState } from 'react'
-import { Form, Formik, FormikProps } from 'formik'
-import { Button, Flex, useToast, Image } from '@chakra-ui/core'
-import usePlacesAutocomplete, { getGeocode, getLatLng, getZipCode } from 'use-places-autocomplete'
+import * as Yup from 'yup'
+import { ChangeEvent, useState } from 'react'
 
+import { ApolloError } from 'apollo-boost'
+import { Button, Flex, useToast } from '@chakra-ui/core'
+import { Form, Formik, FormikProps } from 'formik'
+import { get } from 'lodash'
+
+import { ComponentLocationAddress, useGetHubCodesQuery } from '../../generated/graphql'
+import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
+import { ERROR_TOAST } from '../../constants'
 import { formatError } from '../../utils'
-import { images } from '../../theme'
 import { H3, Text } from '../../typography'
 import { MotionFlex } from '../../components'
-import { ERROR_TOAST } from '../../constants'
-import { ConnectedFormGroup } from '../../components/FormElements'
-import { ComponentLocationAddress } from '../../generated/graphql'
 
 type AddressProps = {
   handleUserDetails: (details: any) => void
@@ -21,62 +22,128 @@ type AddressProps = {
 }
 
 const AddressFormValidation = Yup.object().shape({
-  complex: Yup.string(),
-  suburb: Yup.string().required('A Suburb is required'),
-  city: Yup.string().required('A City / Town is required'),
-  postalCode: Yup.string().required('A Postal Code is required')
+  name: Yup.string().required('Name is required'),
+  province: Yup.string().required('Province is required'),
+  city: Yup.string().required('City / Town is required'),
+  suburb: Yup.string().required('Suburb is required'),
+  postalCode: Yup.string().required('Postal Code is required')
 })
 
 type AddressValues = {
   province: string
-  suburb: string
   city: string
+  suburb: string
   postalCode: string
   name?: string
-  address?: string
   type?: string
 }
 
-const UserDetails: React.FC<AddressProps> = ({
+const OnbordingUserAddress: React.FC<AddressProps> = ({
   handleUserDetails,
   hideTitle,
   buttonLabel,
   editItem
 }) => {
+  const toast = useToast()
+  const [selectedProvince, setSelectedProvince] = useState('')
+  const [selectedCity, setSelectedCity] = useState('')
+  const [selectedSuburb, setSelectedSuburb] = useState('')
+
+  const { data } = useGetHubCodesQuery({
+    onError: (err: ApolloError) =>
+      toast({
+        description: err.message,
+        ...ERROR_TOAST
+      }),
+    variables: { province: selectedProvince }
+  })
+
+  const hubCodesResults = get(data, 'getHubCodes')
+  const hubCodes = hubCodesResults?.ResultSets?.[0] || []
+
+  const provinces = [
+    {
+      label: 'Eastern Cape',
+      value: 'Eastern Cape'
+    },
+    {
+      label: 'Free State',
+      value: 'Free State'
+    },
+    {
+      label: 'Gauteng',
+      value: 'Gauteng'
+    },
+    {
+      label: 'KwaZulu Natal',
+      value: 'KwaZulu Natal'
+    },
+    {
+      label: 'Limpopo',
+      value: 'Limpopo'
+    },
+    {
+      label: 'Mpumalanga',
+      value: 'Mpumalanga'
+    },
+    {
+      label: 'Northern Cape',
+      value: 'Northern Cape'
+    },
+    {
+      label: 'North West',
+      value: 'North West'
+    },
+    {
+      label: 'Western Cape',
+      value: 'Western Cape'
+    }
+  ]
+
+  const cities = hubCodes
+    .map((hub: any) => hub.City)
+    .filter((value, index, self) => self.indexOf(value) === index)
+    .map((city) => ({
+      label: city,
+      value: city
+    }))
+
   const initialValues = {
     province: editItem?.province || '',
-    suburb: editItem?.suburb || '',
     city: editItem?.city || '',
+    suburb: editItem?.suburb || '',
     postalCode: editItem?.postalCode || '',
     type: editItem?.type || 'Residential',
     name: editItem?.name || ''
   }
-  const [defaultValues, setDefaultValues] = useState<AddressValues>(initialValues)
-  const {
-    value,
-    suggestions: { status, data },
-    setValue,
-    clearSuggestions
-  } = usePlacesAutocomplete({
-    requestOptions: {},
-    debounce: 300
-  })
-  const resultsStatus = status
-  const toast = useToast()
 
-  const handleInput = (e: any) => {
-    setValue(e.target.value)
+  const handleSelectedProvince = (event: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedProvince(event?.target?.value)
+  }
+  const handleSelectedCity = (event: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCity(event?.target?.value)
+  }
+  const handleSelectedSuburb = (event: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSuburb(event?.target?.value)
   }
 
-  const handleSubmit = ({ province, suburb, city, postalCode, name }: AddressValues) => {
+  const checkCity = (cities: any, selectedCity: string) => {
+    return cities.filter((city: any) => city.City === selectedCity)
+  }
+  const cityWithSuburb = checkCity(hubCodes, selectedCity)
+  const suburbList = cityWithSuburb.map((sub: any) => ({
+    label: sub?.Suburb || '',
+    value: sub?.Suburb || ''
+  }))
 
+  const handleSubmit = ({ province, suburb, city, postalCode, name }: AddressValues) => {
     handleUserDetails({
       address: {
         province,
         city,
         suburb,
         postalCode,
-        type: defaultValues.type,
+        type: initialValues.type,
         name
       }
     })
@@ -86,7 +153,7 @@ const UserDetails: React.FC<AddressProps> = ({
     <React.Fragment>
       {!hideTitle && (
         <Flex width="100%" mb={4} flexDirection="column">
-          <H3 textAlign="left">Company Address</H3>
+          <H3 textAlign="left">User Address</H3>
           <Text textAlign="left" fontSize="14px">
             Fill out some information about yourself to get started.
           </Text>
@@ -94,7 +161,7 @@ const UserDetails: React.FC<AddressProps> = ({
       )}
       <Formik
         validationSchema={AddressFormValidation}
-        initialValues={defaultValues}
+        initialValues={initialValues}
         onSubmit={async (
           { province, suburb, city, postalCode, name },
           { setStatus, setSubmitting }
@@ -102,14 +169,14 @@ const UserDetails: React.FC<AddressProps> = ({
           setStatus(null)
           try {
             setSubmitting(true)
-            handleSubmit({ province, suburb, city, postalCode, name })
+            await handleSubmit({ province, suburb, city, postalCode, name })
             setSubmitting(false)
           } catch (error) {
             setStatus(formatError(error))
           }
         }}
       >
-        {({ isSubmitting, status, setFieldValue }: FormikProps<AddressValues>) => (
+        {({ isSubmitting, status }: FormikProps<AddressValues>) => (
           <Form style={{ width: '100%' }}>
             <ConnectedFormGroup
               label="Address Name*"
@@ -117,63 +184,38 @@ const UserDetails: React.FC<AddressProps> = ({
               type="text"
               placeholder="Eg. Mum's Place"
             />
-
-            <Flex flexDirection="column" position="relative">
-              <ConnectedFormGroup
-                label="Enter your street address*"
-                name="address"
-                type="text"
-                placeholder="Eg. 56 Gauteng Road"
-                mb={1}
-                value={value}
-                onChange={handleInput}
-              />
-              {resultsStatus === 'OK' && (
-                <Flex
-                  flexDirection="column"
-                  position="absolute"
-                  height="200px"
-                  zIndex={15}
-                  width="100%"
-                  bottom={-200}
-                >
-                  {/* {renderSuggestions(setFieldValue)} */}
-                </Flex>
-              )}
-              <Flex justify="space-between" mb={4}>
-                {/* <Text
-                  onClick={handleUseCurrentLocation}
-                  style={{ cursor: 'pointer', textDecoration: 'underline' }}
-                  fontSize={12}
-                >
-                  Use My Current Location
-                </Text> */}
-                <Image justifySelf="end" width="40%" src={images.PoweredByGoogle} />
-              </Flex>
-            </Flex>
-            <ConnectedFormGroup
-              label="Complex / Building (Optional)"
-              name="complex"
-              type="text"
-              placeholder="Eg. Complex/Building Name, Unit Number or Floor"
+            <ConnectedSelect
+              label="Province*"
+              placeholder="select a Province"
+              name="province"
+              onChange={handleSelectedProvince}
+              value={selectedProvince}
+              options={provinces}
             />
-            <ConnectedFormGroup
-              label="Suburb*"
-              name="suburb"
-              type="text"
-              placeholder="Eg. Langaville"
-            />
-            <ConnectedFormGroup
-              label="City / Town*"
+            <ConnectedSelect
+              label="City*"
+              placeholder="select a City / Town"
               name="city"
-              type="text"
-              placeholder="Eg. Brakpan"
+              textTransform="lowercase"
+              onChange={handleSelectedCity}
+              value={selectedCity}
+              options={cities}
+            />
+            <ConnectedSelect
+              label="Suburb*"
+              placeholder="select a Suburb"
+              name="suburb"
+              textTransform="lowercase"
+              onChange={handleSelectedSuburb}
+              value={selectedSuburb}
+              options={suburbList}
             />
             <ConnectedFormGroup
               label="Postal Code*"
               name="postalCode"
               type="text"
-              placeholder="Eg. 1540"
+              // value={cityWithSuburb ? cityWithSuburb.[0].p : null}
+              placeholder="eg. 1540"
             />
             {status && (
               <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
@@ -192,4 +234,4 @@ const UserDetails: React.FC<AddressProps> = ({
   )
 }
 
-export default UserDetails
+export default OnbordingUserAddress

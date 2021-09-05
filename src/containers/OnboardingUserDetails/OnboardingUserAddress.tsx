@@ -1,17 +1,18 @@
-import * as Yup from 'yup'
 import * as React from 'react'
+import * as Yup from 'yup'
 import { useState } from 'react'
-import { Form, Formik, FormikProps } from 'formik'
-import { Button, Flex, useToast, Image } from '@chakra-ui/core'
-import usePlacesAutocomplete, { getGeocode, getLatLng, getZipCode } from 'use-places-autocomplete'
 
+import { ApolloError } from 'apollo-boost'
+import { Button, Flex, useToast } from '@chakra-ui/core'
+import { Form, Formik, FormikProps } from 'formik'
+import { get } from 'lodash'
+
+import { ComponentLocationAddress, useGetHubCodesQuery } from '../../generated/graphql'
+import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
+import { ERROR_TOAST } from '../../constants'
 import { formatError } from '../../utils'
-import { images } from '../../theme'
 import { H3, Text } from '../../typography'
 import { MotionFlex } from '../../components'
-import { ERROR_TOAST } from '../../constants'
-import { ConnectedFormGroup } from '../../components/FormElements'
-import { ComponentLocationAddress } from '../../generated/graphql'
 
 type AddressProps = {
   handleUserDetails: (details: any) => void
@@ -21,10 +22,11 @@ type AddressProps = {
 }
 
 const AddressFormValidation = Yup.object().shape({
-  complex: Yup.string(),
-  suburb: Yup.string().required('A Suburb is required'),
-  city: Yup.string().required('A City / Town is required'),
-  postalCode: Yup.string().required('A Postal Code is required')
+  name: Yup.string().required('Name is required'),
+  province: Yup.string().required('Province is required'),
+  city: Yup.string().required('City / Town is required'),
+  suburb: Yup.string().required('Suburb is required'),
+  postalCode: Yup.string().required('Postal Code is required')
 })
 
 type AddressValues = {
@@ -42,6 +44,21 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
   buttonLabel,
   editItem
 }) => {
+  const toast = useToast()
+  const [selectedProvince, setSelectedProvince] = useState('')
+
+  const { data } = useGetHubCodesQuery({
+    onError: (err: ApolloError) =>
+      toast({
+        description: err.message,
+        ...ERROR_TOAST
+      }),
+    variables: { province: selectedProvince }
+  })
+  const hubCodesResults = get(data, 'getHubCodes')
+  const hubCodes = hubCodesResults?.ResultSets?.[0] || []
+  console.log('hubCodes: ', hubCodes)
+
   const initialValues = {
     province: editItem?.province || '',
     city: editItem?.city || '',
@@ -50,21 +67,11 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
     type: editItem?.type || 'Residential',
     name: editItem?.name || ''
   }
-  const [defaultValues, setDefaultValues] = useState<AddressValues>(initialValues)
-  const {
-    value,
-    suggestions: { status, data },
-    setValue,
-    clearSuggestions
-  } = usePlacesAutocomplete({
-    requestOptions: {},
-    debounce: 300
-  })
-  const resultsStatus = status
-  const toast = useToast()
 
-  const handleInput = (e: any) => {
-    setValue(e.target.value)
+  const handleSelectedProvince = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    event.persist()
+    const value = event?.target?.value
+    setSelectedProvince(value)
   }
 
   const handleSubmit = ({ province, suburb, city, postalCode, name }: AddressValues) => {
@@ -74,7 +81,7 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
         city,
         suburb,
         postalCode,
-        type: defaultValues.type,
+        type: initialValues.type,
         name
       }
     })
@@ -92,7 +99,7 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
       )}
       <Formik
         validationSchema={AddressFormValidation}
-        initialValues={defaultValues}
+        initialValues={initialValues}
         onSubmit={async (
           { province, suburb, city, postalCode, name },
           { setStatus, setSubmitting }
@@ -100,14 +107,14 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
           setStatus(null)
           try {
             setSubmitting(true)
-            handleSubmit({ province, suburb, city, postalCode, name })
+            await handleSubmit({ province, suburb, city, postalCode, name })
             setSubmitting(false)
           } catch (error) {
             setStatus(formatError(error))
           }
         }}
       >
-        {({ isSubmitting, status, setFieldValue }: FormikProps<AddressValues>) => (
+        {({ isSubmitting, status }: FormikProps<AddressValues>) => (
           <Form style={{ width: '100%' }}>
             <ConnectedFormGroup
               label="Address Name*"
@@ -115,40 +122,50 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
               type="text"
               placeholder="Eg. Mum's Place"
             />
-
-            <Flex flexDirection="column" position="relative">
-              <ConnectedFormGroup
-                label="Enter your street address*"
-                name="address"
-                type="text"
-                placeholder="Eg. 56 Gauteng Road"
-                mb={1}
-                value={value}
-                onChange={handleInput}
-              />
-              {resultsStatus === 'OK' && (
-                <Flex
-                  flexDirection="column"
-                  position="absolute"
-                  height="200px"
-                  zIndex={15}
-                  width="100%"
-                  bottom={-200}
-                >
-                  {/* {renderSuggestions(setFieldValue)} */}
-                </Flex>
-              )}
-              <Flex justify="space-between" mb={4}>
-                {/* <Text
-                  onClick={handleUseCurrentLocation}
-                  style={{ cursor: 'pointer', textDecoration: 'underline' }}
-                  fontSize={12}
-                >
-                  Use My Current Location
-                </Text> */}
-                <Image justifySelf="end" width="40%" src={images.PoweredByGoogle} />
-              </Flex>
-            </Flex>
+            <ConnectedSelect
+              label="Select Province"
+              onChange={handleSelectedProvince}
+              placeholder="-"
+              name="province"
+              options={[
+                {
+                  label: 'Eastern Cape',
+                  value: 'Eastern Cape'
+                },
+                {
+                  label: 'Free State',
+                  value: 'Free State'
+                },
+                {
+                  label: 'Gauteng',
+                  value: 'Gauteng'
+                },
+                {
+                  label: 'KwaZulu Natal',
+                  value: 'KwaZulu Natal'
+                },
+                {
+                  label: 'Limpopo',
+                  value: 'Limpopo'
+                },
+                {
+                  label: 'Mpumalanga',
+                  value: 'Mpumalanga'
+                },
+                {
+                  label: 'Northern Cape',
+                  value: 'Northern Cape'
+                },
+                {
+                  label: 'North West',
+                  value: 'North West'
+                },
+                {
+                  label: 'Western Cape',
+                  value: 'Western Cape'
+                }
+              ]}
+            />
             <ConnectedFormGroup
               label="Complex / Building (Optional)"
               name="complex"

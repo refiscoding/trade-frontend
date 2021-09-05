@@ -37,7 +37,7 @@ const Onboarding: React.FC = () => {
   const [shouldShowBusinessScreen, setShouldShowBusinessScreen] = React.useState(false)
   const toast = useToast()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
-  useScript(mapsScriptUrl)
+  // useScript(mapsScriptUrl)
 
   const { data } = useCategoryQuery({
     onError: (err: any) => formatError(err)

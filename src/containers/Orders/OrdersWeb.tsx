@@ -53,8 +53,7 @@ const OrdersPageWeb: React.FC<OrdersPageProps> = ({
        You haven't selected any order to view its details.
        Selecting an order will have it displayed here
    `
-  const orderAddress = selectedOrder?.deliveryAddress ?? []
-  const handleReturnOrderClicked = () => {
+   const handleReturnOrderClicked = () => {
     history.push('/returns')
   }
 

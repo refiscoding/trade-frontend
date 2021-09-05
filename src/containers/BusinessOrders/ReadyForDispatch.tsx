@@ -21,10 +21,8 @@ const ReadyForDispatch: React.FC<BusinessOrdersProps> = ({ orders, ordersLoading
   const noOrdersNoOrderClickedMessage =
     'If you had orders, you would select one on the left and view its details here. For now, shop for products'
   const noOrdersHeader = 'Shop for products'
-
   const noOrdersCaption =
     "You currently don't have an order history. Complete an order and it will show up here"
-
   const noOrderClickedHeader = noOrders ? noOrdersHeader : 'Select an order to view details'
   const noOrderClickedCaption = noOrders
     ? noOrdersNoOrderClickedMessage
@@ -32,8 +30,6 @@ const ReadyForDispatch: React.FC<BusinessOrdersProps> = ({ orders, ordersLoading
        You haven't selected any order to view its details.
        Selecting an order will have it displayed here
    `
-  const orderAddress = selectedOrder?.deliveryAddress ?? []
-
   const orderStatusAndColor = setOrderStatusAndColor(selectedOrder)
 
   return (
