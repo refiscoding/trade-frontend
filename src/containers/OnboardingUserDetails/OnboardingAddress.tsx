@@ -1,15 +1,15 @@
 import * as React from 'react'
 import * as Yup from 'yup'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 
 import { ApolloError } from 'apollo-boost'
 import { Button, Flex, useToast } from '@chakra-ui/core'
-import { Form, Formik, FormikProps } from 'formik'
+import { Form, Formik, FormikProps, getIn, useFormikContext } from 'formik'
 import { get } from 'lodash'
 
 import { ComponentLocationAddress, useGetHubCodesQuery } from '../../generated/graphql'
 import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
-import { ERROR_TOAST } from '../../constants'
+import { ERROR_TOAST, PROVINCES } from '../../constants'
 import { formatError } from '../../utils'
 import { H3, Text } from '../../typography'
 import { MotionFlex } from '../../components'
@@ -48,6 +48,7 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
   const [selectedProvince, setSelectedProvince] = useState('')
   const [selectedCity, setSelectedCity] = useState('')
   const [selectedSuburb, setSelectedSuburb] = useState('')
+  const { values } = useFormikContext()
 
   const { data } = useGetHubCodesQuery({
     onError: (err: ApolloError) =>
@@ -61,45 +62,6 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
   const hubCodesResults = get(data, 'getHubCodes')
   const hubCodes = hubCodesResults?.ResultSets?.[0] || []
 
-  const provinces = [
-    {
-      label: 'Eastern Cape',
-      value: 'Eastern Cape'
-    },
-    {
-      label: 'Free State',
-      value: 'Free State'
-    },
-    {
-      label: 'Gauteng',
-      value: 'Gauteng'
-    },
-    {
-      label: 'KwaZulu Natal',
-      value: 'KwaZulu Natal'
-    },
-    {
-      label: 'Limpopo',
-      value: 'Limpopo'
-    },
-    {
-      label: 'Mpumalanga',
-      value: 'Mpumalanga'
-    },
-    {
-      label: 'Northern Cape',
-      value: 'Northern Cape'
-    },
-    {
-      label: 'North West',
-      value: 'North West'
-    },
-    {
-      label: 'Western Cape',
-      value: 'Western Cape'
-    }
-  ]
-
   const cities = hubCodes
     .map((hub: any) => hub.City)
     .filter((value, index, self) => self.indexOf(value) === index)
@@ -107,6 +69,15 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
       label: city,
       value: city
     }))
+
+  const checkCity = (cities: any, selectedCity: string) => {
+    return cities.filter((city: any) => city.City === selectedCity)
+  }
+  const cityWithSuburb = checkCity(hubCodes, selectedCity)
+  const suburbList = cityWithSuburb.map((sub: any) => ({
+    label: sub?.Suburb || '',
+    value: sub?.Suburb || ''
+  }))
 
   const initialValues = {
     province: editItem?.province || '',
@@ -127,15 +98,6 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
     setSelectedSuburb(event?.target?.value)
   }
 
-  const checkCity = (cities: any, selectedCity: string) => {
-    return cities.filter((city: any) => city.City === selectedCity)
-  }
-  const cityWithSuburb = checkCity(hubCodes, selectedCity)
-  const suburbList = cityWithSuburb.map((sub: any) => ({
-    label: sub?.Suburb || '',
-    value: sub?.Suburb || ''
-  }))
-
   const handleSubmit = ({ province, suburb, city, postalCode, name }: AddressValues) => {
     handleUserDetails({
       address: {
@@ -148,6 +110,10 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
       }
     })
   }
+
+  const provinceValue = getIn(values, 'province')
+  console.log('values', values)
+  useEffect(() => console.log('provinceValue', provinceValue), [provinceValue])
 
   return (
     <React.Fragment>
@@ -180,35 +146,38 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
           <Form style={{ width: '100%' }}>
             <ConnectedFormGroup
               label="Address Name*"
+              placeholder="Eg. Mum's Place"
               name="name"
               type="text"
-              placeholder="Eg. Mum's Place"
             />
             <ConnectedSelect
               label="Province*"
               placeholder="select a Province"
               name="province"
-              onChange={handleSelectedProvince}
-              value={selectedProvince}
-              options={provinces}
+              // onChange={handleSelectedProvince}
+              // value={selectedProvince}
+              options={PROVINCES}
+              isDisabled={false}
             />
             <ConnectedSelect
               label="City*"
               placeholder="select a City / Town"
               name="city"
               textTransform="lowercase"
-              onChange={handleSelectedCity}
-              value={selectedCity}
+              // onChange={handleSelectedCity}
+              // value={selectedCity}
               options={cities}
+              isDisabled={selectedProvince === '' ? true : false}
             />
             <ConnectedSelect
               label="Suburb*"
               placeholder="select a Suburb"
               name="suburb"
               textTransform="lowercase"
-              onChange={handleSelectedSuburb}
-              value={selectedSuburb}
+              // onChange={handleSelectedSuburb}
+              // value={selectedSuburb}
               options={suburbList}
+              isDisabled={selectedCity === '' ? true : false}
             />
             <ConnectedFormGroup
               label="Postal Code*"
@@ -216,6 +185,7 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
               type="text"
               // value={cityWithSuburb ? cityWithSuburb.[0].p : null}
               placeholder="eg. 1540"
+              isDisabled={selectedSuburb === '' ? true : false}
             />
             {status && (
               <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
