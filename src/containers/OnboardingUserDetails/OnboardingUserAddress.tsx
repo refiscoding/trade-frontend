@@ -9,7 +9,7 @@ import { get } from 'lodash'
 
 import { ComponentLocationAddress, useGetHubCodesQuery } from '../../generated/graphql'
 import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
-import { ERROR_TOAST } from '../../constants'
+import { ERROR_TOAST, PROVINCES } from '../../constants'
 import { formatError } from '../../utils'
 import { H3, Text } from '../../typography'
 import { MotionFlex } from '../../components'
@@ -46,6 +46,8 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
 }) => {
   const toast = useToast()
   const [selectedProvince, setSelectedProvince] = useState('')
+  const [selectedCity, setSelectedCity] = useState('')
+  const [selectedSuburb, setSelectedSuburb] = useState('')
 
   const { data } = useGetHubCodesQuery({
     onError: (err: ApolloError) =>
@@ -55,9 +57,28 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
       }),
     variables: { province: selectedProvince }
   })
+
   const hubCodesResults = get(data, 'getHubCodes')
   const hubCodes = hubCodesResults?.ResultSets?.[0] || []
-  console.log('hubCodes: ', hubCodes)
+  const cities = hubCodes
+    .map((hub: any) => hub.City)
+    .filter((value, index, self) => self.indexOf(value) === index)
+    .map((city) => ({
+      label: city,
+      value: city
+    }))
+  const checkCity = (cities: any, selectedCity: string) => {
+    return cities.filter((city: any) => city.City === selectedCity)
+  }
+  const cityWithSuburb = checkCity(hubCodes, selectedCity)
+  const suburbList = cityWithSuburb.map((sub: any) => ({
+    label: sub?.Suburb || '',
+    value: sub?.Suburb || ''
+  }))
+  const postalCodeList = cityWithSuburb.map((sub: any) => ({
+    label: sub?.PostalCode || '',
+    value: sub?.PostalCode || ''
+  }))
 
   const initialValues = {
     province: editItem?.province || '',
@@ -66,12 +87,6 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
     postalCode: editItem?.postalCode || '',
     type: editItem?.type || 'Residential',
     name: editItem?.name || ''
-  }
-
-  const handleSelectedProvince = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    event.persist()
-    const value = event?.target?.value
-    setSelectedProvince(value)
   }
 
   const handleSubmit = ({ province, suburb, city, postalCode, name }: AddressValues) => {
@@ -114,81 +129,57 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
           }
         }}
       >
-        {({ isSubmitting, status }: FormikProps<AddressValues>) => (
+        {({ isSubmitting, status, setFieldValue }: FormikProps<AddressValues>) => (
           <Form style={{ width: '100%' }}>
             <ConnectedFormGroup
               label="Address Name*"
+              placeholder="Eg. Mum's Place"
               name="name"
               type="text"
-              placeholder="Eg. Mum's Place"
             />
             <ConnectedSelect
-              label="Select Province"
-              onChange={handleSelectedProvince}
-              placeholder="-"
+              label="Province*"
+              placeholder="select a Province"
               name="province"
-              options={[
-                {
-                  label: 'Eastern Cape',
-                  value: 'Eastern Cape'
-                },
-                {
-                  label: 'Free State',
-                  value: 'Free State'
-                },
-                {
-                  label: 'Gauteng',
-                  value: 'Gauteng'
-                },
-                {
-                  label: 'KwaZulu Natal',
-                  value: 'KwaZulu Natal'
-                },
-                {
-                  label: 'Limpopo',
-                  value: 'Limpopo'
-                },
-                {
-                  label: 'Mpumalanga',
-                  value: 'Mpumalanga'
-                },
-                {
-                  label: 'Northern Cape',
-                  value: 'Northern Cape'
-                },
-                {
-                  label: 'North West',
-                  value: 'North West'
-                },
-                {
-                  label: 'Western Cape',
-                  value: 'Western Cape'
-                }
-              ]}
+              onChange={(name) => {
+                setSelectedProvince(name.target.value)
+                setFieldValue('province', name.target.value)
+              }}
+              options={PROVINCES}
             />
-            <ConnectedFormGroup
-              label="Complex / Building (Optional)"
-              name="complex"
-              type="text"
-              placeholder="Eg. Complex/Building Name, Unit Number or Floor"
-            />
-            <ConnectedFormGroup
-              label="Suburb*"
-              name="suburb"
-              type="text"
-              placeholder="Eg. Langaville"
-            />
-            <ConnectedFormGroup
-              label="City / Town*"
+            <ConnectedSelect
+              label="City*"
+              placeholder="select a City / Town"
               name="city"
-              type="text"
-              placeholder="Eg. Brakpan"
+              textTransform="lowercase"
+              onChange={(name) => {
+                setSelectedCity(name.target.value)
+                setFieldValue('city', name.target.value)
+              }}
+              options={cities}
+              isDisabled={selectedProvince === '' ? true : false}
             />
-            <ConnectedFormGroup
+            <ConnectedSelect
+              label="Suburb*"
+              placeholder="select a Suburb"
+              name="suburb"
+              textTransform="lowercase"
+              onChange={(name) => {
+                setSelectedSuburb(name.target.value)
+                setFieldValue('suburb', name.target.value)
+              }}
+              options={suburbList}
+              isDisabled={selectedCity === '' ? true : false}
+            />
+            <ConnectedSelect
               label="Postal Code*"
               name="postalCode"
-              type="text"
-              placeholder="Eg. 1540"
+              onChange={(name) => {
+                setFieldValue('postalCode', name.target.value)
+              }}
+              placeholder="select Postal Code"
+              options={postalCodeList}
+              isDisabled={selectedSuburb === '' ? true : false}
             />
             {status && (
               <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">

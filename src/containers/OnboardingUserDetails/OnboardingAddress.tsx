@@ -38,7 +38,7 @@ type AddressValues = {
   type?: string
 }
 
-const OnbordingUserAddress: React.FC<AddressProps> = ({
+const UserDetails: React.FC<AddressProps> = ({
   handleUserDetails,
   hideTitle,
   buttonLabel,
@@ -90,7 +90,6 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
   }
 
   const handleSubmit = ({ province, suburb, city, postalCode, name }: AddressValues) => {
-    console.log('here now', province, suburb, city, postalCode, name)
     handleUserDetails({
       address: {
         province,
@@ -199,4 +198,4 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
   )
 }
 
-export default OnbordingUserAddress
+export default UserDetails

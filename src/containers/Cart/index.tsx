@@ -93,7 +93,7 @@ const CartPage: React.FC = () => {
   const toast = useToast()
   const history = useHistory()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
-  // useScript(mapsScriptUrl)
+  useScript(mapsScriptUrl)
 
   const [editing, setEditing] = React.useState<boolean | undefined>()
   const [showDeleteItemsModal, setShowDeleteItemsModal] = React.useState<boolean | undefined>()
