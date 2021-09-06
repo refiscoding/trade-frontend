@@ -1,10 +1,10 @@
 import * as React from 'react'
 import * as Yup from 'yup'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { ApolloError } from 'apollo-boost'
 import { Button, Flex, useToast } from '@chakra-ui/core'
-import { Form, Formik, FormikProps, getIn, useFormikContext } from 'formik'
+import { Form, Formik, FormikProps } from 'formik'
 import { get } from 'lodash'
 
 import { ComponentLocationAddress, useGetHubCodesQuery } from '../../generated/graphql'
@@ -48,7 +48,6 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
   const [selectedProvince, setSelectedProvince] = useState('')
   const [selectedCity, setSelectedCity] = useState('')
   const [selectedSuburb, setSelectedSuburb] = useState('')
-  const { values } = useFormikContext()
 
   const { data } = useGetHubCodesQuery({
     onError: (err: ApolloError) =>
@@ -61,7 +60,6 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
 
   const hubCodesResults = get(data, 'getHubCodes')
   const hubCodes = hubCodesResults?.ResultSets?.[0] || []
-
   const cities = hubCodes
     .map((hub: any) => hub.City)
     .filter((value, index, self) => self.indexOf(value) === index)
@@ -69,7 +67,6 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
       label: city,
       value: city
     }))
-
   const checkCity = (cities: any, selectedCity: string) => {
     return cities.filter((city: any) => city.City === selectedCity)
   }
@@ -77,6 +74,10 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
   const suburbList = cityWithSuburb.map((sub: any) => ({
     label: sub?.Suburb || '',
     value: sub?.Suburb || ''
+  }))
+  const postalCodeList = cityWithSuburb.map((sub: any) => ({
+    label: sub?.PostalCode || '',
+    value: sub?.PostalCode || ''
   }))
 
   const initialValues = {
@@ -88,17 +89,8 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
     name: editItem?.name || ''
   }
 
-  const handleSelectedProvince = (event: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedProvince(event?.target?.value)
-  }
-  const handleSelectedCity = (event: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedCity(event?.target?.value)
-  }
-  const handleSelectedSuburb = (event: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedSuburb(event?.target?.value)
-  }
-
   const handleSubmit = ({ province, suburb, city, postalCode, name }: AddressValues) => {
+    console.log('here now', province, suburb, city, postalCode, name)
     handleUserDetails({
       address: {
         province,
@@ -110,10 +102,6 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
       }
     })
   }
-
-  const provinceValue = getIn(values, 'province')
-  console.log('values', values)
-  useEffect(() => console.log('provinceValue', provinceValue), [provinceValue])
 
   return (
     <React.Fragment>
@@ -129,7 +117,7 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
         validationSchema={AddressFormValidation}
         initialValues={initialValues}
         onSubmit={async (
-          { province, suburb, city, postalCode, name },
+          { province, suburb, city, postalCode, name }: AddressValues,
           { setStatus, setSubmitting }
         ) => {
           setStatus(null)
@@ -142,7 +130,7 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
           }
         }}
       >
-        {({ isSubmitting, status }: FormikProps<AddressValues>) => (
+        {({ isSubmitting, status, setFieldValue }: FormikProps<AddressValues>) => (
           <Form style={{ width: '100%' }}>
             <ConnectedFormGroup
               label="Address Name*"
@@ -154,18 +142,21 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
               label="Province*"
               placeholder="select a Province"
               name="province"
-              // onChange={handleSelectedProvince}
-              // value={selectedProvince}
+              onChange={(name) => {
+                setSelectedProvince(name.target.value)
+                setFieldValue('province', name.target.value)
+              }}
               options={PROVINCES}
-              isDisabled={false}
             />
             <ConnectedSelect
               label="City*"
               placeholder="select a City / Town"
               name="city"
               textTransform="lowercase"
-              // onChange={handleSelectedCity}
-              // value={selectedCity}
+              onChange={(name) => {
+                setSelectedCity(name.target.value)
+                setFieldValue('city', name.target.value)
+              }}
               options={cities}
               isDisabled={selectedProvince === '' ? true : false}
             />
@@ -174,17 +165,21 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
               placeholder="select a Suburb"
               name="suburb"
               textTransform="lowercase"
-              // onChange={handleSelectedSuburb}
-              // value={selectedSuburb}
+              onChange={(name) => {
+                setSelectedSuburb(name.target.value)
+                setFieldValue('suburb', name.target.value)
+              }}
               options={suburbList}
               isDisabled={selectedCity === '' ? true : false}
             />
-            <ConnectedFormGroup
+            <ConnectedSelect
               label="Postal Code*"
               name="postalCode"
-              type="text"
-              // value={cityWithSuburb ? cityWithSuburb.[0].p : null}
-              placeholder="eg. 1540"
+              onChange={(name) => {
+                setFieldValue('postalCode', name.target.value)
+              }}
+              placeholder="select Postal Code"
+              options={postalCodeList}
               isDisabled={selectedSuburb === '' ? true : false}
             />
             {status && (

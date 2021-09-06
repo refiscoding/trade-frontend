@@ -29,26 +29,25 @@ import {
 type UserStorage = StrapiLoginPayload | null
 
 export const DeliveryAddressValidation = Yup.object().shape({
-  street: Yup.string().required('Street Address is required'),
-  buildingComplex: Yup.string(),
-  surburb: Yup.string().required('Surburb is required'),
-  cityOrTown: Yup.string().required('City/Town is required'),
+  province: Yup.string().required('Province is required'),
+  suburb: Yup.string().required('Suburb is required'),
+  city: Yup.string().required('City / Town is required'),
   postalCode: Yup.string().required('Postal Code is required')
 })
 
 export type DeliveryAddressValues = {
-  street: string
-  buildingComplex: string
-  surburb: string
-  cityOrTown: string
+  name: string
+  province: string
+  city: string
+  suburb: string
   postalCode: string
 }
 
 export const initialDeliveryAddressValues = {
-  street: '',
-  buildingComplex: '',
-  surburb: '',
-  cityOrTown: '',
+  name: '',
+  province: '',
+  city: '',
+  suburb: '',
   postalCode: ''
 }
 
