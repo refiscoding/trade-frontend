@@ -107,6 +107,7 @@ const GenerateLabel: React.FC = () => {
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   const orderDetails = JSON.parse(localStorage.getItem('generated_label') || '')
   const { deliveryAddress, orderNumber, deliveryDate } = orderDetails
+  const addressData = deliveryAddress.address.split(',')
 
   const autofillDetails = {
     senderCompanyName: '-',
@@ -115,9 +116,9 @@ const GenerateLabel: React.FC = () => {
     senderTown: '-',
     senderNumber: '-',
     receiverName: deliveryAddress.name,
-    receiverStreetAddress: deliveryAddress.address,
-    receiverSuburb: '-',
-    receiverTown: '-',
+    receiverStreetAddress: addressData[3] && addressData[3].trim(),
+    receiverSuburb: addressData[2] && addressData[2].trim(),
+    receiverTown: addressData[0] && addressData[0].trim(),
     receiverNumber: '-',
     date: dayjs(deliveryDate).format('DD.MM.YYYY'),
     orderNumber: orderNumber,

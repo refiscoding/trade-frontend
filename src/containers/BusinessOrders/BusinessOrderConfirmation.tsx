@@ -1,13 +1,18 @@
 import * as React from 'react'
-import { Button, Flex, Link } from '@chakra-ui/core'
+import { Button, Flex, Link, useToast } from '@chakra-ui/core'
 
 import { H3, Text } from '../../typography'
 import { PageWrap } from '../../layouts'
 import { theme } from '../../theme'
+import strapiHelpers from '../../utils/strapiHelpers'
+import { SUCCESS_TOAST } from '../../constants/index'
+// import { UsersPermissionsUser } from '../../generated/graphql'
 
 type BusinessOrderConfirmationProps = {}
 
 const BusinessOrderConfirmation: React.FC<BusinessOrderConfirmationProps> = () => {
+  const toast = useToast()
+
   return (
     <PageWrap title="Order Confirmation" alignSelf="center" width="90%" mt={0} pt={0} p={0}>
       <H3 textAlign="left" fontSize={14} fontWeight={700}>
@@ -142,7 +147,18 @@ const BusinessOrderConfirmation: React.FC<BusinessOrderConfirmationProps> = () =
         </Flex>
         <Flex justify="space-between" flexDirection="column" alignItems="center">
           <Flex>
-            <Button type="submit" mt={4} variantColor="brand">
+            <Button
+              type="submit"
+              mt={4}
+              variantColor="brand"
+              onClick={() => {
+                toast({
+                  description: 'Order Confirmation Email Successfully Sent',
+                  ...SUCCESS_TOAST
+                })
+                return strapiHelpers.sendOrderConfirmationEmail
+              }}
+            >
               <Text fontSize="12px">CONFIRM AVAILABILITY</Text>
             </Button>
           </Flex>
