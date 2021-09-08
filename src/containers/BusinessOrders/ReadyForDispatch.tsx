@@ -164,7 +164,7 @@ const ReadyForDispatch: React.FC<BusinessOrdersProps> = ({ orders, ordersLoading
                         BUSINESS
                       </Tag>
                       <Text fontSize={14}>{`${selectedOrder?.deliveryAddress?.name}`}</Text>
-                     <Text fontSize={14}>{selectedOrder?.deliveryAddress?.province}</Text>
+                      <Text fontSize={14}>{selectedOrder?.deliveryAddress?.province}</Text>
                       <Text fontSize={14}>{selectedOrder?.deliveryAddress?.city}</Text>
                       <Text fontSize={14}>{selectedOrder?.deliveryAddress?.suburb}</Text>
                       <Text fontSize={14}>{`${selectedOrder?.deliveryAddress?.postalCode}`}</Text>
