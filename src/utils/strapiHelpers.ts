@@ -134,13 +134,29 @@ const sendOrderConfirmationEmail = async () => {
   }
 }
 
+const sendOrderDispatchEmail = async () => {
+  try {
+    console.log("here now")
+    return await axios.post(`${BASE}/business/dispatchEmail`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${fetchJwt()}`
+      }
+    })
+  } catch (error) {
+    console.log('error', error)
+    return Promise.reject(error)
+  }
+}
+
 export default {
   forgotPassword,
-  resetPassword,
   login,
-  register,
   providerAuth,
-  upload,
+  register,
+  resetPassword,
+  sendOrderConfirmationEmail,
+  sendOrderDispatchEmail,
   sendOrderSummaryEmail,
-  sendOrderConfirmationEmail
+  upload
 }
