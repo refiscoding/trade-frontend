@@ -24,7 +24,6 @@ import OrderSummary from './OrderSummary'
 import ProductCard from '../../components/Card/ProductCard'
 import SelectPayment from './SelectPayment'
 
-
 const StepperContainer = styled.div`
   margin-top: 15px;
 `
@@ -237,7 +236,10 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                           <Text mr={3} fontSize={14}>
                             {selectedAddress?.name}:
                           </Text>
-                          <Text fontSize={14}>{selectedAddress?.address}</Text>
+                          <Text fontSize={14}>
+                            {selectedAddress?.province || '-'} - {selectedAddress?.city || '-'} -{' '}
+                            {selectedAddress?.suburb || '-'}
+                          </Text>
                         </Flex>
                         <Flex justifySelf="end">
                           <Tag

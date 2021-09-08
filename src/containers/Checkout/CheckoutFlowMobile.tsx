@@ -85,10 +85,6 @@ const DeliveryItemsComponent: React.FC<DeliveryItemsComponentProps> = ({
 }) => {
   const actionTextStyle = { textDecoration: 'underline', cursor: 'pointer' }
 
-  const addressDetails = selectedAddress?.address?.split(',') ?? []
-  const addressStrings = addressDetails[0]?.split('-')
-  const streetAddress = addressStrings[0]?.trim()
-  const buildingOrComplex = addressStrings[1]?.trim()
   return (
     <Grid
       p={5}
@@ -119,12 +115,14 @@ const DeliveryItemsComponent: React.FC<DeliveryItemsComponentProps> = ({
             {selectedAddress?.type?.toUpperCase()}
           </Tag>
         </Flex>
-        <Text fontSize={14}>{streetAddress} </Text>
-        <Text fontSize={14}>{buildingOrComplex} </Text>
-        <Text fontSize={14}>{addressDetails[1]} </Text>
-        <Text fontSize={14}>{addressDetails[2]} </Text>
         <Text mt={3} fontSize={14}>
-          {selectedAddress?.postalCode}{' '}
+          {selectedAddress?.name || '-'}
+        </Text>
+        <Text fontSize={14}>{selectedAddress?.province || '-'} </Text>
+        <Text fontSize={14}>{selectedAddress?.city || '-'} </Text>
+        <Text fontSize={14}>{selectedAddress?.suburb || '-'} </Text>
+        <Text mt={3} fontSize={14}>
+          {selectedAddress?.postalCode || '-'}
         </Text>
       </Flex>
     </Grid>

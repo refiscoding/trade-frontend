@@ -2,10 +2,9 @@ fragment address on ComponentLocationAddress {
   id
   name
   isDefaultAddress
-  address
+  province
+  city
+  suburb
   postalCode
-  lat
-  lng
   type
-  complex
 }

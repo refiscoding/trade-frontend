@@ -52,7 +52,7 @@ const AddressBook: React.FC<AddressBookProps> = () => {
                 </Tag>
               </Grid>
               <Text mt={3} fontSize={12}>
-                {address?.address}
+                {address?.province || ''} - {address?.city || ''} - {address?.suburb || ''}
               </Text>
               <Text fontSize={12}>{address?.postalCode}</Text>
             </Grid>

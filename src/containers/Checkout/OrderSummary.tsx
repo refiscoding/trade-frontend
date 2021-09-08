@@ -32,8 +32,6 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
     (slot: TimeSlot) => slot?.id === selectedDeliveryTimeslot
   )
   const selectedDate = selectedDeliveryDate?.toString()?.split('00:00:00')?.join('')
-
-  const addressDetails = selectedAddress?.address?.split(',') ?? []
   const CTAStyles = { textDecoration: 'underline', cursor: 'pointer' }
 
   const handleChangeDeliveryDateTime = () => {
@@ -131,10 +129,10 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
       </Grid>
       <Grid mb={5} borderTop={`1px dashed #acacac}`}>
         <Text mt={5} fontWeight={600}>{`Delivery Point`}</Text>
-        <Text mt={3}>{selectedAddress?.name}</Text>
-        <Text>{addressDetails[1]}</Text>
-        <Text>{addressDetails[2]}</Text>
-        <Text mt={3}>{selectedAddress?.postalCode}</Text>
+        <Text mt={3}>{selectedAddress?.name || '-'}</Text>
+        <Text>{selectedAddress?.province || '-'}</Text>
+        <Text>{selectedAddress?.city || '-'}</Text>
+        <Text mt={3}>{selectedAddress?.postalCode || '-'}</Text>
         <Text
           onClick={handleChangeDeliveryAddress}
           mt={3}

@@ -111,11 +111,7 @@ const ProductComponentMobile: React.FC<ProductProps> = ({
           <Flex ml={marginLeft}>
             <MapPin style={{ marginTop: 3 }} />
             <Text mt={2} ml={3} fontSize="12px">
-              {`Delivered from ${
-                product?.business &&
-                product?.business?.address &&
-                product?.business?.address[0]?.address
-              }`}
+              {`Delivered from ${product?.business && product?.business?.address}`}
             </Text>
           </Flex>
         )}

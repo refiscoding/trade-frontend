@@ -19,10 +19,25 @@ export type ConnectedSelectProps = LabelProps &
 const ConnectedSelect: React.FC<ConnectedSelectProps> = ({ label, options, ...rest }) => {
   const [field, meta] = useField(rest.name)
   return (
-    <Flex flexDirection="column" width="100%" border={rest.border} bg={rest.bg} mr={rest.mr} ml={rest.ml} mt={rest.mt} mb={rest.mb}>
+    <Flex
+      flexDirection="column"
+      width="100%"
+      border={rest.border}
+      bg={rest.bg}
+      mr={rest.mr}
+      ml={rest.ml}
+      mt={rest.mt}
+      mb={rest.mb}
+    >
       <FormControl>
         {label && <FormLabel htmlFor={field.name}>{label}</FormLabel>}
-        <Select placeholder={rest.placeholder} focusBorderColor="accent.500" {...field} id={field.name} {...rest}>
+        <Select
+          placeholder={rest.placeholder}
+          focusBorderColor="accent.500"
+          {...field}
+          id={field.name}
+          {...rest}
+        >
           {options.map(({ label, value }, index: number) => (
             <option key={`${index}-${label}`} value={value}>
               {label}

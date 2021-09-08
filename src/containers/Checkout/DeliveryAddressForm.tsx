@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import * as React from 'react'
 
 import { Grid, Flex, useToast } from '@chakra-ui/core'
@@ -76,14 +77,14 @@ const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = ({ editItem }) =
 
   const handleUserDetails = async (details: DetailsInput) => {
     if (editItem) {
-      const { id, address, postalCode, lat, lng, isDefaultAddress } = editItem
+      const { id, province, city, suburb, postalCode, isDefaultAddress } = editItem
       return await editAddress({
         variables: {
           input: {
-            address,
+            province,
+            city,
+            suburb,
             postalCode,
-            lat,
-            lng,
             isDefaultAddress,
             ...details.address,
             type: addressTypeChecked,

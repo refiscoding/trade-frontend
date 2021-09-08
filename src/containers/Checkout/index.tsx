@@ -29,26 +29,25 @@ import {
 type UserStorage = StrapiLoginPayload | null
 
 export const DeliveryAddressValidation = Yup.object().shape({
-  street: Yup.string().required('Street Address is required'),
-  buildingComplex: Yup.string(),
-  surburb: Yup.string().required('Surburb is required'),
-  cityOrTown: Yup.string().required('City/Town is required'),
+  province: Yup.string().required('Province is required'),
+  suburb: Yup.string().required('Suburb is required'),
+  city: Yup.string().required('City / Town is required'),
   postalCode: Yup.string().required('Postal Code is required')
 })
 
 export type DeliveryAddressValues = {
-  street: string
-  buildingComplex: string
-  surburb: string
-  cityOrTown: string
+  name: string
+  province: string
+  city: string
+  suburb: string
   postalCode: string
 }
 
 export const initialDeliveryAddressValues = {
-  street: '',
-  buildingComplex: '',
-  surburb: '',
-  cityOrTown: '',
+  name: '',
+  province: '',
+  city: '',
+  suburb: '',
   postalCode: ''
 }
 
@@ -167,19 +166,6 @@ const CheckoutPage: React.FC = () => {
 
   const addresses = user?.address as ComponentLocationAddress[]
 
-  const orderAddress = userOrder?.fetchOneUserCheckoutOrder?.payload?.deliveryAddress
-
-  const failedOrderAddress = addresses.filter((address: ComponentLocationAddress) => {
-    if (orderAddress) {
-      const lat = address.lat === orderAddress?.lat
-      const lng = address.lng === orderAddress?.lng
-      if (lat && lng) {
-        return address
-      }
-    }
-    return {}
-  })
-
   const userStorageHooks = useBrowserStorage<UserStorage>(STRAPI_USER_STORAGE_KEY, 'local')
   const sessionStorageHooks = useBrowserStorage<UserStorage>(STRAPI_USER_STORAGE_KEY, 'session')
 
@@ -188,10 +174,10 @@ const CheckoutPage: React.FC = () => {
     if (products) {
       const orderInput = {
         deliveryAddress: {
-          address: selectedAddress?.address,
+          province: selectedAddress?.province,
           postalCode: selectedAddress?.postalCode,
-          lat: selectedAddress?.lat,
-          lng: selectedAddress?.lng,
+          city: selectedAddress?.city,
+          suburb: selectedAddress?.suburb,
           isDefaultAddress: selectedAddress?.isDefaultAddress,
           type: selectedAddress?.type,
           name: selectedAddress?.name
@@ -214,11 +200,9 @@ const CheckoutPage: React.FC = () => {
   }
 
   React.useEffect(() => {
-    const orderAddress = failedOrderAddress[0]
     const failedOrderDate = userOrder?.fetchOneUserCheckoutOrder?.payload?.deliveryDate
     const date = failedOrderDate ? new Date(failedOrderDate) : new Date()
     if (failedPayment) {
-      setSelectedAddress(orderAddress)
       setSelectedDeliveryDate(date)
       setSelectedDeliveryTimeslot('1')
       if (isTabletOrMobile) {
@@ -228,7 +212,7 @@ const CheckoutPage: React.FC = () => {
       }
       history.replace('/checkout')
     }
-  }, [userOrder, failedOrderAddress, failedPayment, history, isTabletOrMobile])
+  }, [userOrder, failedPayment, history, isTabletOrMobile])
 
   return (
     <PageWrap title="Checkout">

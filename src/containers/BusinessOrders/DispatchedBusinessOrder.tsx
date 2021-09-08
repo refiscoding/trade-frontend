@@ -21,10 +21,8 @@ const DispatchedBusinessOrder: React.FC<BusinessOrdersProps> = ({ orders, orders
   const noOrdersNoOrderClickedMessage =
     'If you had orders, you would select one on the left and view its details here. For now, shop for products'
   const noOrdersHeader = 'Shop for products'
-
   const noOrdersCaption =
     "You currently don't have an order history. Complete an order and it will show up here"
-
   const noOrderClickedHeader = noOrders ? noOrdersHeader : 'Select an order to view details'
   const noOrderClickedCaption = noOrders
     ? noOrdersNoOrderClickedMessage
@@ -32,8 +30,6 @@ const DispatchedBusinessOrder: React.FC<BusinessOrdersProps> = ({ orders, orders
        You haven't selected any order to view its details.
        Selecting an order will have it displayed here
    `
-  const orderAddress = selectedOrder?.deliveryAddress?.address?.split(',') ?? []
-
   const orderStatusAndColor = setOrderStatusAndColor(selectedOrder)
 
   return (
@@ -168,9 +164,9 @@ const DispatchedBusinessOrder: React.FC<BusinessOrdersProps> = ({ orders, orders
                         BUSINESS
                       </Tag>
                       <Text fontSize={14}>{`${selectedOrder?.deliveryAddress?.name}`}</Text>
-                      <Text fontSize={14}>{`${orderAddress[0]}`}</Text>
-                      <Text fontSize={14}>{`${orderAddress[1]}`}</Text>
-                      <Text fontSize={14}>{`${orderAddress[2]}`}</Text>
+                     <Text fontSize={14}>{selectedOrder?.deliveryAddress?.province}</Text>
+                      <Text fontSize={14}>{selectedOrder?.deliveryAddress?.city}</Text>
+                      <Text fontSize={14}>{selectedOrder?.deliveryAddress?.suburb}</Text>
                       <Text fontSize={14}>{`${selectedOrder?.deliveryAddress?.postalCode}`}</Text>
                     </Flex>
                   </Flex>

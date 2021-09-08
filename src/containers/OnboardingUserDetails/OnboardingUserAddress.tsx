@@ -1,17 +1,18 @@
-import * as Yup from 'yup'
 import * as React from 'react'
+import * as Yup from 'yup'
 import { useState } from 'react'
-import { Form, Formik, FormikProps } from 'formik'
-import { Button, Flex, useToast, Image } from '@chakra-ui/core'
-import usePlacesAutocomplete, { getGeocode, getLatLng, getZipCode } from 'use-places-autocomplete'
 
+import { ApolloError } from 'apollo-boost'
+import { Button, Flex, useToast } from '@chakra-ui/core'
+import { Form, Formik, FormikProps } from 'formik'
+import { get } from 'lodash'
+
+import { ComponentLocationAddress, useGetHubCodesQuery } from '../../generated/graphql'
+import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
+import { ERROR_TOAST, PROVINCES } from '../../constants'
 import { formatError } from '../../utils'
-import { images } from '../../theme'
 import { H3, Text } from '../../typography'
 import { MotionFlex } from '../../components'
-import { ERROR_TOAST } from '../../constants'
-import { ConnectedFormGroup } from '../../components/FormElements'
-import { ComponentLocationAddress } from '../../generated/graphql'
 
 type AddressProps = {
   handleUserDetails: (details: any) => void
@@ -21,38 +22,20 @@ type AddressProps = {
 }
 
 const AddressFormValidation = Yup.object().shape({
-  complex: Yup.string(),
-  suburb: Yup.string().required('A Suburb is required'),
-  city: Yup.string().required('A City / Town is required'),
-  postalCode: Yup.string().required('A Postal Code is required')
+  name: Yup.string().required('Name is required'),
+  province: Yup.string().required('Province is required'),
+  city: Yup.string().required('City / Town is required'),
+  suburb: Yup.string().required('Suburb is required'),
+  postalCode: Yup.string().required('Postal Code is required')
 })
 
 type AddressValues = {
-  complex: string
-  suburb: string
+  province: string
   city: string
+  suburb: string
   postalCode: string
   name?: string
-  address?: string
-  lat?: number
-  lng?: number
   type?: string
-}
-
-type SelectedSuggestion = {
-  street: string
-  surburb: string
-  cityOrTown: string
-}
-
-const morphAddressString = (addressString: string) => {
-  const locationDetails = addressString?.split(',')
-  const selectedLocation = {
-    street: locationDetails[0],
-    surburb: locationDetails[1] && locationDetails[1]?.trim(),
-    cityOrTown: locationDetails[2] && locationDetails[2]?.trim()
-  }
-  return selectedLocation
 }
 
 const OnbordingUserAddress: React.FC<AddressProps> = ({
@@ -61,119 +44,59 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
   buttonLabel,
   editItem
 }) => {
-  const addressString = (editItem ? editItem?.address : '') ?? ''
-  const addressObject = editItem && morphAddressString(addressString)
+  const toast = useToast()
+  const [selectedProvince, setSelectedProvince] = useState('')
+  const [selectedCity, setSelectedCity] = useState('')
+  const [selectedSuburb, setSelectedSuburb] = useState('')
+
+  const { data } = useGetHubCodesQuery({
+    onError: (err: ApolloError) =>
+      toast({
+        description: err.message,
+        ...ERROR_TOAST
+      }),
+    variables: { province: selectedProvince }
+  })
+
+  const hubCodesResults = get(data, 'getHubCodes')
+  const hubCodes = hubCodesResults?.ResultSets?.[0] || []
+  const cities = hubCodes
+    .map((hub: any) => hub.City)
+    .filter((value, index, self) => self.indexOf(value) === index)
+    .map((city) => ({
+      label: city,
+      value: city
+    }))
+  const checkCity = (cities: any, selectedCity: string) => {
+    return cities.filter((city: any) => city.City === selectedCity)
+  }
+  const cityWithSuburb = checkCity(hubCodes, selectedCity)
+  const suburbList = cityWithSuburb.map((sub: any) => ({
+    label: sub?.Suburb || '',
+    value: sub?.Suburb || ''
+  }))
+  const postalCodeList = cityWithSuburb.map((sub: any) => ({
+    label: sub?.PostalCode || '',
+    value: sub?.PostalCode || ''
+  }))
 
   const initialValues = {
-    complex: '',
-    suburb: addressObject?.surburb || '',
-    city: addressObject?.cityOrTown || '',
+    province: editItem?.province || '',
+    city: editItem?.city || '',
+    suburb: editItem?.suburb || '',
     postalCode: editItem?.postalCode || '',
-    lat: editItem?.lat || 0,
-    lng: editItem?.lng || 0,
     type: editItem?.type || 'Residential',
     name: editItem?.name || ''
   }
-  const [defaultValues, setDefaultValues] = useState<AddressValues>(initialValues)
-  const {
-    value,
-    suggestions: { status, data },
-    setValue,
-    clearSuggestions
-  } = usePlacesAutocomplete({
-    requestOptions: {},
-    debounce: 300
-  })
-  const resultsStatus = status
-  const toast = useToast()
 
-  const handleInput = (e: any) => {
-    setValue(e.target.value)
-  }
-
-  const handleSelect = ({ description }: any, setFieldValue: any) => () => {
-    const locationDetails = description?.split(',')
-    const selectedLocation = {
-      street: locationDetails[0],
-      surburb: locationDetails[1] && locationDetails[1]?.trim(),
-      cityOrTown: locationDetails[2] && locationDetails[2]?.trim()
-    }
-    setValue(description, false)
-    setFieldValue('city', selectedLocation?.cityOrTown)
-    setFieldValue('suburb', selectedLocation?.surburb)
-    clearSuggestions()
-
-    getGeocode({
-      address: description
-    })
-      .then((results) => getLatLng(results[0]))
-      .then(({ lat, lng }) => {
-        setDefaultValues({
-          ...defaultValues,
-          address: description,
-          lat,
-          lng,
-          suburb: selectedLocation?.surburb,
-          city: selectedLocation?.cityOrTown
-        })
-      })
-      .catch((error) => {
-        toast({
-          description: 'Something went wrong while updating your address',
-          ...ERROR_TOAST
-        })
-      })
-
-    getGeocode({
-      address: description
-    })
-      .then((zipResults) => getZipCode(zipResults[0], false))
-      .then((zipCode) => {
-        if(zipCode) {
-          setFieldValue('postalCode', zipCode)
-          setDefaultValues({
-            ...defaultValues,
-            postalCode: zipCode
-          })
-        } else {
-          setFieldValue('postalCode', '-')
-        }
-      })
-      .catch((error) => {
-        toast({
-          description: 'Something went wrong while updating your address',
-          ...ERROR_TOAST
-        })
-      })
-  }
-
-  const renderSuggestions = (setFieldValue: any) =>
-    data.map((suggestion) => {
-      const suggestedplaces = suggestion
-      return (
-        <Flex
-          cursor="pointer"
-          bg="white"
-          p={2}
-          key={suggestedplaces.place_id}
-          onClick={handleSelect(suggestion, setFieldValue)}
-        >
-          <Text fontWeight={600}>{suggestedplaces.structured_formatting.main_text}</Text>
-          <Text>{suggestedplaces.structured_formatting.secondary_text}</Text>
-        </Flex>
-      )
-    })
-
-  const handleSubmit = ({ complex, suburb, city, postalCode, name }: AddressValues) => {
-    const address = `${value} - ${complex}, ${suburb}, ${city}`
-
+  const handleSubmit = ({ province, suburb, city, postalCode, name }: AddressValues) => {
     handleUserDetails({
       address: {
-        address: defaultValues.address || address,
+        province,
+        city,
+        suburb,
         postalCode,
-        lng: defaultValues.lng,
-        lat: defaultValues.lat,
-        type: defaultValues.type,
+        type: initialValues.type,
         name
       }
     })
@@ -191,15 +114,15 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
       )}
       <Formik
         validationSchema={AddressFormValidation}
-        initialValues={defaultValues}
+        initialValues={initialValues}
         onSubmit={async (
-          { complex, suburb, city, postalCode, name },
+          { province, suburb, city, postalCode, name },
           { setStatus, setSubmitting }
         ) => {
           setStatus(null)
           try {
             setSubmitting(true)
-            handleSubmit({ complex, suburb, city, postalCode, name })
+            await handleSubmit({ province, suburb, city, postalCode, name })
             setSubmitting(false)
           } catch (error) {
             setStatus(formatError(error))
@@ -210,67 +133,53 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
           <Form style={{ width: '100%' }}>
             <ConnectedFormGroup
               label="Address Name*"
+              placeholder="Eg. Mum's Place"
               name="name"
               type="text"
-              placeholder="Eg. Mum's Place"
             />
-
-            <Flex flexDirection="column" position="relative">
-              <ConnectedFormGroup
-                label="Enter your street address*"
-                name="address"
-                type="text"
-                placeholder="Eg. 56 Gauteng Road"
-                mb={1}
-                value={value}
-                onChange={handleInput}
-              />
-              {resultsStatus === 'OK' && (
-                <Flex
-                  flexDirection="column"
-                  position="absolute"
-                  height="200px"
-                  zIndex={15}
-                  width="100%"
-                  bottom={-200}
-                >
-                  {renderSuggestions(setFieldValue)}
-                </Flex>
-              )}
-              <Flex justify="space-between" mb={4}>
-                {/* <Text
-                  onClick={handleUseCurrentLocation}
-                  style={{ cursor: 'pointer', textDecoration: 'underline' }}
-                  fontSize={12}
-                >
-                  Use My Current Location
-                </Text> */}
-                <Image justifySelf="end" width="40%" src={images.PoweredByGoogle} />
-              </Flex>
-            </Flex>
-            <ConnectedFormGroup
-              label="Complex / Building (Optional)"
-              name="complex"
-              type="text"
-              placeholder="Eg. Complex/Building Name, Unit Number or Floor"
+            <ConnectedSelect
+              label="Province*"
+              placeholder="select a Province"
+              name="province"
+              onChange={(name) => {
+                setSelectedProvince(name.target.value)
+                setFieldValue('province', name.target.value)
+              }}
+              options={PROVINCES}
             />
-            <ConnectedFormGroup
-              label="Suburb*"
-              name="suburb"
-              type="text"
-              placeholder="Eg. Langaville"
-            />
-            <ConnectedFormGroup
-              label="City / Town*"
+            <ConnectedSelect
+              label="City*"
+              placeholder="select a City / Town"
               name="city"
-              type="text"
-              placeholder="Eg. Brakpan"
+              textTransform="lowercase"
+              onChange={(name) => {
+                setSelectedCity(name.target.value)
+                setFieldValue('city', name.target.value)
+              }}
+              options={cities}
+              isDisabled={selectedProvince === '' ? true : false}
             />
-            <ConnectedFormGroup
+            <ConnectedSelect
+              label="Suburb*"
+              placeholder="select a Suburb"
+              name="suburb"
+              textTransform="lowercase"
+              onChange={(name) => {
+                setSelectedSuburb(name.target.value)
+                setFieldValue('suburb', name.target.value)
+              }}
+              options={suburbList}
+              isDisabled={selectedCity === '' ? true : false}
+            />
+            <ConnectedSelect
               label="Postal Code*"
               name="postalCode"
-              type="text"
-              placeholder="Eg. 1540"
+              onChange={(name) => {
+                setFieldValue('postalCode', name.target.value)
+              }}
+              placeholder="select Postal Code"
+              options={postalCodeList}
+              isDisabled={selectedSuburb === '' ? true : false}
             />
             {status && (
               <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">

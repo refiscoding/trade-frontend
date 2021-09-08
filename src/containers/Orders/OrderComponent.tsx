@@ -74,9 +74,9 @@ const OrderComponent: React.FC<OrderComponentProps> = ({ setSelectedOrder, order
           <Image height="50%" src={images.parcel} />
         </Flex>
         <Flex flexDirection="column" mt={3} width="100%" justifySelf="start">
-          <Text fontSize={14}>{`${order?.deliveryAddress?.name}`}</Text>
-          <Text fontSize={14}>{`${order?.deliveryAddress?.address}`}</Text>
-          <Text fontSize={14}>{`${order?.deliveryAddress?.postalCode}`}</Text>
+          <Text fontSize={14}>{order?.deliveryAddress?.name}</Text>
+          <Text fontSize={14}>{order?.deliveryAddress?.province}</Text>
+          <Text fontSize={14}>{order?.deliveryAddress?.postalCode}</Text>
         </Flex>
       </Flex>
     </Grid>
