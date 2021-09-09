@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios'
 import { fetchJwt } from '.'
 import { CartProduct } from '../containers/Cart'
-import { ComponentLocationAddress, UploadFile, UsersPermissionsUser } from '../generated/graphql'
+import { ComponentLocationAddress, UploadFile, UsersPermissionsUser, Order } from '../generated/graphql'
 
 const BASE = process.env.REACT_APP_API_HOST || ''
 const CLIENT_BASE = window.location.origin || ''
@@ -134,10 +134,18 @@ const sendOrderConfirmationEmail = async () => {
   }
 }
 
-const sendOrderDispatchEmail = async () => {
+const sendOrderDispatchEmail = async (
+  selectedOrder: Order | undefined,
+  user: UsersPermissionsUser | undefined
+) => {
+  const data = {
+    username: user?.firstName,
+    email: user?.email,
+    selectedOrder
+  }
   try {
-    console.log("here now")
-    return await axios.post(`${BASE}/business/dispatchEmail`, {
+    console.log('here now')
+    return await axios.post(`${BASE}/business/dispatchEmail`, data, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${fetchJwt()}`

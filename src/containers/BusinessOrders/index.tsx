@@ -10,9 +10,10 @@ import { theme } from '../../theme'
 import { useMediaQuery } from 'react-responsive'
 import NavigationHeader from './navigationHeader'
 import {
-  useFetchUserCheckoutOrdersQuery,
   Order,
-  FetchUserCheckoutOrdersQuery
+  FetchUserCheckoutOrdersQuery,
+  useFetchUserCheckoutOrdersQuery,
+  UsersPermissionsUser
 } from '../../generated/graphql'
 import BusinessOrdersWeb from './businessOrdersWeb'
 import { ERROR_TOAST } from '../../constants'
@@ -28,11 +29,16 @@ type BusinessOrdersPageProps = FlexProps & {
   isTabletOrMobile: boolean
 }
 
+type BusinessPageProps = {
+  user?: UsersPermissionsUser
+}
+
 export type BusinessOrdersProps = {
   orders: Order[]
   ordersLoading: boolean
   refetchUserOrders: () => Promise<ApolloQueryResult<FetchUserCheckoutOrdersQuery>>
   setDateRange: React.Dispatch<React.SetStateAction<Ranges | undefined>>
+  user?: UsersPermissionsUser
 }
 
 const BusinessOrdersPageHeader: React.FC<BusinessOrdersPageProps> = ({ isTabletOrMobile }) => {
@@ -54,7 +60,7 @@ const BusinessOrdersPageHeader: React.FC<BusinessOrdersPageProps> = ({ isTabletO
   )
 }
 
-const BusinessOrdersPage: React.FC = () => {
+const BusinessOrdersPage: React.FC<BusinessPageProps> = ({ user }) => {
   const toast = useToast()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   const [dateRange, setDateRange] = React.useState<Ranges>()
@@ -99,9 +105,10 @@ const BusinessOrdersPage: React.FC = () => {
             <BusinessOrderConfirmation />
             <ReadyForDispatch
               orders={orders}
+              ordersLoading={userOrdersLoading}
               refetchUserOrders={refetchUserOrders}
               setDateRange={setDateRange}
-              ordersLoading={userOrdersLoading}
+              user={user}
             />
             <DispatchedBusinessOrder
               orders={orders}

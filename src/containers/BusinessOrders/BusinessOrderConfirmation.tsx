@@ -156,7 +156,7 @@ const BusinessOrderConfirmation: React.FC<BusinessOrderConfirmationProps> = () =
                   description: 'Order Confirmation Email Successfully Sent',
                   ...SUCCESS_TOAST
                 })
-                return strapiHelpers.sendOrderConfirmationEmail
+                return strapiHelpers.sendOrderConfirmationEmail()
               }}
             >
               <Text fontSize="12px">CONFIRM AVAILABILITY</Text>
