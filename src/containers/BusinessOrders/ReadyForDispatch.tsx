@@ -1,19 +1,23 @@
 import * as React from 'react'
 import dayjs from 'dayjs'
-import { Flex, Grid, Tag, Spinner } from '@chakra-ui/core'
+
+import { Button, Flex, Grid, Link, Spinner, Tag, useToast } from '@chakra-ui/core'
 
 import { BusinessOrdersProps } from '.'
+import { H3, Text } from '../../typography'
 import { images, theme } from '../../theme'
 import { Order } from '../../generated/graphql'
 import { PageWrap } from '../../layouts'
-import { H3, Text } from '../../typography'
+import { SUCCESS_TOAST } from '../../constants/index'
 
-import ReadyForDispatchComponent from './ReadyForDispatchComponent'
 import NoData from '../Checkout/NoDataScreen'
 import OrderItemsSummary from '../Orders/OrderItems'
 import setOrderStatusAndColor from '../Orders/setOrderStatusAndColor'
+import ReadyForDispatchComponent from './ReadyForDispatchComponent'
+import strapiHelpers from '../../utils/strapiHelpers'
 
-const ReadyForDispatch: React.FC<BusinessOrdersProps> = ({ orders, ordersLoading }) => {
+const ReadyForDispatch: React.FC<BusinessOrdersProps> = ({ orders, user, ordersLoading }) => {
+  const toast = useToast()
   const noOrders = !orders?.length
 
   const [selectedOrder, setSelectedOrder] = React.useState<Order | undefined>()
@@ -163,11 +167,38 @@ const ReadyForDispatch: React.FC<BusinessOrdersProps> = ({ orders, ordersLoading
                       >
                         BUSINESS
                       </Tag>
-                      <Text fontSize={14}>{`${selectedOrder?.deliveryAddress?.name}`}</Text>
+                      <Text fontSize={14}>${selectedOrder?.deliveryAddress?.name}</Text>
                       <Text fontSize={14}>{selectedOrder?.deliveryAddress?.province}</Text>
                       <Text fontSize={14}>{selectedOrder?.deliveryAddress?.city}</Text>
                       <Text fontSize={14}>{selectedOrder?.deliveryAddress?.suburb}</Text>
                       <Text fontSize={14}>{`${selectedOrder?.deliveryAddress?.postalCode}`}</Text>
+                    </Flex>
+                  </Flex>
+                  <Flex justify="space-between" width="100%" flexDirection="column">
+                    <Flex width="50%" margin="auto" justifyContent="center">
+                      <Button
+                        type="submit"
+                        mt={4}
+                        width="50%"
+                        variantColor="brand"
+                        onClick={() => {
+                          toast({
+                            description: 'Order Dispatch Email Successfully Sent',
+                            ...SUCCESS_TOAST
+                          })
+                          return strapiHelpers.sendOrderDispatchEmail(selectedOrder, user)
+                        }}
+                      >
+                        <Text fontSize="12px">DISPATCH</Text>
+                      </Button>
+                    </Flex>
+                    <Flex flexDirection="column" mt={3} mb={3} width="100%" alignItems="center">
+                      <Text fontSize={12} fontWeight={700}>
+                        Something not right?{' '}
+                        <Link href="#" cursor="pointer">
+                          Contact Support
+                        </Link>
+                      </Text>
                     </Flex>
                   </Flex>
                 </Flex>

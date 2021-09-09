@@ -1,16 +1,16 @@
 import * as React from 'react'
 
 import dayjs from 'dayjs'
-import { Button, Flex, Grid, Link, useToast } from '@chakra-ui/core'
+import { Flex, Grid } from '@chakra-ui/core'
 import { ChevronRight } from 'react-feather'
 import LocalizedFormat from 'dayjs/plugin/localizedFormat'
 import RelativeTime from 'dayjs/plugin/relativeTime'
+import styled from '@emotion/styled'
 
 import { Order } from '../../generated/graphql'
-import { SUCCESS_TOAST } from '../../constants/index'
 import { Text } from '../../typography'
 import { theme } from '../../theme'
-import strapiHelpers from '../../utils/strapiHelpers'
+import { MotionFlex } from '../../components'
 
 dayjs.extend(LocalizedFormat)
 dayjs.extend(RelativeTime)
@@ -20,12 +20,16 @@ type ReadyForDispatchComponentProps = {
   order: Order
 }
 
+const StyledFlex = styled(MotionFlex)`
+  &:hover {
+    background: #c9cfd4;
+  }
+`
+
 const ReadyForDispatchComponent: React.FC<ReadyForDispatchComponentProps> = ({
   setSelectedOrder,
   order
 }) => {
-  const toast = useToast()
-
   const handleOrderClicked = () => {
     setSelectedOrder(order)
   }
@@ -45,9 +49,8 @@ const ReadyForDispatchComponent: React.FC<ReadyForDispatchComponentProps> = ({
           fontWeight={600}
         >{`Order Ready For Dispatch - ${order?.orderNumber}`}</Text>
       </Flex>
-      <Flex
+      <StyledFlex
         justify="space-between"
-        borderBottom={`1px solid ${theme.colors.background}`}
         pt={2}
         pb={3}
         cursor="pointer"
@@ -57,34 +60,7 @@ const ReadyForDispatchComponent: React.FC<ReadyForDispatchComponentProps> = ({
           Order information
         </Text>
         <ChevronRight />
-      </Flex>
-      <Flex justify="space-between" width="100%" flexDirection="column">
-        <Flex mt={3} ml={3} width="90%">
-          <Button
-            type="submit"
-            mt={4}
-            width="95%"
-            variantColor="brand"
-            onClick={() => {
-              toast({
-                description: 'Order Dispatch Email Successfully Sent',
-                ...SUCCESS_TOAST
-              })
-              return strapiHelpers.sendOrderDispatchEmail
-            }}
-          >
-            <Text fontSize="12px">DISPATCH</Text>
-          </Button>
-        </Flex>
-        <Flex flexDirection="column" mt={3} mb={3} width="100%" alignItems="center">
-          <Text fontSize={12} fontWeight={700}>
-            Something not right?{' '}
-            <Link href="#" cursor="pointer">
-              Contact Support
-            </Link>
-          </Text>
-        </Flex>
-      </Flex>
+      </StyledFlex>
     </Grid>
   )
 }
