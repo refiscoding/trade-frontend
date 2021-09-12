@@ -1,28 +1,30 @@
 import * as React from 'react'
 import { Flex, FlexProps, Text, useToast } from '@chakra-ui/core'
 import { ApolloError, ApolloQueryResult } from 'apollo-boost'
+import { connectSearchBox, Hits, InstantSearch, Stats } from 'react-instantsearch-dom'
 import { get } from 'lodash'
 import { Search } from 'react-feather'
 
-import { H3 } from '../../typography'
-import { PageWrap } from '../../layouts'
-import { theme } from '../../theme'
-import { useMediaQuery } from 'react-responsive'
-import NavigationHeader from './navigationHeader'
+import { ConnectedFormGroup } from '../../components/FormElements'
+import { ERROR_TOAST, SEARCH_INDEX, searchClient } from '../../constants'
 import {
-  Order,
   FetchUserCheckoutOrdersQuery,
+  Order,
   useFetchUserCheckoutOrdersQuery,
   UsersPermissionsUser
 } from '../../generated/graphql'
-import BusinessOrdersWeb from './businessOrdersWeb'
-import { ERROR_TOAST } from '../../constants'
-import { Ranges } from '../Orders/DatePickerForm'
 import { Form, Formik } from 'formik'
-import { ConnectedFormGroup } from '../../components/FormElements'
+import { H3 } from '../../typography'
+import { PageWrap } from '../../layouts'
+import { Ranges } from '../Orders/DatePickerForm'
+import { theme } from '../../theme'
+import { useMediaQuery } from 'react-responsive'
 import BusinessOrderConfirmation from './BusinessOrderConfirmation'
-import ReadyForDispatch from './ReadyForDispatch'
+import BusinessOrdersWeb from './businessOrdersWeb'
 import DispatchedBusinessOrder from './DispatchedBusinessOrder'
+import NavigationHeader from './navigationHeader'
+import ReadyForDispatch from './ReadyForDispatch'
+import Section from '../../components/Section'
 // import BusinessOrdersSearchBox from './BusinessOrdersSearchBox'
 
 type BusinessOrdersPageProps = FlexProps & {
@@ -65,6 +67,7 @@ const BusinessOrdersPage: React.FC<BusinessPageProps> = ({ user }) => {
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   const [dateRange, setDateRange] = React.useState<Ranges>()
   const [activeTab, setActiveTab] = React.useState('all')
+  const [isSearching, setIsSearching] = React.useState<boolean>(false)
 
   const res = {
     input: {
@@ -82,6 +85,23 @@ const BusinessOrdersPage: React.FC<BusinessPageProps> = ({ user }) => {
     variables: { ...res }
   })
   const orders = get(userOrders, 'findCheckoutOrders.payload')
+
+  const handleSearch = (value: string) => {
+    if (value.length > 0) {
+      setIsSearching(true)
+      return
+    }
+    setIsSearching(false)
+  }
+
+  const handleReset = () => {
+    setIsSearching(false)
+  }
+
+  const OrderDisplay: React.FC = ({ hit }: any) => {
+    //TO-DO
+    return <> order cards here </>
+  }
 
   React.useEffect(() => {
     refetchUserOrders()
@@ -152,38 +172,51 @@ const BusinessOrdersPage: React.FC<BusinessPageProps> = ({ user }) => {
     }
   }
 
+  const SearchBox = connectSearchBox(({ refine, currentRefinement }) => (
+    <Formik initialValues={{ search: '' }} onSubmit={() => {}}>
+      <Form style={{ width: '80%' }}>
+        <ConnectedFormGroup
+          icon={Search}
+          name="search"
+          placeholder="Search Orders"
+          fontSize={12}
+          paddingLeft="40px"
+          borderColor="transparent"
+          bg="accent.600"
+          iconPosition="left"
+          onChange={(e: any) => {
+            handleSearch(e.target.value)
+            refine(e.target.value)
+          }}
+          onReset={handleReset}
+          value={currentRefinement}
+          mb={0}
+        />
+      </Form>
+    </Formik>
+  ))
   return (
     <PageWrap title="Business Orders" color="colors.white" justifyContent="space-between">
-      <Flex alignSelf="center" width="80%" flexDirection="column" alignItems="center">
-        <BusinessOrdersPageHeader isTabletOrMobile={isTabletOrMobile} />
-        {/* To-Do: create usable search box */}
-        {/* <BusinessOrdersSearchBox handleSearch={() => {}} handleReset={() => {}} /> */}
-        <Formik initialValues={{ search: '' }} onSubmit={() => {}}>
-          <Form style={{ width: '80%' }}>
-            <ConnectedFormGroup
-              icon={Search}
-              name="search"
-              placeholder="Search Orders"
-              fontSize={12}
-              paddingLeft="40px"
-              borderColor="transparent"
-              bg="accent.600"
-              iconPosition="left"
-              onChange={() => {}}
-              onReset={() => {}}
-              value=""
-              mb={0}
-            />
-          </Form>
-        </Formik>
-        <Flex justify="space-between" mb="0">
-          <H3 textAlign="left" fontSize={18} fontWeight={600}>
-            <NavigationHeader setActiveTab={setActiveTab} activeTab={activeTab} />
-          </H3>
+      <InstantSearch indexName={SEARCH_INDEX} searchClient={searchClient}>
+        <Flex alignSelf="center" width="80%" flexDirection="column" alignItems="center">
+          <BusinessOrdersPageHeader isTabletOrMobile={isTabletOrMobile} />
+          <SearchBox />
+          {isSearching ? (
+            <Section title="" maxWidth={'1100px'}>
+              <Stats />
+              <Hits hitComponent={OrderDisplay} />
+            </Section>
+          ) : (
+            <Flex justify="space-between" mb="0">
+              <H3 textAlign="left" fontSize={18} fontWeight={600}>
+                <NavigationHeader setActiveTab={setActiveTab} activeTab={activeTab} />
+              </H3>
+            </Flex>
+          )}
+          <Flex width="65%" mr={4}></Flex>
         </Flex>
-        <Flex width="65%" mr={4}></Flex>
-      </Flex>
-      {renderTabContent(activeTab)}
+        {renderTabContent(activeTab)}
+      </InstantSearch>
     </PageWrap>
   )
 }
