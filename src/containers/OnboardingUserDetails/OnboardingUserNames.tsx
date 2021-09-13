@@ -15,6 +15,7 @@ type NameProps = {
 const NameFormValidation = Yup.object().shape({
   firstName: Yup.string().required('First name is required'),
   lastName: Yup.string().required('Last name is required'),
+  companyName: Yup.string().required('Company name is required'),
   position: Yup.string().required('Position is required'),
   workEmailAddress: Yup.string().required('Work email is required'),
   phoneNumber: Yup.string().required('Phone number is required'),
@@ -24,6 +25,7 @@ const NameFormValidation = Yup.object().shape({
 type NameValues = {
   firstName: string
   lastName: string
+  companyName: string
   position: string
   workEmailAddress: string
   phoneNumber: string
@@ -62,6 +64,7 @@ const UserDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
         initialValues={{
           firstName: '',
           lastName: '',
+          companyName: '',
           position: 'CEO',
           workEmailAddress: '',
           phoneNumber: '',
@@ -77,6 +80,7 @@ const UserDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
             handleUserDetails({
               firstName,
               lastName,
+              companyName: '',
               isBusiness: Boolean(currentAccountType.includes('Business') ? true : false),
               position: currentPosition,
               workEmailAddress,
@@ -108,6 +112,9 @@ const UserDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
             />
             <ConnectedFormGroup label="First name*" name="firstName" type="text" />
             <ConnectedFormGroup label="Last name*" name="lastName" type="text" />
+            {currentAccountType.includes('Business') && (
+              <ConnectedFormGroup label="Company name*" name="companyName" type="text" />
+            )}
             {currentAccountType.includes('Business') && (
               <ConnectedSelect
                 label="Select position *"
