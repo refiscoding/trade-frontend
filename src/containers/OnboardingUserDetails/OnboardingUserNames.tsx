@@ -1,6 +1,7 @@
 import { Button, Flex, Image } from '@chakra-ui/core'
 import { Form, Formik, FormikProps } from 'formik'
 import * as React from 'react'
+import * as Yup from 'yup'
 import { MotionFlex } from '../../components'
 import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
 import { images } from '../../theme'
@@ -10,6 +11,15 @@ import { formatError } from '../../utils'
 type NameProps = {
   handleUserDetails: (details: any) => void
 }
+
+const NameFormValidation = Yup.object().shape({
+  firstName: Yup.string().required('First name is required'),
+  lastName: Yup.string().required('Last name is required'),
+  position: Yup.string().required('Position is required'),
+  workEmailAddress: Yup.string().required('Work email is required'),
+  phoneNumber: Yup.string().required('Phone number is required'),
+  idNumber: Yup.string().required('An ID/Passport number if required')
+})
 
 type NameValues = {
   firstName: string
@@ -48,6 +58,7 @@ const UserDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
         <Image width="60%" src={images['OnboardingDetails']} />
       </Flex>
       <Formik
+        validationSchema={NameFormValidation}
         initialValues={{
           firstName: '',
           lastName: '',
@@ -95,11 +106,11 @@ const UserDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
                 }
               ]}
             />
-            <ConnectedFormGroup label="What is your first name?*" name="firstName" type="text" />
-            <ConnectedFormGroup label="What is your last name?*" name="lastName" type="text" />
+            <ConnectedFormGroup label="First name*" name="firstName" type="text" />
+            <ConnectedFormGroup label="Last name*" name="lastName" type="text" />
             {currentAccountType.includes('Business') && (
               <ConnectedSelect
-                label="Select Position *"
+                label="Select position *"
                 onChange={handlePositionChanged}
                 name={'Position'}
                 options={[
@@ -136,23 +147,23 @@ const UserDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
             )}
             {currentAccountType.includes('Business') && (
               <ConnectedFormGroup
-                label="if other, please specify position."
+                label="If other, please specify position."
                 name="otherPosition"
                 type="text"
               />
             )}
             {currentAccountType.includes('Business') && (
               <ConnectedFormGroup
-                label="Work Email Address *"
+                label="Work email address *"
                 name="workEmailAddress"
                 type="text"
               />
             )}
             {currentAccountType.includes('Business') && (
-              <ConnectedFormGroup label="Cell Phone No *" name="phoneNumber" type="text" />
+              <ConnectedFormGroup label="Cell phone number *" name="phoneNumber" type="text" />
             )}
             {currentAccountType.includes('Business') && (
-              <ConnectedFormGroup label="ID/Passport Number *" name="idNumber" type="text" />
+              <ConnectedFormGroup label="ID/Passport number *" name="idNumber" type="text" />
             )}
 
             {status && (
