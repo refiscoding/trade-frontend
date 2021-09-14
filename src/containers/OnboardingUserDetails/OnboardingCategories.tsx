@@ -12,7 +12,7 @@ type CategoriesProps = {
 }
 
 const CategoriesFormValidation = Yup.object().shape({
-  categories: Yup.array()
+  categories: Yup.array().required('Category is required')
 })
 
 type CategoriesValues = {
@@ -34,6 +34,7 @@ const UserDetails: React.FC<CategoriesProps> = ({ handleUserDetails, categories 
           categories: []
         }}
         onSubmit={async ({ categories: formCategories }, { setStatus, setSubmitting }) => {
+          console.log('categories', categories)
           setStatus(null)
           try {
             setSubmitting(true)

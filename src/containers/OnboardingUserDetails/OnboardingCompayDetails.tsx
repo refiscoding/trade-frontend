@@ -20,8 +20,13 @@ type NameProps = {
 const NameFormValidation = Yup.object().shape({
   name: Yup.string().required('A business name is required'),
   phoneNumber: Yup.string().required('Business phone number is required'),
+  websiteAddress: Yup.string().required('Website is required'),
   registrationNumber: Yup.string().required('A registration number is required'),
   yearsInOperation: Yup.string().required('Business years in operation are required'),
+  description: Yup.string().required('Description of the business is required'),
+  vatNumber: Yup.string().required('VAT number is required'),
+  relatedCompany: Yup.string().required('Related company is required'),
+  annualTurnover: Yup.string().required('Annual turnover of the business is required'),
   businessType: Yup.string().required('The industry of the business is required')
 })
 

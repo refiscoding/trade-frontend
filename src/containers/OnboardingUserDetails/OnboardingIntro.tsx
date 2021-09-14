@@ -5,10 +5,8 @@ import InfoPage from '../../components/InfoPage'
 import { PageWrap } from '../../layouts'
 import { images } from '../../theme'
 
-
-
 const OnboardinIntro: React.FC = () => {
-  const history = useHistory();
+  const history = useHistory()
   return (
     <PageWrap
       title="Onboarding Intro"
