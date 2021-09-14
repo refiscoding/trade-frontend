@@ -12,7 +12,7 @@ type CategoriesProps = {
 }
 
 const CategoriesFormValidation = Yup.object().shape({
-  categories: Yup.array()
+  categories: Yup.array().required('Category is required')
 })
 
 type CategoriesValues = {
