@@ -71,7 +71,7 @@ const UserDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
           idNumber: ''
         }}
         onSubmit={async (
-          { firstName, lastName, workEmailAddress, phoneNumber, idNumber },
+          { firstName, lastName, companyName, workEmailAddress, phoneNumber, idNumber },
           { setStatus, setSubmitting }
         ) => {
           setStatus(null)
@@ -80,7 +80,7 @@ const UserDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
             handleUserDetails({
               firstName,
               lastName,
-              companyName: '',
+              companyName,
               isBusiness: Boolean(currentAccountType.includes('Business') ? true : false),
               position: currentPosition,
               workEmailAddress,

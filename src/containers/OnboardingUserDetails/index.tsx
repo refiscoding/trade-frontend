@@ -68,7 +68,7 @@ const Onboarding: React.FC = () => {
       setACtive(active + 1)
     }
     setUserdetails({ ...userDetails, ...details })
-
+    console.log('userDetails', userDetails)
     if (shouldShowBusinessScreen ? active === 4 : active === 2) {
       if (details.categories) {
         await updateSelf({
