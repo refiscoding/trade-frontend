@@ -12,8 +12,8 @@ type NameProps = {
 }
 
 const NameFormValidation = Yup.object().shape({
-  secondaryContactName: Yup.string().required('Secondary contact name is required'),
-  secondaryContactSurname: Yup.string().required('Secondary contact surname is required'),
+  secondaryContactName: Yup.string().required('Secondary contact first name is required'),
+  secondaryContactSurname: Yup.string().required('Secondary contact last name is required'),
   secondaryContactPhoneNumber: Yup.string().required('Secondary contact phone number is required'),
   secondaryContactEmailAddress: Yup.string().required('Secondary contact email address is required')
 })
@@ -29,10 +29,10 @@ const OnboardingSecondaryContact: React.FC<NameProps> = ({ handleUserDetails }) 
   return (
     <React.Fragment>
       <Flex width="100%" mb={4} flexDirection="column">
-        <H3 textAlign="left">Just incase.</H3>
+        <H3 textAlign="left">Secondary Contact Information</H3>
         <Text textAlign="left" fontSize="14px">
-          In the case of not being able to get hold of you, please leave a secondary contract at
-          your delivery address.
+          In the case of not being able to get hold of you, please leave a secondary contact at your
+          delivery address.
         </Text>
       </Flex>
       <Formik
@@ -70,15 +70,15 @@ const OnboardingSecondaryContact: React.FC<NameProps> = ({ handleUserDetails }) 
       >
         {({ isSubmitting, status }: FormikProps<NameValues>) => (
           <Form style={{ width: '100%' }}>
-            <ConnectedFormGroup label="Name*" name="secondaryContactName" type="text" />
-            <ConnectedFormGroup label="Surname*" name="secondaryContactSurname" type="text" />
+            <ConnectedFormGroup label="First name *" name="secondaryContactName" type="text" />
+            <ConnectedFormGroup label="Last name *" name="secondaryContactSurname" type="text" />
             <ConnectedFormGroup
               label="Phone number*"
               name="secondaryContactPhoneNumber"
               type="text"
             />
             <ConnectedFormGroup
-              label="Email Address*"
+              label="Email address*"
               name="secondaryContactEmailAddress"
               type="text"
             />
