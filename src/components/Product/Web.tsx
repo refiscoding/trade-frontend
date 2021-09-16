@@ -3,7 +3,7 @@ import * as React from 'react'
 import { get } from 'lodash'
 import { useHistory } from 'react-router-dom'
 import { MapPin, Briefcase } from 'react-feather'
-import { Flex, Image, Text, Button, Grid, Tag } from '@chakra-ui/core'
+import { Flex, Image, Text, Button, Grid } from '@chakra-ui/core'
 
 import Section from '../../components/Section'
 import ProductCard from '../../components/Card/ProductCard'
@@ -21,7 +21,6 @@ const ProductComponent: React.FC<ProductProps> = ({
   product,
   isPreview,
   productImages,
-  productQuantity,
   productPackaging,
   setProductQuantity,
   handleAddToCartClicked,
@@ -228,7 +227,7 @@ const ProductComponent: React.FC<ProductProps> = ({
           <div
             style={{ border: `1px solid ${theme.colors.background}`, padding: 15, borderRadius: 3 }}
           >
-            <Text fontSize="17px" fontWeight={600} mb={3}>
+            {/* <Text fontSize="17px" fontWeight={600} mb={3}>
               Product Features
             </Text>
             <ul style={{ marginLeft: 15 }}>
@@ -237,7 +236,7 @@ const ProductComponent: React.FC<ProductProps> = ({
                   <Text fontSize="12px">{feature}</Text>
                 </li>
               ))}
-            </ul>
+            </ul> */}
           </div>
           <div
             style={{ border: `1px solid ${theme.colors.background}`, padding: 15, borderRadius: 3 }}
@@ -280,7 +279,7 @@ const ProductComponent: React.FC<ProductProps> = ({
             </Flex>
           </div>
           <Flex width="414px" background={theme.colors.accent[50]} mt={5}>
-            {product?.tags?.split(',')?.map((tag: string, index: number) => (
+            {/* {product?.tags?.split(',')?.map((tag: string, index: number) => (
               <Tag
                 fontSize={12}
                 mr={1}
@@ -291,7 +290,7 @@ const ProductComponent: React.FC<ProductProps> = ({
               >
                 {tag?.toUpperCase()}
               </Tag>
-            ))}
+            ))} */}
           </Flex>
         </Grid>
       </Grid>

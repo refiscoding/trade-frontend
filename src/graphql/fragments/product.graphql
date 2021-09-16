@@ -3,43 +3,52 @@
 # import '/fragments/category.graphql'
 # import '/fragments/return.graphql'
 fragment product on Product {
+  id
+  name
+  uniqueIdentifier
+  supplierParentCode
+  description
+  shortDescription
+  availableUnits
+  packaging
+  minSellCost
+  maxSellCost
+  tradeFedCost
+  dimensionsUnit
+  weightUnit
+  discount
+  currency
+  height
+  weight
+  width
+  lengths
+  isRefundable
+  categoryAutomotive
+  categoryAgriculture
+  categoryMining
+  categoryFoodIngredients
+  categoryHeavyMachinery
+  categoryLighting
+  categoryElectricalEquipment
+  categoryToolsAndHardware
+  categoryIndustrial
+  additionalInfo {
+    url
+  }
+  coverImage {
+    ...uploadFile
+  }
+  business {
+    ...business
+  }
+  categories {
     id
-    name
-    description
-    shortDescription
-    tags
-    availableUnits
-    packaging
-    features
-    minSellCost
-    maxSellCost
-    tradeFedCost
-    dimensionsUnit
-    weightUnit
-    discount
-    currency
-    height
-    weight
-    width
-    lengths
-    isRefundable
-    additionalInfo {
-        url
-    }
-    coverImage {
-        ...uploadFile
-    }
-    business {
-        ...business
-    }
-    categories {
-        id
-    }
-    productImages {
-        ...uploadFile
-    }
-    return_request {
-        ...return
-    }
-    created_at
+  }
+  productImages {
+    ...uploadFile
+  }
+  return_request {
+    ...return
+  }
+  created_at
 }

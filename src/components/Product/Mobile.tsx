@@ -4,7 +4,7 @@ import { get } from 'lodash'
 import { useHistory } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 import { MapPin, Briefcase } from 'react-feather'
-import { Flex, Image, Text, Button, Grid, Tag } from '@chakra-ui/core'
+import { Flex, Image, Text, Button, Grid } from '@chakra-ui/core'
 
 import Section from '../../components/Section'
 import ProductCard from '../../components/Card/ProductCard'
@@ -20,7 +20,6 @@ const ProductComponentMobile: React.FC<ProductProps> = ({
   deals,
   product,
   isPreview,
-  productQuantity,
   productPackaging,
   setProductQuantity,
   handleAddToCartClicked,
@@ -188,13 +187,13 @@ const ProductComponentMobile: React.FC<ProductProps> = ({
         </Section>
         <Section ml={marginLeft} title="Product Features" p="0 1rem" pb="0px">
           <Flex ml="1rem" width="100%" as="ul" flexDirection="column" alignSelf="flex-start">
-            <ul style={{ marginLeft: 15 }}>
+            {/* <ul style={{ marginLeft: 15 }}>
               {product?.features?.split(',')?.map((feature: string, index: number) => (
                 <li key={`${feature}_${index}`}>
                   <Text fontSize="12px">{feature}</Text>
                 </li>
               ))}
-            </ul>
+            </ul> */}
           </Flex>
         </Section>
         <Section ml={marginLeft} title="Product Specifications" p="0 1rem" pb="0px">
@@ -226,7 +225,7 @@ const ProductComponentMobile: React.FC<ProductProps> = ({
           </Flex>
         </Section>
         <Flex ml={marginLeft} background={theme.colors.accent[50]}>
-          {product?.tags?.split(',')?.map((tag: string, index: number) => (
+          {/* {product?.tags?.split(',')?.map((tag: string, index: number) => (
             <Tag
               fontSize={12}
               mr={1}
@@ -237,7 +236,7 @@ const ProductComponentMobile: React.FC<ProductProps> = ({
             >
               {tag?.toUpperCase()}
             </Tag>
-          ))}
+          ))} */}
         </Flex>
       </Flex>
       {isPreview && (
