@@ -9,17 +9,17 @@ import AddToWishlistButton from './AddToWishlistButton'
 
 import { Card } from '../../index'
 import { CartProduct } from '../../../containers/Cart'
-import { Product, Maybe, Scalars } from '../../../generated/graphql'
+import { Product, Maybe } from '../../../generated/graphql'
 import { QuantitySelectComponent } from '../../../containers/ProductView/AddToCartModal'
 
 type ProductCardProps = FlexProps & {
   product: Maybe<Product> | undefined
   products?: CartProduct[]
-  handleClick: (id: Scalars['ID']) => void
+  handleClick: (id: Maybe<string> | undefined) => void
   isWishlist?: boolean
   isCart?: boolean
   editing?: boolean
-  handleIconClick?: (id: Scalars['ID']) => void
+  handleIconClick?: (id: Maybe<string> | undefined) => void
 }
 type ProductRemovalValues = {
   id: string
@@ -59,7 +59,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   const maxSellCost = get(product, 'maxSellCost') as number
   const tradeFedCost = get(product, 'tradeFedCost') as number
-  const productsOnly = products?.filter((entry: CartProduct) => entry?.product?.id === product?.id)
+  const productsOnly = products?.filter(
+    (entry: CartProduct) => entry?.product?.uniqueIdentifier === product?.uniqueIdentifier
+  )
 
   const discount = Math.round(((maxSellCost - tradeFedCost) / maxSellCost) * 100)
 
@@ -72,8 +74,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
     >
       {(isCart || isWishlist) && editing && (
         <Input
-          name={product?.id || ''}
-          value={product?.id || ''}
+          name={product?.uniqueIdentifier || ''}
+          value={product?.uniqueIdentifier || ''}
           type="checkbox"
           onChange={(event) => handleRadioPressed(event?.target?.value, event?.target?.checked)}
         />
@@ -84,7 +86,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           position="relative"
           onClick={() => {
             if (product) {
-              handleClick(product?.id)
+              handleClick(product?.uniqueIdentifier)
             }
           }}
         >
@@ -120,7 +122,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <Text
             onClick={() => {
               if (product) {
-                handleClick(product?.id)
+                handleClick(product?.uniqueIdentifier)
               }
             }}
             my={2}
@@ -132,7 +134,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <Text
             onClick={() => {
               if (product) {
-                handleClick(product?.id)
+                handleClick(product?.uniqueIdentifier)
               }
             }}
             fontSize="10px"
@@ -146,7 +148,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               <Flex>
                 <QuantitySelectComponent
                   isCart
-                  productId={product?.id || ''}
+                  productId={product?.uniqueIdentifier || ''}
                   count={productsOnly && productsOnly[0]?.quantity}
                   setProductQuantity={() => {
                     return
@@ -167,7 +169,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               editing={editing}
               handleOnClick={() => {
                 if (product && handleIconClick) {
-                  handleIconClick(product?.id)
+                  handleIconClick(product?.uniqueIdentifier)
                 }
               }}
             />
@@ -178,7 +180,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               editing={editing}
               handleOnClick={() => {
                 if (product && handleIconClick) {
-                  handleIconClick(product?.id)
+                  handleIconClick(product?.uniqueIdentifier)
                 }
               }}
             />

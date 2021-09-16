@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import * as React from 'react'
 import { sortBy, reverse, slice } from 'lodash'
 import { ApolloError } from 'apollo-client'
@@ -5,7 +6,13 @@ import { PageWrap } from '../../layouts'
 import { useHistory, useParams } from 'react-router-dom'
 import { Button, Flex, useToast } from '@chakra-ui/core'
 import Hero from '../../components/Hero'
-import { Category, Product, useCategoryQuery, useProductQuery } from '../../generated/graphql'
+import {
+  Category,
+  Maybe,
+  Product,
+  useCategoryQuery,
+  useProductQuery
+} from '../../generated/graphql'
 import { get } from 'lodash'
 import Footer from '../../components/Footer'
 import { ERROR_TOAST } from '../../constants'
@@ -40,8 +47,9 @@ const Home: React.FC = () => {
   const products = get(productData, 'products', null) as Product[]
   const deals: Product[] = slice(reverse(sortBy(products, [(product) => product?.discount])), 0, 3)
 
-  const navigateToProduct = (id: string | undefined) => {
-    history.push(`/product/${id}`)
+  const navigateToProduct = (id: Maybe<string> | undefined) => {
+    const modifiedId = id?.toLowerCase()
+    history.push(`/product/${modifiedId}`)
   }
 
   return (

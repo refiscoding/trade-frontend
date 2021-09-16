@@ -11,12 +11,12 @@ import ProductCard from '../../components/Card/ProductCard'
 
 import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
 import {
-  Scalars,
   Product,
   useProductQuery,
   useFetchUsersWhishlistQuery,
   useRemoveProductsFromWishlistMutation,
-  useFromWishlistToCartMutation
+  useFromWishlistToCartMutation,
+  Maybe
 } from '../../generated/graphql'
 
 import { PageWrap } from '../../layouts'
@@ -127,14 +127,14 @@ const WishlistPage: React.FC = () => {
 
   const emptyWishlistProducts = products?.length < 1
 
-  const handleWishlistProductClickedEditing = (id: Scalars['ID']) => {
+  const handleWishlistProductClickedEditing = (id: Maybe<string> | undefined) => {
     // Nothing is to be done
     return
   }
 
-  const handleWishlistProductClickedNormal = async (id: Scalars['ID']) => {
+  const handleWishlistProductClickedNormal = async (id: Maybe<string> | undefined) => {
     const itemToRemove = {
-      itemToMove: [id]
+      itemToMove: [id?.toString() || '']
     }
     await fromWishlistToCart({
       variables: {
@@ -174,8 +174,9 @@ const WishlistPage: React.FC = () => {
     }
   }
 
-  const navigateToProduct = (id: Scalars['ID']) => {
-    history.push(`/product/${id}`)
+  const navigateToProduct = (id: Maybe<string> | undefined) => {
+    const modifiedId = id?.toLowerCase()
+    history.push(`/product/${modifiedId}`)
   }
 
   React.useEffect(() => {

@@ -19,7 +19,7 @@ import { PageWrap } from '../../layouts'
 import { SearchBar } from '../../components'
 import { useAuthContext } from '../../context/AuthProvider'
 import { ERROR_TOAST, SEARCH_INDEX, searchClient, CATEGORIES } from '../../constants'
-import { Product, useProductQuery } from '../../generated/graphql'
+import { Maybe, Product, useProductQuery } from '../../generated/graphql'
 
 type filterParams = {
   minPrice: string
@@ -64,6 +64,7 @@ const Home: React.FC = () => {
   })
 
   const products = get(productData, 'products', null) as Product[]
+  console.log('home products', products)
   const deals: Product[] = slice(reverse(sortBy(products, [(product) => product?.discount])), 0, 3)
 
   React.useEffect(() => {
@@ -73,8 +74,9 @@ const Home: React.FC = () => {
     // eslint-disable-next-line
   }, [user, isAuthenticated])
 
-  const navigateToProduct = (id: string | undefined) => {
-    history.push(`/product/${id}`)
+  const navigateToProduct = (id: Maybe<string> | undefined) => {
+    const modifiedId = id?.toLowerCase()
+    history.push(`/product/${modifiedId}`)
   }
 
   const navigateToCategory = (id: string) => {

@@ -11,7 +11,7 @@ import ProductCard from '../../components/Card/ProductCard'
 
 import { ProductProps } from './props'
 import { theme, images } from '../../theme'
-import { Product } from '../../generated/graphql'
+import { Maybe, Product } from '../../generated/graphql'
 import { VerifiedBadge } from '../../components/Product'
 import { useAuthContext } from '../../context/AuthProvider'
 import { QuantitySelectComponent } from '../../containers/ProductView/AddToCartModal'
@@ -34,8 +34,9 @@ const ProductComponentMobile: React.FC<ProductProps> = ({
   const positionRight = isTinyPhone ? '6rem' : isSmallPhone ? '3rem' : '2rem'
   const marginLeft = isTinyPhone ? '6rem' : isSmallPhone ? '3rem' : '2'
 
-  const navigateToProduct = (id: string | undefined) => {
-    history.push(`/product/${id}`)
+  const navigateToProduct = (id: Maybe<string> | undefined) => {
+    const modifiedId = id?.toLowerCase()
+    history.push(`/product/${modifiedId}`)
   }
 
   const maxSellCost = get(product, 'maxSellCost') as number
