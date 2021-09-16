@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import * as React from 'react'
 
 import { ApolloError } from 'apollo-client'
@@ -17,7 +18,7 @@ import { images } from '../../theme'
 import { PageWrap } from '../../layouts'
 import { SearchBar } from '../../components'
 import { useAuthContext } from '../../context/AuthProvider'
-import { ERROR_TOAST, SEARCH_INDEX, searchClient } from '../../constants'
+import { ERROR_TOAST, SEARCH_INDEX, searchClient, CATEGORIES } from '../../constants'
 import { Category, Product, useCategoryQuery, useProductQuery } from '../../generated/graphql'
 
 type filterParams = {
@@ -144,12 +145,8 @@ const Home: React.FC = () => {
                 caption="Shop early deals"
               />
               <Section card title="Product Categories" borderBottomWidth={10} maxWidth={'1100px'}>
-                {categories?.map((category: Category) => (
-                  <CategoryCard
-                    key={category.id}
-                    category={category}
-                    handleClick={navigateToCategory}
-                  />
+                {CATEGORIES?.map((name: any, index: any) => (
+                  <CategoryCard key={index} category={name} handleClick={navigateToCategory} />
                 ))}
               </Section>
               <Section card title="Today’s Best Deals" borderBottomWidth={10} maxWidth={'1100px'}>
