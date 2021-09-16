@@ -3,13 +3,12 @@ import { Form, Formik, FormikProps } from 'formik'
 import { useState } from 'react'
 import * as React from 'react'
 import * as Yup from 'yup'
-import { ComponentLocationAddress, useGetHubCodesQuery, Country } from '../../generated/graphql'
+import { ComponentLocationAddress, useGetHubCodesQuery } from '../../generated/graphql'
 import { MotionFlex } from '../../components'
 import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
 import { PROVINCES } from '../../constants'
 import { H3, Text } from '../../typography'
 import { formatError } from '../../utils'
-import { Options } from '../Seller/businessInfo'
 
 type NameProps = {
   handleUserDetails: (details: any) => void
