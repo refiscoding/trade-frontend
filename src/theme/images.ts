@@ -15,6 +15,7 @@ export default {
   GooglePlus: require('../assets/images/GooglePlus.svg'),
   heroImg: require('../assets/images/hero-img.png'),
   heroImgLarge: require('../assets/images/hero-L.png'),
+  homeBanner: require('../assets/images/banner_homepage.jpg'),
   iconAgriculture: require('../assets/images/icon_agriculture.jpg'),
   iconAutomotive: require('../assets/images/icon_automotive.jpg'),
   iconElectrical: require('../assets/images/icon_electrical.jpg'),

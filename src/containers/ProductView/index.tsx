@@ -27,7 +27,6 @@ const ProductView: React.FC = () => {
   })
 
   const product = get(data, 'findProduct', null) as Product
-  console.log("product", product)
 
   const handleContinueShoppingButtonClicked = () => {
     history.push('/')
