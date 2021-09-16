@@ -3,7 +3,7 @@ import { Form, Formik, FormikProps } from 'formik'
 import { useState } from 'react'
 import * as React from 'react'
 import * as Yup from 'yup'
-import { ComponentLocationAddress, useGetHubCodesQuery } from '../../generated/graphql'
+import { ComponentLocationAddress } from '../../generated/graphql'
 import { MotionFlex } from '../../components'
 import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
 import { PROVINCES } from '../../constants'
@@ -33,16 +33,8 @@ type NameValues = {
   secondaryContactEmailAddress: string
 }
 
-const OnboardingSecondaryContact: React.FC<NameProps> = ({ handleUserDetails, editItem }) => {
-  const [selectedProvince, setSelectedProvince] = useState('')
-
-  const { data } = useGetHubCodesQuery({
-    variables: { province: selectedProvince }
-  })
-
-  const initialValues = {
-    province: editItem?.province || ''
-  }
+const OnboardingSecondaryContact: React.FC<NameProps> = ({ handleUserDetails }) => {
+  const [, setSelectedProvince] = useState('')
 
   const handleSubmit = ({ secondaryContactProvince }: NameValues) => {
     handleUserDetails({
