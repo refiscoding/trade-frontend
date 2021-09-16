@@ -124,13 +124,13 @@ const OnboardingSecondaryContact: React.FC<NameProps> = ({ handleUserDetails, ed
             <ConnectedFormGroup
               label="Country*"
               placeholder="Eg. South Africa"
-              name="name"
+              name="secondaryContactCountry"
               type="text"
             />
             <ConnectedSelect
               label="Province*"
               placeholder="select a Province"
-              name="province"
+              name="secondaryContactProvince"
               onChange={(name) => {
                 setSelectedProvince(name.target.value)
                 setFieldValue('province', name.target.value)
