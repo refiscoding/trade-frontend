@@ -64,12 +64,12 @@ const Onboarding: React.FC = () => {
     details?.accountType &&
       setShouldShowBusinessScreen(Boolean(details.accountType.includes('Business') ? true : false))
 
-    if (shouldShowBusinessScreen ? active <= 3 : active <= 1) {
+    if (shouldShowBusinessScreen ? active <= 4 : active <= 1) {
       setACtive(active + 1)
     }
     setUserdetails({ ...userDetails, ...details })
     console.log('userDetails', userDetails)
-    if (shouldShowBusinessScreen ? active === 4 : active === 2) {
+    if (shouldShowBusinessScreen ? active === 5 : active === 2) {
       if (details.categories) {
         await updateSelf({
           variables: {
@@ -89,7 +89,7 @@ const Onboarding: React.FC = () => {
     <PageWrap pt={0} title="Onboarding Details" mt={10} width="100%">
       <Flex width={isTabletOrMobile ? '100%' : '40%'} flexDirection="column" alignSelf="center">
         <Stepper activeStep={active}>
-          <OnboardingUserNames handleUserDetails={handleUserDetails} />
+          {/**<OnboardingUserNames handleUserDetails={handleUserDetails} />
           {shouldShowBusinessScreen && (
             <OnboardingCompanyDetails handleUserDetails={handleUserDetails} />
           )}
@@ -98,10 +98,12 @@ const Onboarding: React.FC = () => {
           ) : (
             <OnbordingUserAddress handleUserDetails={handleUserDetails} />
           )}
-          {shouldShowBusinessScreen && (
-            <OnboardingSecondaryContact handleUserDetails={handleUserDetails} />
-          )}
-          <OnboardingCategories categories={categories} handleUserDetails={handleUserDetails} />
+          {shouldShowBusinessScreen ? (
+            <> </>
+          ) : ( */}
+          <OnboardingSecondaryContact handleUserDetails={handleUserDetails} />
+          {/** })
+          <OnboardingCategories categories={categories} handleUserDetails={handleUserDetails} /> */}
         </Stepper>
       </Flex>
     </PageWrap>
