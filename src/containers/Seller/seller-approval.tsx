@@ -18,9 +18,10 @@ const OnboardinIntro: React.FC = () => {
         image={images.sellerAprroval}
         header="Waiting for approval… "
         caption={`
-          Your application has been sent through to TradeFed. 
-          You’ll receive an email notification once you’re approved. 
-          This can take up to 10 working days.
+          Thank you. Your application to become a seller is complete.
+          We will be in contact with you within the next 72 hours.
+          If you have any further questions regarding "Becoming a seller",
+          please contact queries@tradefed.co.za.
         `}
         action={() => history.push('/profile')}
         actionText="CONTINUE"

@@ -1,53 +1,82 @@
 import { Button, Flex } from '@chakra-ui/core'
 import { Form, Formik, FormikProps } from 'formik'
+import { useState } from 'react'
 import * as React from 'react'
 import * as Yup from 'yup'
+import { ComponentLocationAddress, useGetHubCodesQuery } from '../../generated/graphql'
 import { MotionFlex } from '../../components'
-import { ConnectedFormGroup } from '../../components/FormElements'
+import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
+import { PROVINCES } from '../../constants'
 import { H3, Text } from '../../typography'
 import { formatError } from '../../utils'
 
 type NameProps = {
   handleUserDetails: (details: any) => void
+  editItem?: ComponentLocationAddress
 }
 
 const NameFormValidation = Yup.object().shape({
-  secondaryContactName: Yup.string().required('Secondary contact name is required'),
-  secondaryContactSurname: Yup.string().required('Secondary contact surname is required'),
+  secondaryContactName: Yup.string().required('Secondary contact first name is required'),
+  secondaryContactCountry: Yup.string().required('Secondary contact country is required'),
+  secondaryContactSurname: Yup.string().required('Secondary contact last name is required'),
+  secondaryContactProvince: Yup.string().required('Secondary contact province is required'),
   secondaryContactPhoneNumber: Yup.string().required('Secondary contact phone number is required'),
   secondaryContactEmailAddress: Yup.string().required('Secondary contact email address is required')
 })
 
 type NameValues = {
   secondaryContactName: string
+  secondaryContactCountry: string
   secondaryContactSurname: string
+  secondaryContactProvince: string
   secondaryContactPhoneNumber: string
   secondaryContactEmailAddress: string
 }
 
-const OnboardingSecondaryContact: React.FC<NameProps> = ({ handleUserDetails }) => {
+const OnboardingSecondaryContact: React.FC<NameProps> = ({ handleUserDetails, editItem }) => {
+  const [selectedProvince, setSelectedProvince] = useState('')
+
+  const { data } = useGetHubCodesQuery({
+    variables: { province: selectedProvince }
+  })
+
+  const initialValues = {
+    province: editItem?.province || ''
+  }
+
+  const handleSubmit = ({ secondaryContactProvince }: NameValues) => {
+    handleUserDetails({
+      name: {
+        secondaryContactProvince
+      }
+    })
+  }
+
   return (
     <React.Fragment>
       <Flex width="100%" mb={4} flexDirection="column">
-        <H3 textAlign="left">Just incase.</H3>
+        <H3 textAlign="left">Secondary Contact Information</H3>
         <Text textAlign="left" fontSize="14px">
-          In the case of not being able to get hold of you, please leave a secondary contract at
-          your delivery address.
+          In the case of not being able to get hold of you, please leave a secondary contact at your
+          delivery address.
         </Text>
       </Flex>
       <Formik
         validationSchema={NameFormValidation}
         initialValues={{
-          accountType: 'Individual',
           secondaryContactName: '',
+          secondaryContactCountry: '',
           secondaryContactSurname: '',
+          secondaryContactProvince: '',
           secondaryContactPhoneNumber: '',
           secondaryContactEmailAddress: ''
         }}
         onSubmit={async (
           {
             secondaryContactName,
+            secondaryContactCountry,
             secondaryContactSurname,
+            secondaryContactProvince,
             secondaryContactPhoneNumber,
             secondaryContactEmailAddress
           },
@@ -58,7 +87,17 @@ const OnboardingSecondaryContact: React.FC<NameProps> = ({ handleUserDetails }) 
             setSubmitting(true)
             handleUserDetails({
               secondaryContactName,
+              secondaryContactCountry,
               secondaryContactSurname,
+              secondaryContactProvince,
+              secondaryContactPhoneNumber,
+              secondaryContactEmailAddress
+            })
+            handleSubmit({
+              secondaryContactName,
+              secondaryContactCountry,
+              secondaryContactSurname,
+              secondaryContactProvince,
               secondaryContactPhoneNumber,
               secondaryContactEmailAddress
             })
@@ -68,19 +107,35 @@ const OnboardingSecondaryContact: React.FC<NameProps> = ({ handleUserDetails }) 
           }
         }}
       >
-        {({ isSubmitting, status }: FormikProps<NameValues>) => (
+        {({ isSubmitting, status, setFieldValue }: FormikProps<NameValues>) => (
           <Form style={{ width: '100%' }}>
-            <ConnectedFormGroup label="Name*" name="secondaryContactName" type="text" />
-            <ConnectedFormGroup label="Surname*" name="secondaryContactSurname" type="text" />
+            <ConnectedFormGroup label="First name *" name="secondaryContactName" type="text" />
+            <ConnectedFormGroup label="Last name *" name="secondaryContactSurname" type="text" />
             <ConnectedFormGroup
               label="Phone number*"
               name="secondaryContactPhoneNumber"
               type="text"
             />
             <ConnectedFormGroup
-              label="Email Address*"
+              label="Email address*"
               name="secondaryContactEmailAddress"
               type="text"
+            />
+            <ConnectedFormGroup
+              label="Country*"
+              placeholder="Eg. South Africa"
+              name="name"
+              type="text"
+            />
+            <ConnectedSelect
+              label="Province*"
+              placeholder="select a Province"
+              name="province"
+              onChange={(name) => {
+                setSelectedProvince(name.target.value)
+                setFieldValue('province', name.target.value)
+              }}
+              options={PROVINCES}
             />
 
             {status && (
