@@ -3,7 +3,7 @@ import { Form, Formik, FormikProps } from 'formik'
 import { useState } from 'react'
 import * as React from 'react'
 import * as Yup from 'yup'
-import { ComponentLocationAddress, useGetHubCodesQuery } from '../../generated/graphql'
+import { ComponentLocationAddress } from '../../generated/graphql'
 import { MotionFlex } from '../../components'
 import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
 import { PROVINCES } from '../../constants'
@@ -33,16 +33,9 @@ type NameValues = {
   secondaryContactEmailAddress: string
 }
 
-const OnboardingSecondaryContact: React.FC<NameProps> = ({ handleUserDetails, editItem }) => {
+const OnboardingSecondaryContact: React.FC<NameProps> = ({ handleUserDetails }) => {
   const [selectedProvince, setSelectedProvince] = useState('')
-
-  const { data } = useGetHubCodesQuery({
-    variables: { province: selectedProvince }
-  })
-
-  const initialValues = {
-    province: editItem?.province || ''
-  }
+  console.log('selectedProvince', selectedProvince)
 
   const handleSubmit = ({ secondaryContactProvince }: NameValues) => {
     handleUserDetails({
@@ -83,6 +76,7 @@ const OnboardingSecondaryContact: React.FC<NameProps> = ({ handleUserDetails, ed
           { setStatus, setSubmitting }
         ) => {
           setStatus(null)
+          console.log('secondaryContactProvince', secondaryContactProvince)
           try {
             setSubmitting(true)
             handleUserDetails({
@@ -124,16 +118,16 @@ const OnboardingSecondaryContact: React.FC<NameProps> = ({ handleUserDetails, ed
             <ConnectedFormGroup
               label="Country*"
               placeholder="Eg. South Africa"
-              name="name"
+              name="secondaryContactCountry"
               type="text"
             />
             <ConnectedSelect
               label="Province*"
               placeholder="select a Province"
-              name="province"
+              name="secondaryContactProvince"
               onChange={(name) => {
                 setSelectedProvince(name.target.value)
-                setFieldValue('province', name.target.value)
+                setFieldValue('secondaryContactProvince', name.target.value)
               }}
               options={PROVINCES}
             />

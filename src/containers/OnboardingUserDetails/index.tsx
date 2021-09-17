@@ -6,8 +6,9 @@ import { Stepper } from '../../components'
 import OnboardingAddress from './OnboardingAddress'
 import OnboardingUserNames from './OnboardingUserNames'
 import OnboardingCategories from './OnboardingCategories'
+import OnboardingUserAddress from './OnboardingUserAddress'
 import OnboardingCompanyDetails from './OnboardingCompayDetails'
-import OnbordingUserAddress from './OnboardingUserAddress'
+import OnboardingBusinessDetails from './OnboardingBusinessDetails'
 import { useUpdateSelfMutation, useCategoryQuery } from '../../generated/graphql'
 import { formatError } from '../../utils'
 import { useHistory } from 'react-router-dom'
@@ -16,7 +17,6 @@ import { Flex, useToast } from '@chakra-ui/core'
 import { ERROR_TOAST, mapsScriptUrl, SUCCESS_TOAST } from '../../constants'
 import { useMediaQuery } from 'react-responsive'
 import { useScript } from '../../hooks'
-import OnboardingSecondaryContact from './OnboardingSecondaryContact'
 
 const userDetailsInitialValues = {
   firstName: '',
@@ -35,6 +35,7 @@ const Onboarding: React.FC = () => {
   const [active, setACtive] = React.useState(0)
   const [userDetails, setUserdetails] = React.useState(userDetailsInitialValues)
   const [shouldShowBusinessScreen, setShouldShowBusinessScreen] = React.useState(false)
+  const [currentAccountType, setCurrentAccountType] = React.useState('Individual')
   const toast = useToast()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   useScript(mapsScriptUrl)
@@ -68,8 +69,8 @@ const Onboarding: React.FC = () => {
       setACtive(active + 1)
     }
     setUserdetails({ ...userDetails, ...details })
-    console.log('userDetails', userDetails)
-    if (shouldShowBusinessScreen ? active === 4 : active === 2) {
+
+    if (shouldShowBusinessScreen ? active === 5 : active === 2) {
       if (details.categories) {
         await updateSelf({
           variables: {
@@ -89,17 +90,21 @@ const Onboarding: React.FC = () => {
     <PageWrap pt={0} title="Onboarding Details" mt={10} width="100%">
       <Flex width={isTabletOrMobile ? '100%' : '40%'} flexDirection="column" alignSelf="center">
         <Stepper activeStep={active}>
-          <OnboardingUserNames handleUserDetails={handleUserDetails} />
-          {shouldShowBusinessScreen && (
+          <OnboardingUserNames
+            currentAccountType={currentAccountType}
+            setCurrentAccountType={setCurrentAccountType}
+            handleUserDetails={handleUserDetails}
+          />
+          {currentAccountType === 'Business' && (
+            <OnboardingBusinessDetails handleUserDetails={handleUserDetails} />
+          )}
+          {currentAccountType === 'Business' && (
             <OnboardingCompanyDetails handleUserDetails={handleUserDetails} />
           )}
-          {shouldShowBusinessScreen ? (
+          {currentAccountType === 'Business' ? (
             <OnboardingAddress handleUserDetails={handleUserDetails} />
           ) : (
-            <OnbordingUserAddress handleUserDetails={handleUserDetails} />
-          )}
-          {shouldShowBusinessScreen && (
-            <OnboardingSecondaryContact handleUserDetails={handleUserDetails} />
+            <OnboardingUserAddress handleUserDetails={handleUserDetails} />
           )}
           <OnboardingCategories categories={categories} handleUserDetails={handleUserDetails} />
         </Stepper>
