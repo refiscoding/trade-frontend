@@ -6,8 +6,9 @@ import { Stepper } from '../../components'
 import OnboardingAddress from './OnboardingAddress'
 import OnboardingUserNames from './OnboardingUserNames'
 import OnboardingCategories from './OnboardingCategories'
+import OnboardingUserAddress from './OnboardingUserAddress'
 import OnboardingCompanyDetails from './OnboardingCompayDetails'
-import OnbordingUserAddress from './OnboardingUserAddress'
+import OnboardingSecondaryContact from './OnboardingSecondaryContact'
 import { useUpdateSelfMutation, useCategoryQuery } from '../../generated/graphql'
 import { formatError } from '../../utils'
 import { useHistory } from 'react-router-dom'
@@ -16,7 +17,6 @@ import { Flex, useToast } from '@chakra-ui/core'
 import { ERROR_TOAST, mapsScriptUrl, SUCCESS_TOAST } from '../../constants'
 import { useMediaQuery } from 'react-responsive'
 import { useScript } from '../../hooks'
-import OnboardingSecondaryContact from './OnboardingSecondaryContact'
 
 const userDetailsInitialValues = {
   firstName: '',
@@ -90,15 +90,15 @@ const Onboarding: React.FC = () => {
       <Flex width={isTabletOrMobile ? '100%' : '40%'} flexDirection="column" alignSelf="center">
         <Stepper activeStep={active}>
           <OnboardingUserNames handleUserDetails={handleUserDetails} />
+          <OnboardingUserAddress handleUserDetails={handleUserDetails} />
           {shouldShowBusinessScreen && (
             <OnboardingCompanyDetails handleUserDetails={handleUserDetails} />
           )}
           {shouldShowBusinessScreen ? (
             <OnboardingAddress handleUserDetails={handleUserDetails} />
           ) : (
-            <OnboardingCompanyDetails handleUserDetails={handleUserDetails} />
+            <OnboardingSecondaryContact handleUserDetails={handleUserDetails} />
           )}
-          <OnboardingSecondaryContact handleUserDetails={handleUserDetails} />
           <OnboardingCategories categories={categories} handleUserDetails={handleUserDetails} />
         </Stepper>
       </Flex>
