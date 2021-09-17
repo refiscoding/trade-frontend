@@ -22,12 +22,11 @@ const ProductView: React.FC = () => {
   const [showAddToCartModal, setShowAddToCartModal] = React.useState<boolean | undefined>()
 
   const { data } = useFindProductQuery({
-    variables: { id: id.toString() },
+    variables: { uniqueIdentifier: id },
     onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST })
   })
 
   const product = get(data, 'findProduct', null) as Product
-  console.log("product", product)
 
   const handleContinueShoppingButtonClicked = () => {
     history.push('/')

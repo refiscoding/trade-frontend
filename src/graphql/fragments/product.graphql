@@ -1,6 +1,5 @@
 # import '/fragments/uploadFile.graphql'
 # import '/fragments/business.graphql'
-# import '/fragments/category.graphql'
 # import '/fragments/return.graphql'
 fragment product on Product {
   id
@@ -23,6 +22,14 @@ fragment product on Product {
   width
   lengths
   isRefundable
+  radius
+  diameter
+  packageLength
+  packageWidth
+  packageHeight
+  packageWeight
+  packageQuantity
+  minimumOrder
   categoryAutomotive
   categoryAgriculture
   categoryMining
@@ -40,9 +47,6 @@ fragment product on Product {
   }
   business {
     ...business
-  }
-  categories {
-    id
   }
   productImages {
     ...uploadFile

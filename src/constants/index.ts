@@ -1,6 +1,7 @@
 import { IToast } from '@chakra-ui/core'
 import { UploadFile } from '../generated/graphql'
 import algoliasearch from 'algoliasearch/lite'
+import { images } from '../theme'
 
 export const TOTAL_UNITS_SOLD = 'Total Units Sold'
 export const ACTIVE_PRODUCT_PROGRESS = 'Active Product Progress'
@@ -137,6 +138,45 @@ export const PROVINCES = [
     label: 'Western Cape',
     value: 'Western Cape'
   }
+]
+
+export const CATEGORIES = [
+  {
+    name: 'Agriculture',
+    categoryImage: `${images?.iconAgriculture}`
+  },
+  {
+    name: 'Automotive',
+    categoryImage: `${images?.iconAutomotive}`
+  },
+  {
+    name: 'Electrical Equipment',
+    categoryImage: `${images?.iconElectrical}`
+  },
+  {
+    name: 'Food Ingredients',
+    categoryImage: `${images?.iconFood}`
+  },
+  {
+    name: 'Heavy Machinery',
+    categoryImage: `${images?.iconHeavyDuty}`
+  },
+  {
+    name: 'Industrial',
+    categoryImage: `${images?.iconIndustrial}`
+  },
+  {
+    name: 'Lighting',
+    categoryImage: `${images?.iconLighting}`
+  },
+  {
+    name: 'Mining',
+    categoryImage: `${images?.iconMining}`
+  },
+  {
+    name: 'Tools and Hardware',
+    categoryImage: `${images?.iconTools}`
+  },
 ]
 
 export { NAV_ITEMS } from './navItems'

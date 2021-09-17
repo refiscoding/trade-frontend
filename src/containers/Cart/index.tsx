@@ -18,11 +18,11 @@ import { H3, Text } from '../../typography'
 import { ERROR_TOAST, SUCCESS_TOAST, mapsScriptUrl } from '../../constants'
 import {
   Product,
-  Scalars,
   useProductQuery,
   useFetchUsersCartQuery,
   useFromCartToWishlistMutation,
-  useRemoveProductsFromCartMutation
+  useRemoveProductsFromCartMutation,
+  Maybe
 } from '../../generated/graphql'
 import { useScript } from '../../hooks'
 
@@ -159,12 +159,12 @@ const CartPage: React.FC = () => {
   })
   const deals = get(productData, 'products', null) as Product[]
 
-  const handleCartProductClickedEditing = (id: Scalars['ID']) => {
-    return
+  const handleCartProductClickedEditing = (id: Maybe<string> | undefined) => {
+    return null
   }
-  const handleCartProductClickedNormal = async (id: Scalars['ID']) => {
+  const handleCartProductClickedNormal = async (id: Maybe<string> | undefined) => {
     const productToRemove = {
-      productToMove: [id]
+      productToMove: [id?.toString() || '']
     }
     await fromCartToWishlist({
       variables: {
@@ -186,6 +186,7 @@ const CartPage: React.FC = () => {
 
   const handleModalDeleteButtonClicked = async () => {
     if (existingProducts) {
+      console.log('existingProducts', existingProducts)
       const existingProductsIds = JSON.parse(existingProducts)
         .filter((product: ProductRemovalValues) => product.checked)
         .map((product: ProductRemovalValues) => product.id)
@@ -200,8 +201,9 @@ const CartPage: React.FC = () => {
     }
   }
 
-  const navigateToProduct = (id: Scalars['ID']) => {
-    history.push(`/product/${id}`)
+  const navigateToProduct = (id: Maybe<string> | undefined) => {
+    const modifiedId = id?.toLowerCase()
+    history.push(`/product/${modifiedId}`)
   }
 
   const itemsCount = products?.reduce((accumulator: number, currentValue: CartProduct) => {

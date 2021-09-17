@@ -1,5 +1,5 @@
 # import '/fragments/product.graphql'
-query FindProduct($id: ID!) {
-    findProduct(id: $id) {
+query FindProduct($uniqueIdentifier: String!) {
+    findProduct(uniqueIdentifier: $uniqueIdentifier) {
         ...product
     }}

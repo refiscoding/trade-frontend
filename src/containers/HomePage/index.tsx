@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import * as React from 'react'
 
 import { ApolloError } from 'apollo-client'
@@ -17,8 +18,8 @@ import { images } from '../../theme'
 import { PageWrap } from '../../layouts'
 import { SearchBar } from '../../components'
 import { useAuthContext } from '../../context/AuthProvider'
-import { ERROR_TOAST, SEARCH_INDEX, searchClient } from '../../constants'
-import { Category, Product, useCategoryQuery, useProductQuery } from '../../generated/graphql'
+import { ERROR_TOAST, SEARCH_INDEX, searchClient, CATEGORIES } from '../../constants'
+import { Maybe, Product, useProductQuery } from '../../generated/graphql'
 
 type filterParams = {
   minPrice: string
@@ -51,10 +52,6 @@ const Home: React.FC = () => {
     setIsFiltered(false)
   }, [filters])
 
-  const { data } = useCategoryQuery({
-    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
-  })
-
   const { data: productData } = useProductQuery({
     variables: {
       where: isFiltered && {
@@ -66,8 +63,8 @@ const Home: React.FC = () => {
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
   })
 
-  const categories = get(data, 'categories', null) as Category[]
   const products = get(productData, 'products', null) as Product[]
+  console.log('home products', products)
   const deals: Product[] = slice(reverse(sortBy(products, [(product) => product?.discount])), 0, 3)
 
   React.useEffect(() => {
@@ -77,8 +74,9 @@ const Home: React.FC = () => {
     // eslint-disable-next-line
   }, [user, isAuthenticated])
 
-  const navigateToProduct = (id: string | undefined) => {
-    history.push(`/product/${id}`)
+  const navigateToProduct = (id: Maybe<string> | undefined) => {
+    const modifiedId = id?.toLowerCase()
+    history.push(`/product/${modifiedId}`)
   }
 
   const navigateToCategory = (id: string) => {
@@ -139,17 +137,13 @@ const Home: React.FC = () => {
           ) : (
             <React.Fragment>
               <Hero
-                image={isTabletOrMobile ? images.heroImg : images.heroImgLarge}
-                header="HOLIDAY DASH"
-                caption="Shop early deals"
+                image={isTabletOrMobile ? images.heroImg : images.homeBanner}
+                header=""
+                caption=""
               />
               <Section card title="Product Categories" borderBottomWidth={10} maxWidth={'1100px'}>
-                {categories?.map((category: Category) => (
-                  <CategoryCard
-                    key={category.id}
-                    category={category}
-                    handleClick={navigateToCategory}
-                  />
+                {CATEGORIES?.map((name: any, index: any) => (
+                  <CategoryCard key={index} category={name} handleClick={navigateToCategory} />
                 ))}
               </Section>
               <Section card title="Today’s Best Deals" borderBottomWidth={10} maxWidth={'1100px'}>
