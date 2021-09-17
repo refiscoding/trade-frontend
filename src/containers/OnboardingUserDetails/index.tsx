@@ -96,7 +96,7 @@ const Onboarding: React.FC = () => {
           {shouldShowBusinessScreen ? (
             <OnboardingAddress handleUserDetails={handleUserDetails} />
           ) : (
-            <OnbordingUserAddress handleUserDetails={handleUserDetails} />
+            <OnboardingCompanyDetails handleUserDetails={handleUserDetails} />
           )}
           <OnboardingSecondaryContact handleUserDetails={handleUserDetails} />
           <OnboardingCategories categories={categories} handleUserDetails={handleUserDetails} />
