@@ -89,7 +89,7 @@ const Onboarding: React.FC = () => {
     <PageWrap pt={0} title="Onboarding Details" mt={10} width="100%">
       <Flex width={isTabletOrMobile ? '100%' : '40%'} flexDirection="column" alignSelf="center">
         <Stepper activeStep={active}>
-          {/**<OnboardingUserNames handleUserDetails={handleUserDetails} />
+          <OnboardingUserNames handleUserDetails={handleUserDetails} />
           {shouldShowBusinessScreen && (
             <OnboardingCompanyDetails handleUserDetails={handleUserDetails} />
           )}
@@ -98,12 +98,8 @@ const Onboarding: React.FC = () => {
           ) : (
             <OnbordingUserAddress handleUserDetails={handleUserDetails} />
           )}
-          {shouldShowBusinessScreen ? (
-            <> </>
-          ) : ( */}
           <OnboardingSecondaryContact handleUserDetails={handleUserDetails} />
-          {/** })
-          <OnboardingCategories categories={categories} handleUserDetails={handleUserDetails} /> */}
+          <OnboardingCategories categories={categories} handleUserDetails={handleUserDetails} />
         </Stepper>
       </Flex>
     </PageWrap>

@@ -101,7 +101,7 @@ const OnboardingSecondaryContact: React.FC<NameProps> = ({ handleUserDetails }) 
           }
         }}
       >
-        {({ isSubmitting, status }: FormikProps<NameValues>) => (
+        {({ isSubmitting, status, setFieldValue }: FormikProps<NameValues>) => (
           <Form style={{ width: '100%' }}>
             <ConnectedFormGroup label="First name *" name="secondaryContactName" type="text" />
             <ConnectedFormGroup label="Last name *" name="secondaryContactSurname" type="text" />
@@ -127,8 +127,8 @@ const OnboardingSecondaryContact: React.FC<NameProps> = ({ handleUserDetails }) 
               name="secondaryContactProvince"
               onChange={(name) => {
                 setSelectedProvince(name.target.value)
+                setFieldValue('secondaryContactProvince', name.target.value)
               }}
-              value={selectedProvince}
               options={PROVINCES}
             />
 
