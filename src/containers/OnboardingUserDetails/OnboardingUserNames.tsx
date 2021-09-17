@@ -10,38 +10,25 @@ import { formatError } from '../../utils'
 
 type NameProps = {
   handleUserDetails: (details: any) => void
+  currentAccountType: string
+  setCurrentAccountType: Function
 }
 
 const NameFormValidation = Yup.object().shape({
   firstName: Yup.string().required('First name is required'),
-  lastName: Yup.string().required('Last name is required'),
-  companyName: Yup.string().required('Company name is required'),
-  position: Yup.string().required('Position is required'),
-  workEmailAddress: Yup.string().required('Work email is required'),
-  phoneNumber: Yup.string().required('Phone number is required'),
-  idNumber: Yup.string().required('An ID/Passport number if required')
+  lastName: Yup.string().required('Last name is required')
 })
 
 type NameValues = {
   firstName: string
   lastName: string
-  companyName: string
-  position: string
-  workEmailAddress: string
-  phoneNumber: string
-  idNumber: string
 }
 
-const UserDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
-  const [currentPosition, setCurrentPosition] = React.useState('')
-  const [currentAccountType, setCurrentAccountType] = React.useState('Individual')
-
-  const handlePositionChanged = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    event.persist()
-    const position = event?.target?.value
-    setCurrentPosition(position)
-  }
-
+const UserDetails: React.FC<NameProps> = ({
+  handleUserDetails,
+  currentAccountType,
+  setCurrentAccountType
+}) => {
   const handleAccountTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     event.persist()
     const account = event?.target?.value
@@ -63,29 +50,16 @@ const UserDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
         validationSchema={NameFormValidation}
         initialValues={{
           firstName: '',
-          lastName: '',
-          companyName: '',
-          position: 'CEO',
-          workEmailAddress: '',
-          phoneNumber: '',
-          idNumber: ''
+          lastName: ''
         }}
-        onSubmit={async (
-          { firstName, lastName, companyName, workEmailAddress, phoneNumber, idNumber },
-          { setStatus, setSubmitting }
-        ) => {
+        onSubmit={async ({ firstName, lastName }, { setStatus, setSubmitting }) => {
           setStatus(null)
           try {
             setSubmitting(true)
             handleUserDetails({
               firstName,
               lastName,
-              companyName,
-              isBusiness: Boolean(currentAccountType.includes('Business') ? true : false),
-              position: currentPosition,
-              workEmailAddress,
-              phoneNumber,
-              idNumber
+              isBusiness: Boolean(currentAccountType.includes('Business') ? true : false)
             })
             setSubmitting(false)
           } catch (error) {
@@ -112,67 +86,6 @@ const UserDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
             />
             <ConnectedFormGroup label="First name*" name="firstName" type="text" />
             <ConnectedFormGroup label="Last name*" name="lastName" type="text" />
-            {currentAccountType.includes('Business') && (
-              <ConnectedFormGroup label="Company name*" name="companyName" type="text" />
-            )}
-            {currentAccountType.includes('Business') && (
-              <ConnectedSelect
-                label="Select position *"
-                onChange={handlePositionChanged}
-                name={'Position'}
-                options={[
-                  {
-                    label: 'CEO',
-                    value: 'CEO'
-                  },
-                  {
-                    label: 'Managing Director',
-                    value: 'Managing Director'
-                  },
-                  {
-                    label: 'Financial Manager',
-                    value: 'Financial Manager'
-                  },
-                  {
-                    label: 'Financial Director',
-                    value: 'Financial Director'
-                  },
-                  {
-                    label: 'Procurement Manager',
-                    value: 'Procurement Manager'
-                  },
-                  {
-                    label: 'Sales Manager',
-                    value: 'Sales Manager'
-                  },
-                  {
-                    label: 'Other',
-                    value: 'Other'
-                  }
-                ]}
-              />
-            )}
-            {currentAccountType.includes('Business') && (
-              <ConnectedFormGroup
-                label="If other, please specify position."
-                name="otherPosition"
-                type="text"
-              />
-            )}
-            {currentAccountType.includes('Business') && (
-              <ConnectedFormGroup
-                label="Work email address *"
-                name="workEmailAddress"
-                type="text"
-              />
-            )}
-            {currentAccountType.includes('Business') && (
-              <ConnectedFormGroup label="Cell phone number *" name="phoneNumber" type="text" />
-            )}
-            {currentAccountType.includes('Business') && (
-              <ConnectedFormGroup label="ID/Passport number *" name="idNumber" type="text" />
-            )}
-
             {status && (
               <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
                 <Text textAlign="right" color="red.500">
