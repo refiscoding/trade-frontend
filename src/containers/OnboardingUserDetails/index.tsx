@@ -7,7 +7,8 @@ import OnboardingAddress from './OnboardingAddress'
 import OnboardingUserNames from './OnboardingUserNames'
 import OnboardingCategories from './OnboardingCategories'
 import OnboardingCompanyDetails from './OnboardingCompayDetails'
-import OnbordingUserAddress from './OnboardingUserAddress'
+import OnboardingUserAddress from './OnboardingUserAddress'
+import OnboardingBusinessDetails from './OnboardingBusinessDetails'
 import { useUpdateSelfMutation, useCategoryQuery } from '../../generated/graphql'
 import { formatError } from '../../utils'
 import { useHistory } from 'react-router-dom'
@@ -35,6 +36,7 @@ const Onboarding: React.FC = () => {
   const [active, setACtive] = React.useState(0)
   const [userDetails, setUserdetails] = React.useState(userDetailsInitialValues)
   const [shouldShowBusinessScreen, setShouldShowBusinessScreen] = React.useState(false)
+  const [currentAccountType, setCurrentAccountType] = React.useState('Individual')
   const toast = useToast()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   useScript(mapsScriptUrl)
@@ -64,11 +66,11 @@ const Onboarding: React.FC = () => {
     details?.accountType &&
       setShouldShowBusinessScreen(Boolean(details.accountType.includes('Business') ? true : false))
 
-    if (shouldShowBusinessScreen ? active <= 4 : active <= 1) {
+    if (shouldShowBusinessScreen ? active <= 3 : active <= 1) {
       setACtive(active + 1)
     }
     setUserdetails({ ...userDetails, ...details })
-    console.log('userDetails', userDetails)
+
     if (shouldShowBusinessScreen ? active === 5 : active === 2) {
       if (details.categories) {
         await updateSelf({
@@ -89,14 +91,21 @@ const Onboarding: React.FC = () => {
     <PageWrap pt={0} title="Onboarding Details" mt={10} width="100%">
       <Flex width={isTabletOrMobile ? '100%' : '40%'} flexDirection="column" alignSelf="center">
         <Stepper activeStep={active}>
-          <OnboardingUserNames handleUserDetails={handleUserDetails} />
-          {shouldShowBusinessScreen && (
+          <OnboardingUserNames
+            currentAccountType={currentAccountType}
+            setCurrentAccountType={setCurrentAccountType}
+            handleUserDetails={handleUserDetails}
+          />
+          {currentAccountType === 'Business' && (
+            <OnboardingBusinessDetails handleUserDetails={handleUserDetails} />
+          )}
+          {currentAccountType === 'Business' && (
             <OnboardingCompanyDetails handleUserDetails={handleUserDetails} />
           )}
-          {shouldShowBusinessScreen ? (
+          {currentAccountType === 'Business' ? (
             <OnboardingAddress handleUserDetails={handleUserDetails} />
           ) : (
-            <OnbordingUserAddress handleUserDetails={handleUserDetails} />
+            <OnboardingUserAddress handleUserDetails={handleUserDetails} />
           )}
           <OnboardingSecondaryContact handleUserDetails={handleUserDetails} />
           <OnboardingCategories categories={categories} handleUserDetails={handleUserDetails} />
