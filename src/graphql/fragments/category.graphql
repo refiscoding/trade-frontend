@@ -10,9 +10,6 @@ fragment category on Category {
   categoryImage {
       ...uploadFile
   }
-  products {
-      ...product
-  }
   businesses {
       ...business
   }
