@@ -23,6 +23,14 @@ fragment product on Product {
   width
   lengths
   isRefundable
+  radius
+  diameter
+  packageLength
+  packageWidth
+  packageHeight
+  packageWeight
+  packageQuantity
+  minimumOrder
   categoryAutomotive
   categoryAgriculture
   categoryMining

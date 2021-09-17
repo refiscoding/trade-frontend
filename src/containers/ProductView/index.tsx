@@ -22,7 +22,7 @@ const ProductView: React.FC = () => {
   const [showAddToCartModal, setShowAddToCartModal] = React.useState<boolean | undefined>()
 
   const { data } = useFindProductQuery({
-    variables: { id: id.toString() },
+    variables: { uniqueIdentifier: id },
     onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST })
   })
 
