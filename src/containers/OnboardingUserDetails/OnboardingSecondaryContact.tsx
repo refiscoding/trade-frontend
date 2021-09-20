@@ -76,7 +76,6 @@ const OnboardingSecondaryContact: React.FC<NameProps> = ({ handleUserDetails }) 
           { setStatus, setSubmitting }
         ) => {
           setStatus(null)
-          console.log('secondaryContactProvince', secondaryContactProvince)
           try {
             setSubmitting(true)
             handleUserDetails({

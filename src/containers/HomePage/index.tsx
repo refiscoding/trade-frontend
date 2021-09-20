@@ -64,7 +64,6 @@ const Home: React.FC = () => {
   })
 
   const products = get(productData, 'products', null) as Product[]
-  console.log('home products', products)
   const deals: Product[] = slice(reverse(sortBy(products, [(product) => product?.discount])), 0, 3)
 
   React.useEffect(() => {
