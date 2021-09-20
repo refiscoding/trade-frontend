@@ -127,7 +127,6 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
         ) => {
           setStatus(null)
           try {
-            console.log('we are failing here')
             setSubmitting(true)
             // create the business then continue
             await handleSubmit({
@@ -145,7 +144,6 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
             handleUserDetails({})
             setSubmitting(false)
           } catch (error) {
-            console.log('this is the error: ', error)
             setStatus(formatError(error))
           }
         }}

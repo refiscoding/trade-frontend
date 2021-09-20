@@ -175,7 +175,6 @@ const ProductCreation: React.FC = () => {
       }
     } catch (e) {
       setUploading(false)
-      console.log('Upload Exception; ', e)
       toast({
         description: 'Something went wrong while uploading your file.',
         ...ERROR_TOAST

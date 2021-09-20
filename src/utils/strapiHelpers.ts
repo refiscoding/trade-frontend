@@ -129,7 +129,6 @@ const sendOrderConfirmationEmail = async () => {
       }
     })
   } catch (error) {
-    console.log('error', error)
     return Promise.reject(error)
   }
 }
@@ -144,7 +143,6 @@ const sendOrderDispatchEmail = async (
     selectedOrder
   }
   try {
-    console.log('here now')
     return await axios.post(`${BASE}/business/dispatchEmail`, data, {
       headers: {
         'Content-Type': 'application/json',
@@ -152,7 +150,6 @@ const sendOrderDispatchEmail = async (
       }
     })
   } catch (error) {
-    console.log('error', error)
     return Promise.reject(error)
   }
 }

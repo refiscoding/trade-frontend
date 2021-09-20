@@ -186,7 +186,6 @@ const CartPage: React.FC = () => {
 
   const handleModalDeleteButtonClicked = async () => {
     if (existingProducts) {
-      console.log('existingProducts', existingProducts)
       const existingProductsIds = JSON.parse(existingProducts)
         .filter((product: ProductRemovalValues) => product.checked)
         .map((product: ProductRemovalValues) => product.id)
