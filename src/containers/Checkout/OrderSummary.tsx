@@ -4,17 +4,13 @@ import { Text } from '../../typography'
 
 import ReceiptProduct from './ReceiptProduct'
 
-import { timeSlots } from './dummyData'
 import { images, theme } from '../../theme'
-import { TimeSlot } from './AddressComponent'
 import { ComponentLocationAddress, ComponentCartCartProduct } from '../../generated/graphql'
 
 type OrderSummaryComponentProps = {
   cartProducts: ComponentCartCartProduct[]
   checkoutTotal: number
   mobileFlow: boolean
-  selectedDeliveryTimeslot: string | undefined
-  selectedDeliveryDate: Date | Date[]
   selectedAddress: ComponentLocationAddress | undefined
   setActiveStep: (step: number) => void
 }
@@ -23,15 +19,9 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
   cartProducts,
   checkoutTotal,
   mobileFlow,
-  selectedDeliveryDate,
-  selectedDeliveryTimeslot,
   selectedAddress,
   setActiveStep
 }) => {
-  const selectedTimeSlot = timeSlots?.filter(
-    (slot: TimeSlot) => slot?.id === selectedDeliveryTimeslot
-  )
-  const selectedDate = selectedDeliveryDate?.toString()?.split('00:00:00')?.join('')
   const CTAStyles = { textDecoration: 'underline', cursor: 'pointer' }
 
   const handleChangeDeliveryDateTime = () => {
@@ -102,22 +92,9 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
           <Image src={images.infoIcon} height="30%" />
           <Text fontSize={12} ml={3}>
             Delivery is not included as part of your total. A TradeFed representative will contact
-            you to arrange for delivery to the address and in the proposed date and time.
+            you to arrange for delivery to the address.
           </Text>
         </Flex>
-        <Text mt={3} mb={2} fontWeight={600} fontSize={mobileFlow ? '14px' : ''}>
-          Proposed Date
-        </Text>
-        <Text mb={3} fontSize={mobileFlow ? '14px' : ''}>
-          {selectedDate}
-        </Text>
-        <Text mb={2} fontWeight={600} fontSize={mobileFlow ? '14px' : ''}>
-          Proposed Time
-        </Text>
-        <Text
-          mb={3}
-          fontSize={mobileFlow ? '14px' : ''}
-        >{`${selectedTimeSlot[0]?.startTime} - ${selectedTimeSlot[0]?.endTime}`}</Text>
         <Text
           onClick={handleChangeDeliveryDateTime}
           mt={3}

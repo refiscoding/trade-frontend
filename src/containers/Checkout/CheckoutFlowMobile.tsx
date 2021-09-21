@@ -3,14 +3,12 @@ import * as React from 'react'
 import { isEmpty } from 'lodash'
 import { Form, Formik } from 'formik'
 import { ChevronRight } from 'react-feather'
-import { useMediaQuery } from 'react-responsive'
 import { Flex, Grid, Image, Tag, Button } from '@chakra-ui/core'
 
 import { theme, images } from '../../theme'
 import { PageWrap } from '../../layouts'
 import { Stepper } from '../../components'
 import { H3, Text } from '../../typography'
-import { TimeSlot } from './AddressComponent'
 import { DeliveryAddressValidation, initialDeliveryAddressValues, CheckoutProps } from '.'
 
 import BeforeCheckoutModal from '../NucleusPayment/BeforeCheckoutModal'
@@ -21,7 +19,6 @@ import CheckoutSignatoryModal from './CheckoutSignatoryModal'
 import DeleteItemsModal from '../../components/DeleteItemsModal'
 import DeliveryAddresses from './Addresses'
 import DeliveryAddressForm from './DeliveryAddressForm'
-import DeliveryDetails from './DeliveryDetails'
 import NextButton from './Button'
 import NoData from './NoDataScreen'
 import OrderSummary from './OrderSummary'
@@ -129,60 +126,11 @@ const DeliveryItemsComponent: React.FC<DeliveryItemsComponentProps> = ({
   )
 }
 
-type DeliveryInfoComponentProps = {
-  timeSlots: TimeSlot[]
-  nextClicked: boolean | undefined
-  selectedDeliveryTimeslot: string | undefined
-  selectedDeliveryDate: Date | Date[]
-  setNextClicked: React.Dispatch<React.SetStateAction<boolean | undefined>>
-  setSelectedDeliveryDate: React.Dispatch<React.SetStateAction<Date | Date[]>>
-  setSelectedDeliveryTimeslot: React.Dispatch<React.SetStateAction<string | undefined>>
-}
-
-const DeliveryInfoComponent: React.FC<DeliveryInfoComponentProps> = ({
-  timeSlots,
-  setSelectedDeliveryDate,
-  setSelectedDeliveryTimeslot,
-  selectedDeliveryTimeslot,
-  setNextClicked,
-  nextClicked,
-  selectedDeliveryDate
-}) => {
-  const isTinyPhone = useMediaQuery({ query: '(max-width: 20em)' })
-  const isSmallPhone = useMediaQuery({ query: '(max-width: 25em)' })
-
-  const containerWidth = isTinyPhone ? '100%' : isSmallPhone ? '105%' : '105%'
-  const containerMarginLeft = isTinyPhone ? '-2.2rem' : isSmallPhone ? '-2rem' : '-1.2rem'
-  return (
-    <Flex
-      p={3}
-      pr={0}
-      ml={containerMarginLeft}
-      borderRadius={5}
-      background={theme.colors.accent[50]}
-      boxShadow={theme.boxShadowMedium}
-      width={containerWidth}
-    >
-      <DeliveryDetails
-        selectedDeliveryDate={selectedDeliveryDate}
-        setNextClicked={setNextClicked}
-        nextClicked={nextClicked}
-        mobileFlow
-        timeSlots={timeSlots}
-        setSelectedDeliveryDate={setSelectedDeliveryDate}
-        setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot}
-        selectedDeliveryTimeslot={selectedDeliveryTimeslot}
-      />
-    </Flex>
-  )
-}
-
 const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
   active,
   cards,
   addresses,
   handlePay,
-  timeSlots,
   cartProducts,
   setActiveStep,
   checkoutTotal,
@@ -195,30 +143,21 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
   showDeleteCardModal,
   noAddressDataHeader,
   noAddressDataCaption,
-  showDeleteItemsModal,
-  selectedDeliveryDate,
   confirmationTextCard,
-  setShowDeleteCardModal,
   confirmationTextAddress,
-  setSelectedDeliveryDate,
-  setShowDeleteItemsModal,
-  selectedDeliveryTimeslot,
   showCheckoutSignatoryModal,
-  setSelectedDeliveryTimeslot,
   setShowCheckoutSignatoryModal
 }) => {
   const [showModal, setShowModal] = React.useState<boolean>(false)
   const [showPaymentOptions, setShowPaymentOptions] = React.useState<boolean>()
   const [showCheckoutItemsModal, setShowCheckoutItemsModal] = React.useState<boolean>()
-  const [nextClicked, setNextClicked] = React.useState<boolean | undefined>()
 
   const numberOfAddresses = addresses?.length
   const numberOfCards = cards?.length
   const firstStage = active === 0
   const addDeliveryAddressStage = active === 1
-  const confirmOrderStage = active === 2
-  const selectPaymentStage = active === 3
-  const confirmPaymentStage = active === 4
+  const selectPaymentStage = active === 2
+  const confirmPaymentStage = active === 3
 
   const handleViewDeliveryItemsClicked = () => {
     setShowCheckoutItemsModal(true)
@@ -233,8 +172,6 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
   const handleChangePayment = () => {
     setShowPaymentOptions(true)
   }
-
-  const deliveryDetailsIncluded = selectedAddress && selectedDeliveryTimeslot
 
   const handleNext = () => {
     setShowModal(true)
@@ -328,29 +265,6 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
                       >
                         NEXT
                       </NextButton>
-                    ) : confirmOrderStage ? (
-                      <Flex flexDirection="column">
-                        <DeliveryInfoComponent
-                          timeSlots={timeSlots}
-                          nextClicked={nextClicked}
-                          setNextClicked={setNextClicked}
-                          selectedDeliveryDate={selectedDeliveryDate}
-                          setSelectedDeliveryDate={setSelectedDeliveryDate}
-                          selectedDeliveryTimeslot={selectedDeliveryTimeslot}
-                          setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot}
-                        />
-                        <NextButton
-                          active={active}
-                          disabled={false}
-                          setActive={() => {
-                            if (deliveryDetailsIncluded) {
-                              setActiveStep(3)
-                            }
-                          }}
-                        >
-                          NEXT
-                        </NextButton>
-                      </Flex>
                     ) : (
                       selectPaymentStage && (
                         <Flex flexDirection="column">
@@ -360,8 +274,6 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
                             checkoutTotal={checkoutTotal}
                             selectedAddress={selectedAddress}
                             setActiveStep={setActiveStep}
-                            selectedDeliveryDate={selectedDeliveryDate}
-                            selectedDeliveryTimeslot={selectedDeliveryTimeslot}
                           />
                           <Button
                             mt={5}

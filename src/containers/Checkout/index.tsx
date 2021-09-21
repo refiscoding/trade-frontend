@@ -13,7 +13,7 @@ import CheckoutMobileFlow from './CheckoutFlowMobile'
 import { Card } from './CardComponent'
 import { PageWrap } from '../../layouts'
 import { TimeSlot } from './AddressComponent'
-import { timeSlots, cards } from './dummyData'
+import { cards } from './dummyData'
 import { useBrowserStorage } from '../../hooks'
 import { useAuthContext } from '../../context/AuthProvider'
 import { StrapiLoginPayload } from '../../utils/strapiHelpers'
@@ -68,7 +68,6 @@ export type CheckoutProps = {
   active: number
   cards: Card[]
   handlePay: () => void
-  timeSlots: TimeSlot[]
   checkoutTotal: number
   noCardDataHeader: string
   noCardDataCaption: string
@@ -84,14 +83,11 @@ export type CheckoutProps = {
   cartProducts: ComponentCartCartProduct[]
   showDeleteCardModal: boolean | undefined
   showDeleteItemsModal: boolean | undefined
-  selectedDeliveryTimeslot: string | undefined
   showCheckoutSignatoryModal: boolean | undefined
   selectedAddress: ComponentLocationAddress | undefined
-  setSelectedDeliveryDate: React.Dispatch<React.SetStateAction<Date | Date[]>>
   setShowDeleteCardModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
   setShowDeleteItemsModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
   setShowCheckoutSignatoryModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
-  setSelectedDeliveryTimeslot: React.Dispatch<React.SetStateAction<string | undefined>>
   setSelectedAddress: React.Dispatch<React.SetStateAction<ComponentLocationAddress | undefined>>
 }
 
@@ -110,9 +106,6 @@ const CheckoutPage: React.FC = () => {
     boolean | undefined
   >()
   const [selectedDeliveryDate, setSelectedDeliveryDate] = React.useState<Date | Date[]>(new Date())
-  const [selectedDeliveryTimeslot, setSelectedDeliveryTimeslot] = React.useState<
-    string | undefined
-  >()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
 
   const [createOrder, { loading: createOrderLoading }] = useCreateCheckoutOrderMutation({
@@ -204,7 +197,6 @@ const CheckoutPage: React.FC = () => {
     const date = failedOrderDate ? new Date(failedOrderDate) : new Date()
     if (failedPayment) {
       setSelectedDeliveryDate(date)
-      setSelectedDeliveryTimeslot('1')
       if (isTabletOrMobile) {
         setActiveStep(3)
       } else {
@@ -221,7 +213,6 @@ const CheckoutPage: React.FC = () => {
           cards={cards}
           active={active}
           addresses={addresses}
-          timeSlots={timeSlots}
           handlePay={handlePay}
           cartProducts={products}
           setActiveStep={setActiveStep}
@@ -240,9 +231,6 @@ const CheckoutPage: React.FC = () => {
           selectedDeliveryDate={selectedDeliveryDate}
           setShowDeleteCardModal={setShowDeleteCardModal}
           confirmationTextAddress={confirmationTextAddress}
-          setSelectedDeliveryDate={setSelectedDeliveryDate}
-          selectedDeliveryTimeslot={selectedDeliveryTimeslot}
-          setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot}
           setShowDeleteItemsModal={setShowDeleteItemsModal}
           showCheckoutSignatoryModal={showCheckoutSignatoryModal}
           setShowCheckoutSignatoryModal={setShowCheckoutSignatoryModal}
@@ -252,7 +240,6 @@ const CheckoutPage: React.FC = () => {
           cards={cards}
           active={active}
           addresses={addresses}
-          timeSlots={timeSlots}
           handlePay={handlePay}
           cartProducts={products}
           setActiveStep={setActiveStep}
@@ -271,9 +258,6 @@ const CheckoutPage: React.FC = () => {
           selectedDeliveryDate={selectedDeliveryDate}
           setShowDeleteCardModal={setShowDeleteCardModal}
           confirmationTextAddress={confirmationTextAddress}
-          setSelectedDeliveryDate={setSelectedDeliveryDate}
-          selectedDeliveryTimeslot={selectedDeliveryTimeslot}
-          setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot}
           setShowDeleteItemsModal={setShowDeleteItemsModal}
           showCheckoutSignatoryModal={showCheckoutSignatoryModal}
           setShowCheckoutSignatoryModal={setShowCheckoutSignatoryModal}

@@ -3,6 +3,7 @@ import { Form, Formik, FormikProps } from 'formik'
 import * as React from 'react'
 import * as Yup from 'yup'
 import { ConnectedCheckbox } from '../../components/FormElements'
+import { CATEGORIES } from '../../constants'
 import { H3, Text } from '../../typography'
 import { formatError } from '../../utils'
 
@@ -19,7 +20,7 @@ type CategoriesValues = {
   categories: any
 }
 
-const UserDetails: React.FC<CategoriesProps> = ({ handleUserDetails, categories }) => {
+const UserDetails: React.FC<CategoriesProps> = ({ handleUserDetails }) => {
   return (
     <React.Fragment>
       <Flex width="100%" mb={4} flexDirection="column">
@@ -46,7 +47,7 @@ const UserDetails: React.FC<CategoriesProps> = ({ handleUserDetails, categories 
       >
         {({ isSubmitting }: FormikProps<CategoriesValues>) => (
           <Form style={{ width: '100%', display: 'flex', flexWrap: 'wrap' }}>
-            {categories?.map((item: any, i: number) => (
+            {CATEGORIES?.map((item: any, i: number) => (
               <Flex width="50%" key={`${i}-container`}>
                 <ConnectedCheckbox key={i} name="categories" label={item.name} value={item.id} />
               </Flex>
