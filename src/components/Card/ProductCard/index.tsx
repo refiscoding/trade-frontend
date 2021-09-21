@@ -1,16 +1,16 @@
 import * as React from 'react'
 
+import { Flex, Image, Text, FlexProps, Spinner } from '@chakra-ui/core'
 import { get } from 'lodash'
-import { Flex, Image, Text, FlexProps } from '@chakra-ui/core'
-
-import Input from '../../Input'
-import CardFooter from '../CardFooter'
-import AddToWishlistButton from './AddToWishlistButton'
 
 import { Card } from '../../index'
 import { CartProduct } from '../../../containers/Cart'
 import { Product, Maybe } from '../../../generated/graphql'
 import { QuantitySelectComponent } from '../../../containers/ProductView/AddToCartModal'
+
+import AddToWishlistButton from './AddToWishlistButton'
+import CardFooter from '../CardFooter'
+import Input from '../../Input'
 
 type ProductCardProps = FlexProps & {
   product: Maybe<Product> | undefined
@@ -19,6 +19,7 @@ type ProductCardProps = FlexProps & {
   isWishlist?: boolean
   isCart?: boolean
   editing?: boolean
+  isLoading?: boolean
   handleIconClick?: (id: Maybe<string> | undefined) => void
 }
 type ProductRemovalValues = {
@@ -32,6 +33,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   handleClick,
   isWishlist,
   isCart,
+  isLoading,
   editing,
   handleIconClick,
   ...rest
@@ -72,6 +74,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       alignItems="center"
       position="relative"
     >
+       {isLoading && <Spinner color="brand.300" />}
       {(isCart || isWishlist) && editing && (
         <Input
           name={product?.uniqueIdentifier || ''}
