@@ -94,7 +94,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       <Flex width="100%" mb={4} flexDirection="column">
         <H3 textAlign="left">Company Details</H3>
         <Text textAlign="left" fontSize="14px">
-          Company Details
+          Fill out some information about your company to get started.
         </Text>
       </Flex>
       <Formik
