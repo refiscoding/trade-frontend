@@ -13,9 +13,9 @@ import { formatError } from '../../utils'
 import { useHistory } from 'react-router-dom'
 import { useAuthContext } from '../../context/AuthProvider'
 import { Flex, useToast } from '@chakra-ui/core'
-import { ERROR_TOAST, mapsScriptUrl, SUCCESS_TOAST } from '../../constants'
+import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
 import { useMediaQuery } from 'react-responsive'
-import { useScript } from '../../hooks'
+// import { useScript } from '../../hooks'
 
 const userDetailsInitialValues = {
   firstName: '',
@@ -37,7 +37,7 @@ const Onboarding: React.FC = () => {
   const [currentAccountType, setCurrentAccountType] = React.useState('Individual')
   const toast = useToast()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
-  useScript(mapsScriptUrl)
+  // useScript(mapsScriptUrl)
 
   const { data } = useCategoryQuery({
     onError: (err: any) => formatError(err)

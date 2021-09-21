@@ -15,7 +15,7 @@ import DeleteItemsButton from '../Wishlist/DeleteItemsButton'
 import { theme } from '../../theme'
 import { PageWrap } from '../../layouts'
 import { H3, Text } from '../../typography'
-import { ERROR_TOAST, SUCCESS_TOAST, mapsScriptUrl } from '../../constants'
+import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
 import {
   Product,
   useProductQuery,
@@ -24,7 +24,7 @@ import {
   useRemoveProductsFromCartMutation,
   Maybe
 } from '../../generated/graphql'
-import { useScript } from '../../hooks'
+// import { useScript } from '../../hooks'
 
 export type CartProduct = {
   quantity: number
@@ -93,7 +93,7 @@ const CartPage: React.FC = () => {
   const toast = useToast()
   const history = useHistory()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
-  useScript(mapsScriptUrl)
+  // useScript(mapsScriptUrl)
 
   const [editing, setEditing] = React.useState<boolean | undefined>()
   const [showDeleteItemsModal, setShowDeleteItemsModal] = React.useState<boolean | undefined>()

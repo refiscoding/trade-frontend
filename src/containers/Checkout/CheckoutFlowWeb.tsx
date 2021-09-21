@@ -3,25 +3,22 @@ import styled from '@emotion/styled'
 
 import { Form, Formik } from 'formik'
 import { useHistory } from 'react-router'
-import { Flex, Grid, Tag } from '@chakra-ui/core'
+import { Flex, Grid } from '@chakra-ui/core'
 
 import { theme } from '../../theme'
 import { PageWrap } from '../../layouts'
 import { Stepper } from '../../components'
 import { H3, Text } from '../../typography'
 import { CheckoutProps, initialDeliveryAddressValues, DeliveryAddressValidation } from '.'
-import { ComponentCartCartProduct } from '../../generated/graphql'
 
 import BeforeCheckoutModal from '../NucleusPayment/BeforeCheckoutModal'
 import CheckoutSignatoryModal from './CheckoutSignatoryModal'
 import DeleteItemsModal from '../../components/DeleteItemsModal'
 import DeliveryAddresses from './Addresses'
 import DeliveryAddressForm from './DeliveryAddressForm'
-import DeliveryDetails from './DeliveryDetails'
 import NextButton from './Button'
 import NoData from './NoDataScreen'
 import OrderSummary from './OrderSummary'
-import ProductCard from '../../components/Card/ProductCard'
 import SelectPayment from './SelectPayment'
 
 const StepperContainer = styled.div`
@@ -33,7 +30,6 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
   active,
   cards,
   addresses,
-  timeSlots,
   handlePay,
   cartProducts,
   checkoutTotal,
@@ -48,14 +44,8 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
   noAddressDataCaption,
   beforeCheckoutText,
   confirmationTextCard,
-  setShowDeleteCardModal,
   confirmationTextAddress,
-  selectedDeliveryDate,
-  setShowDeleteItemsModal,
-  setSelectedDeliveryDate,
-  selectedDeliveryTimeslot,
   showCheckoutSignatoryModal,
-  setSelectedDeliveryTimeslot,
   setShowCheckoutSignatoryModal
 }) => {
   const history = useHistory()
@@ -64,11 +54,8 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
   const numberOfCards = cards?.length
   const cancelButtonStyles = { textDecoration: 'underline', cursor: 'pointer' }
   const deliveryAddressInfoStage = active === 0
-  const deliveryDetailsStage = active === 1
-  const confirmOrderStage = active === 2
-  const confirmPaymentCardStage = active === 3
-
-  const [nextClicked, setNextClicked] = React.useState<boolean | undefined>()
+  const confirmOrderStage = active === 1
+  const confirmPaymentCardStage = active === 2
 
   const handleCancelButtonClicked = () => {
     history.push('/cart')
@@ -159,32 +146,6 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                           <DeliveryAddressForm />
                         </Flex>
                       )}
-                      {deliveryDetailsStage && (
-                        <Flex flexDirection="column">
-                          <DeliveryDetails
-                            mobileFlow={false}
-                            timeSlots={timeSlots}
-                            nextClicked={nextClicked}
-                            setNextClicked={setNextClicked}
-                            selectedDeliveryDate={selectedDeliveryDate}
-                            setSelectedDeliveryDate={setSelectedDeliveryDate}
-                            selectedDeliveryTimeslot={selectedDeliveryTimeslot}
-                            setSelectedDeliveryTimeslot={setSelectedDeliveryTimeslot}
-                          />
-                          <NextButton
-                            active={active}
-                            disabled={false}
-                            setActive={() => {
-                              setNextClicked(true)
-                              if (selectedDeliveryDate && selectedDeliveryTimeslot) {
-                                setActiveStep(2)
-                              }
-                            }}
-                          >
-                            NEXT
-                          </NextButton>
-                        </Flex>
-                      )}
                       {confirmOrderStage && (
                         <Flex flexDirection="column">
                           <SelectPayment
@@ -223,58 +184,6 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                       confirmationTextAddress={confirmationTextAddress}
                     />
                   )}
-                  {deliveryDetailsStage && (
-                    <Flex flexDirection="column">
-                      <Grid
-                        p={4}
-                        borderRadius={5}
-                        background={theme.colors.accent[50]}
-                        boxShadow={theme.boxShadowMedium}
-                        gridTemplateColumns="1fr 50px"
-                      >
-                        <Flex>
-                          <Text mr={3} fontSize={14}>
-                            {selectedAddress?.name}:
-                          </Text>
-                          <Text fontSize={14}>
-                            {selectedAddress?.province || '-'} - {selectedAddress?.city || '-'} -{' '}
-                            {selectedAddress?.suburb || '-'}
-                          </Text>
-                        </Flex>
-                        <Flex justifySelf="end">
-                          <Tag
-                            fontSize={12}
-                            mr={1}
-                            size="sm"
-                            background={theme.colors.tag}
-                            color={theme.colors.tagText}
-                          >
-                            {selectedAddress?.type?.toUpperCase()}
-                          </Tag>
-                        </Flex>
-                      </Grid>
-                      <Flex
-                        mt={4}
-                        width="100%"
-                        flexDirection="column"
-                        overflowY="scroll"
-                        maxHeight="600px"
-                      >
-                        {cartProducts?.map((product: ComponentCartCartProduct) => (
-                          <ProductCard
-                            key={`${product?.product?.id}_${Math.random()}`}
-                            width="100%"
-                            isCart={false}
-                            editing={false}
-                            isWishlist={false}
-                            product={product?.product}
-                            handleClick={() => {}}
-                            handleIconClick={() => {}}
-                          />
-                        ))}
-                      </Flex>
-                    </Flex>
-                  )}
                   {confirmOrderStage && (
                     <OrderSummary
                       mobileFlow={false}
@@ -282,8 +191,6 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                       checkoutTotal={checkoutTotal}
                       selectedAddress={selectedAddress}
                       setActiveStep={setActiveStep}
-                      selectedDeliveryDate={selectedDeliveryDate}
-                      selectedDeliveryTimeslot={selectedDeliveryTimeslot}
                     />
                   )}
                 </Grid>

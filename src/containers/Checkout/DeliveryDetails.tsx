@@ -58,7 +58,6 @@ const DeliveryInfo: React.FC<DeliveryInfoProps> = ({
   setSelectedDeliveryDate,
   setSelectedDeliveryTimeslot,
   selectedDeliveryTimeslot,
-  selectedDeliveryDate,
   nextClicked
 }) => {
   const marginLeft = mobileFlow ? '-13px' : '-17px'

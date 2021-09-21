@@ -142,41 +142,51 @@ export const PROVINCES = [
 
 export const CATEGORIES = [
   {
+    id: 1,
     name: 'Agriculture',
     categoryImage: `${images?.iconAgriculture}`
   },
   {
+    id: 2,
     name: 'Automotive',
     categoryImage: `${images?.iconAutomotive}`
   },
   {
+    id: 3,
     name: 'Electrical Equipment',
     categoryImage: `${images?.iconElectrical}`
   },
   {
+    id: 4,
     name: 'Food Ingredients',
     categoryImage: `${images?.iconFood}`
   },
   {
+    id: 5,
     name: 'Heavy Machinery',
     categoryImage: `${images?.iconHeavyDuty}`
   },
   {
+    id: 6,
     name: 'Industrial',
     categoryImage: `${images?.iconIndustrial}`
   },
   {
+    id: 7,
     name: 'Lighting',
     categoryImage: `${images?.iconLighting}`
   },
   {
+    id: 8,
     name: 'Mining',
     categoryImage: `${images?.iconMining}`
   },
   {
+    id: 9,
     name: 'Tools and Hardware',
     categoryImage: `${images?.iconTools}`
   }
+<<<<<<< HEAD
 ]
 
 export const INDUSTRIES = [
@@ -248,6 +258,8 @@ export const INDUSTRIES = [
     label: 'Other service activities',
     value: 'Western Cape'
   }
+=======
+>>>>>>> 68abc8a0d3fe8b17b2bfd33ae32f95685f1da0d1
 ]
 
 export { NAV_ITEMS } from './navItems'
