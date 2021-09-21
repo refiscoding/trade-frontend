@@ -186,7 +186,6 @@ export const CATEGORIES = [
     name: 'Tools and Hardware',
     categoryImage: `${images?.iconTools}`
   }
-<<<<<<< HEAD
 ]
 
 export const INDUSTRIES = [
@@ -258,8 +257,6 @@ export const INDUSTRIES = [
     label: 'Other service activities',
     value: 'Western Cape'
   }
-=======
->>>>>>> 68abc8a0d3fe8b17b2bfd33ae32f95685f1da0d1
 ]
 
 export { NAV_ITEMS } from './navItems'
