@@ -122,7 +122,6 @@ const BusinessDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
             />
             <ConnectedFormGroup label="Work email address *" name="workEmailAddress" type="text" />
             <ConnectedFormGroup label="Cell phone number *" name="phoneNumber" type="text" />
-            <ConnectedFormGroup label="ID/Passport number *" name="idNumber" type="text" />
             {status && (
               <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
                 <Text textAlign="right" color="red.500">

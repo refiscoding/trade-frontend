@@ -3,12 +3,11 @@ import { get } from 'lodash'
 
 import { PageWrap } from '../../layouts'
 import { Stepper } from '../../components'
-import OnboardingAddress from './OnboardingAddress'
 import OnboardingUserNames from './OnboardingUserNames'
 import OnboardingCategories from './OnboardingCategories'
 import OnboardingUserAddress from './OnboardingUserAddress'
-import OnboardingCompanyDetails from './OnboardingCompayDetails'
 import OnboardingBusinessDetails from './OnboardingBusinessDetails'
+import OnboardingCompanyDetails from './OnboardingCompanyDetails'
 import { useUpdateSelfMutation, useCategoryQuery } from '../../generated/graphql'
 import { formatError } from '../../utils'
 import { useHistory } from 'react-router-dom'
@@ -102,7 +101,7 @@ const Onboarding: React.FC = () => {
             <OnboardingCompanyDetails handleUserDetails={handleUserDetails} />
           )}
           {currentAccountType === 'Business' ? (
-            <OnboardingAddress handleUserDetails={handleUserDetails} />
+            <OnboardingCompanyDetails handleUserDetails={handleUserDetails} />
           ) : (
             <OnboardingUserAddress handleUserDetails={handleUserDetails} />
           )}
