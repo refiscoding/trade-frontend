@@ -9,7 +9,7 @@ import {
   Truck,
   User,
   UserPlus,
-  Users,
+  Users
 } from 'react-feather'
 import React from 'react'
 

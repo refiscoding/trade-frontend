@@ -176,7 +176,78 @@ export const CATEGORIES = [
   {
     name: 'Tools and Hardware',
     categoryImage: `${images?.iconTools}`
+  }
+]
+
+export const INDUSTRIES = [
+  {
+    label: 'Agriculture, foresty and fishing',
+    value: 'Eastern Cape'
   },
+  {
+    label: 'Mining and quarrying',
+    value: 'Free State'
+  },
+  {
+    label: 'Manufacturing',
+    value: 'Gauteng'
+  },
+  {
+    label: 'Electricity, gas, steam and air conditioning supply',
+    value: 'KwaZulu Natal'
+  },
+  {
+    label: 'Water supple',
+    value: 'Limpopo'
+  },
+  {
+    label: 'Sewerage, waste management and remediation activities',
+    value: 'Mpumalanga'
+  },
+  {
+    label: 'Construction',
+    value: 'Northern Cape'
+  },
+  {
+    label: 'Wholesale and retail trade',
+    value: 'North West'
+  },
+  {
+    label: 'Repair of motor vehicles and motorcycles',
+    value: 'Western Cape'
+  },
+  {
+    label: 'Transportation and storage',
+    value: 'Western Cape'
+  },
+  {
+    label: 'Accommodation and food service activities',
+    value: 'Western Cape'
+  },
+  {
+    label: 'Professional, scientific and technical activities',
+    value: 'Western Cape'
+  },
+  {
+    label: 'Public administration and defence',
+    value: 'Western Cape'
+  },
+  {
+    label: 'Education',
+    value: 'Western Cape'
+  },
+  {
+    label: 'Arts, entertainment and recreation',
+    value: 'Western Cape'
+  },
+  {
+    label: 'Human health and social work activities',
+    value: 'Western Cape'
+  },
+  {
+    label: 'Other service activities',
+    value: 'Western Cape'
+  }
 ]
 
 export { NAV_ITEMS } from './navItems'

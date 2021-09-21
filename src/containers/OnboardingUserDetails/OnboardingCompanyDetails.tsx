@@ -1,6 +1,6 @@
 import { Button, Flex, useToast } from '@chakra-ui/core'
 import { Form, Formik, FormikProps } from 'formik'
-import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
+import { ERROR_TOAST, INDUSTRIES, SUCCESS_TOAST } from '../../constants'
 import * as React from 'react'
 import * as Yup from 'yup'
 import { MotionFlex } from '../../components'
@@ -20,10 +20,10 @@ type NameProps = {
 const NameFormValidation = Yup.object().shape({
   name: Yup.string().required('A business name is required'),
   phoneNumber: Yup.string().required('Business phone number is required'),
+  websiteAddress: Yup.string().required('Website is required'),
   registrationNumber: Yup.string().required('A registration number is required'),
   description: Yup.string().required('Description of the business is required'),
   relatedCompany: Yup.string().required('Related company is required'),
-  yearsInOperation: Yup.string().required('Years in operation is required'),
   annualTurnover: Yup.number().required('Annual turnover of the business is required'),
   businessType: Yup.string().required('The industry of the business is required')
 })
@@ -45,6 +45,8 @@ type CompanyValues = {
 const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
   const toast = useToast()
   const [currentBeeStatus, setCurrentBeeStatus] = React.useState('')
+  const [selectedBusinessType, setSelectedBusinessType] = React.useState('')
+  console.log('selectedBusinessType', selectedBusinessType)
 
   const handleBeeStatus = (event: React.ChangeEvent<HTMLSelectElement>) => {
     event.persist()
@@ -148,7 +150,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
           }
         }}
       >
-        {({ isSubmitting, status }: FormikProps<CompanyValues>) => (
+        {({ isSubmitting, status, setFieldValue }: FormikProps<CompanyValues>) => (
           <Form style={{ width: '100%' }}>
             <ConnectedFormGroup
               label="Business/Work phone number*"
@@ -171,7 +173,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
               type="number"
             />
             <ConnectedFormGroup
-              label="Related/Associated company/Group*"
+              label="Related/Associated company/Group"
               name="relatedCompany"
               type="text"
             />
@@ -219,16 +221,46 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
               ]}
             />
 
-            <ConnectedFormGroup label="Annual Turnover *" name="annualTurnover" type="number" />
+            <ConnectedSelect
+              label="Select annual turnover (R) *"
+              name={'AnnualTurnover'}
+              options={[
+                {
+                  label: '< 1 Million',
+                  value: '< 1 Million'
+                },
+                {
+                  label: '1-2 Million',
+                  value: '1-2 Million'
+                },
+                {
+                  label: '2-5 Million',
+                  value: '2-5 Million'
+                },
+                {
+                  label: '5-10 Million',
+                  value: '5-10 Million'
+                },
+                {
+                  label: '> 10 Million',
+                  value: '> 10 Million'
+                }
+              ]}
+            />
             <ConnectedFormGroup
               label="Vat registration number (if applicable)"
               name="vatNumber"
               type="text"
             />
-            <ConnectedFormGroup
+            <ConnectedSelect
               label="Which industry does your business operate in *"
+              placeholder="select an Industry"
               name="businessType"
-              type="text"
+              onChange={(name) => {
+                setSelectedBusinessType(name.target.value)
+                setFieldValue('businessType', name.target.value)
+              }}
+              options={INDUSTRIES}
             />
 
             {status && (
@@ -239,7 +271,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
               </MotionFlex>
             )}
             <Button mt={4} width="100%" type="submit" variantColor="brand" isLoading={isSubmitting}>
-              NEXT
+              {'NEXT'}
             </Button>
           </Form>
         )}
