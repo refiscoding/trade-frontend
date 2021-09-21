@@ -20,10 +20,10 @@ type NameProps = {
 const NameFormValidation = Yup.object().shape({
   name: Yup.string().required('A business name is required'),
   phoneNumber: Yup.string().required('Business phone number is required'),
-  websiteAddress: Yup.string().required('Website is required'),
   registrationNumber: Yup.string().required('A registration number is required'),
   description: Yup.string().required('Description of the business is required'),
   relatedCompany: Yup.string().required('Related company is required'),
+  yearsInOperation: Yup.string().required('Years in operation is required'),
   annualTurnover: Yup.number().required('Annual turnover of the business is required'),
   businessType: Yup.string().required('The industry of the business is required')
 })
@@ -94,7 +94,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       <Flex width="100%" mb={4} flexDirection="column">
         <H3 textAlign="left">Company Details</H3>
         <Text textAlign="left" fontSize="14px">
-          Fill out some information about your company to get started.
+          Company Details
         </Text>
       </Flex>
       <Formik
@@ -156,7 +156,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
               type="text"
             />
             <ConnectedFormGroup
-              label="Business website address*"
+              label="Business website address"
               name="websiteAddress"
               type="text"
             />
@@ -166,7 +166,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
               type="text"
             />
             <ConnectedFormGroup
-              label="Number of years in operation"
+              label="Number of years in operation*"
               name="yearsInOperation"
               type="number"
             />

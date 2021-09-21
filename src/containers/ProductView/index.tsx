@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { get } from 'lodash'
-import { useParams } from 'react-router-dom'
+//import { useParams } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
 import { Flex, useToast } from '@chakra-ui/core'
 
@@ -14,7 +14,7 @@ import { useFindProductQuery, Product } from '../../generated/graphql'
 import { theme } from '../../theme'
 
 const ProductView: React.FC = () => {
-  const { id } = useParams()
+  //const { id } = useParams()
   const toast = useToast()
   const history = useHistory()
 
@@ -22,7 +22,7 @@ const ProductView: React.FC = () => {
   const [showAddToCartModal, setShowAddToCartModal] = React.useState<boolean | undefined>()
 
   const { data } = useFindProductQuery({
-    variables: { uniqueIdentifier: id },
+    //variables: { uniqueIdentifier: id },
     onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST })
   })
 
