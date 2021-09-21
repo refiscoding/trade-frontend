@@ -1,20 +1,15 @@
 import * as React from 'react'
-import { get } from 'lodash'
-
-import { PageWrap } from '../../layouts'
-import { MotionFlex } from '../../components'
-import { Category, useCategoryQuery } from '../../generated/graphql'
-import { formatError } from '../../utils'
-import { Button, Flex, Text, FormLabel, useToast } from '@chakra-ui/core'
-import { ERROR_TOAST } from '../../constants'
-import { H3 } from '../../typography'
-import { FieldArray, Form, Formik, FormikProps } from 'formik'
-import { Options } from '../Seller/businessInfo'
 import * as Yup from 'yup'
-import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
-import { PlusSquare, XCircle } from 'react-feather'
+
+import { Button, Flex, Text, FormLabel } from '@chakra-ui/core'
+import { CATEGORIES } from '../../constants'
+import { ConnectedCheckbox, ConnectedFormGroup } from '../../components/FormElements'
+import { Form, Formik, FormikProps } from 'formik'
+import { formatError } from '../../utils'
+import { H3 } from '../../typography'
+import { MotionFlex } from '../../components'
+import { PageWrap } from '../../layouts'
 import { useHistory } from 'react-router-dom'
-import { ApolloError } from 'apollo-client'
 import { useMediaQuery } from 'react-responsive'
 
 const ProductFormValidation = Yup.object().shape({
@@ -39,19 +34,8 @@ const initialValues = {
 }
 
 const ProductFilter: React.FC = () => {
-  const toast = useToast()
   const history = useHistory()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
-  const { data } = useCategoryQuery({
-    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
-  })
-
-  const categories = get(data, 'categories', null) as Category[]
-
-  const mappedCategories = categories?.map((category: Category) => ({
-    label: category.name,
-    value: category.id
-  })) as Options[]
 
   const handleClearFilters = () => {
     history.push(`/`)
@@ -91,7 +75,7 @@ const ProductFilter: React.FC = () => {
           }
         }}
       >
-        {({ isSubmitting, status, values }: FormikProps<ProductValues>) => (
+        {({ isSubmitting, status }: FormikProps<ProductValues>) => (
           <Form style={{ width: '100%' }}>
             <ConnectedFormGroup
               label="Min Price"
@@ -106,34 +90,11 @@ const ProductFilter: React.FC = () => {
               type="text"
             />
             <FormLabel htmlFor="category">Select Category</FormLabel>
-            <FieldArray
-              name="category"
-              render={(arrayHelpers) => {
-                const userCategories = values.category
-                return (
-                  <Flex flexDirection="column">
-                    {userCategories?.map((category: string, index: number) => (
-                      <Flex key={index} alignItems="center">
-                        <ConnectedSelect
-                          placeholder="Select a category"
-                          name={`category.[${index}]`}
-                          options={mappedCategories}
-                        />
-                        <Flex ml={2} mb={4} onClick={() => arrayHelpers.remove(index)}>
-                          <XCircle />
-                        </Flex>
-                      </Flex>
-                    ))}
-                    <Flex onClick={() => arrayHelpers.push('')} mb={2} alignItems="center">
-                      <PlusSquare size={15} />
-                      <Text ml={2} fontSize={14}>
-                        Add another category
-                      </Text>
-                    </Flex>
-                  </Flex>
-                )
-              }}
-            />
+            {CATEGORIES?.map((item: any, i: number) => (
+              <Flex width="50%" key={`${i}-container`}>
+                <ConnectedCheckbox key={i} name="categories" label={item.name} value={item.id} />
+              </Flex>
+            ))}
             <ConnectedFormGroup
               label="Select Country"
               placeholder="Select an option..."
