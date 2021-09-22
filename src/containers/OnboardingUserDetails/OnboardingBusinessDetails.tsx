@@ -79,7 +79,7 @@ const BusinessDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
           }
         }}
       >
-        {({ isSubmitting, status }: FormikProps<NameValues>) => (
+        {({ isSubmitting, status, setFieldValue }: FormikProps<NameValues>) => (
           <Form style={{ width: '100%' }}>
             <ConnectedFormGroup label="Name *" name="name" type="text" />
             <ConnectedFormGroup label="Surname *" name="surname" type="text" />
@@ -87,8 +87,8 @@ const BusinessDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
             <ConnectedSelect
               label="Select position *"
               placeholder="select a Position"
-              onChange={handlePositionChanged}
-              name={'Position'}
+              onChange={(e) => setFieldValue('position', e.target.value)}
+              name="position"
               options={[
                 {
                   label: 'CEO',
