@@ -1,4 +1,4 @@
-import { Button, Editable, EditableInput, EditablePreview, Flex, useToast } from '@chakra-ui/core'
+import { Button, Flex, useToast } from '@chakra-ui/core'
 import { Form, Formik, FormikProps } from 'formik'
 import { ERROR_TOAST, INDUSTRIES, SUCCESS_TOAST } from '../../constants'
 import * as React from 'react'
@@ -19,6 +19,7 @@ type NameProps = {
 
 const NameFormValidation = Yup.object().shape({
   name: Yup.string().required('A business name is required'),
+  vatNumbeer: Yup.string().required('VAT number is required'),
   phoneNumber: Yup.string().required('Business phone number is required'),
   registrationNumber: Yup.string().required('A registration number is required'),
   description: Yup.string().required('Description of the business is required'),
@@ -45,6 +46,8 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
   const [currentBeeStatus, setCurrentBeeStatus] = React.useState('')
   const [selectedBusinessType, setSelectedBusinessType] = React.useState('')
   console.log('selectedBusinessType', selectedBusinessType)
+  const [selectedVatNumber, setSelectedVatNumber] = React.useState('')
+  console.log('selectedVatNumber', selectedVatNumber)
 
   const handleBeeStatus = (event: React.ChangeEvent<HTMLSelectElement>) => {
     event.persist()
@@ -250,6 +253,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
               label="Are you VAT registered? *"
               name="vatNumber"
               onChange={(name) => {
+                setSelectedVatNumber(name.target.value)
                 setFieldValue('vatNumber', name.target.value)
               }}
               options={[

@@ -65,7 +65,7 @@ const Onboarding: React.FC = () => {
     details?.accountType &&
       setShouldShowBusinessScreen(Boolean(details.accountType.includes('Business') ? true : false))
 
-    if (shouldShowBusinessScreen ? active <= 3 : active <= 3) {
+    if (shouldShowBusinessScreen ? active <= 3 : active <= 2) {
       setACtive(active + 1)
     }
     setUserdetails({ ...userDetails, ...details })
@@ -102,9 +102,9 @@ const Onboarding: React.FC = () => {
             <OnboardingCompanyDetails handleUserDetails={handleUserDetails} />
           )}
           {currentAccountType === 'Business' ? (
-            <OnboardingCompanyDetails handleUserDetails={handleUserDetails} />
+            <OnboardingAddress handleUserDetails={handleUserDetails} />
           ) : (
-            <OnboardingBusinessDetails handleUserDetails={handleUserDetails} />
+            <OnboardingUserAddress handleUserDetails={handleUserDetails} />
           )}
           <OnboardingCategories categories={categories} handleUserDetails={handleUserDetails} />
         </Stepper>
