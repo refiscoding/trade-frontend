@@ -183,7 +183,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
             <ConnectedSelect
               label="Select BEE status *"
               onChange={handleBeeStatus}
-              name={'BeeStatus'}
+              name="beeStatus"
               options={[
                 {
                   label: 'Level 1',
@@ -227,7 +227,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
             <ConnectedSelect
               label="Select annual turnover (R) *"
               placeholder="select Annual turnover"
-              name={'AnnualTurnover'}
+              name="annualTurnover"
               options={[
                 {
                   label: '< 1 Million',
