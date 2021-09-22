@@ -45,7 +45,6 @@ type CompanyValues = {
 
 const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
   const toast = useToast()
-  const [selectedBeeStatus, setSelectedBeeStatus] = React.useState('')
   const [selectedBusinessType, setSelectedBusinessType] = React.useState('')
   console.log('selectedBusinessType', selectedBusinessType)
   const [selectedVatNumber, setSelectedVatNumber] = React.useState('')

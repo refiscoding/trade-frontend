@@ -29,13 +29,7 @@ type NameValues = {
 }
 
 const BusinessDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
-  const [currentPosition, setCurrentPosition] = React.useState('')
-
-  const handlePositionChanged = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    event.persist()
-    const position = event?.target?.value
-    setCurrentPosition(position)
-  }
+  const [currentPosition] = React.useState('')
 
   return (
     <React.Fragment>

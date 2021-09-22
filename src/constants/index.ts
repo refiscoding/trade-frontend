@@ -91,7 +91,9 @@ export const COUNTRY_CODE = '+27'
 
 export const EMPTY_FILE: UploadFile = {
   id: '',
+  // eslint-disable-next-line @typescript-eslint/camelcase
   created_at: new Date().toISOString(),
+  // eslint-disable-next-line @typescript-eslint/camelcase
   updated_at: new Date().toISOString(),
   name: '',
   hash: '',
