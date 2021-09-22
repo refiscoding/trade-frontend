@@ -20,6 +20,7 @@ type NameProps = {
 const NameFormValidation = Yup.object().shape({
   name: Yup.string().required('A business name is required'),
   vatNumbeer: Yup.string().required('VAT number is required'),
+  yearsInOperation: Yup.number().required('Years in operation is required'),
   phoneNumber: Yup.string().required('Business phone number is required'),
   registrationNumber: Yup.string().required('A registration number is required'),
   description: Yup.string().required('Description of the business is required'),
@@ -225,6 +226,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
 
             <ConnectedSelect
               label="Select annual turnover (R) *"
+              placeholder="select Annual turnover"
               name={'AnnualTurnover'}
               options={[
                 {
