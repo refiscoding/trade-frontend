@@ -39,7 +39,7 @@ type CompanyValues = {
   yearsInOperation: number
   description: string
   relatedCompany: string
-  annualTurnover: number
+  annualTurnover: string
   businessType: string
 }
 
@@ -111,7 +111,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
           vatNumber: '',
           businessType: '',
           relatedCompany: '',
-          annualTurnover: 0
+          annualTurnover: ''
         }}
         onSubmit={async (
           {
