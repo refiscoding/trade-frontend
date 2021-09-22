@@ -259,4 +259,27 @@ export const INDUSTRIES = [
   }
 ]
 
+export const TURNOVER = [
+  {
+    label: 'Less than 1 million',
+    value: 'Less than 1 million'
+  },
+  {
+    label: '1-2 million',
+    value: '1-2 million'
+  },
+  {
+    label: '2-5 million',
+    value: '2-5 million'
+  },
+  {
+    label: '5-10 million',
+    value: '5-10 million'
+  },
+  {
+    label: 'More than 10 million',
+    value: 'More than 10 million'
+  }
+]
+
 export { NAV_ITEMS } from './navItems'

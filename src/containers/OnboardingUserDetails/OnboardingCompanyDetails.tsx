@@ -1,6 +1,6 @@
 import { Button, Flex, useToast } from '@chakra-ui/core'
 import { Form, Formik, FormikProps } from 'formik'
-import { ERROR_TOAST, INDUSTRIES, SUCCESS_TOAST } from '../../constants'
+import { ERROR_TOAST, INDUSTRIES, SUCCESS_TOAST, TURNOVER } from '../../constants'
 import * as React from 'react'
 import * as Yup from 'yup'
 import { MotionFlex } from '../../components'
@@ -19,24 +19,24 @@ type NameProps = {
 
 const NameFormValidation = Yup.object().shape({
   name: Yup.string().required('A business name is required'),
-  vatNumbeer: Yup.string().required('VAT number is required'),
+  vatNumber: Yup.string().required('VAT number is required'),
   yearsInOperation: Yup.number().required('Years in operation is required'),
   phoneNumber: Yup.string().required('Business phone number is required'),
   registrationNumber: Yup.string().required('A registration number is required'),
   description: Yup.string().required('Description of the business is required'),
-  relatedCompany: Yup.string().required('Related company is required'),
-  annualTurnover: Yup.number().required('Annual turnover of the business is required'),
+  annualTurnover: Yup.string().required('Annual turnover of the business is required'),
   businessType: Yup.string().required('The industry of the business is required')
 })
 
 type CompanyValues = {
   name: string
+  beeStatus: string
+  vatNumber: string
   phoneNumber: string
   websiteAddress: string
   registrationNumber: string
   yearsInOperation: number
   description: string
-  vatNumber: string
   relatedCompany: string
   annualTurnover: number
   businessType: string
@@ -44,17 +44,13 @@ type CompanyValues = {
 
 const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
   const toast = useToast()
-  const [currentBeeStatus, setCurrentBeeStatus] = React.useState('')
+  //const [currentBeeStatus, setCurrentBeeStatus] = React.useState('')
   const [selectedBusinessType, setSelectedBusinessType] = React.useState('')
   console.log('selectedBusinessType', selectedBusinessType)
   const [selectedVatNumber, setSelectedVatNumber] = React.useState('')
   console.log('selectedVatNumber', selectedVatNumber)
-
-  const handleBeeStatus = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    event.persist()
-    const value = event?.target?.value
-    setCurrentBeeStatus(value)
-  }
+  const [selectedAnnualTurnover] = React.useState('')
+  console.log('selectedAnnualTurnover', selectedAnnualTurnover)
 
   const [createMyBusiness] = useCreateMyBusinessMutation({
     onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
@@ -66,6 +62,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
   const handleSubmit = async (values: CompanyValues) => {
     const {
       name,
+      beeStatus,
       phoneNumber,
       websiteAddress,
       registrationNumber,
@@ -85,7 +82,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       vatNumber,
       relatedCompany,
       annualTurnover,
-      beeStatus: currentBeeStatus,
+      beeStatus,
       isVatRegistered: Boolean(vatNumber.length > 0 ? true : false),
       hasPhysicalStore: Boolean(true)
     }
@@ -105,6 +102,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
         validationSchema={NameFormValidation}
         initialValues={{
           name: '',
+          beeStatus: '',
           phoneNumber: '',
           websiteAddress: '',
           registrationNumber: '',
@@ -118,6 +116,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
         onSubmit={async (
           {
             name,
+            beeStatus,
             phoneNumber,
             websiteAddress,
             registrationNumber,
@@ -136,6 +135,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
             // create the business then continue
             await handleSubmit({
               name,
+              beeStatus,
               phoneNumber,
               websiteAddress,
               registrationNumber,
@@ -182,8 +182,8 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
             />
             <ConnectedSelect
               label="Select BEE status *"
-              onChange={handleBeeStatus}
               name="beeStatus"
+              onChange={(e) => setFieldValue('beeStatus', e.target.value)}
               options={[
                 {
                   label: 'Level 1',
@@ -223,33 +223,12 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
                 }
               ]}
             />
-
             <ConnectedSelect
               label="Select annual turnover (R) *"
               placeholder="select Annual turnover"
               name="annualTurnover"
-              options={[
-                {
-                  label: '< 1 Million',
-                  value: '< 1 Million'
-                },
-                {
-                  label: '1-2 Million',
-                  value: '1-2 Million'
-                },
-                {
-                  label: '2-5 Million',
-                  value: '2-5 Million'
-                },
-                {
-                  label: '5-10 Million',
-                  value: '5-10 Million'
-                },
-                {
-                  label: '> 10 Million',
-                  value: '> 10 Million'
-                }
-              ]}
+              onChange={(e) => setFieldValue('annualTurnover', e.target.value)}
+              options={TURNOVER}
             />
             <ConnectedSelect
               label="Are you VAT registered? *"
@@ -271,6 +250,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
             />
             <ConnectedFormGroup
               label="If yes, please provide VAT number *"
+              placeholder="please provide VAT number"
               name="vatNumber"
               type="text"
             />
