@@ -40,7 +40,7 @@ const BusinessDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
   return (
     <React.Fragment>
       <Flex width="100%" mb={4} flexDirection="column">
-        <H3 textAlign="left">Business Details</H3>
+        <H3 textAlign="left">Lets get to know you</H3>
         <Text textAlign="left" fontSize="14px">
           Lets get to know more about your Business:
         </Text>
@@ -52,7 +52,7 @@ const BusinessDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
         validationSchema={BusinessDetailsFormValidation}
         initialValues={{
           companyName: '',
-          position: 'CEO',
+          position: '',
           workEmailAddress: '',
           phoneNumber: '',
           idNumber: ''
@@ -82,6 +82,7 @@ const BusinessDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
             <ConnectedFormGroup label="Company name*" name="companyName" type="text" />
             <ConnectedSelect
               label="Select position *"
+              placeholder="select a Position"
               onChange={handlePositionChanged}
               name={'Position'}
               options={[
