@@ -15,6 +15,7 @@ import { useAuthContext } from '../../context/AuthProvider'
 import { Flex, useToast } from '@chakra-ui/core'
 import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
 import { useMediaQuery } from 'react-responsive'
+import OnboardingAddress from './OnboardingAddress'
 // import { useScript } from '../../hooks'
 
 const userDetailsInitialValues = {
@@ -64,7 +65,7 @@ const Onboarding: React.FC = () => {
     details?.accountType &&
       setShouldShowBusinessScreen(Boolean(details.accountType.includes('Business') ? true : false))
 
-    if (shouldShowBusinessScreen ? active <= 3 : active <= 1) {
+    if (shouldShowBusinessScreen ? active <= 3 : active <= 3) {
       setACtive(active + 1)
     }
     setUserdetails({ ...userDetails, ...details })
@@ -101,9 +102,9 @@ const Onboarding: React.FC = () => {
             <OnboardingCompanyDetails handleUserDetails={handleUserDetails} />
           )}
           {currentAccountType === 'Business' ? (
-            <OnboardingBusinessDetails handleUserDetails={handleUserDetails} />
+            <OnboardingCompanyDetails handleUserDetails={handleUserDetails} />
           ) : (
-            <OnboardingUserAddress handleUserDetails={handleUserDetails} />
+            <OnboardingBusinessDetails handleUserDetails={handleUserDetails} />
           )}
           <OnboardingCategories categories={categories} handleUserDetails={handleUserDetails} />
         </Stepper>

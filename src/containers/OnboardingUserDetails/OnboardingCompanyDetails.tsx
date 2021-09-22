@@ -1,4 +1,4 @@
-import { Button, Flex, useToast } from '@chakra-ui/core'
+import { Button, Editable, EditableInput, EditablePreview, Flex, useToast } from '@chakra-ui/core'
 import { Form, Formik, FormikProps } from 'formik'
 import { ERROR_TOAST, INDUSTRIES, SUCCESS_TOAST } from '../../constants'
 import * as React from 'react'
@@ -8,9 +8,9 @@ import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElemen
 import { H3, Text } from '../../typography'
 import { formatError } from '../../utils'
 import {
-  useCreateMyBusinessMutation,
+  useCreateMyBusinessMutation
   // eslint-disable-next-line @typescript-eslint/camelcase
-  Enum_Business_Businesstype
+  //Enum_Business_Businesstype
 } from '../../generated/graphql'
 
 type NameProps = {
@@ -20,7 +20,6 @@ type NameProps = {
 const NameFormValidation = Yup.object().shape({
   name: Yup.string().required('A business name is required'),
   phoneNumber: Yup.string().required('Business phone number is required'),
-  websiteAddress: Yup.string().required('Website is required'),
   registrationNumber: Yup.string().required('A registration number is required'),
   description: Yup.string().required('Description of the business is required'),
   relatedCompany: Yup.string().required('Related company is required'),
@@ -38,8 +37,7 @@ type CompanyValues = {
   vatNumber: string
   relatedCompany: string
   annualTurnover: number
-  // eslint-disable-next-line @typescript-eslint/camelcase
-  businessType?: Enum_Business_Businesstype
+  businessType: string
 }
 
 const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
@@ -109,6 +107,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
           yearsInOperation: 0,
           description: '',
           vatNumber: '',
+          businessType: '',
           relatedCompany: '',
           annualTurnover: 0
         }}
@@ -247,10 +246,22 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
                 }
               ]}
             />
-            <ConnectedFormGroup
-              label="Vat registration number (if applicable)"
+            <ConnectedSelect
+              label="Are you VAT registered? *"
               name="vatNumber"
-              type="text"
+              onChange={(name) => {
+                setFieldValue('vatNumber', name.target.value)
+              }}
+              options={[
+                {
+                  label: 'Yes',
+                  value: 'Yes'
+                },
+                {
+                  label: 'No',
+                  value: 'No'
+                }
+              ]}
             />
             <ConnectedSelect
               label="Which industry does your business operate in *"
