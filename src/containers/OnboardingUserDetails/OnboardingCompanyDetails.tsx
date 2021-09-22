@@ -20,6 +20,7 @@ type NameProps = {
 const NameFormValidation = Yup.object().shape({
   name: Yup.string().required('A business name is required'),
   vatNumber: Yup.string().required('VAT number is required'),
+  beeStatus: Yup.string().required('BEE Status is required'),
   yearsInOperation: Yup.number().required('Years in operation is required'),
   phoneNumber: Yup.string().required('Business phone number is required'),
   registrationNumber: Yup.string().required('A registration number is required'),
@@ -44,7 +45,7 @@ type CompanyValues = {
 
 const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
   const toast = useToast()
-  //const [currentBeeStatus, setCurrentBeeStatus] = React.useState('')
+  const [selectedBeeStatus, setSelectedBeeStatus] = React.useState('')
   const [selectedBusinessType, setSelectedBusinessType] = React.useState('')
   console.log('selectedBusinessType', selectedBusinessType)
   const [selectedVatNumber, setSelectedVatNumber] = React.useState('')
@@ -182,6 +183,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
             />
             <ConnectedSelect
               label="Select BEE status *"
+              placeholder="select BEE status"
               name="beeStatus"
               onChange={(e) => setFieldValue('beeStatus', e.target.value)}
               options={[
