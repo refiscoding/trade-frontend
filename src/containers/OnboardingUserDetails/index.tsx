@@ -97,10 +97,10 @@ const Onboarding: React.FC = () => {
             handleUserDetails={handleUserDetails}
           />
           {currentAccountType === 'Business' && (
-            <OnboardingUserAddress handleUserDetails={handleUserDetails} />
+            <OnboardingBusinessDetails handleUserDetails={handleUserDetails} />
           )}
           {currentAccountType === 'Business' && (
-            <OnboardingBusinessDetails handleUserDetails={handleUserDetails} />
+            <OnboardingCompanyDetails handleUserDetails={handleUserDetails} />
           )}
           {currentAccountType === 'Business' && (
             <OnboardingAddress handleUserDetails={handleUserDetails} />
