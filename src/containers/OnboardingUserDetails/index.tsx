@@ -16,6 +16,7 @@ import { Flex, useToast } from '@chakra-ui/core'
 import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
 import { useMediaQuery } from 'react-responsive'
 import OnboardingAddress from './OnboardingAddress'
+import OnboardingIndividual from './OnboardingIndividual'
 // import { useScript } from '../../hooks'
 
 const userDetailsInitialValues = {
@@ -96,15 +97,18 @@ const Onboarding: React.FC = () => {
             handleUserDetails={handleUserDetails}
           />
           {currentAccountType === 'Business' && (
-            <OnboardingCompanyDetails handleUserDetails={handleUserDetails} />
+            <OnboardingUserAddress handleUserDetails={handleUserDetails} />
           )}
           {currentAccountType === 'Business' && (
-            <OnboardingCompanyDetails handleUserDetails={handleUserDetails} />
+            <OnboardingBusinessDetails handleUserDetails={handleUserDetails} />
+          )}
+          {currentAccountType === 'Business' && (
+            <OnboardingAddress handleUserDetails={handleUserDetails} />
           )}
           {currentAccountType === 'Business' ? (
-            <OnboardingAddress handleUserDetails={handleUserDetails} />
+            <OnboardingIndividual handleUserDetails={handleUserDetails} />
           ) : (
-            <OnboardingUserAddress handleUserDetails={handleUserDetails} />
+            <OnboardingIndividual handleUserDetails={handleUserDetails} />
           )}
           <OnboardingCategories categories={categories} handleUserDetails={handleUserDetails} />
         </Stepper>

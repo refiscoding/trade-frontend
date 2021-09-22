@@ -269,6 +269,11 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
                 }
               ]}
             />
+            <ConnectedFormGroup
+              label="If yes, please provide VAT number *"
+              name="vatNumber"
+              type="text"
+            />
             <ConnectedSelect
               label="Which industry does your business operate in *"
               placeholder="select an Industry"
