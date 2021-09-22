@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import { IToast } from '@chakra-ui/core'
 import { UploadFile } from '../generated/graphql'
 import algoliasearch from 'algoliasearch/lite'
