@@ -84,8 +84,8 @@ const UserDetails: React.FC<NameProps> = ({
                 }
               ]}
             />
-            <ConnectedFormGroup label="First name*" name="firstName" type="text" />
-            <ConnectedFormGroup label="Last name*" name="lastName" type="text" />
+            <ConnectedFormGroup label="Name *" name="firstName" type="text" />
+            <ConnectedFormGroup label="Surname *" name="lastName" type="text" />
             {status && (
               <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
                 <Text textAlign="right" color="red.500">
