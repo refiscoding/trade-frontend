@@ -13,11 +13,12 @@ type NameProps = {
 }
 
 const BusinessDetailsFormValidation = Yup.object().shape({
+  name: Yup.string().required('Name is required'),
+  surname: Yup.string().required('Name is required'),
   companyName: Yup.string().required('Company name is required'),
   position: Yup.string().required('Position is required'),
   workEmailAddress: Yup.string().required('Work email is required'),
-  phoneNumber: Yup.string().required('Phone number is required'),
-  idNumber: Yup.string().required('An ID/Passport number if required')
+  phoneNumber: Yup.string().required('Phone number is required')
 })
 
 type NameValues = {
@@ -25,7 +26,6 @@ type NameValues = {
   position: string
   workEmailAddress: string
   phoneNumber: string
-  idNumber: string
 }
 
 const BusinessDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
@@ -51,25 +51,27 @@ const BusinessDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       <Formik
         validationSchema={BusinessDetailsFormValidation}
         initialValues={{
+          name: '',
+          surname: '',
           companyName: '',
           position: '',
           workEmailAddress: '',
-          phoneNumber: '',
-          idNumber: ''
+          phoneNumber: ''
         }}
         onSubmit={async (
-          { companyName, workEmailAddress, phoneNumber, idNumber },
+          { name, surname, companyName, workEmailAddress, phoneNumber },
           { setStatus, setSubmitting }
         ) => {
           setStatus(null)
           try {
             setSubmitting(true)
             handleUserDetails({
+              name,
+              surname,
               companyName,
               position: currentPosition,
               workEmailAddress,
-              phoneNumber,
-              idNumber
+              phoneNumber
             })
             setSubmitting(false)
           } catch (error) {
@@ -79,6 +81,8 @@ const BusinessDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       >
         {({ isSubmitting, status }: FormikProps<NameValues>) => (
           <Form style={{ width: '100%' }}>
+            <ConnectedFormGroup label="Name *" name="name" type="text" />
+            <ConnectedFormGroup label="Surname *" name="surname" type="text" />
             <ConnectedFormGroup label="Company name*" name="companyName" type="text" />
             <ConnectedSelect
               label="Select position *"
