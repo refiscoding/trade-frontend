@@ -5,7 +5,6 @@ import { PageWrap } from '../../layouts'
 import { Stepper } from '../../components'
 import OnboardingUserNames from './OnboardingUserNames'
 import OnboardingCategories from './OnboardingCategories'
-//import OnboardingUserAddress from './OnboardingUserAddress'
 import OnboardingBusinessDetails from './OnboardingBusinessDetails'
 import OnboardingCompanyDetails from './OnboardingCompanyDetails'
 import { useUpdateSelfMutation, useCategoryQuery } from '../../generated/graphql'
@@ -17,7 +16,6 @@ import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
 import { useMediaQuery } from 'react-responsive'
 import OnboardingAddress from './OnboardingAddress'
 import OnboardingIndividual from './OnboardingIndividual'
-// import { useScript } from '../../hooks'
 
 const userDetailsInitialValues = {
   firstName: '',
@@ -39,7 +37,6 @@ const Onboarding: React.FC = () => {
   const [currentAccountType, setCurrentAccountType] = React.useState('Individual')
   const toast = useToast()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
-  // useScript(mapsScriptUrl)
 
   const { data } = useCategoryQuery({
     onError: (err: any) => formatError(err)

@@ -45,13 +45,6 @@ type CompanyValues = {
 
 const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
   const toast = useToast()
-  const [selectedBeeStatus, setSelectedBeeStatus] = React.useState('')
-  const [selectedBusinessType, setSelectedBusinessType] = React.useState('')
-  console.log('selectedBusinessType', selectedBusinessType)
-  const [selectedVatNumber, setSelectedVatNumber] = React.useState('')
-  console.log('selectedVatNumber', selectedVatNumber)
-  const [selectedAnnualTurnover] = React.useState('')
-  console.log('selectedAnnualTurnover', selectedAnnualTurnover)
 
   const [createMyBusiness] = useCreateMyBusinessMutation({
     onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
@@ -236,7 +229,6 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
               label="Are you VAT registered? *"
               name="vatNumber"
               onChange={(name) => {
-                setSelectedVatNumber(name.target.value)
                 setFieldValue('vatNumber', name.target.value)
               }}
               options={[
@@ -260,10 +252,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
               label="Which industry does your business operate in *"
               placeholder="select an Industry"
               name="businessType"
-              onChange={(name) => {
-                setSelectedBusinessType(name.target.value)
-                setFieldValue('businessType', name.target.value)
-              }}
+              onChange={(e) => setFieldValue('businesstype', e.target.value)}
               options={INDUSTRIES}
             />
 
@@ -275,7 +264,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
               </MotionFlex>
             )}
             <Button mt={4} width="100%" type="submit" variantColor="brand" isLoading={isSubmitting}>
-              {'NEXT'}
+              NEXT
             </Button>
           </Form>
         )}
