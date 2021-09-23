@@ -1,6 +1,6 @@
 import { Button, Flex, useToast } from '@chakra-ui/core'
 import { Form, Formik, FormikProps } from 'formik'
-import { ERROR_TOAST, INDUSTRIES, SUCCESS_TOAST, TURNOVER } from '../../constants'
+import { BEESTATUS, ERROR_TOAST, INDUSTRIES, SUCCESS_TOAST, TURNOVER } from '../../constants'
 import * as React from 'react'
 import * as Yup from 'yup'
 import { MotionFlex } from '../../components'
@@ -15,12 +15,10 @@ type NameProps = {
 
 const NameFormValidation = Yup.object().shape({
   name: Yup.string().required('A business name is required'),
-  //vatNumber: Yup.string().required('VAT number is required'),
   beeStatus: Yup.string().required('BEE Status is required'),
   yearsInOperation: Yup.number().required('Years in operation is required'),
   phoneNumber: Yup.string().required('Business phone number is required'),
   registrationNumber: Yup.string().required('A registration number is required'),
-  description: Yup.string().required('Description of the business is required'),
   annualTurnover: Yup.string().required('Annual turnover of the business is required'),
   businessType: Yup.string().required('The industry of the business is required')
 })
@@ -29,7 +27,6 @@ type CompanyValues = {
   name: string
   beeStatus: string
   vatNumber: string
-  isVatRegistered: boolean
   phoneNumber: string
   websiteAddress: string
   registrationNumber: string
@@ -38,10 +35,12 @@ type CompanyValues = {
   relatedCompany: string
   annualTurnover: string
   businessType: string
+  isVatRegistered: boolean
 }
 
 const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
   const toast = useToast()
+  const [vatChecked, setVatChecked] = React.useState(false)
 
   const [createMyBusiness] = useCreateMyBusinessMutation({
     onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
@@ -55,7 +54,6 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       name,
       beeStatus,
       phoneNumber,
-      isVatRegistered,
       websiteAddress,
       registrationNumber,
       yearsInOperation,
@@ -75,8 +73,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       relatedCompany,
       annualTurnover,
       beeStatus,
-      isVatRegistered,
-      hasPhysicalStore: Boolean(true)
+      isVatRegistered: vatChecked
     }
 
     await createMyBusiness({ variables: { input: businessInput } })
@@ -95,10 +92,10 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
         initialValues={{
           name: '',
           beeStatus: '',
-          isVatRegistered: false,
           phoneNumber: '',
           websiteAddress: '',
           registrationNumber: '',
+          isVatRegistered: false,
           yearsInOperation: 0,
           description: '',
           vatNumber: '',
@@ -106,41 +103,13 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
           relatedCompany: '',
           annualTurnover: ''
         }}
-        onSubmit={async (
-          {
-            name,
-            beeStatus,
-            phoneNumber,
-            isVatRegistered,
-            websiteAddress,
-            registrationNumber,
-            yearsInOperation,
-            description,
-            annualTurnover,
-            vatNumber,
-            relatedCompany,
-            businessType
-          },
-          { setStatus, setSubmitting }
-        ) => {
+        onSubmit={async (businessInput, { setSubmitting, setStatus }) => {
           setStatus(null)
           try {
             setSubmitting(true)
+            console.log('here now', businessInput)
             // create the business then continue
-            await handleSubmit({
-              name,
-              beeStatus,
-              phoneNumber,
-              isVatRegistered,
-              websiteAddress,
-              registrationNumber,
-              yearsInOperation,
-              description,
-              annualTurnover,
-              vatNumber,
-              relatedCompany,
-              businessType
-            })
+            await handleSubmit(businessInput)
             handleUserDetails({})
             setSubmitting(false)
           } catch (error) {
@@ -150,6 +119,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       >
         {({ isSubmitting, status, setFieldValue }: FormikProps<CompanyValues>) => (
           <Form style={{ width: '100%' }}>
+            <ConnectedFormGroup label="Business Name*" name="name" type="text" />
             <ConnectedFormGroup
               label="Business/Work phone number*"
               name="phoneNumber"
@@ -180,44 +150,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
               placeholder="select BEE status"
               name="beeStatus"
               onChange={(e) => setFieldValue('beeStatus', e.target.value)}
-              options={[
-                {
-                  label: 'Level 1',
-                  value: 'Level 1'
-                },
-                {
-                  label: 'Level 2',
-                  value: 'Level 2'
-                },
-                {
-                  label: 'Level 3',
-                  value: 'Level 3'
-                },
-                {
-                  label: 'Level 4',
-                  value: 'Level 4'
-                },
-                {
-                  label: 'Level 5',
-                  value: 'Level 5'
-                },
-                {
-                  label: 'Level 6',
-                  value: 'Level 6'
-                },
-                {
-                  label: 'Level 7',
-                  value: 'Level 7'
-                },
-                {
-                  label: 'Level 8',
-                  value: 'Level 8'
-                },
-                {
-                  label: 'None',
-                  value: 'None'
-                }
-              ]}
+              options={BEESTATUS}
             />
             <ConnectedSelect
               label="Select annual turnover (R) *"
@@ -231,24 +164,31 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
               name="isVatRegistered"
               onChange={(name) => {
                 setFieldValue('isVatRegistered', name.target.value)
+                if (name.target.value === 'true') {
+                  setVatChecked(true)
+                } else {
+                  setVatChecked(false)
+                }
               }}
               options={[
                 {
                   label: 'No',
-                  value: 'false'
+                  value: false
                 },
                 {
                   label: 'Yes',
-                  value: 'true'
+                  value: true
                 }
               ]}
             />
-            <ConnectedFormGroup
-              label="If yes, please provide VAT number *"
-              placeholder="please provide VAT number"
-              name="vatNumber"
-              type="text"
-            />
+            {vatChecked === true && (
+              <ConnectedFormGroup
+                label="If yes, please provide VAT number *"
+                placeholder="please provide VAT number"
+                name="vatNumber"
+                type="text"
+              />
+            )}
             <ConnectedSelect
               label="Which industry does your business operate in *"
               placeholder="select an Industry"
@@ -258,7 +198,6 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
               }}
               options={INDUSTRIES}
             />
-
             {status && (
               <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
                 <Text textAlign="right" color="red.500">
