@@ -7,11 +7,7 @@ import { MotionFlex } from '../../components'
 import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
 import { H3, Text } from '../../typography'
 import { formatError } from '../../utils'
-import {
-  useCreateMyBusinessMutation
-  // eslint-disable-next-line @typescript-eslint/camelcase
-  //Enum_Business_Businesstype
-} from '../../generated/graphql'
+import { useCreateMyBusinessMutation } from '../../generated/graphql'
 
 type NameProps = {
   handleUserDetails: (details: any) => void
@@ -19,7 +15,7 @@ type NameProps = {
 
 const NameFormValidation = Yup.object().shape({
   name: Yup.string().required('A business name is required'),
-  vatNumber: Yup.string().required('VAT number is required'),
+  //vatNumber: Yup.string().required('VAT number is required'),
   beeStatus: Yup.string().required('BEE Status is required'),
   yearsInOperation: Yup.number().required('Years in operation is required'),
   phoneNumber: Yup.string().required('Business phone number is required'),
@@ -33,6 +29,7 @@ type CompanyValues = {
   name: string
   beeStatus: string
   vatNumber: string
+  isVatRegistered: boolean
   phoneNumber: string
   websiteAddress: string
   registrationNumber: string
@@ -58,6 +55,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       name,
       beeStatus,
       phoneNumber,
+      isVatRegistered,
       websiteAddress,
       registrationNumber,
       yearsInOperation,
@@ -77,7 +75,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       relatedCompany,
       annualTurnover,
       beeStatus,
-      isVatRegistered: Boolean(vatNumber.length > 0 ? true : false),
+      isVatRegistered,
       hasPhysicalStore: Boolean(true)
     }
 
@@ -97,6 +95,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
         initialValues={{
           name: '',
           beeStatus: '',
+          isVatRegistered: false,
           phoneNumber: '',
           websiteAddress: '',
           registrationNumber: '',
@@ -112,6 +111,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
             name,
             beeStatus,
             phoneNumber,
+            isVatRegistered,
             websiteAddress,
             registrationNumber,
             yearsInOperation,
@@ -131,6 +131,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
               name,
               beeStatus,
               phoneNumber,
+              isVatRegistered,
               websiteAddress,
               registrationNumber,
               yearsInOperation,
@@ -227,18 +228,18 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
             />
             <ConnectedSelect
               label="Are you VAT registered? *"
-              name="vatNumber"
+              name="isVatRegistered"
               onChange={(name) => {
-                setFieldValue('vatNumber', name.target.value)
+                setFieldValue('isVatRegistered', name.target.value)
               }}
               options={[
                 {
-                  label: 'Yes',
-                  value: 'Yes'
+                  label: 'No',
+                  value: 'false'
                 },
                 {
-                  label: 'No',
-                  value: 'No'
+                  label: 'Yes',
+                  value: 'true'
                 }
               ]}
             />
@@ -252,7 +253,9 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
               label="Which industry does your business operate in *"
               placeholder="select an Industry"
               name="businessType"
-              onChange={(e) => setFieldValue('businesstype', e.target.value)}
+              onChange={(name) => {
+                setFieldValue('businessType', name.target.value)
+              }}
               options={INDUSTRIES}
             />
 
