@@ -103,7 +103,7 @@ const Onboarding: React.FC = () => {
             <OnboardingAddress handleUserDetails={handleUserDetails} />
           )}
           {currentAccountType === 'Business' ? (
-            <OnboardingIndividual handleUserDetails={handleUserDetails} />
+            <> </>
           ) : (
             <OnboardingIndividual handleUserDetails={handleUserDetails} />
           )}
