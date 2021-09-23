@@ -78,7 +78,6 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       isVatRegistered,
       hasPhysicalStore: Boolean(true)
     }
-
     await createMyBusiness({ variables: { input: businessInput } })
   }
 
