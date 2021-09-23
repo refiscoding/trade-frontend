@@ -11,14 +11,20 @@ import Header from '../Header'
 import SideBarItem from './SideBarItem'
 import SideBarButton from './SideBarButton'
 
-import { images } from '../../theme'
-import { Text } from '../../typography'
+import {
+  NavItem,
+  AUTH_NAV_ITEMS,
+  BUSINESS_NAV_ITEM,
+  LOGOUT_NAV_ITEM,
+  SELLER_NAV_ITEM
+} from '../../constants/navItems'
 import { ERROR_TOAST } from '../../constants'
-import { useAppContext } from '../../context/AppProvider'
+import { images } from '../../theme'
 import { MenuCont, Overlay, RenderWrapper } from './styles'
+import { Text } from '../../typography'
+import { useAppContext } from '../../context/AppProvider'
 import { useAuthContext } from '../../context/AuthProvider'
 import { useFetchUserNotificationsQuery } from '../../generated/graphql'
-import { NavItem, AUTH_NAV_ITEMS, LOGOUT_NAV_ITEM, SELLER_NAV_ITEM } from '../../constants/navItems'
 
 type SideBarProps = ColorProps & {
   accentColor: string
@@ -73,6 +79,7 @@ const SideBar: React.FC<SideBarProps> = ({
     const updatedNavItems = navItems
     if (user?.isSeller === 'approved') {
       updatedNavItems[1] = SELLER_NAV_ITEM
+      updatedNavItems[2] = BUSINESS_NAV_ITEM
     }
     return updatedNavItems
   }

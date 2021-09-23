@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   Bell,
   Briefcase,
@@ -11,7 +12,6 @@ import {
   UserPlus,
   Users
 } from 'react-feather'
-import React from 'react'
 
 export type NavItem = {
   to: string
@@ -37,11 +37,6 @@ export const NAV_ITEMS: NavItem[] = [
     Icon: Star
   },
   {
-    to: `/business-orders`,
-    title: 'Business Orders',
-    Icon: Truck
-  },
-  {
     to: `/profile`,
     title: 'My Account',
     Icon: User
@@ -63,10 +58,16 @@ export const NAV_ITEMS: NavItem[] = [
   }
 ]
 
-export const SELLER_NAV_ITEM: NavItem = {
+export const SELLER_NAV_ITEM = {
   to: `/product-management`,
   title: 'Product Management',
   Icon: Briefcase
+}
+
+export const BUSINESS_NAV_ITEM = {
+  to: `/business-orders`,
+  title: 'Business Orders',
+  Icon: Truck
 }
 
 export const LOGOUT_NAV_ITEM: NavItem[] = [

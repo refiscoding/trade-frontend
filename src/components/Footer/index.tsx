@@ -29,10 +29,6 @@ const footerItems = [
     url: '/wishlist'
   },
   {
-    title: 'Business Orders',
-    url: '/business-orders'
-  },
-  {
     title: 'About Us',
     url: '/about-us'
   },
