@@ -34,7 +34,6 @@ type CompanyValues = {
   websiteAddress: string
   registrationNumber: string
   yearsInOperation: number
-  description: string
   relatedCompany: string
   annualTurnover: string
   businessType: string
@@ -59,7 +58,6 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       websiteAddress,
       registrationNumber,
       yearsInOperation,
-      description,
       vatNumber,
       relatedCompany,
       annualTurnover
@@ -70,7 +68,6 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       websiteAddress,
       registrationNumber,
       yearsInOperation,
-      description,
       vatNumber,
       relatedCompany,
       annualTurnover,
@@ -99,7 +96,6 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
           websiteAddress: '',
           registrationNumber: '',
           yearsInOperation: 0,
-          description: '',
           vatNumber: '',
           businessType: '',
           relatedCompany: '',
