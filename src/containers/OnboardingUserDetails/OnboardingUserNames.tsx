@@ -1,7 +1,6 @@
 import { Button, Flex, Image } from '@chakra-ui/core'
 import { Form, Formik, FormikProps } from 'formik'
 import * as React from 'react'
-//import * as Yup from 'yup'
 import { MotionFlex } from '../../components'
 import { ConnectedSelect } from '../../components/FormElements'
 import { images } from '../../theme'
@@ -13,11 +12,6 @@ type NameProps = {
   currentAccountType: string
   setCurrentAccountType: Function
 }
-
-// const NameFormValidation = Yup.object().shape({
-//   firstName: Yup.string().required('First name is required'),
-//   lastName: Yup.string().required('Last name is required')
-// })
 
 type NameValues = {
   firstName: string
@@ -47,7 +41,6 @@ const UserDetails: React.FC<NameProps> = ({
         <Image width="60%" src={images['OnboardingDetails']} />
       </Flex>
       <Formik
-        //validationSchema={NameFormValidation}
         initialValues={{
           firstName: '',
           lastName: ''
@@ -84,8 +77,6 @@ const UserDetails: React.FC<NameProps> = ({
                 }
               ]}
             />
-            {/**<ConnectedFormGroup label="Name *" name="firstName" type="text" />
-            <ConnectedFormGroup label="Surname *" name="lastName" type="text" />**/}
             {status && (
               <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
                 <Text textAlign="right" color="red.500">
