@@ -25,7 +25,6 @@ fragment business on Business {
   yearsInOperation
   beeStatus
   annualTurnover
-  description
   hazChem
   countries {
     ...country
