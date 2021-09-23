@@ -31,7 +31,6 @@ type CompanyValues = {
   websiteAddress: string
   registrationNumber: string
   yearsInOperation: number
-  description: string
   relatedCompany: string
   annualTurnover: string
   businessType: string
@@ -57,7 +56,6 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       websiteAddress,
       registrationNumber,
       yearsInOperation,
-      description,
       vatNumber,
       relatedCompany,
       annualTurnover
@@ -68,7 +66,6 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       websiteAddress,
       registrationNumber,
       yearsInOperation,
-      description,
       vatNumber,
       relatedCompany,
       annualTurnover,
@@ -97,7 +94,6 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
           registrationNumber: '',
           isVatRegistered: false,
           yearsInOperation: 0,
-          description: '',
           vatNumber: '',
           businessType: '',
           relatedCompany: '',
@@ -107,7 +103,6 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
           setStatus(null)
           try {
             setSubmitting(true)
-            console.log('here now', businessInput)
             // create the business then continue
             await handleSubmit(businessInput)
             handleUserDetails({})
