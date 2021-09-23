@@ -14,15 +14,15 @@ type NameProps = {
 }
 
 const NameFormValidation = Yup.object().shape({
-  name: Yup.string().required('Name is required'),
-  surname: Yup.string().required('Surname is required'),
+  firstName: Yup.string().required('Name is required'),
+  lastName: Yup.string().required('Surname is required'),
   phoneNumber: Yup.string().required('Phone number is required'),
   email: Yup.string().required('Email address is required')
 })
 
 type NameValues = {
-  name: string
-  surname: string
+  firstName: string
+  lastName: string
   email: string
   phoneNumber: string
 }
@@ -39,18 +39,21 @@ const OnboardingIndividual: React.FC<NameProps> = ({ handleUserDetails }) => {
       <Formik
         validationSchema={NameFormValidation}
         initialValues={{
-          name: '',
-          surname: '',
+          firstName: '',
+          lastName: '',
           phoneNumber: '',
           email: ''
         }}
-        onSubmit={async ({ name, surname, phoneNumber, email }, { setStatus, setSubmitting }) => {
+        onSubmit={async (
+          { firstName, lastName, phoneNumber, email },
+          { setStatus, setSubmitting }
+        ) => {
           setStatus(null)
           try {
             setSubmitting(true)
             handleUserDetails({
-              name,
-              surname,
+              firstName,
+              lastName,
               phoneNumber,
               email
             })
@@ -62,8 +65,8 @@ const OnboardingIndividual: React.FC<NameProps> = ({ handleUserDetails }) => {
       >
         {({ isSubmitting, status }: FormikProps<NameValues>) => (
           <Form style={{ width: '100%' }}>
-            <ConnectedFormGroup label="Name *" name="name" type="text" />
-            <ConnectedFormGroup label="Surname *" name="surname" type="text" />
+            <ConnectedFormGroup label="Name *" name="firstName" type="text" />
+            <ConnectedFormGroup label="Surname *" name="lastName" type="text" />
             <ConnectedFormGroup label="Phone number*" name="phoneNumber" type="text" />
             <ConnectedFormGroup label="Email address*" name="email" type="text" />
             {status && (

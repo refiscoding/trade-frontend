@@ -192,72 +192,72 @@ export const CATEGORIES = [
 
 export const INDUSTRIES = [
   {
-    label: 'Agriculture, foresty and fishing',
-    value: 'Eastern Cape'
-  },
-  {
-    label: 'Mining and quarrying',
-    value: 'Free State'
-  },
-  {
-    label: 'Manufacturing',
-    value: 'Gauteng'
-  },
-  {
-    label: 'Electricity, gas, steam and air conditioning supply',
-    value: 'KwaZulu Natal'
-  },
-  {
-    label: 'Water supple',
-    value: 'Limpopo'
-  },
-  {
-    label: 'Sewerage, waste management and remediation activities',
-    value: 'Mpumalanga'
-  },
-  {
-    label: 'Construction',
-    value: 'Northern Cape'
-  },
-  {
-    label: 'Wholesale and retail trade',
-    value: 'North West'
-  },
-  {
-    label: 'Repair of motor vehicles and motorcycles',
-    value: 'Western Cape'
-  },
-  {
-    label: 'Transportation and storage',
-    value: 'Western Cape'
-  },
-  {
     label: 'Accommodation and food service activities',
-    value: 'Western Cape'
+    value: 'Accommodation and food service activities'
   },
   {
-    label: 'Professional, scientific and technical activities',
-    value: 'Western Cape'
-  },
-  {
-    label: 'Public administration and defence',
-    value: 'Western Cape'
-  },
-  {
-    label: 'Education',
-    value: 'Western Cape'
+    label: 'Agriculture, foresty and fishing',
+    value: 'Agriculture, foresty and fishing'
   },
   {
     label: 'Arts, entertainment and recreation',
-    value: 'Western Cape'
+    value: 'Arts, entertainment and recreation'
+  },
+  {
+    label: 'Construction',
+    value: 'Construction'
+  },
+  {
+    label: 'Education',
+    value: 'Education'
+  },
+  {
+    label: 'Electricity, gas, steam and air conditioning supply',
+    value: 'Electricity, gas, steam and air conditioning supply'
   },
   {
     label: 'Human health and social work activities',
-    value: 'Western Cape'
+    value: 'Human health and social work activities'
+  },
+  {
+    label: 'Mining and quarrying',
+    value: 'Mining and quarrying'
+  },
+  {
+    label: 'Manufacturing',
+    value: 'Manufacturing'
+  },
+  {
+    label: 'Professional, scientific and technical activities',
+    value: 'Professional, scientific and technical activities'
+  },
+  {
+    label: 'Public administration and defence',
+    value: 'Public administration and defence'
+  },
+  {
+    label: 'Repair of motor vehicles and motorcycles',
+    value: 'Repair of motor vehicles and motorcycles'
+  },
+  {
+    label: 'Sewerage, waste management and remediation activities',
+    value: 'Sewerage, waste management and remediation activities'
+  },
+  {
+    label: 'Transportation and storage',
+    value: 'Transportation and storage'
+  },
+  {
+    label: 'Water supplier',
+    value: 'Water supplier'
+  },
+  {
+    label: 'Wholesale and retail trade',
+    value: 'Wholesale and retail trade'
   },
   {
     label: 'Other service activities',
-    value: 'Western Cape'
+    value: 'Other service activities'
   }
 ]
 

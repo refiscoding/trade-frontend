@@ -13,8 +13,8 @@ type NameProps = {
 }
 
 const BusinessDetailsFormValidation = Yup.object().shape({
-  name: Yup.string().required('Name is required'),
-  surname: Yup.string().required('Name is required'),
+  firstName: Yup.string().required('Name is required'),
+  lastName: Yup.string().required('Name is required'),
   companyName: Yup.string().required('Company name is required'),
   position: Yup.string().required('Position is required'),
   workEmailAddress: Yup.string().required('Work email is required'),
@@ -45,23 +45,23 @@ const BusinessDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       <Formik
         validationSchema={BusinessDetailsFormValidation}
         initialValues={{
-          name: '',
-          surname: '',
+          firstName: '',
+          lastName: '',
           companyName: '',
           position: '',
           workEmailAddress: '',
           phoneNumber: ''
         }}
         onSubmit={async (
-          { name, surname, companyName, workEmailAddress, phoneNumber },
+          { firstName, lastName, companyName, workEmailAddress, phoneNumber },
           { setStatus, setSubmitting }
         ) => {
           setStatus(null)
           try {
             setSubmitting(true)
             handleUserDetails({
-              name,
-              surname,
+              firstName,
+              lastName,
               companyName,
               position: currentPosition,
               workEmailAddress,
@@ -75,8 +75,8 @@ const BusinessDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       >
         {({ isSubmitting, status, setFieldValue }: FormikProps<NameValues>) => (
           <Form style={{ width: '100%' }}>
-            <ConnectedFormGroup label="Name *" name="name" type="text" />
-            <ConnectedFormGroup label="Surname *" name="surname" type="text" />
+            <ConnectedFormGroup label="Name *" name="firstName" type="text" />
+            <ConnectedFormGroup label="Surname *" name="lastName" type="text" />
             <ConnectedFormGroup label="Company name*" name="companyName" type="text" />
             <ConnectedSelect
               label="Select position *"
