@@ -1,12 +1,13 @@
-import { Button, Flex, Image } from '@chakra-ui/core'
-import { Form, Formik, FormikProps } from 'formik'
 import * as React from 'react'
 import * as Yup from 'yup'
-import { MotionFlex } from '../../components'
+import { Button, Flex, Image } from '@chakra-ui/core'
+import { Form, Formik, FormikProps } from 'formik'
 import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
-import { images } from '../../theme'
-import { H3, Text } from '../../typography'
 import { formatError } from '../../utils'
+import { H3, Text } from '../../typography'
+import { images } from '../../theme'
+import { MotionFlex } from '../../components'
+import { POSITIONS } from '../../constants'
 
 type NameProps = {
   handleUserDetails: (details: any) => void
@@ -29,13 +30,7 @@ type NameValues = {
 }
 
 const BusinessDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
-  const [currentPosition, setCurrentPosition] = React.useState('')
-
-  const handlePositionChanged = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    event.persist()
-    const position = event?.target?.value
-    setCurrentPosition(position)
-  }
+  const [currentPosition] = React.useState('')
 
   return (
     <React.Fragment>
@@ -89,36 +84,7 @@ const BusinessDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
               placeholder="select a Position"
               onChange={(e) => setFieldValue('position', e.target.value)}
               name="position"
-              options={[
-                {
-                  label: 'CEO',
-                  value: 'CEO'
-                },
-                {
-                  label: 'Managing Director',
-                  value: 'Managing Director'
-                },
-                {
-                  label: 'Financial Manager',
-                  value: 'Financial Manager'
-                },
-                {
-                  label: 'Financial Director',
-                  value: 'Financial Director'
-                },
-                {
-                  label: 'Procurement Manager',
-                  value: 'Procurement Manager'
-                },
-                {
-                  label: 'Sales Manager',
-                  value: 'Sales Manager'
-                },
-                {
-                  label: 'Other',
-                  value: 'Other'
-                }
-              ]}
+              options={POSITIONS}
             />
             <ConnectedFormGroup
               label="If other, please specify position."

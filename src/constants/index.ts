@@ -92,7 +92,9 @@ export const COUNTRY_CODE = '+27'
 
 export const EMPTY_FILE: UploadFile = {
   id: '',
+  // eslint-disable-next-line @typescript-eslint/camelcase
   created_at: new Date().toISOString(),
+  // eslint-disable-next-line @typescript-eslint/camelcase
   updated_at: new Date().toISOString(),
   name: '',
   hash: '',
@@ -260,6 +262,45 @@ export const INDUSTRIES = [
   }
 ]
 
+export const BEESTATUS = [
+  {
+    label: 'Level 1',
+    value: 'Level 1'
+  },
+  {
+    label: 'Level 2',
+    value: 'Level 2'
+  },
+  {
+    label: 'Level 3',
+    value: 'Level 3'
+  },
+  {
+    label: 'Level 4',
+    value: 'Level 4'
+  },
+  {
+    label: 'Level 5',
+    value: 'Level 5'
+  },
+  {
+    label: 'Level 6',
+    value: 'Level 6'
+  },
+  {
+    label: 'Level 7',
+    value: 'Level 7'
+  },
+  {
+    label: 'Level 8',
+    value: 'Level 8'
+  },
+  {
+    label: 'None',
+    value: 'None'
+  }
+]
+
 export const TURNOVER = [
   {
     label: 'Less than 1 million',
@@ -280,6 +321,37 @@ export const TURNOVER = [
   {
     label: 'More than 10 million',
     value: 'More than 10 million'
+  }
+]
+
+export const POSITIONS = [
+  {
+    label: 'CEO',
+    value: 'CEO'
+  },
+  {
+    label: 'Managing Director',
+    value: 'Managing Director'
+  },
+  {
+    label: 'Financial Manager',
+    value: 'Financial Manager'
+  },
+  {
+    label: 'Financial Director',
+    value: 'Financial Director'
+  },
+  {
+    label: 'Procurement Manager',
+    value: 'Procurement Manager'
+  },
+  {
+    label: 'Sales Manager',
+    value: 'Sales Manager'
+  },
+  {
+    label: 'Other',
+    value: 'Other'
   }
 ]
 
