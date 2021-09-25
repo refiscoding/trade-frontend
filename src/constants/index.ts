@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import { IToast } from '@chakra-ui/core'
 import { UploadFile } from '../generated/graphql'
 import algoliasearch from 'algoliasearch/lite'
@@ -185,6 +186,170 @@ export const CATEGORIES = [
     id: 9,
     name: 'Tools and Hardware',
     categoryImage: `${images?.iconTools}`
+  }
+]
+
+export const INDUSTRIES = [
+  {
+    label: 'Accommodation and food service activities',
+    value: 'Accommodation and food service activities'
+  },
+  {
+    label: 'Agriculture, foresty and fishing',
+    value: 'Agriculture, foresty and fishing'
+  },
+  {
+    label: 'Arts, entertainment and recreation',
+    value: 'Arts, entertainment and recreation'
+  },
+  {
+    label: 'Construction',
+    value: 'Construction'
+  },
+  {
+    label: 'Education',
+    value: 'Education'
+  },
+  {
+    label: 'Electricity, gas, steam and air conditioning supply',
+    value: 'Electricity, gas, steam and air conditioning supply'
+  },
+  {
+    label: 'Human health and social work activities',
+    value: 'Human health and social work activities'
+  },
+  {
+    label: 'Mining and quarrying',
+    value: 'Mining and quarrying'
+  },
+  {
+    label: 'Manufacturing',
+    value: 'Manufacturing'
+  },
+  {
+    label: 'Professional, scientific and technical activities',
+    value: 'Professional, scientific and technical activities'
+  },
+  {
+    label: 'Public administration and defence',
+    value: 'Public administration and defence'
+  },
+  {
+    label: 'Repair of motor vehicles and motorcycles',
+    value: 'Repair of motor vehicles and motorcycles'
+  },
+  {
+    label: 'Sewerage, waste management and remediation activities',
+    value: 'Sewerage, waste management and remediation activities'
+  },
+  {
+    label: 'Transportation and storage',
+    value: 'Transportation and storage'
+  },
+  {
+    label: 'Water supplier',
+    value: 'Water supplier'
+  },
+  {
+    label: 'Wholesale and retail trade',
+    value: 'Wholesale and retail trade'
+  },
+  {
+    label: 'Other service activities',
+    value: 'Other service activities'
+  }
+]
+
+export const BEESTATUS = [
+  {
+    label: 'Level 1',
+    value: 'Level 1'
+  },
+  {
+    label: 'Level 2',
+    value: 'Level 2'
+  },
+  {
+    label: 'Level 3',
+    value: 'Level 3'
+  },
+  {
+    label: 'Level 4',
+    value: 'Level 4'
+  },
+  {
+    label: 'Level 5',
+    value: 'Level 5'
+  },
+  {
+    label: 'Level 6',
+    value: 'Level 6'
+  },
+  {
+    label: 'Level 7',
+    value: 'Level 7'
+  },
+  {
+    label: 'Level 8',
+    value: 'Level 8'
+  },
+  {
+    label: 'None',
+    value: 'None'
+  }
+]
+
+export const TURNOVER = [
+  {
+    label: 'Less than 1 million',
+    value: 'Less than 1 million'
+  },
+  {
+    label: '1-2 million',
+    value: '1-2 million'
+  },
+  {
+    label: '2-5 million',
+    value: '2-5 million'
+  },
+  {
+    label: '5-10 million',
+    value: '5-10 million'
+  },
+  {
+    label: 'More than 10 million',
+    value: 'More than 10 million'
+  }
+]
+
+export const POSITIONS = [
+  {
+    label: 'CEO',
+    value: 'CEO'
+  },
+  {
+    label: 'Managing Director',
+    value: 'Managing Director'
+  },
+  {
+    label: 'Financial Manager',
+    value: 'Financial Manager'
+  },
+  {
+    label: 'Financial Director',
+    value: 'Financial Director'
+  },
+  {
+    label: 'Procurement Manager',
+    value: 'Procurement Manager'
+  },
+  {
+    label: 'Sales Manager',
+    value: 'Sales Manager'
+  },
+  {
+    label: 'Other',
+    value: 'Other'
   }
 ]
 

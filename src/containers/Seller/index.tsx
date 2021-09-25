@@ -8,8 +8,6 @@ import { useMediaQuery } from 'react-responsive'
 import {
   Category,
   Country,
-  // eslint-disable-next-line @typescript-eslint/camelcase
-  Enum_Business_Businesstype,
   Maybe,
   useCategoryQuery,
   useCreateMyBusinessMutation,
@@ -36,7 +34,7 @@ const SellerFormValidation = Yup.object().shape({
   idNumber: Yup.string().required('ID Number is required').length(13),
   phoneNumber: Yup.string().required('Phone Number is required'),
   businessPhoneNumber: Yup.string().required('Business Phone Number is required'),
-  yearsOfOperation: Yup.string().required('Years Of Operation is required'),
+  yearsInOperation: Yup.number().required('Years Of Operation is required'),
   name: Yup.string().required('Business Name is required'),
   category: Yup.string().required('Business Category is required'),
   isVatRegistered: Yup.boolean().required('VAT Registration Status is required'),
@@ -84,7 +82,7 @@ export type SellerValues = {
   registrationNumber: string
   businessPhoneNumber: string
   businessWebsite?: string
-  yearsOfOperation: string
+  yearsInOperation: number
   category: string
   location: string
   isVatRegistered: string
@@ -97,14 +95,13 @@ export type SellerValues = {
   isRetailSupplier: string
   hazChem: string
   errors?: ErrorsObject
-  // eslint-disable-next-line @typescript-eslint/camelcase
-  businessType?: Enum_Business_Businesstype
+  businessType?: string
 }
 
 const initialValues = {
   name: '',
   businessPhoneNumber: '',
-  yearsOfOperation: '',
+  yearsInOperation: 0,
   location: '',
   beeStatus: '',
   hazChem: '',
@@ -196,7 +193,7 @@ const Seller: React.FC = () => {
       businessWebsite,
       isRetailSupplier,
       hasPhysicalStore,
-      yearsOfOperation,
+      yearsInOperation,
       registrationNumber,
       businessPhoneNumber
     } = values
@@ -217,7 +214,7 @@ const Seller: React.FC = () => {
       isVatRegistered: Boolean(isVatRegistered),
       hasPhysicalStore: Boolean(hasPhysicalStore),
       isRetailSupplier: Boolean(isRetailSupplier),
-      yearsInOperation: parseInt(yearsOfOperation)
+      yearsInOperation
     }
 
     const userDetails = {

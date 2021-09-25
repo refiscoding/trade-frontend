@@ -1,7 +1,12 @@
 import axios, { AxiosResponse } from 'axios'
 import { fetchJwt } from '.'
 import { CartProduct } from '../containers/Cart'
-import { ComponentLocationAddress, UploadFile, UsersPermissionsUser, Order } from '../generated/graphql'
+import {
+  ComponentLocationAddress,
+  UploadFile,
+  UsersPermissionsUser,
+  Order
+} from '../generated/graphql'
 
 const BASE = process.env.REACT_APP_API_HOST || ''
 const CLIENT_BASE = window.location.origin || ''

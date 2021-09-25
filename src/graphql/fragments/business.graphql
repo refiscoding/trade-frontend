@@ -8,6 +8,7 @@ fragment business on Business {
   published_at
   name
   registrationNumber
+ companyRelated
   isVatRegistered
   hasPhysicalStore
   businessType
@@ -23,8 +24,7 @@ fragment business on Business {
   websiteAddress
   yearsInOperation
   beeStatus
-  annualTurnover
-  description
+  annualTurn
   hazChem
   countries {
     ...country

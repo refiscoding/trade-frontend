@@ -5,7 +5,7 @@ import { Mail } from 'react-feather'
 import { ApolloError } from 'apollo-boost'
 import { Form, Formik, FormikProps } from 'formik'
 import { Link, useHistory } from 'react-router-dom'
-import { Button, Flex, Image, useToast, Tabs, TabList, Tab, Box } from '@chakra-ui/core'
+import { Button, Flex, Image, useToast, Box } from '@chakra-ui/core'
 
 import Input from '../../components/Input'
 
@@ -85,16 +85,6 @@ const Register: React.FC<RegisterProps> = () => {
             Hi there! Welcome to TradeFed.
           </Text>
         </Flex>
-        <Tabs isFitted variant="enclosed" defaultIndex={1}>
-          <TabList>
-            <Tab _focus={{ borderColor: 'white' }} _selected={{ bg: 'gray.300' }}>
-              Business
-            </Tab>
-            <Tab _focus={{ borderColor: 'white' }} _selected={{ bg: 'gray.300' }}>
-              Individual
-            </Tab>
-          </TabList>
-        </Tabs>
         <Box p="4" bg="gray.300">
           <Formik
             validationSchema={RegisterFormValidation}

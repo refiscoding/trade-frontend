@@ -1,17 +1,13 @@
 import { Button, Flex, useToast } from '@chakra-ui/core'
 import { Form, Formik, FormikProps } from 'formik'
-import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
+import { BEESTATUS, ERROR_TOAST, INDUSTRIES, SUCCESS_TOAST, TURNOVER } from '../../constants'
 import * as React from 'react'
 import * as Yup from 'yup'
 import { MotionFlex } from '../../components'
 import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
 import { H3, Text } from '../../typography'
 import { formatError } from '../../utils'
-import {
-  useCreateMyBusinessMutation,
-  // eslint-disable-next-line @typescript-eslint/camelcase
-  Enum_Business_Businesstype
-} from '../../generated/graphql'
+import { useCreateMyBusinessMutation } from '../../generated/graphql'
 
 type NameProps = {
   handleUserDetails: (details: any) => void
@@ -19,38 +15,31 @@ type NameProps = {
 
 const NameFormValidation = Yup.object().shape({
   name: Yup.string().required('A business name is required'),
+  beeStatus: Yup.string().required('BEE Status is required'),
+  yearsInOperation: Yup.number().required('Years in operation is required'),
   phoneNumber: Yup.string().required('Business phone number is required'),
-  websiteAddress: Yup.string().required('Website is required'),
   registrationNumber: Yup.string().required('A registration number is required'),
-  description: Yup.string().required('Description of the business is required'),
-  relatedCompany: Yup.string().required('Related company is required'),
-  annualTurnover: Yup.number().required('Annual turnover of the business is required'),
+  annualTurn: Yup.string().required('Annual turnover of the business is required'),
   businessType: Yup.string().required('The industry of the business is required')
 })
 
 type CompanyValues = {
   name: string
+  beeStatus: string
+  vatNumber: string
   phoneNumber: string
   websiteAddress: string
   registrationNumber: string
   yearsInOperation: number
-  description: string
-  vatNumber: string
-  relatedCompany: string
-  annualTurnover: number
-  // eslint-disable-next-line @typescript-eslint/camelcase
-  businessType?: Enum_Business_Businesstype
+  companyRelated: string
+  annualTurn: string
+  businessType: string
+  isVatRegistered: boolean
 }
 
 const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
   const toast = useToast()
-  const [currentBeeStatus, setCurrentBeeStatus] = React.useState('')
-
-  const handleBeeStatus = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    event.persist()
-    const value = event?.target?.value
-    setCurrentBeeStatus(value)
-  }
+  const [vatChecked, setVatChecked] = React.useState(false)
 
   const [createMyBusiness] = useCreateMyBusinessMutation({
     onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
@@ -62,14 +51,14 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
   const handleSubmit = async (values: CompanyValues) => {
     const {
       name,
+      beeStatus,
       phoneNumber,
       websiteAddress,
       registrationNumber,
       yearsInOperation,
-      description,
       vatNumber,
-      relatedCompany,
-      annualTurnover
+      companyRelated,
+      annualTurn
     } = values
     const businessInput = {
       name,
@@ -77,16 +66,16 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       websiteAddress,
       registrationNumber,
       yearsInOperation,
-      description,
       vatNumber,
-      relatedCompany,
-      annualTurnover,
-      beeStatus: currentBeeStatus,
-      isVatRegistered: Boolean(vatNumber.length > 0 ? true : false),
-      hasPhysicalStore: Boolean(true)
+      companyRelated,
+      annualTurn,
+      beeStatus,
+      isVatRegistered: vatChecked
     }
-
     await createMyBusiness({ variables: { input: businessInput } })
+    handleUserDetails({
+      business: { ...businessInput }
+    })
   }
 
   return (
@@ -101,62 +90,39 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
         validationSchema={NameFormValidation}
         initialValues={{
           name: '',
+          beeStatus: '',
           phoneNumber: '',
           websiteAddress: '',
           registrationNumber: '',
+          isVatRegistered: false,
           yearsInOperation: 0,
-          description: '',
           vatNumber: '',
-          relatedCompany: '',
-          annualTurnover: 0
+          businessType: '',
+          companyRelated: '',
+          annualTurn: ''
         }}
-        onSubmit={async (
-          {
-            name,
-            phoneNumber,
-            websiteAddress,
-            registrationNumber,
-            yearsInOperation,
-            description,
-            annualTurnover,
-            vatNumber,
-            relatedCompany,
-            businessType
-          },
-          { setStatus, setSubmitting }
-        ) => {
+        onSubmit={async (businessInput, { setSubmitting, setStatus }) => {
           setStatus(null)
           try {
             setSubmitting(true)
             // create the business then continue
-            await handleSubmit({
-              name,
-              phoneNumber,
-              websiteAddress,
-              registrationNumber,
-              yearsInOperation,
-              description,
-              annualTurnover,
-              vatNumber,
-              relatedCompany,
-              businessType
-            })
-            handleUserDetails({})
+            await handleSubmit(businessInput)
             setSubmitting(false)
           } catch (error) {
             setStatus(formatError(error))
           }
         }}
       >
-        {({ isSubmitting, status }: FormikProps<CompanyValues>) => (
+        {({ isSubmitting, status, setFieldValue }: FormikProps<CompanyValues>) => (
           <Form style={{ width: '100%' }}>
+            <ConnectedFormGroup label="Business Name*" name="name" type="text" />
             <ConnectedFormGroup
               label="Business/Work phone number*"
               name="phoneNumber"
               type="text"
             />
             <ConnectedFormGroup
-              label="Business website address*"
+              label="Business website address"
               name="websiteAddress"
               type="text"
             />
@@ -166,71 +132,68 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
               type="text"
             />
             <ConnectedFormGroup
-              label="Number of years in operation"
+              label="Number of years in operation*"
               name="yearsInOperation"
               type="number"
             />
             <ConnectedFormGroup
-              label="Related/Associated company/Group*"
+              label="Related/Associated company/Group"
               name="relatedCompany"
               type="text"
             />
             <ConnectedSelect
               label="Select BEE status *"
-              onChange={handleBeeStatus}
-              name={'BeeStatus'}
+              placeholder="select BEE status"
+              name="beeStatus"
+              onChange={(e) => setFieldValue('beeStatus', e.target.value)}
+              options={BEESTATUS}
+            />
+            <ConnectedSelect
+              label="Select annual turnover (R) *"
+              placeholder="select Annual turnover"
+              name="annualTurn"
+              onChange={(e) => setFieldValue('annualTurn', e.target.value)}
+              options={TURNOVER}
+            />
+            <ConnectedSelect
+              label="Are you VAT registered? *"
+              name="isVatRegistered"
+              onChange={(name) => {
+                setFieldValue('isVatRegistered', name.target.value)
+                if (name.target.value === 'true') {
+                  setVatChecked(true)
+                } else {
+                  setVatChecked(false)
+                }
+              }}
               options={[
                 {
-                  label: 'Level 1',
-                  value: 'Level 1'
+                  label: 'No',
+                  value: false
                 },
                 {
-                  label: 'Level 2',
-                  value: 'Level 2'
-                },
-                {
-                  label: 'Level 3',
-                  value: 'Level 3'
-                },
-                {
-                  label: 'Level 4',
-                  value: 'Level 4'
-                },
-                {
-                  label: 'Level 5',
-                  value: 'Level 5'
-                },
-                {
-                  label: 'Level 6',
-                  value: 'Level 6'
-                },
-                {
-                  label: 'Level 7',
-                  value: 'Level 7'
-                },
-                {
-                  label: 'Level 8',
-                  value: 'Level 8'
-                },
-                {
-                  label: 'None',
-                  value: 'None'
+                  label: 'Yes',
+                  value: true
                 }
               ]}
             />
-
-            <ConnectedFormGroup label="Annual Turnover *" name="annualTurnover" type="number" />
-            <ConnectedFormGroup
-              label="Vat registration number (if applicable)"
-              name="vatNumber"
-              type="text"
-            />
-            <ConnectedFormGroup
+            {vatChecked === true && (
+              <ConnectedFormGroup
+                label="If yes, please provide VAT number *"
+                placeholder="please provide VAT number"
+                name="vatNumber"
+                type="text"
+              />
+            )}
+            <ConnectedSelect
               label="Which industry does your business operate in *"
+              placeholder="select an Industry"
               name="businessType"
-              type="text"
+              onChange={(name) => {
+                setFieldValue('businessType', name.target.value)
+              }}
+              options={INDUSTRIES}
             />
-
             {status && (
               <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
                 <Text textAlign="right" color="red.500">
