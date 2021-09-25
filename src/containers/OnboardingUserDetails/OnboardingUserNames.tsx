@@ -15,7 +15,6 @@ type NameProps = {
 
 type NameValues = {
   firstName: string
-  lastName: string
 }
 
 const UserDetails: React.FC<NameProps> = ({
@@ -42,16 +41,14 @@ const UserDetails: React.FC<NameProps> = ({
       </Flex>
       <Formik
         initialValues={{
-          firstName: '',
-          lastName: ''
+          firstName: ''
         }}
-        onSubmit={async ({ firstName, lastName }, { setStatus, setSubmitting }) => {
+        onSubmit={async ({ firstName }, { setStatus, setSubmitting }) => {
           setStatus(null)
           try {
             setSubmitting(true)
             handleUserDetails({
               firstName,
-              lastName,
               isBusiness: Boolean(currentAccountType.includes('Business') ? true : false)
             })
             setSubmitting(false)
@@ -65,7 +62,7 @@ const UserDetails: React.FC<NameProps> = ({
             <ConnectedSelect
               label="Are you signing up on behalf of a business or as an individual?"
               onChange={handleAccountTypeChange}
-              name={'Account Type'}
+              name="accountType"
               options={[
                 {
                   label: 'Individual',

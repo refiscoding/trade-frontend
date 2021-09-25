@@ -1,21 +1,23 @@
 import * as React from 'react'
 import { get } from 'lodash'
 
+import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
+import { Flex, useToast } from '@chakra-ui/core'
+import { formatError } from '../../utils'
 import { PageWrap } from '../../layouts'
 import { Stepper } from '../../components'
-import OnboardingUserNames from './OnboardingUserNames'
-import OnboardingCategories from './OnboardingCategories'
-import OnboardingBusinessDetails from './OnboardingBusinessDetails'
-import OnboardingCompanyDetails from './OnboardingCompanyDetails'
-import { useUpdateSelfMutation, useCategoryQuery } from '../../generated/graphql'
-import { formatError } from '../../utils'
 import { useHistory } from 'react-router-dom'
 import { useAuthContext } from '../../context/AuthProvider'
-import { Flex, useToast } from '@chakra-ui/core'
-import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
+import { useCategoryQuery, useUpdateSelfMutation } from '../../generated/graphql'
 import { useMediaQuery } from 'react-responsive'
+
 import OnboardingAddress from './OnboardingAddress'
+import OnboardingBusinessDetails from './OnboardingBusinessDetails'
+import OnboardingCategories from './OnboardingCategories'
+import OnboardingCompanyDetails from './OnboardingCompanyDetails'
 import OnboardingIndividual from './OnboardingIndividual'
+import OnboardingSecondaryContact from './OnboardingSecondaryContact'
+import OnboardingUserNames from './OnboardingUserNames'
 
 const userDetailsInitialValues = {
   firstName: '',
@@ -63,12 +65,12 @@ const Onboarding: React.FC = () => {
     details?.accountType &&
       setShouldShowBusinessScreen(Boolean(details.accountType.includes('Business') ? true : false))
 
-    if (shouldShowBusinessScreen ? active <= 3 : active <= 2) {
+    if (shouldShowBusinessScreen ? active <= 5 : active <= 3) {
       setACtive(active + 1)
     }
     setUserdetails({ ...userDetails, ...details })
 
-    if (shouldShowBusinessScreen ? active === 5 : active === 2) {
+    if (shouldShowBusinessScreen ? active === 5 : active === 3) {
       if (details.categories) {
         await updateSelf({
           variables: {
@@ -93,20 +95,16 @@ const Onboarding: React.FC = () => {
             setCurrentAccountType={setCurrentAccountType}
             handleUserDetails={handleUserDetails}
           />
-          {currentAccountType === 'Business' && (
+          {currentAccountType === 'Business' ? (
             <OnboardingBusinessDetails handleUserDetails={handleUserDetails} />
+          ) : (
+            <OnboardingIndividual handleUserDetails={handleUserDetails} />
           )}
           {currentAccountType === 'Business' && (
             <OnboardingCompanyDetails handleUserDetails={handleUserDetails} />
           )}
-          {currentAccountType === 'Business' && (
-            <OnboardingAddress handleUserDetails={handleUserDetails} />
-          )}
-          {currentAccountType === 'Business' ? (
-            <> </>
-          ) : (
-            <OnboardingIndividual handleUserDetails={handleUserDetails} />
-          )}
+          <OnboardingSecondaryContact handleUserDetails={handleUserDetails} />
+          <OnboardingAddress handleUserDetails={handleUserDetails} />
           <OnboardingCategories categories={categories} handleUserDetails={handleUserDetails} />
         </Stepper>
       </Flex>
