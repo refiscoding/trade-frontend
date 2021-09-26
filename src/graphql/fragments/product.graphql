@@ -30,15 +30,6 @@ fragment product on Product {
   packageWeight
   packageQuantity
   minimumOrder
-  categoryAutomotive
-  categoryAgriculture
-  categoryMining
-  categoryFoodIngredients
-  categoryHeavyMachinery
-  categoryLighting
-  categoryElectricalEquipment
-  categoryToolsAndHardware
-  categoryIndustrial
   additionalInfo {
     url
   }

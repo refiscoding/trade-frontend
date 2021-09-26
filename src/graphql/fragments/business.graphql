@@ -8,7 +8,7 @@ fragment business on Business {
   published_at
   name
   registrationNumber
- companyRelated
+  companyRelated
   isVatRegistered
   hasPhysicalStore
   businessType

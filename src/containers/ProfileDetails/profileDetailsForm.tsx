@@ -82,7 +82,7 @@ const ProfileDetailForm: React.FC<formProps> = ({
               isDisabled={true}
             />
             <ConnectedNumberInput label="Your Phone Number?" name="phoneNumber" unit="+27" />
-            <ConnectedFormGroup label="Your ID Number?" name="idNumber" type="text" />
+            {/* <ConnectedFormGroup label="Your ID Number?" name="idNumber" type="text" /> */}
             {/* <ConnectedFormGroup label="Your Address?" name="address" type="text" /> */}
             <Text my={3}>Your Interests?</Text>
             {categories?.map((item: any, i: number) => (

@@ -123,7 +123,7 @@ const UserDetails: React.FC<AddressProps> = ({
           try {
             setSubmitting(true)
             await handleSubmit({ province, suburb, city, postalCode, name })
-            handleUserDetails({})
+            //handleUserDetails({})
             setSubmitting(false)
           } catch (error) {
             setStatus(formatError(error))

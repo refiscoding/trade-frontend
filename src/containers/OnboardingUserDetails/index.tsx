@@ -33,8 +33,9 @@ const userDetailsInitialValues = {
 const Onboarding: React.FC = () => {
   const { setUser } = useAuthContext()
   const history = useHistory()
-  const [active, setACtive] = React.useState(0)
+  const [active, setActive] = React.useState(0)
   const [userDetails, setUserdetails] = React.useState(userDetailsInitialValues)
+  console.log('userDetails', userDetails)
   const [shouldShowBusinessScreen, setShouldShowBusinessScreen] = React.useState(false)
   const [currentAccountType, setCurrentAccountType] = React.useState('Individual')
   const toast = useToast()
@@ -60,17 +61,39 @@ const Onboarding: React.FC = () => {
     }
   })
 
-  const handleUserDetails = async (details: any) => {
-    // decider to show if we should show company screens
-    details?.accountType &&
-      setShouldShowBusinessScreen(Boolean(details.accountType.includes('Business') ? true : false))
+  // const handleUserDetails = async (details: any) => {
+  //   // decider to show if we should show company screens
+  //   details?.accountType &&
+  //     setShouldShowBusinessScreen(Boolean(details.accountType.includes('Business') ? true : false))
 
-    if (shouldShowBusinessScreen ? active <= 5 : active <= 3) {
-      setACtive(active + 1)
+  //   if (shouldShowBusinessScreen ? active <= 4 : active <= 1) {
+  //     setActive(active + 1)
+  //   }
+  //   setUserdetails({ ...userDetails, ...details })
+
+  //   if (shouldShowBusinessScreen ? active === 5 : active === 3) {
+  //     if (details.categories) {
+  //       await updateSelf({
+  //         variables: {
+  //           input: {
+  //             ...userDetails,
+  //             categories: details.categories
+  //           }
+  //         }
+  //       })
+  //     } else {
+  //       await updateSelf({ variables: { input: { ...userDetails } } })
+  //     }
+  //   }
+  // }
+
+  const handleUserDetails = async (details: any) => {
+    if (active <= 3) {
+      setActive(active + 1)
     }
     setUserdetails({ ...userDetails, ...details })
 
-    if (shouldShowBusinessScreen ? active === 5 : active === 3) {
+    if (active >= 4) {
       if (details.categories) {
         await updateSelf({
           variables: {

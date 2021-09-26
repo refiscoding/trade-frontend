@@ -74,7 +74,18 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
     }
     await createMyBusiness({ variables: { input: businessInput } })
     handleUserDetails({
-      business: { ...businessInput }
+      business: {
+        name,
+        phoneNumber,
+        websiteAddress,
+        registrationNumber,
+        yearsInOperation,
+        vatNumber,
+        companyRelated,
+        annualTurn,
+        beeStatus,
+        isVatRegistered: vatChecked
+      }
     })
   }
 
