@@ -8,9 +8,12 @@ fragment category on Category {
   updated_at
   name
   categoryImage {
-      ...uploadFile
+    ...uploadFile
   }
   businesses {
-      ...business
+    ...business
+  }
+  products {
+    ...product
   }
 }

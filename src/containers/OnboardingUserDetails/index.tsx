@@ -33,9 +33,8 @@ const userDetailsInitialValues = {
 const Onboarding: React.FC = () => {
   const { setUser } = useAuthContext()
   const history = useHistory()
-  const [active, setACtive] = React.useState(0)
+  const [active, setActive] = React.useState(0)
   const [userDetails, setUserdetails] = React.useState(userDetailsInitialValues)
-  const [shouldShowBusinessScreen, setShouldShowBusinessScreen] = React.useState(false)
   const [currentAccountType, setCurrentAccountType] = React.useState('Individual')
   const toast = useToast()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
@@ -44,7 +43,7 @@ const Onboarding: React.FC = () => {
     onError: (err: any) => formatError(err)
   })
 
-  const categories = get(data, 'categories', [])
+  const categoriesList = get(data, 'categories', [])
 
   const [updateSelf] = useUpdateSelfMutation({
     onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
@@ -61,27 +60,45 @@ const Onboarding: React.FC = () => {
   })
 
   const handleUserDetails = async (details: any) => {
-    // decider to show if we should show company screens
-    details?.accountType &&
-      setShouldShowBusinessScreen(Boolean(details.accountType.includes('Business') ? true : false))
+    if (currentAccountType === 'Business') {
+      if (active <= 4) {
+        setActive(active + 1)
+      }
+      setUserdetails({ ...userDetails, ...details })
 
-    if (shouldShowBusinessScreen ? active <= 5 : active <= 3) {
-      setACtive(active + 1)
-    }
-    setUserdetails({ ...userDetails, ...details })
-
-    if (shouldShowBusinessScreen ? active === 5 : active === 3) {
-      if (details.categories) {
-        await updateSelf({
-          variables: {
-            input: {
-              ...userDetails,
-              categories: details.categories
+      if (active === 5) {
+        if (details.categories) {
+          await updateSelf({
+            variables: {
+              input: {
+                ...userDetails,
+                categories: details.categories
+              }
             }
-          }
-        })
-      } else {
-        await updateSelf({ variables: { input: { ...userDetails } } })
+          })
+        } else {
+          await updateSelf({ variables: { input: { ...userDetails } } })
+        }
+      }
+    } else {
+      if (active <= 3) {
+        setActive(active + 1)
+      }
+      setUserdetails({ ...userDetails, ...details })
+
+      if (active === 4) {
+        if (details.categories) {
+          await updateSelf({
+            variables: {
+              input: {
+                ...userDetails,
+                categories: details.categories
+              }
+            }
+          })
+        } else {
+          await updateSelf({ variables: { input: { ...userDetails } } })
+        }
       }
     }
   }
@@ -105,7 +122,7 @@ const Onboarding: React.FC = () => {
           )}
           <OnboardingSecondaryContact handleUserDetails={handleUserDetails} />
           <OnboardingAddress handleUserDetails={handleUserDetails} />
-          <OnboardingCategories categories={categories} handleUserDetails={handleUserDetails} />
+          <OnboardingCategories categories={categoriesList} handleUserDetails={handleUserDetails} />
         </Stepper>
       </Flex>
     </PageWrap>

@@ -47,10 +47,10 @@ const ProfileDetailForm: React.FC<formProps> = ({
     width: isWebViewport ? '35%' : '100%',
     justifySelf: isWebViewport ? 'center' : ''
   }
-  
+
   const isInUserCategory = (categoryId: string) => {
     if (!initialValues?.categories?.length) {
-      return false;
+      return false
     }
     return initialValues.categories.some((id: string) => id === categoryId)
   }
