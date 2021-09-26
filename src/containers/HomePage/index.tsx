@@ -18,7 +18,7 @@ import { images } from '../../theme'
 import { PageWrap } from '../../layouts'
 import { SearchBar } from '../../components'
 import { useAuthContext } from '../../context/AuthProvider'
-import { ERROR_TOAST, SEARCH_INDEX, searchClient, CATEGORIES } from '../../constants'
+import { ERROR_TOAST, SEARCH_INDEX, searchClient } from '../../constants'
 import {
   Maybe,
   Product,

@@ -41,12 +41,14 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
   const toast = useToast()
   const [vatChecked, setVatChecked] = React.useState(false)
 
-  const [createMyBusiness] = useCreateMyBusinessMutation({
+  const [createMyBusiness, { data }] = useCreateMyBusinessMutation({
     onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
     onCompleted: async () => {
       toast({ description: 'Business details updated!', ...SUCCESS_TOAST })
     }
   })
+
+  const businessId = data?.createMyBusiness?.id
 
   const handleSubmit = async (values: CompanyValues) => {
     const {
@@ -73,19 +75,9 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       isVatRegistered: vatChecked
     }
     await createMyBusiness({ variables: { input: businessInput } })
+
     handleUserDetails({
-      business: {
-        name,
-        phoneNumber,
-        websiteAddress,
-        registrationNumber,
-        yearsInOperation,
-        vatNumber,
-        companyRelated,
-        annualTurn,
-        beeStatus,
-        isVatRegistered: vatChecked
-      }
+      business: businessId
     })
   }
 
