@@ -47,10 +47,10 @@ const ProfileDetailForm: React.FC<formProps> = ({
     width: isWebViewport ? '35%' : '100%',
     justifySelf: isWebViewport ? 'center' : ''
   }
-  
+
   const isInUserCategory = (categoryId: string) => {
     if (!initialValues?.categories?.length) {
-      return false;
+      return false
     }
     return initialValues.categories.some((id: string) => id === categoryId)
   }
@@ -82,7 +82,7 @@ const ProfileDetailForm: React.FC<formProps> = ({
               isDisabled={true}
             />
             <ConnectedNumberInput label="Your Phone Number?" name="phoneNumber" unit="+27" />
-            {/* <ConnectedFormGroup label="Your ID Number?" name="idNumber" type="text" /> */}
+            <ConnectedFormGroup label="Your ID Number?" name="idNumber" type="text" />
             {/* <ConnectedFormGroup label="Your Address?" name="address" type="text" /> */}
             <Text my={3}>Your Interests?</Text>
             {categories?.map((item: any, i: number) => (
