@@ -60,23 +60,45 @@ const Onboarding: React.FC = () => {
   })
 
   const handleUserDetails = async (details: any) => {
-    if (active <= 4) {
-      setActive(active + 1)
-    }
-    setUserdetails({ ...userDetails, ...details })
+    if (currentAccountType === 'Business') {
+      if (active <= 4) {
+        setActive(active + 1)
+      }
+      setUserdetails({ ...userDetails, ...details })
 
-    if (active === 5) {
-      if (details.categories) {
-        await updateSelf({
-          variables: {
-            input: {
-              ...userDetails,
-              categories: details.categories
+      if (active === 5) {
+        if (details.categories) {
+          await updateSelf({
+            variables: {
+              input: {
+                ...userDetails,
+                categories: details.categories
+              }
             }
-          }
-        })
-      } else {
-        await updateSelf({ variables: { input: { ...userDetails } } })
+          })
+        } else {
+          await updateSelf({ variables: { input: { ...userDetails } } })
+        }
+      }
+    } else {
+      if (active <= 3) {
+        setActive(active + 1)
+      }
+      setUserdetails({ ...userDetails, ...details })
+
+      if (active === 4) {
+        if (details.categories) {
+          await updateSelf({
+            variables: {
+              input: {
+                ...userDetails,
+                categories: details.categories
+              }
+            }
+          })
+        } else {
+          await updateSelf({ variables: { input: { ...userDetails } } })
+        }
       }
     }
   }
