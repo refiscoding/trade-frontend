@@ -21,7 +21,6 @@ import {
 import { ERROR_TOAST } from '../../constants'
 import { images } from '../../theme'
 import { MenuCont, Overlay, RenderWrapper } from './styles'
-import { Text } from '../../typography'
 import { useAppContext } from '../../context/AppProvider'
 import { useAuthContext } from '../../context/AuthProvider'
 import { useFetchUserNotificationsQuery } from '../../generated/graphql'
@@ -45,7 +44,6 @@ const SideBar: React.FC<SideBarProps> = ({
   tooltipBg,
   hoverColor,
   accentColor,
-  borderColor,
   tooltipColor,
   closeOnNavigate
 }) => {
