@@ -39,6 +39,9 @@ fragment product on Product {
   business {
     ...business
   }
+  category {
+    id
+  }
   productImages {
     ...uploadFile
   }

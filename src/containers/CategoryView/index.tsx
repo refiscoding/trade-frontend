@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import * as React from 'react'
-import { sortBy, reverse, slice } from 'lodash'
+import { get } from 'lodash'
+
 import { ApolloError } from 'apollo-client'
-import { PageWrap } from '../../layouts'
-import { useHistory, useParams } from 'react-router-dom'
 import { Button, Flex, useToast } from '@chakra-ui/core'
-import Hero from '../../components/Hero'
 import {
   Category,
   Maybe,
@@ -13,9 +11,14 @@ import {
   useCategoryQuery,
   useProductQuery
 } from '../../generated/graphql'
-import { get } from 'lodash'
-import Footer from '../../components/Footer'
 import { ERROR_TOAST } from '../../constants'
+import { images } from '../../theme'
+import { PageWrap } from '../../layouts'
+import { sortBy, reverse, slice } from 'lodash'
+import { useHistory, useParams } from 'react-router-dom'
+
+import Footer from '../../components/Footer'
+import Hero from '../../components/Hero'
 import ProductCard from '../../components/Card/ProductCard'
 import Section from '../../components/Section'
 
@@ -38,7 +41,7 @@ const Home: React.FC = () => {
   const { data: productData } = useProductQuery({
     variables: {
       where: {
-        categories_contains: id
+        category_contains: id
       }
     },
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
@@ -50,6 +53,28 @@ const Home: React.FC = () => {
   const navigateToProduct = (id: Maybe<string> | undefined) => {
     const modifiedId = id?.toLowerCase()
     history.push(`/product/${modifiedId}`)
+  }
+
+  const bannerImage = () => {
+    if (category?.name === 'Agriculture') {
+      return images?.agricultureBanner || null
+    } else if (category?.name === 'Automotive') {
+      return null
+    } else if (category?.name === 'Electrical Equipment') {
+      return null
+    } else if (category?.name === 'Food Ingredients') {
+      return images?.foodBanner || null
+    } else if (category?.name === 'Heavy Machinery') {
+      return null
+    } else if (category?.name === 'Industrial') {
+      return null
+    } else if (category?.name === 'Lighting') {
+      return null
+    } else if (category?.name === 'Mining') {
+      return null
+    } else {
+      return null
+    }
   }
 
   return (
@@ -65,7 +90,7 @@ const Home: React.FC = () => {
             isCategory
             headerColor="white"
             headerMargin="4.5rem"
-            image={category?.categoryImage?.url}
+            image={bannerImage()}
             header={category?.name}
           />
           <Section card title="Today’s Best Deals">

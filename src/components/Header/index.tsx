@@ -106,20 +106,22 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
     <HeaderCont pr={4} pl={drawerOpen ? 'calc(186px + 1rem)' : '1rem'} {...rest}>
       <InstantSearch indexName={SEARCH_INDEX} searchClient={searchClient}>
         <SideBarButton color="black" open={drawerOpen} onClick={toggleDrawer} />
-        <Flex
-          width={isTabletOrMobile ? '50%' : '40%'}
-          align="center"
-          justifyContent={isTabletOrMobile ? 'center' : 'flex-start'}
-          pl={5}
-        >
-          <Image
-            cursor="pointer"
-            onClick={handleLogoClicked}
-            mr={5}
-            width={isTabletOrMobile ? '100%' : '30%'}
-            src={images['TFLogo']}
-          />
-        </Flex>
+        {!drawerOpen && (
+          <Flex
+            width={isTabletOrMobile ? '50%' : '40%'}
+            align="center"
+            justifyContent={isTabletOrMobile ? 'center' : 'flex-start'}
+            pl={5}
+          >
+            <Image
+              cursor="pointer"
+              onClick={handleLogoClicked}
+              mr={5}
+              width={isTabletOrMobile ? '100%' : '30%'}
+              src={images['TFLogo']}
+            />
+          </Flex>
+        )}
         <Flex display={isTabletOrMobile ? 'none' : 'flex'} width={isTabletOrMobile ? 0 : '55%'}>
           <Flex
             width={drawerOpen ? '50%' : '40%'}
