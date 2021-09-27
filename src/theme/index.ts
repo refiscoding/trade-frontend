@@ -4,9 +4,9 @@ import images from './images'
 const theme = {
   ...chakraTheme,
   fonts: {
-    body: 'Muli, sans-serif',
-    mono: 'Muli, sans-serif',
-    heading: 'Muli, sans-serif'
+    body: 'Gotham Bold, sans-serif',
+    mono: 'Gotham Medium',
+    heading: 'Gotham Book'
   },
   colors: {
     ...chakraTheme.colors,

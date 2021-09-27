@@ -117,7 +117,7 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
             onClick={handleLogoClicked}
             mr={5}
             width={isTabletOrMobile ? '100%' : '30%'}
-            src={images['TradeFedFullLogo']}
+            src={images['TFLogo']}
           />
         </Flex>
         <Flex display={isTabletOrMobile ? 'none' : 'flex'} width={isTabletOrMobile ? 0 : '55%'}>
