@@ -20,14 +20,14 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category, handleClick }) =>
   return (
     <Card
       m={2}
-      width={isTabletOrMobile ? '150px' : '250px'}
-      height={isTabletOrMobile ? '130px' : '180px'}
+      width={isTabletOrMobile ? '170px' : '300px'}
+      height={isTabletOrMobile ? '150px' : '300px'}
       onClick={() => handleClick(category.id)}
     >
       <Image
         mr={5}
         width="100%"
-        height={isTabletOrMobile ? '100px' : '150px'}
+        height={isTabletOrMobile ? '120px' : '270px'}
         src={category.categoryImage?.url || ''}
       />
       <CardFooter bg="white" height="30px" alignItems="center" justifyContent="center">
