@@ -55,17 +55,6 @@ const Home: React.FC = () => {
     history.push(`/product/${modifiedId}`)
   }
 
-  /**
-Agriculture
-Automotive
-Electrical Equipment
-Food Ingredients
-Heavy Machinery
-Industrial
-Lighting
-Mining
-Tools and Hardware */
-
   const bannerImage = () => {
     if (category?.name === 'Agriculture') {
       return images?.agricultureBanner || null
