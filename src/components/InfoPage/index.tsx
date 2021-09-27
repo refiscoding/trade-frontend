@@ -36,7 +36,7 @@ const InfoPage: React.FC<InfoPageProps> = ({
   const imageHeight = isWebViewport ? '40vh' : '55vh'
   return (
     <Flex width="100%" align="center" justify="center" flexDirection="column">
-      {hasLogo && <Image mr={5} width={logoWidth} height="auto" src={images['TradeFedFullLogo']} />}
+      {hasLogo && <Image mr={5} width={logoWidth} height="auto" src={images['TFLogo']} />}
       <Image mr={5} width={smallIcon ? '40%' : '80%'} height={imageHeight} src={image} />
       <Flex width="80%" mb={2} mt={4} align="center" justify="center" flexDirection="column">
         <H3 fontSize="20px" fontWeight={600}>
