@@ -144,10 +144,10 @@ const SideBar: React.FC<SideBarProps> = ({
                     exit={{ opacity: 0 }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    src={images.TradeFedFullLogo}
+                    src={images.TFLogo}
                     style={{ alignSelf: 'flex-start' }}
                   />
-                  <Text
+                  {/** <Text
                     fontSize="12px"
                     color={color}
                     initial={{ opacity: 0 }}
@@ -155,7 +155,7 @@ const SideBar: React.FC<SideBarProps> = ({
                     exit={{ opacity: 0, pointerEvents: 'none' }}
                   >
                     A B2B and B2C Trade App
-                  </Text>
+                 </Text> **/}
                 </Flex>
               )}
             </AnimatePresence>
