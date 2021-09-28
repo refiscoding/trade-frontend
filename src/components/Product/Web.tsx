@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import { get } from 'lodash'
 import { useHistory } from 'react-router-dom'
-import { MapPin, Briefcase } from 'react-feather'
+import { Award, MapPin, Briefcase } from 'react-feather'
 import { Flex, Image, Text, Button, Grid } from '@chakra-ui/core'
 
 import Section from '../../components/Section'
@@ -148,6 +148,14 @@ const ProductComponent: React.FC<ProductProps> = ({
                 </Text>
               </Flex>
             )}
+            <Flex mt={3}>
+              <Award />
+              <Text ml={3} fontSize="14px">
+                {product?.warranty === null || product?.warranty === 0
+                  ? `No warranty on this product`
+                  : `Warranty: ${product?.warranty} months`}
+              </Text>
+            </Flex>
             {product?.availableUnits ? (
               <Flex mt={3}>
                 <QuantitySelectComponent
