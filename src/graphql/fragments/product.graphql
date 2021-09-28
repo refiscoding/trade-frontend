@@ -30,6 +30,7 @@ fragment product on Product {
   packageWeight
   packageQuantity
   minimumOrder
+  warranty
   additionalInfo {
     url
   }
@@ -39,7 +40,7 @@ fragment product on Product {
   business {
     ...business
   }
-  category {
+  categories {
     id
   }
   productImages {

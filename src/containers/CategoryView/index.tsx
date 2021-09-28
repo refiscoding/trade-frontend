@@ -41,7 +41,7 @@ const Home: React.FC = () => {
   const { data: productData } = useProductQuery({
     variables: {
       where: {
-        category_contains: id
+        categories_contains: id
       }
     },
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
