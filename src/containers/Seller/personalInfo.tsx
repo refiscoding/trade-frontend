@@ -5,6 +5,8 @@ import { Flex } from '@chakra-ui/core'
 import { theme } from '../../theme'
 import { H3 } from '../../typography'
 import { ConnectedFormGroup, ConnectedNumberInput } from '../../components/FormElements'
+import ConnectedSelect from '../../components/FormElements/ConnectedSelect'
+import { POSITIONS } from '../../constants'
 
 const PersonalInfo: React.FC = () => {
   return (
@@ -21,8 +23,20 @@ const PersonalInfo: React.FC = () => {
       </H3>
       <ConnectedFormGroup label="What is your first name?*" name="firstName" type="text" />
       <ConnectedFormGroup label="What is your last name?*" name="lastName" type="text" />
+      <ConnectedFormGroup label="What is your company name?*" name="companyname" type="text" />
+      <ConnectedSelect
+        placeholder="Select Position"
+        label="Select Position* "
+        name="location"
+        options={POSITIONS}
+      />
       <ConnectedFormGroup label="Your Email Address?*" name="email" type="text" isDisabled={true} />
-      <ConnectedFormGroup label="Enter your ID Number*" name="idNumber" type="text" placeholder="Enter ID Number" />
+      <ConnectedFormGroup
+        label="Enter your ID Number*"
+        name="idNumber"
+        type="text"
+        placeholder="Enter ID Number"
+      />
       <ConnectedNumberInput label="Enter your phone number*" name="phoneNumber" unit="+27" />
     </Flex>
   )

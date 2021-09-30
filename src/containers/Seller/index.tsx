@@ -47,7 +47,8 @@ const SellerFormValidation = Yup.object().shape({
   revenue: Yup.string().required('Revenue Range is required'),
   registrationNumber: Yup.string().required('Registration Number is required'),
   beeStatus: Yup.string().required('BEE Status is required'),
-  hazChem: Yup.string().required('Has Chem Status is required')
+  isHazChem: Yup.boolean().required('Haz Chem status is required'),
+  hazChem: Yup.string()
 })
 
 export type ErrorsObject = {
@@ -58,6 +59,7 @@ export type ErrorsObject = {
   revenue?: string | undefined
   registrationNumber?: string | undefined
   beeStatus?: string | undefined
+  isHazChem?: string | undefined
   hazChem?: string | undefined
 }
 
@@ -69,7 +71,8 @@ export type TouchedErrors = {
   revenue?: boolean | undefined
   registrationNumber?: boolean | undefined
   beeStatus?: boolean | undefined
-  hazChem?: boolean | undefined
+  isHazChem?: boolean | undefined
+  //hazChem?: boolean | undefined
 }
 
 export type SellerValues = {
@@ -93,6 +96,7 @@ export type SellerValues = {
   products: Maybe<Maybe<string>> | undefined
   hasPhysicalStore: string
   isRetailSupplier: string
+  isHazChem: string
   hazChem: string
   errors?: ErrorsObject
   businessType?: string
@@ -104,6 +108,7 @@ const initialValues = {
   yearsInOperation: 0,
   location: '',
   beeStatus: '',
+  isHazChem: '',
   hazChem: '',
   registrationNumber: '',
   category: '',
@@ -183,6 +188,7 @@ const Seller: React.FC = () => {
       location,
       idNumber,
       lastName,
+      isHazChem,
       beeStatus,
       firstName,
       vatNumber,
@@ -200,6 +206,7 @@ const Seller: React.FC = () => {
     const businessInput = {
       name,
       revenue,
+      hazChem,
       beeStatus,
       vatNumber,
       businessType,
@@ -208,7 +215,7 @@ const Seller: React.FC = () => {
       countries: [location],
       categories: [category],
       productsSummary: products,
-      hazChem: Boolean(hazChem),
+      isHazChem: Boolean(isHazChem),
       websiteAddress: businessWebsite,
       phoneNumber: businessPhoneNumber,
       isVatRegistered: Boolean(isVatRegistered),
@@ -224,7 +231,7 @@ const Seller: React.FC = () => {
       idNumber,
       phoneNumber
     }
-    await createMyBusiness({ variables: { input: businessInput } })
+    //await createMyBusiness({ variables: { input: businessInput } })
     await updateSelf({ variables: { input: { ...userDetails } } })
   }
 

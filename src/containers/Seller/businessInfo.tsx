@@ -64,6 +64,7 @@ const BusinessInfo: React.FC<businessTypes> = ({
   touched
 }) => {
   const saidYesToVATRegistered = values?.isVatRegistered === 'true'
+  const saidYesToHazChem = values?.isHazChem === 'true'
   return (
     <React.Fragment>
       <Flex
@@ -93,6 +94,11 @@ const BusinessInfo: React.FC<businessTypes> = ({
           label="Business Phone number*"
           name="businessPhoneNumber"
           unit="+27"
+        />
+        <ConnectedFormGroup
+          label="Related/associated company/group"
+          name="companyRelated"
+          type="text"
         />
         <ConnectedFormGroup
           label="Business Website"
@@ -168,7 +174,7 @@ const BusinessInfo: React.FC<businessTypes> = ({
         </H3>
         <ConnectedNumberInput label="Number of unique products*" name="uniqueProducts" />
         <ConnectedTextArea
-          label="What products do you sell?* "
+          label="Please give a brief description about what the business does and what you are wanting to sell on our platform* "
           name="products"
           // eslint-disable-next-line @typescript-eslint/no-empty-function
           handleSetTags={() => {}}
@@ -213,18 +219,34 @@ const BusinessInfo: React.FC<businessTypes> = ({
           <Text color="red.500">{errors['isRetailSupplier']}</Text>
         )}
 
-        <FormLabel mt={3} htmlFor="hazChem">
-          Do you deal in chemical products?*
+        <FormLabel mt={3} htmlFor="isHazChem">
+          Do you deal in Haz Chemicals?*
         </FormLabel>
         {options.map((item: Options, i: number) => (
           <Flex key={`${i}_chem`} alignItems="center">
-            <Field key={i} type="radio" name="hazChem" value={item.value} />
+            <Field key={i} type="radio" name="isHazChem" value={item.value} />
             <Text ml={2}>{item.label}</Text>
           </Flex>
         ))}
-        {touched['hazChem'] && errors['hazChem'] && (
-          <Text color="red.500">{errors['hazChem']}</Text>
+        {touched['isHazChem'] && errors['isHazChem'] && (
+          <Text color="red.500">{errors['isHazChem']}</Text>
         )}
+        {saidYesToHazChem && (
+          <ConnectedFormGroup
+            mt={3}
+            label="Please provide brief discussion of Haz Chem*"
+            name="hazChem"
+            type="text"
+          />
+        )}
+
+        <ConnectedTextArea
+          mt={3}
+          label="List the brands that you supply* "
+          name="suppliedBrands"
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
+          handleSetTags={() => {}}
+        />
       </Flex>
     </React.Fragment>
   )
