@@ -1,0 +1,7 @@
+# import '/fragments/business.graphql'
+
+mutation createBusinessOnSignUp($input: BusinessInput) {
+  createBusinessOnSignUp(input: $input) {
+    ...business
+  }
+}

@@ -7,7 +7,7 @@ import { MotionFlex } from '../../components'
 import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
 import { H3, Text } from '../../typography'
 import { formatError } from '../../utils'
-import { useCreateMyBusinessMutation } from '../../generated/graphql'
+import { useCreateBusinessOnSignUpMutation } from '../../generated/graphql'
 
 type NameProps = {
   handleUserDetails: (details: any) => void
@@ -41,14 +41,14 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
   const toast = useToast()
   const [vatChecked, setVatChecked] = React.useState(false)
 
-  const [createMyBusiness, { data }] = useCreateMyBusinessMutation({
+  const [createBusinessOnSignUp, { data }] = useCreateBusinessOnSignUpMutation({
     onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
     onCompleted: async () => {
       toast({ description: 'Business details updated!', ...SUCCESS_TOAST })
     }
   })
 
-  const businessId = data?.createMyBusiness?.id
+  const businessId = data?.createBusinessOnSignUp?.id
 
   const handleSubmit = async (values: CompanyValues) => {
     const {
@@ -74,7 +74,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       beeStatus,
       isVatRegistered: vatChecked
     }
-    await createMyBusiness({ variables: { input: businessInput } })
+    await createBusinessOnSignUp({ variables: { input: businessInput } })
 
     handleUserDetails({
       business: businessId
