@@ -16,7 +16,6 @@ import OnboardingBusinessDetails from './OnboardingBusinessDetails'
 import OnboardingCategories from './OnboardingCategories'
 import OnboardingCompanyDetails from './OnboardingCompanyDetails'
 import OnboardingIndividual from './OnboardingIndividual'
-import OnboardingSecondaryContact from './OnboardingSecondaryContact'
 import OnboardingUserNames from './OnboardingUserNames'
 
 const userDetailsInitialValues = {
