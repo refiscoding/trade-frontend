@@ -16,3 +16,11 @@ query fetchOneUserCheckoutOrder($input: FetchOneOrderInput!){
   }
 }
 
+query fetchOrderByBusiness{
+  fetchOrderByBusiness{
+    payload {
+      ...order
+    }
+  }
+}
+

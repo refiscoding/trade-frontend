@@ -10,13 +10,12 @@ import { ERROR_TOAST, SEARCH_INDEX, searchClient } from '../../constants'
 import {
   FetchUserCheckoutOrdersQuery,
   Order,
-  useFetchUserCheckoutOrdersQuery,
+  useFetchOrderByBusinessQuery,
   UsersPermissionsUser
 } from '../../generated/graphql'
 import { Form, Formik } from 'formik'
 import { H3 } from '../../typography'
 import { PageWrap } from '../../layouts'
-import { Ranges } from '../Orders/DatePickerForm'
 import { theme } from '../../theme'
 import { useMediaQuery } from 'react-responsive'
 import BusinessOrderConfirmation from './BusinessOrderConfirmation'
@@ -39,7 +38,6 @@ export type BusinessOrdersProps = {
   orders: Order[]
   ordersLoading: boolean
   refetchUserOrders: () => Promise<ApolloQueryResult<FetchUserCheckoutOrdersQuery>>
-  setDateRange: React.Dispatch<React.SetStateAction<Ranges | undefined>>
   user?: UsersPermissionsUser
 }
 
@@ -65,26 +63,17 @@ const BusinessOrdersPageHeader: React.FC<BusinessOrdersPageProps> = ({ isTabletO
 const BusinessOrdersPage: React.FC<BusinessPageProps> = ({ user }) => {
   const toast = useToast()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
-  const [dateRange, setDateRange] = React.useState<Ranges>()
   const [activeTab, setActiveTab] = React.useState('all')
   const [isSearching, setIsSearching] = React.useState<boolean>(false)
-
-  const res = {
-    input: {
-      startDate: dateRange?.startDate ?? null,
-      endDate: dateRange?.endDate ?? null
-    }
-  }
 
   const {
     data: userOrders,
     loading: userOrdersLoading,
     refetch: refetchUserOrders
-  } = useFetchUserCheckoutOrdersQuery({
-    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
-    variables: { ...res }
+  } = useFetchOrderByBusinessQuery({
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
   })
-  const orders = get(userOrders, 'findCheckoutOrders.payload')
+  const orders = get(userOrders, 'fetchOrderByBusiness.payload')
 
   const handleSearch = (value: string) => {
     if (value.length > 0) {
@@ -105,11 +94,7 @@ const BusinessOrdersPage: React.FC<BusinessPageProps> = ({ user }) => {
 
   React.useEffect(() => {
     refetchUserOrders()
-    setDateRange({
-      endDate: null,
-      startDate: null
-    })
-  }, [refetchUserOrders, setDateRange])
+  }, [refetchUserOrders])
 
   const renderTabContent = (activeTab: string) => {
     switch (activeTab) {
@@ -119,7 +104,6 @@ const BusinessOrdersPage: React.FC<BusinessPageProps> = ({ user }) => {
             <BusinessOrdersWeb
               orders={orders}
               refetchUserOrders={refetchUserOrders}
-              setDateRange={setDateRange}
               ordersLoading={userOrdersLoading}
             />
             <BusinessOrderConfirmation />
@@ -127,13 +111,11 @@ const BusinessOrdersPage: React.FC<BusinessPageProps> = ({ user }) => {
               orders={orders}
               ordersLoading={userOrdersLoading}
               refetchUserOrders={refetchUserOrders}
-              setDateRange={setDateRange}
               user={user}
             />
             <DispatchedBusinessOrder
               orders={orders}
               refetchUserOrders={refetchUserOrders}
-              setDateRange={setDateRange}
               ordersLoading={userOrdersLoading}
             />
           </Flex>
@@ -145,7 +127,6 @@ const BusinessOrdersPage: React.FC<BusinessPageProps> = ({ user }) => {
           <BusinessOrdersWeb
             orders={orders}
             refetchUserOrders={refetchUserOrders}
-            setDateRange={setDateRange}
             ordersLoading={userOrdersLoading}
           />
         )
@@ -154,7 +135,6 @@ const BusinessOrdersPage: React.FC<BusinessPageProps> = ({ user }) => {
           <ReadyForDispatch
             orders={orders}
             refetchUserOrders={refetchUserOrders}
-            setDateRange={setDateRange}
             ordersLoading={userOrdersLoading}
           />
         )
@@ -163,7 +143,6 @@ const BusinessOrdersPage: React.FC<BusinessPageProps> = ({ user }) => {
           <DispatchedBusinessOrder
             orders={orders}
             refetchUserOrders={refetchUserOrders}
-            setDateRange={setDateRange}
             ordersLoading={userOrdersLoading}
           />
         )
