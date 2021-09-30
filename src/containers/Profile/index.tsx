@@ -102,7 +102,7 @@ const Profile: React.FC<ProfileProps> = () => {
       >
         <Clipboard />
         <Flex width="100%" ml={3}>
-          <Text fontSize={14}>My Order History</Text>
+          <Text fontSize={12}>My Order History</Text>
         </Flex>
         <ChevronRight />
       </Flex>
