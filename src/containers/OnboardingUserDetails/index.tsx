@@ -61,12 +61,12 @@ const Onboarding: React.FC = () => {
 
   const handleUserDetails = async (details: any) => {
     if (currentAccountType === 'Business') {
-      if (active <= 4) {
+      if (active <= 3) {
         setActive(active + 1)
       }
       setUserdetails({ ...userDetails, ...details })
 
-      if (active === 5) {
+      if (active === 4) {
         if (details.categories) {
           await updateSelf({
             variables: {
@@ -122,9 +122,6 @@ const Onboarding: React.FC = () => {
           )}
           {currentAccountType === 'Business' && (
             <OnboardingAddress handleUserDetails={handleUserDetails} />
-          )}
-          {currentAccountType === 'Business' && (
-            <OnboardingSecondaryContact handleUserDetails={handleUserDetails} />
           )}
           <OnboardingCategories categories={categoriesList} handleUserDetails={handleUserDetails} />
         </Stepper>

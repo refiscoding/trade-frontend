@@ -170,6 +170,7 @@ const BusinessInfo: React.FC<businessTypes> = ({
         <ConnectedTextArea
           label="What products do you sell?* "
           name="products"
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
           handleSetTags={() => {}}
         />
 
