@@ -220,7 +220,7 @@ const BusinessInfo: React.FC<businessTypes> = ({
         )}
 
         <FormLabel mt={3} htmlFor="isHazChem">
-          Do you deal in Haz Chemicals?*
+          Do you deal with Hazardous Chemicals?*
         </FormLabel>
         {options.map((item: Options, i: number) => (
           <Flex key={`${i}_chem`} alignItems="center">
@@ -234,7 +234,7 @@ const BusinessInfo: React.FC<businessTypes> = ({
         {saidYesToHazChem && (
           <ConnectedFormGroup
             mt={3}
-            label="Please provide brief discussion of Haz Chem*"
+            label="Please provide brief discussion of Hazardous chemicals*"
             name="hazChem"
             type="text"
           />
@@ -244,7 +244,7 @@ const BusinessInfo: React.FC<businessTypes> = ({
           mt={3}
           label="List the brands that you supply* "
           name="suppliedBrands"
-          // eslint-disable-next-line @typescript-eslint/no-empty-function
+          type="text"
           handleSetTags={() => {}}
         />
       </Flex>

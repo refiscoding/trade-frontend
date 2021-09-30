@@ -47,6 +47,7 @@ const SellerFormValidation = Yup.object().shape({
   revenue: Yup.string().required('Revenue Range is required'),
   registrationNumber: Yup.string().required('Registration Number is required'),
   beeStatus: Yup.string().required('BEE Status is required'),
+  suppliedBrands: Yup.string().required('List of brands is required'),
   isHazChem: Yup.boolean().required('Haz Chem status is required'),
   hazChem: Yup.string()
 })
@@ -79,6 +80,7 @@ export type SellerValues = {
   firstName: string
   lastName: string
   email: string
+  suppliedBrands: string
   idNumber: string
   phoneNumber?: string
   name: string
@@ -104,6 +106,7 @@ export type SellerValues = {
 
 const initialValues = {
   name: '',
+  suppliedBrands: '',
   businessPhoneNumber: '',
   yearsInOperation: 0,
   location: '',
@@ -135,6 +138,7 @@ const Seller: React.FC = () => {
     ...initialValues,
     firstName: user?.firstName || '',
     lastName: user?.lastName || '',
+    companyName: user?.companyName || '',
     email: user?.email || '',
     idNumber: user?.idNumber || '',
     phoneNumber: user?.phoneNumber || ''
@@ -195,6 +199,7 @@ const Seller: React.FC = () => {
       phoneNumber,
       businessType,
       uniqueProducts,
+      suppliedBrands,
       isVatRegistered,
       businessWebsite,
       isRetailSupplier,
@@ -210,6 +215,7 @@ const Seller: React.FC = () => {
       beeStatus,
       vatNumber,
       businessType,
+      suppliedBrands,
       uniqueProducts,
       registrationNumber,
       countries: [location],
@@ -231,7 +237,7 @@ const Seller: React.FC = () => {
       idNumber,
       phoneNumber
     }
-    //await createMyBusiness({ variables: { input: businessInput } })
+    await createMyBusiness({ variables: { input: businessInput } })
     await updateSelf({ variables: { input: { ...userDetails } } })
   }
 
