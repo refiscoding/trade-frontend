@@ -65,8 +65,8 @@ const OnboardingIndividual: React.FC<NameProps> = ({ handleUserDetails }) => {
       >
         {({ isSubmitting, status }: FormikProps<NameValues>) => (
           <Form style={{ width: '100%' }}>
-            <ConnectedFormGroup label="Name *" name="firstName" type="text" />
-            <ConnectedFormGroup label="Surname *" name="lastName" type="text" />
+            <ConnectedFormGroup label="Name*" name="firstName" type="text" />
+            <ConnectedFormGroup label="Surname*" name="lastName" type="text" />
             <ConnectedFormGroup label="Phone number*" name="phoneNumber" type="text" />
             <ConnectedFormGroup label="Email address*" name="email" type="text" />
             {status && (
