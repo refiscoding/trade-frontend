@@ -47,7 +47,9 @@ const SellerFormValidation = Yup.object().shape({
   revenue: Yup.string().required('Revenue Range is required'),
   registrationNumber: Yup.string().required('Registration Number is required'),
   beeStatus: Yup.string().required('BEE Status is required'),
-  hazChem: Yup.string().required('Has Chem Status is required')
+  suppliedBrands: Yup.string().required('List of brands is required'),
+  isHazChem: Yup.boolean().required('Haz Chem status is required'),
+  hazChem: Yup.string()
 })
 
 export type ErrorsObject = {
@@ -58,6 +60,7 @@ export type ErrorsObject = {
   revenue?: string | undefined
   registrationNumber?: string | undefined
   beeStatus?: string | undefined
+  isHazChem?: string | undefined
   hazChem?: string | undefined
 }
 
@@ -69,13 +72,15 @@ export type TouchedErrors = {
   revenue?: boolean | undefined
   registrationNumber?: boolean | undefined
   beeStatus?: boolean | undefined
-  hazChem?: boolean | undefined
+  isHazChem?: boolean | undefined
+  //hazChem?: boolean | undefined
 }
 
 export type SellerValues = {
   firstName: string
   lastName: string
   email: string
+  suppliedBrands: string
   idNumber: string
   phoneNumber?: string
   name: string
@@ -93,6 +98,7 @@ export type SellerValues = {
   products: Maybe<Maybe<string>> | undefined
   hasPhysicalStore: string
   isRetailSupplier: string
+  isHazChem: string
   hazChem: string
   errors?: ErrorsObject
   businessType?: string
@@ -100,10 +106,12 @@ export type SellerValues = {
 
 const initialValues = {
   name: '',
+  suppliedBrands: '',
   businessPhoneNumber: '',
   yearsInOperation: 0,
   location: '',
   beeStatus: '',
+  isHazChem: '',
   hazChem: '',
   registrationNumber: '',
   category: '',
@@ -130,6 +138,7 @@ const Seller: React.FC = () => {
     ...initialValues,
     firstName: user?.firstName || '',
     lastName: user?.lastName || '',
+    companyName: user?.companyName || '',
     email: user?.email || '',
     idNumber: user?.idNumber || '',
     phoneNumber: user?.phoneNumber || ''
@@ -183,12 +192,14 @@ const Seller: React.FC = () => {
       location,
       idNumber,
       lastName,
+      isHazChem,
       beeStatus,
       firstName,
       vatNumber,
       phoneNumber,
       businessType,
       uniqueProducts,
+      suppliedBrands,
       isVatRegistered,
       businessWebsite,
       isRetailSupplier,
@@ -200,15 +211,17 @@ const Seller: React.FC = () => {
     const businessInput = {
       name,
       revenue,
+      hazChem,
       beeStatus,
       vatNumber,
       businessType,
+      suppliedBrands,
       uniqueProducts,
       registrationNumber,
       countries: [location],
       categories: [category],
       productsSummary: products,
-      hazChem: Boolean(hazChem),
+      isHazChem: Boolean(isHazChem),
       websiteAddress: businessWebsite,
       phoneNumber: businessPhoneNumber,
       isVatRegistered: Boolean(isVatRegistered),

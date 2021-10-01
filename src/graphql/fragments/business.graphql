@@ -15,6 +15,7 @@ fragment business on Business {
   vatNumber
   isRetailSupplier
   uniqueProducts
+  suppliedBrands
   revenue
   address {
       ...address
@@ -26,6 +27,7 @@ fragment business on Business {
   beeStatus
   annualTurn
   hazChem
+  isHazChem
   countries {
     ...country
   }
