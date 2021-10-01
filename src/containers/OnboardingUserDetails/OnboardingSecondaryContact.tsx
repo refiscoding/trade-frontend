@@ -87,8 +87,8 @@ const OnboardingSecondaryContact: React.FC<NameProps> = ({ handleUserDetails }) 
       >
         {({ isSubmitting, status }: FormikProps<NameValues>) => (
           <Form style={{ width: '100%' }}>
-            <ConnectedFormGroup label="First name *" name="secondaryContactName" type="text" />
-            <ConnectedFormGroup label="Last name *" name="secondaryContactSurname" type="text" />
+            <ConnectedFormGroup label="First name*" name="secondaryContactName" type="text" />
+            <ConnectedFormGroup label="Last name*" name="secondaryContactSurname" type="text" />
             <ConnectedFormGroup
               label="Phone number*"
               name="secondaryContactPhoneNumber"

@@ -76,12 +76,12 @@ const BusinessDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       >
         {({ isSubmitting, status, setFieldValue }: FormikProps<NameValues>) => (
           <Form style={{ width: '100%' }}>
-            <ConnectedFormGroup label="Name *" name="firstName" type="text" />
-            <ConnectedFormGroup label="Surname *" name="lastName" type="text" />
+            <ConnectedFormGroup label="Name*" name="firstName" type="text" />
+            <ConnectedFormGroup label="Surname*" name="lastName" type="text" />
             <ConnectedFormGroup label="Company name*" name="companyName" type="text" />
             <ConnectedSelect
-              label="Select position *"
-              placeholder="select a Position"
+              label="Select position*"
+              placeholder="Select a Position"
               onChange={(e) => setFieldValue('position', e.target.value)}
               name="position"
               options={POSITIONS}
@@ -91,8 +91,8 @@ const BusinessDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
               name="otherPosition"
               type="text"
             />
-            <ConnectedFormGroup label="Work email address *" name="workEmailAddress" type="text" />
-            <ConnectedFormGroup label="Cell phone number *" name="phoneNumber" type="text" />
+            <ConnectedFormGroup label="Work email address*" name="workEmailAddress" type="text" />
+            <ConnectedFormGroup label="Cell phone number*" name="phoneNumber" type="text" />
             {status && (
               <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
                 <Text textAlign="right" color="red.500">

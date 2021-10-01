@@ -139,7 +139,7 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
             />
             <ConnectedSelect
               label="Province*"
-              placeholder="select a Province"
+              placeholder="Select a Province"
               name="province"
               onChange={(name) => {
                 setSelectedProvince(name.target.value)
@@ -149,7 +149,7 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
             />
             <ConnectedSelect
               label="City*"
-              placeholder="select a City / Town"
+              placeholder="Select a City / Town"
               name="city"
               textTransform="lowercase"
               onChange={(name) => {
@@ -161,7 +161,7 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
             />
             <ConnectedSelect
               label="Suburb*"
-              placeholder="select a Suburb"
+              placeholder="Select a Suburb"
               name="suburb"
               textTransform="lowercase"
               onChange={(name) => {
@@ -177,7 +177,7 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
               onChange={(name) => {
                 setFieldValue('postalCode', name.target.value)
               }}
-              placeholder="select Postal Code"
+              placeholder="Select Postal Code"
               options={postalCodeList}
               isDisabled={selectedSuburb === '' ? true : false}
             />

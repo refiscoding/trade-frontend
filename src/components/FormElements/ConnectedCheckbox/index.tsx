@@ -27,6 +27,7 @@ const ConnectedCheckbox: React.FC<ConnectedCheckboxProps> = ({ reverse, label, c
     >
       {
         <Checkbox
+          borderColor="gray.400"
           flexDirection={reverse ? 'row-reverse' : 'initial'}
           justifyContent="space-between"
           defaultIsChecked={checked}

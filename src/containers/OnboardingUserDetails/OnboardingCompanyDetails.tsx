@@ -145,21 +145,21 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
               type="text"
             />
             <ConnectedSelect
-              label="Select BEE status *"
-              placeholder="select BEE status"
+              label="Select BEE status*"
+              placeholder="Select BEE status"
               name="beeStatus"
               onChange={(e) => setFieldValue('beeStatus', e.target.value)}
               options={BEESTATUS}
             />
             <ConnectedSelect
-              label="Select annual turnover (R) *"
-              placeholder="select Annual turnover"
+              label="Select annual turnover (R)*"
+              placeholder="Select Annual turnover"
               name="annualTurn"
               onChange={(e) => setFieldValue('annualTurn', e.target.value)}
               options={TURNOVER}
             />
             <ConnectedSelect
-              label="Are you VAT registered? *"
+              label="Are you VAT registered?*"
               name="isVatRegistered"
               onChange={(name) => {
                 setFieldValue('isVatRegistered', name.target.value)
@@ -182,15 +182,15 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
             />
             {vatChecked === true && (
               <ConnectedFormGroup
-                label="If yes, please provide VAT number *"
-                placeholder="please provide VAT number"
+                label="If yes, please provide VAT number*"
+                placeholder="Please provide VAT number"
                 name="vatNumber"
                 type="text"
               />
             )}
             <ConnectedSelect
-              label="Which industry does your business operate in *"
-              placeholder="select an Industry"
+              label="Which industry does your business operate in*"
+              placeholder="Select an Industry"
               name="businessType"
               onChange={(name) => {
                 setFieldValue('businessType', name.target.value)
