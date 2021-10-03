@@ -15,7 +15,7 @@ interface NavigationHeaderProps {
   setActiveTab: Function
 }
 
-const Tabs = ['all', 'confirmation', 'processing', 'ready', 'dispatched']
+const Tabs = ['confirmation', 'processing', 'ready', 'dispatched']
 
 const NavigationItem: React.FC<NavigationItemProps> = ({ activeTab, setActiveTab, tabName }) => {
   const handleTabChange = () => {
