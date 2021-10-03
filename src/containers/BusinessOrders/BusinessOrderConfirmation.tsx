@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import dayjs from 'dayjs'
-import { Button, Flex, Grid, Link, Spinner, Tag, useToast } from '@chakra-ui/core'
+import { Button, Flex, Grid, Link, Spinner, useToast } from '@chakra-ui/core'
 
 import { BusinessOrdersProps } from '.'
 import { H3, Text } from '../../typography'
@@ -33,6 +33,7 @@ const BusinessOrderConfirmation: React.FC<BusinessOrdersProps> = ({ orders, orde
        You haven't selected any order to view its details.
        Selecting an order will have it displayed here
    `
+  console.log('selectedOrder', selectedOrder)
 
   return (
     <PageWrap title="Order Confirmation" alignSelf="center" width="90%" mt={0} pt={0} p={0}>
@@ -90,7 +91,7 @@ const BusinessOrderConfirmation: React.FC<BusinessOrdersProps> = ({ orders, orde
                 >
                   <Flex borderBottom={`1px solid ${theme.colors.background}`} mb={2} pb={3}>
                     <Text fontSize={16} fontWeight={600}>
-                      An Order Has Been Placed - Q3294871
+                      Order #{selectedOrder?.orderNumber} has been placed
                     </Text>
                   </Flex>
                   <Flex
@@ -102,7 +103,7 @@ const BusinessOrderConfirmation: React.FC<BusinessOrdersProps> = ({ orders, orde
                   >
                     <Flex pb={3}>
                       <Text fontSize={14} fontWeight={700}>
-                        Order Number: TFSA000001-01
+                        Order Number: {selectedOrder?.orderNumber}
                       </Text>
                     </Flex>
                     <Flex width="100%" pb={4}>
@@ -118,7 +119,7 @@ const BusinessOrderConfirmation: React.FC<BusinessOrdersProps> = ({ orders, orde
                         Date ordered:
                       </Text>
                       <Text fontSize={12} pl={2}>
-                        20 July 2021 at 14:37pm
+                        {dayjs(selectedOrder?.orderDate).format('LLLL')}
                       </Text>
                     </Flex>
                     <Flex width="100%" pb={4}>
@@ -126,7 +127,10 @@ const BusinessOrderConfirmation: React.FC<BusinessOrdersProps> = ({ orders, orde
                         Destination:
                       </Text>
                       <Text fontSize={12} pl={2}>
-                        23 Trade Street, Menlo Park, 0081, Pretoria, South Africa
+                        {selectedOrder?.deliveryAddress?.name},{' '}
+                        {selectedOrder?.deliveryAddress?.province},{' '}
+                        {selectedOrder?.deliveryAddress?.city},{' '}
+                        {selectedOrder?.deliveryAddress?.suburb}
                       </Text>
                     </Flex>
                     <Flex width="100%" pb={4}>
@@ -140,70 +144,74 @@ const BusinessOrderConfirmation: React.FC<BusinessOrdersProps> = ({ orders, orde
                         Contact Number: 072 838 0502
                       </Text>
                     </Flex>
-                    <Flex width="100%" pb={4}>
-                      <Flex flexDirection="row">
-                        <Text fontSize={12} fontWeight={700}>
-                          Order Specifics (1):
-                        </Text>
-                        <Flex flexDirection="column" pl={2}>
-                          <Flex>
+                    {selectedOrder?.items?.map((orderItem, index) => (
+                      <Flex key={index} borderBottom={`1px solid ${theme.colors.background}`}>
+                        <Flex width="100%" pb={4}>
+                          <Flex flexDirection="row">
                             <Text fontSize={12} fontWeight={700}>
-                              Product SKU:
+                              Order Specifics (1):
                             </Text>
-                            <Text fontSize={12} pl={2}>
-                              2343223456543
-                            </Text>
+                            <Flex flexDirection="column" pl={2}>
+                              <Flex>
+                                <Text fontSize={12} fontWeight={700}>
+                                  Product SKU:
+                                </Text>
+                                <Text fontSize={12} pl={2}>
+                                  {orderItem?.product?.sku}
+                                </Text>
+                              </Flex>
+                              <Flex>
+                                <Text fontSize={12} fontWeight={700}>
+                                  Quantity:
+                                </Text>
+                                <Text fontSize={12} pl={2}>
+                                  {orderItem?.quantity}
+                                </Text>
+                              </Flex>
+                            </Flex>
                           </Flex>
-                          <Flex>
-                            <Text fontSize={12} fontWeight={700}>
-                              Quantity:
-                            </Text>
-                            <Text fontSize={12} pl={2}>
-                              2
-                            </Text>
+                        </Flex>
+                        <Flex width="100%" pb={4} flexDirection="row">
+                          <Text fontSize={12} fontWeight={700}>
+                            Dimensions:
+                          </Text>
+                          <Flex pl={2} flexDirection="column">
+                            <Flex flexDirection="row">
+                              <Text fontSize={12} fontWeight={700}>
+                                Height:
+                              </Text>
+                              <Text fontSize={12} pl={2}>
+                                {orderItem?.product?.height} cm
+                              </Text>
+                            </Flex>
+                            <Flex flexDirection="row">
+                              <Text fontSize={12} fontWeight={700}>
+                                Width:
+                              </Text>
+                              <Text fontSize={12} pl={2}>
+                                {orderItem?.product?.width} cm
+                              </Text>
+                            </Flex>
+                            <Flex flexDirection="row">
+                              <Text fontSize={12} fontWeight={700}>
+                                Length:
+                              </Text>
+                              <Text fontSize={12} pl={2}>
+                                {orderItem?.product?.lengths} cm
+                              </Text>
+                            </Flex>
+                            <Flex flexDirection="row">
+                              <Text fontSize={12} fontWeight={700}>
+                                Weight:
+                              </Text>
+                              <Text fontSize={12} pl={2}>
+                                {orderItem?.product?.weight} kg
+                              </Text>
+                            </Flex>
                           </Flex>
                         </Flex>
                       </Flex>
-                    </Flex>
-                    <Flex width="100%" pb={4} flexDirection="row">
-                      <Text fontSize={12} fontWeight={700}>
-                        Dimensions:
-                      </Text>
-                      <Flex pl={2} flexDirection="column">
-                        <Flex flexDirection="row">
-                          <Text fontSize={12} fontWeight={700}>
-                            Height:
-                          </Text>
-                          <Text fontSize={12} pl={2}>
-                            23cm
-                          </Text>
-                        </Flex>
-                        <Flex flexDirection="row">
-                          <Text fontSize={12} fontWeight={700}>
-                            Width:
-                          </Text>
-                          <Text fontSize={12} pl={2}>
-                            225cm
-                          </Text>
-                        </Flex>
-                        <Flex flexDirection="row">
-                          <Text fontSize={12} fontWeight={700}>
-                            Length:
-                          </Text>
-                          <Text fontSize={12} pl={2}>
-                            290cm
-                          </Text>
-                        </Flex>
-                        <Flex flexDirection="row">
-                          <Text fontSize={12} fontWeight={700}>
-                            Weight:
-                          </Text>
-                          <Text fontSize={12} pl={2}>
-                            19kg
-                          </Text>
-                        </Flex>
-                      </Flex>
-                    </Flex>
+                    ))}
                   </Flex>
                   <Flex justify="space-between" flexDirection="column" alignItems="center">
                     <Flex>
