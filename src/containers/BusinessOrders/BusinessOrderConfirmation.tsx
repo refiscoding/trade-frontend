@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import dayjs from 'dayjs'
-import { Button, Flex, Grid, Link, Spinner, useToast } from '@chakra-ui/core'
+import { Button, Flex, Grid, Image, Link, Spinner, useToast } from '@chakra-ui/core'
 
 import { BusinessOrdersProps } from '.'
 import { H3, Text } from '../../typography'
@@ -146,13 +146,25 @@ const BusinessOrderConfirmation: React.FC<BusinessOrdersProps> = ({ orders, orde
                     </Flex>
                     {selectedOrder?.items?.map((orderItem, index) => (
                       <Flex key={index} borderBottom={`1px solid ${theme.colors.background}`}>
-                        <Flex width="100%" pb={4}>
-                          <Flex flexDirection="row">
-                            <Text fontSize={12} fontWeight={700}>
-                              Order Specifics (1):
-                            </Text>
-                            <Flex flexDirection="column" pl={2}>
-                              <Flex>
+                        <Flex width="50%" pb={4}>
+                          <Flex width="100%" flexDirection="row">
+                            <Flex width="100%">
+                              <Text fontSize={12} fontWeight={700}>
+                                Item Name:
+                              </Text>
+                              <Text fontSize={12} pl={2}>
+                                {orderItem?.product?.name}
+                              </Text>
+                            </Flex>
+                            <Flex width="100%">
+                              <Image
+                                width="50%"
+                                objectFit="cover"
+                                src={orderItem?.product?.coverImage?.url}
+                              />
+                            </Flex>
+                            <Flex width="100%" flexDirection="column" pl={2}>
+                              <Flex width="100%">
                                 <Text fontSize={12} fontWeight={700}>
                                   Product SKU:
                                 </Text>
@@ -160,7 +172,7 @@ const BusinessOrderConfirmation: React.FC<BusinessOrdersProps> = ({ orders, orde
                                   {orderItem?.product?.sku}
                                 </Text>
                               </Flex>
-                              <Flex>
+                              <Flex width="100%">
                                 <Text fontSize={12} fontWeight={700}>
                                   Quantity:
                                 </Text>
@@ -171,7 +183,7 @@ const BusinessOrderConfirmation: React.FC<BusinessOrdersProps> = ({ orders, orde
                             </Flex>
                           </Flex>
                         </Flex>
-                        <Flex width="100%" pb={4} flexDirection="row">
+                        <Flex width="50%" pb={4} flexDirection="row">
                           <Text fontSize={12} fontWeight={700}>
                             Dimensions:
                           </Text>
