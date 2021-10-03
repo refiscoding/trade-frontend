@@ -9,6 +9,7 @@ import { images, theme } from '../../theme'
 import { Order } from '../../generated/graphql'
 import { PageWrap } from '../../layouts'
 import { SUCCESS_TOAST } from '../../constants/index'
+import { toSentenceCase } from '../../utils/toSentenceCase'
 
 import BusinessOrderConfirmationComponent from './BusinessOrderConfirmationComponent'
 import NoData from '../Checkout/NoDataScreen'
@@ -33,7 +34,6 @@ const BusinessOrderConfirmation: React.FC<BusinessOrdersProps> = ({ orders, orde
        You haven't selected any order to view its details.
        Selecting an order will have it displayed here
    `
-  console.log('selectedOrder', selectedOrder)
 
   return (
     <PageWrap title="Order Confirmation" alignSelf="center" width="90%" mt={0} pt={0} p={0}>
@@ -127,10 +127,19 @@ const BusinessOrderConfirmation: React.FC<BusinessOrdersProps> = ({ orders, orde
                         Destination:
                       </Text>
                       <Text fontSize={12} pl={2}>
-                        {selectedOrder?.deliveryAddress?.name},{' '}
-                        {selectedOrder?.deliveryAddress?.province},{' '}
-                        {selectedOrder?.deliveryAddress?.city},{' '}
-                        {selectedOrder?.deliveryAddress?.suburb}
+                        {`${
+                          selectedOrder?.deliveryAddress?.name &&
+                          toSentenceCase(selectedOrder?.deliveryAddress?.name || '')
+                        }, ${
+                          selectedOrder?.deliveryAddress?.province &&
+                          toSentenceCase(selectedOrder?.deliveryAddress?.province || '')
+                        }, ${
+                          selectedOrder?.deliveryAddress?.city &&
+                          toSentenceCase(selectedOrder?.deliveryAddress?.city || '')
+                        }, ${
+                          selectedOrder?.deliveryAddress?.suburb &&
+                          toSentenceCase(selectedOrder?.deliveryAddress?.suburb || '')
+                        }`}
                       </Text>
                     </Flex>
                     <Flex width="100%" pb={4}>
@@ -146,11 +155,11 @@ const BusinessOrderConfirmation: React.FC<BusinessOrdersProps> = ({ orders, orde
                     </Flex>
                     {selectedOrder?.items?.map((orderItem, index) => (
                       <Flex key={index} borderBottom={`1px solid ${theme.colors.background}`}>
-                        <Flex width="50%" pb={4}>
+                        <Flex width="50%" pt={4} pb={4}>
                           <Flex width="100%" flexDirection="row">
                             <Flex width="100%">
                               <Text fontSize={12} fontWeight={700}>
-                                Item Name:
+                                Item:
                               </Text>
                               <Text fontSize={12} pl={2}>
                                 {orderItem?.product?.name}
@@ -183,7 +192,7 @@ const BusinessOrderConfirmation: React.FC<BusinessOrdersProps> = ({ orders, orde
                             </Flex>
                           </Flex>
                         </Flex>
-                        <Flex width="50%" pb={4} flexDirection="row">
+                        <Flex width="50%" pt={4} pb={4} flexDirection="row">
                           <Text fontSize={12} fontWeight={700}>
                             Dimensions:
                           </Text>
