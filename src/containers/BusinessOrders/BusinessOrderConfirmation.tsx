@@ -16,9 +16,10 @@ import strapiHelpers from '../../utils/strapiHelpers'
 
 const BusinessOrderConfirmation: React.FC<BusinessOrdersProps> = ({ orders, ordersLoading }) => {
   const toast = useToast()
-
-  const noOrders = !orders?.length
   const [selectedOrder, setSelectedOrder] = React.useState<Order | undefined>()
+
+  const confirmationOrders = orders?.filter((order) => order.businessOrderStatus === 'CONFIRMATION')
+  const noOrders = !confirmationOrders?.length
 
   const noOrdersNoOrderClickedMessage =
     'If you had orders, you would select one on the left and view its details here. For now, shop for products'
@@ -58,7 +59,7 @@ const BusinessOrderConfirmation: React.FC<BusinessOrdersProps> = ({ orders, orde
                       image={`${images.emptyWishlist}`}
                     />
                   ) : (
-                    orders?.map((order, index) => (
+                    confirmationOrders?.map((order, index) => (
                       <BusinessOrderConfirmationComponent
                         key={`${index}_order_entry`}
                         setSelectedOrder={setSelectedOrder}

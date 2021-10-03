@@ -14,8 +14,10 @@ import OrderItemsSummary from '../Orders/OrderItems'
 import setOrderStatusAndColor from '../Orders/setOrderStatusAndColor'
 
 const BusinessOrdersPageWeb: React.FC<BusinessOrdersProps> = ({ orders, ordersLoading }) => {
-  const noOrders = !orders?.length
   const [selectedOrder, setSelectedOrder] = React.useState<Order | undefined>()
+
+  const confirmationOrders = orders?.filter((order) => order.businessOrderStatus === 'PROCESSING')
+  const noOrders = !confirmationOrders?.length
 
   const confirmationText = 'Before we pickup, just a gentle reminder that you need a label. '
   const noOrdersNoOrderClickedMessage =
@@ -57,7 +59,7 @@ const BusinessOrdersPageWeb: React.FC<BusinessOrdersProps> = ({ orders, ordersLo
                       image={`${images.emptyWishlist}`}
                     />
                   ) : (
-                    orders?.map((order, index) => (
+                    confirmationOrders?.map((order, index) => (
                       <BusinessOrderComponent
                         key={`${index}_order_entry`}
                         setSelectedOrder={setSelectedOrder}

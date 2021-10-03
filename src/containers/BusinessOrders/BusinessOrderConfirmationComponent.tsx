@@ -24,6 +24,7 @@ const BusinessOrderConfirmationComponent: React.FC<BusinessOrderConfirmationComp
   const handleOrderClicked = () => {
     setSelectedOrder(order)
   }
+  console.log('order', order)
 
   return (
     <Flex>
