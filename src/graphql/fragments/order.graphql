@@ -31,4 +31,10 @@ fragment order on Order {
   deliveryAddress {
     ...address
   }
+  owner {
+    email
+    firstName
+    lastName
+    phoneNumber
+  }
 }
