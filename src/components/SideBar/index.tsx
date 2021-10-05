@@ -142,7 +142,7 @@ const SideBar: React.FC<SideBarProps> = ({
                     exit={{ opacity: 0 }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    src={images.TFLogo}
+                    src={images.TradeFedInverseLogo}
                     style={{ alignSelf: 'flex-start' }}
                   />
                   {/** <Text

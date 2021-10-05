@@ -66,11 +66,11 @@ const Navigation = () => (
           path="/"
           render={() => (
             <SideBar
-              bg="white"
-              color="black"
+              bg="brand.700"
+              color="white"
               navItems={NAV_ITEMS}
-              hoverColor="brand.50"
-              accentColor="brand.500"
+              hoverColor="brand.500"
+              accentColor="brand.50"
               closeOnNavigate
             >
               {PRIVATE_ROUTES.map((route) => {

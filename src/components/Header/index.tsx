@@ -105,7 +105,7 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
   return (
     <HeaderCont pr={4} pl={drawerOpen ? 'calc(186px + 1rem)' : '1rem'} {...rest}>
       <InstantSearch indexName={SEARCH_INDEX} searchClient={searchClient}>
-        <SideBarButton color="black" open={drawerOpen} onClick={toggleDrawer} />
+        <SideBarButton color="white" open={drawerOpen} onClick={toggleDrawer} />
         {!drawerOpen && (
           <Flex
             width={isTabletOrMobile ? '50%' : '40%'}
@@ -118,7 +118,7 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
               onClick={handleLogoClicked}
               mr={5}
               width={isTabletOrMobile ? '100%' : '30%'}
-              src={images['TFLogo']}
+              src={images['TFInverseWhite']}
             />
           </Flex>
         )}
@@ -130,7 +130,7 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
             px={5}
           >
             <Text
-              color="brand.500"
+              color="white"
               fontSize="14px"
               cursor="pointer"
               onClick={handleBecomeSeller}
@@ -138,7 +138,7 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
             >
               {isSellerApproved ? 'Product Management' : 'Become a Seller'}
             </Text>
-            <Text color="brand.500" fontSize="14px" cursor="pointer" onClick={handleMyaccount}>
+            <Text color="white" fontSize="14px" cursor="pointer" onClick={handleMyaccount}>
               My Account
             </Text>
           </Flex>
@@ -149,10 +149,10 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
         <Flex flexDirection="column" cursor="pointer" mr={5}>
           {cart && hasProducts && isAuthenticated && (
             <Flex
-              backgroundColor={theme.colors.brand[500]}
+              backgroundColor={theme.colors.accent[50]}
               height="25px"
               width="25px"
-              color={theme.colors.accent[50]}
+              color={theme.colors.brand[500]}
               textAlign="center"
               justify="center"
               align="center"
@@ -175,5 +175,5 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
 export default withRouter(Header)
 
 Header.defaultProps = {
-  bg: 'white'
+  bg: 'brand.700'
 }

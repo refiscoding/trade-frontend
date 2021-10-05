@@ -53,6 +53,8 @@ export default {
   signUpPageBanner: require('../assets/images/signUpBanner.jpg'),
   TradeFedFullLogo: require('../assets/images/tradeFed-full-logo.png'),
   TradeFedLogo: require('../assets/images/tradefed-logo.svg'),
+  TradeFedInverseLogo: require('../assets/images/TradeFedInverseLogo.jpg'),
+  TFInverseWhite: require('../assets/images/TFInverseWhite.png'),
   TFLogo: require('../assets/images/TFLogo.png'),
   TwitterFooter: require('../assets/images/twitter.png'),
   umbrella: require('../assets/images/umbrella.svg'),
