@@ -49,7 +49,7 @@ const SearchBar: FC<SearchBarProps> = ({ handleSearch, handleReset, handleFilter
         height="40px"
         onClick={() => handleFilter()}
       >
-        <Filter fontSize={10} />
+        <Filter color="white" fontSize={10} />
       </Flex>
     </Flex>
   )
