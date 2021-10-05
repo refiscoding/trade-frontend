@@ -2,6 +2,7 @@ import * as React from 'react'
 import dayjs from 'dayjs'
 import RelativeTime from 'dayjs/plugin/relativeTime'
 import LocalizedFormat from 'dayjs/plugin/localizedFormat'
+
 import { ChevronRight } from 'react-feather'
 import { Flex, Grid } from '@chakra-ui/core'
 
@@ -24,7 +25,6 @@ const BusinessOrderConfirmationComponent: React.FC<BusinessOrderConfirmationComp
   const handleOrderClicked = () => {
     setSelectedOrder(order)
   }
-  console.log('order', order)
 
   return (
     <Flex>

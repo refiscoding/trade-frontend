@@ -10,6 +10,7 @@ import { Order } from '../../generated/graphql'
 import { PageWrap } from '../../layouts'
 import { SUCCESS_TOAST } from '../../constants/index'
 import { toSentenceCase } from '../../utils/toSentenceCase'
+import { useAuthContext } from '../../context/AuthProvider'
 
 import BusinessOrderConfirmationComponent from './BusinessOrderConfirmationComponent'
 import NoData from '../Checkout/NoDataScreen'
@@ -17,6 +18,7 @@ import strapiHelpers from '../../utils/strapiHelpers'
 
 const BusinessOrderConfirmation: React.FC<BusinessOrdersProps> = ({ orders, ordersLoading }) => {
   const toast = useToast()
+  const { user } = useAuthContext()
   const [selectedOrder, setSelectedOrder] = React.useState<Order | undefined>()
 
   const confirmationOrders = orders?.filter((order) => order.businessOrderStatus === 'CONFIRMATION')
@@ -111,7 +113,7 @@ const BusinessOrderConfirmation: React.FC<BusinessOrdersProps> = ({ orders, orde
                         Origin:
                       </Text>
                       <Text fontSize={12} pl={2}>
-                        Menlo Park, 0081, Pretoria, South Africa
+                        {user?.business?.name}
                       </Text>
                     </Flex>
                     <Flex width="100%" pb={4}>
@@ -147,10 +149,12 @@ const BusinessOrderConfirmation: React.FC<BusinessOrdersProps> = ({ orders, orde
                         Recipient Details:
                       </Text>
                       <Text fontSize={12} pl={2}>
-                        Name: Jack Theron
+                        <b>Name:</b> {selectedOrder.owner?.firstName}{' '}
+                        {selectedOrder.owner?.lastName}
                       </Text>
                       <Text fontSize={12} pl={2}>
-                        Contact Number: 072 838 0502
+                        <b>Contact Number:</b>
+                        {selectedOrder.owner?.phoneNumber}
                       </Text>
                     </Flex>
                     {selectedOrder?.items?.map((orderItem, index) => (
