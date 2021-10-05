@@ -98,30 +98,14 @@ const BusinessOrdersPage: React.FC<BusinessPageProps> = ({ user }) => {
 
   const renderTabContent = (activeTab: string) => {
     switch (activeTab) {
-      case 'all':
-        return (
-          <Flex flexDirection="column" width="90%">
-            <BusinessOrdersWeb
-              orders={orders}
-              refetchUserOrders={refetchUserOrders}
-              ordersLoading={userOrdersLoading}
-            />
-            <BusinessOrderConfirmation />
-            <ReadyForDispatch
-              orders={orders}
-              ordersLoading={userOrdersLoading}
-              refetchUserOrders={refetchUserOrders}
-              user={user}
-            />
-            <DispatchedBusinessOrder
-              orders={orders}
-              refetchUserOrders={refetchUserOrders}
-              ordersLoading={userOrdersLoading}
-            />
-          </Flex>
-        )
       case 'confirmation':
-        return <BusinessOrderConfirmation />
+        return (
+          <BusinessOrderConfirmation
+            orders={orders}
+            refetchUserOrders={refetchUserOrders}
+            ordersLoading={userOrdersLoading}
+          />
+        )
       case 'processing':
         return (
           <BusinessOrdersWeb
@@ -147,7 +131,13 @@ const BusinessOrdersPage: React.FC<BusinessPageProps> = ({ user }) => {
           />
         )
       default:
-        return <BusinessOrderConfirmation />
+        return (
+          <BusinessOrderConfirmation
+            orders={orders}
+            refetchUserOrders={refetchUserOrders}
+            ordersLoading={userOrdersLoading}
+          />
+        )
     }
   }
 

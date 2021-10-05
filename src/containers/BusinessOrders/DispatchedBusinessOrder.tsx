@@ -14,9 +14,10 @@ import OrderItemsSummary from '../Orders/OrderItems'
 import setOrderStatusAndColor from '../Orders/setOrderStatusAndColor'
 
 const DispatchedBusinessOrder: React.FC<BusinessOrdersProps> = ({ orders, ordersLoading }) => {
-  const noOrders = !orders?.length
-
   const [selectedOrder, setSelectedOrder] = React.useState<Order | undefined>()
+
+  const confirmationOrders = orders?.filter((order) => order.businessOrderStatus === 'DISPATCHED')
+  const noOrders = !confirmationOrders?.length
 
   const noOrdersNoOrderClickedMessage =
     'If you had orders, you would select one on the left and view its details here. For now, shop for products'
@@ -57,7 +58,7 @@ const DispatchedBusinessOrder: React.FC<BusinessOrdersProps> = ({ orders, orders
                       image={`${images.emptyWishlist}`}
                     />
                   ) : (
-                    orders?.map((order, index) => (
+                    confirmationOrders?.map((order, index) => (
                       <DispatchedOrderComponent
                         key={`${index}_order_entry`}
                         setSelectedOrder={setSelectedOrder}
@@ -164,7 +165,7 @@ const DispatchedBusinessOrder: React.FC<BusinessOrdersProps> = ({ orders, orders
                         BUSINESS
                       </Tag>
                       <Text fontSize={14}>{`${selectedOrder?.deliveryAddress?.name}`}</Text>
-                     <Text fontSize={14}>{selectedOrder?.deliveryAddress?.province}</Text>
+                      <Text fontSize={14}>{selectedOrder?.deliveryAddress?.province}</Text>
                       <Text fontSize={14}>{selectedOrder?.deliveryAddress?.city}</Text>
                       <Text fontSize={14}>{selectedOrder?.deliveryAddress?.suburb}</Text>
                       <Text fontSize={14}>{`${selectedOrder?.deliveryAddress?.postalCode}`}</Text>

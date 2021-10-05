@@ -125,9 +125,12 @@ const sendOrderSummaryEmail = async (
   }
 }
 
-const sendOrderConfirmationEmail = async () => {
+const sendOrderConfirmationEmail = async (selectedOrder: Order) => {
+  const data = {
+    selectedOrder
+  }
   try {
-    return await axios.post(`${BASE}/business/orderConfirmationEmail`, {
+    return await axios.post(`${BASE}/business/orderConfirmationEmail`, data, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${fetchJwt()}`
