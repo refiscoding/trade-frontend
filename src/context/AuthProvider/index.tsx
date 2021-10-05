@@ -48,6 +48,7 @@ const AuthProvider: React.FC = ({ children }) => {
     removeSessionUser()
     setIsAuthenticated(false)
     setUser(undefined)
+    localStorage.removeItem('generated_label')
   }
 
   React.useEffect(() => {

@@ -1,26 +1,51 @@
 import * as React from 'react'
-import { ApolloError } from 'apollo-boost'
+// import { ApolloError } from 'apollo-boost'
 
-import { get } from 'lodash'
-import { Flex, FlexProps, Grid, Image, useToast } from '@chakra-ui/core'
+// import { get } from 'lodash'
+import { Flex, FlexProps, Grid, Image } from '@chakra-ui/core'
 import { useBarcode } from 'react-barcodes'
 
 import { images, theme } from '../../theme'
 import { H3, Text } from '../../typography'
-import { useFetchLabelQuery } from '../../generated/graphql'
-import { ERROR_TOAST } from '../../constants'
+// import { useFetchLabelQuery } from '../../generated/graphql'
+// import { ERROR_TOAST } from '../../constants'
 
-type PrintLabelComponentProps = FlexProps & {}
+type PrintLabelComponentProps = FlexProps & {
+  deliveryAddress: any
+  orderNumber: string
+  items: any
+  owner: any
+}
 
-const PrintLabelComponent: React.FC<PrintLabelComponentProps> = () => {
-  const toast = useToast()
+const PrintLabelComponent: React.FC<PrintLabelComponentProps> = ({
+  deliveryAddress,
+  orderNumber,
+  items,
+  owner
+}) => {
+  // const toast = useToast()
+  const senderCompanyName = items[0].product.business.address[0].name
+  const senderStreetAddress = items[0].product.business.address[0].postalCode
+  const senderSuburb = items[0].product.business.address[0].suburb
+  const senderTown = items[0].product.business.address[0].city
+  const senderNumber = items[0].product.business.phoneNumber
+  const receiverName = deliveryAddress.name
+  const receiverStreetAddress = deliveryAddress.postalCode
+  const receiverSuburb = deliveryAddress.suburb
+  const receiverTown = deliveryAddress.city
+  const receiverNumber = owner.phoneNumber
+  const parcelNumber = ' '
+  const weight = items[0].product.weight || '-'
+  const height = items[0].product.height || '-'
+  const length = items[0].product.length || '-'
+  const width = items[0].product.width || '-'
 
-  const { data } = useFetchLabelQuery({
-    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
-    variables: { waybill: 'collection0008' }
-  })
-  const labelData = get(data, 'getLabel')
-  const label = labelData?.ResultSets?.[0]?.[0]
+  // const { data } = useFetchLabelQuery({
+  //   onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST }),
+  //   variables: { waybill: 'collection0008' }
+  // })
+  // const labelData = get(data, 'getLabel')
+  // const label = labelData?.ResultSets?.[0]?.[0]
   const { inputRef } = useBarcode({
     value: 'react-barcodes',
     options: {
@@ -28,6 +53,7 @@ const PrintLabelComponent: React.FC<PrintLabelComponentProps> = () => {
       background: 'white'
     }
   })
+  const date = new Date().toLocaleDateString()
 
   return (
     <Flex
@@ -60,24 +86,21 @@ const PrintLabelComponent: React.FC<PrintLabelComponentProps> = () => {
             </H3>
             <Flex flexDirection="column">
               <Text fontSize="12px" fontWeight={400}>
-                {label?.ShipName || '-'}
+                {senderCompanyName || '-'}
               </Text>
               <Text fontSize="12px" fontWeight={400}>
-                {label?.ShipTel === null ? '-' : label?.ShipTel}
+                {senderNumber === null ? '-' : senderNumber}
               </Text>
             </Flex>
             <Flex flexDirection="column" mt={3}>
               <Text fontSize="12px" fontWeight={400}>
-                {label?.ShipAddr1 || '-'}
+                {senderTown || '-'}
               </Text>
               <Text fontSize="12px" fontWeight={400}>
-                {label?.ShipAddr2 || '-'}
+                {senderSuburb || '-'}
               </Text>
               <Text fontSize="12px" fontWeight={400}>
-                {label?.ShipAddr3 || '-'}
-              </Text>
-              <Text fontSize="12px" fontWeight={400}>
-                {label?.ShipAddr4 || '-'}
+                {senderStreetAddress || '-'}
               </Text>
             </Flex>
           </Flex>
@@ -87,21 +110,21 @@ const PrintLabelComponent: React.FC<PrintLabelComponentProps> = () => {
             </H3>
             <Flex flexDirection="column">
               <Text fontSize="12px" fontWeight={400}>
-                {label?.RecName || '-'}
+                {receiverName || '-'}
               </Text>
               <Text fontSize="12px" fontWeight={400}>
-                {label?.RecTel || '-'}
+                {receiverNumber === null ? '-' : receiverNumber}
               </Text>
             </Flex>
             <Flex flexDirection="column" mt={3}>
               <Text fontSize="12px" fontWeight={400}>
-                {label?.RecAddr1 || '-'}
+                {receiverTown || '-'}
               </Text>
               <Text fontSize="12px" fontWeight={400}>
-                {label?.RecAddr2 || '-'}
+                {receiverSuburb || '-'}
               </Text>
               <Text fontSize="12px" fontWeight={400}>
-                {label?.RecAddr3 || '-'}
+                {receiverStreetAddress || '-'}
               </Text>
             </Flex>
           </Flex>
@@ -114,31 +137,31 @@ const PrintLabelComponent: React.FC<PrintLabelComponentProps> = () => {
           </H3>
           <Flex>
             <Text fontSize="12px" fontWeight={400} pb={2}>
-              W: -
+              W: {width || '-' } cm
             </Text>
           </Flex>
           <Flex mt={1}>
             <Text fontSize="12px" fontWeight={400} pb={2}>
-              L: -
+              L: {length || '-'} cm
             </Text>
           </Flex>
           <Flex mt={1}>
             <Text fontSize="12px" fontWeight={400} pb={2}>
-              H: -
+              H: {height || '-'} cm
             </Text>
           </Flex>
           <Flex mt={1}>
             <Text fontSize="12px" fontWeight={400}>
-              Weight: {label?.TotalKG || '-'}kg
+              Weight: {weight || '-'} kg
             </Text>
           </Flex>
         </Flex>
         <Flex flexDirection="column" pt={2} pb={2} pl={4}>
           <H3 fontSize="12px" fontWeight={700} pb={2}>
-            Order No: TFSA000001-01
+            Order No: {orderNumber}
           </H3>
           <H3 fontSize="12px" fontWeight={700} pb={2}>
-            Parcel No: 01
+            Parcel No: {parcelNumber}
           </H3>
           <Flex>
             <canvas ref={inputRef} style={{ width: '320px', height: '74px' }} />
@@ -151,7 +174,7 @@ const PrintLabelComponent: React.FC<PrintLabelComponentProps> = () => {
             Dispatch Date
           </H3>
           <Text fontSize="12px" fontWeight={400}>
-            06.06.2021
+            {date}
           </Text>
         </Flex>
         <Flex flexDirection="column" alignSelf="flex-end">
@@ -171,8 +194,6 @@ const PrintLabelComponent: React.FC<PrintLabelComponentProps> = () => {
           </Grid>
         </Flex>
       </Flex>
-      {/* </Flex>
-      ))} */}
     </Flex>
   )
 }

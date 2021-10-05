@@ -141,6 +141,22 @@ const sendOrderConfirmationEmail = async (selectedOrder: Order) => {
   }
 }
 
+const sendReadyForPickUpEmail = async (orderDetails: Order) => {
+  const data = {
+    orderDetails
+  }
+  try {
+    return await axios.post(`${BASE}/business/readyForPickupEmail`, data, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${fetchJwt()}`
+      }
+    })
+  } catch (error) {
+    return Promise.reject(error)
+  }
+}
+
 const sendOrderDispatchEmail = async (
   selectedOrder: Order | undefined,
   user: UsersPermissionsUser | undefined
@@ -171,5 +187,6 @@ export default {
   sendOrderConfirmationEmail,
   sendOrderDispatchEmail,
   sendOrderSummaryEmail,
+  sendReadyForPickUpEmail,
   upload
 }

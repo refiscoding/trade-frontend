@@ -1,5 +1,4 @@
 import * as React from 'react'
-import dayjs from 'dayjs'
 import * as Yup from 'yup'
 import styled from '@emotion/styled'
 import { useMediaQuery } from 'react-responsive'
@@ -16,6 +15,7 @@ import SenderInfo from './SenderInfo'
 import ReceiverInfo from './ReceiverInfo'
 import PackageDetails from './PackageDetails'
 import PrintLabelComponent from './PrintLabelComponent'
+import strapiHelpers from '../../utils/strapiHelpers'
 
 const PrintOutFlex = styled(Flex)`
   @media screen {
@@ -34,7 +34,6 @@ const GenerateLabelFormValidation = Yup.object().shape({
   receiverSuburb: Yup.string().required('Receiver Suburb is required'),
   receiverTown: Yup.string().required('Receiver Town is required'),
   receiverNumber: Yup.string().required('Contact Number is required'),
-  date: Yup.string().required('Date is required'),
   orderNumber: Yup.string().required('Order Number is required'),
   parcelNumber: Yup.string().required('Parcel Number is required'),
   weight: Yup.string().required('Weight is required'),
@@ -54,7 +53,6 @@ export type ErrorsObject = {
   receiverSuburb?: string | undefined
   receiverTown?: string | undefined
   receiverNumber?: string | undefined
-  date?: string | undefined
   orderNumber?: string | undefined
   parcelNumber?: string | string
   weight?: string | string
@@ -74,7 +72,6 @@ export type TouchedErrors = {
   receiverSuburb?: string | undefined
   receiverTown?: string | undefined
   receiverNumber?: string | undefined
-  date?: string | undefined
   orderNumber?: string | undefined
   parcelNumber?: string | string
   weight?: string | string
@@ -94,7 +91,6 @@ export type labelValues = {
   receiverSuburb?: string
   receiverTown?: string
   receiverNumber?: string
-  date?: string
   orderNumber?: string
   parcelNumber?: string
   weight?: string
@@ -106,26 +102,25 @@ export type labelValues = {
 const GenerateLabel: React.FC = () => {
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   const orderDetails = JSON.parse(localStorage.getItem('generated_label') || '')
-  const { deliveryAddress, orderNumber, deliveryDate } = orderDetails
+  const { deliveryAddress, orderNumber, items, owner } = orderDetails
 
   const autofillDetails = {
-    senderCompanyName: '-',
-    senderStreetAddress: '-',
-    senderSuburb: '-',
-    senderTown: '-',
-    senderNumber: '-',
+    senderCompanyName: items[0].product.business.address[0].name,
+    senderStreetAddress: items[0].product.business.address[0].postalCode,
+    senderSuburb: items[0].product.business.address[0].suburb,
+    senderTown: items[0].product.business.address[0].city,
+    senderNumber: items[0].product.business.phoneNumber,
     receiverName: deliveryAddress.name,
-    receiverStreetAddress: '',
-    receiverSuburb: '',
-    receiverTown: '',
-    receiverNumber: '-',
-    date: dayjs(deliveryDate).format('DD.MM.YYYY'),
+    receiverStreetAddress: deliveryAddress.postalCode,
+    receiverSuburb: deliveryAddress.suburb,
+    receiverTown: deliveryAddress.city,
+    receiverNumber: owner.phoneNumber,
     orderNumber: orderNumber,
-    parcelNumber: '-',
-    weight: '-',
-    height: '-',
-    length: '-',
-    width: '-'
+    parcelNumber: ' ',
+    weight: items[0].product.weight || '-',
+    height: items[0].product.height || '-',
+    length: items[0].product.length || '-',
+    width: items[0].product.width || '-'
   }
   const printLabel = useRef(null)
   const reactToPrintContent = React.useCallback(() => {
@@ -174,11 +169,25 @@ const GenerateLabel: React.FC = () => {
               <SenderInfo />
               <ReceiverInfo />
               <PackageDetails />
-              <Button mt={4} width="100%" type="submit" variantColor="brand" onClick={handlePrint}>
+              <Button
+                mt={4}
+                width="100%"
+                type="submit"
+                variantColor="brand"
+                onClick={() => {
+                  handlePrint
+                  return strapiHelpers.sendReadyForPickUpEmail(orderDetails)
+                }}
+              >
                 GENERATE & DOWNLOAD
               </Button>
               <PrintOutFlex ref={printLabel}>
-                <PrintLabelComponent />
+                <PrintLabelComponent
+                  deliveryAddress={deliveryAddress}
+                  orderNumber={orderNumber}
+                  items={items}
+                  owner={owner}
+                />
               </PrintOutFlex>
             </Form>
           )
