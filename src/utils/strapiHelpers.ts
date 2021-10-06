@@ -157,13 +157,8 @@ const sendReadyForPickUpEmail = async (orderDetails: Order) => {
   }
 }
 
-const sendOrderDispatchEmail = async (
-  selectedOrder: Order | undefined,
-  user: UsersPermissionsUser | undefined
-) => {
+const sendOrderDispatchEmail = async (selectedOrder: Order) => {
   const data = {
-    username: user?.firstName,
-    email: user?.email,
     selectedOrder
   }
   try {

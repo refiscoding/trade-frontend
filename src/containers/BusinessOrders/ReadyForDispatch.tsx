@@ -16,12 +16,17 @@ import setOrderStatusAndColor from '../Orders/setOrderStatusAndColor'
 import ReadyForDispatchComponent from './ReadyForDispatchComponent'
 import strapiHelpers from '../../utils/strapiHelpers'
 
-const ReadyForDispatch: React.FC<BusinessOrdersProps> = ({ orders, user, ordersLoading }) => {
+const ReadyForDispatch: React.FC<BusinessOrdersProps> = ({
+  orders,
+  ordersLoading,
+  refetchUserOrders
+}) => {
   const toast = useToast()
   const [selectedOrder, setSelectedOrder] = React.useState<Order | undefined>()
 
   const confirmationOrders = orders?.filter((order) => order.businessOrderStatus === 'READY')
   const noOrders = !confirmationOrders?.length
+  const ordersLength = confirmationOrders?.length
 
   const noOrdersNoOrderClickedMessage =
     'If you had orders, you would select one on the left and view its details here. For now, shop for products'
@@ -36,6 +41,9 @@ const ReadyForDispatch: React.FC<BusinessOrdersProps> = ({ orders, user, ordersL
        Selecting an order will have it displayed here
    `
   const orderStatusAndColor = setOrderStatusAndColor(selectedOrder)
+  React.useEffect(() => {
+    refetchUserOrders()
+  }, [ordersLength, refetchUserOrders])
 
   return (
     <PageWrap title="Ready For Dispatch" alignSelf="center" width="90%" mt={0} pt={0} p={0}>
@@ -187,7 +195,7 @@ const ReadyForDispatch: React.FC<BusinessOrdersProps> = ({ orders, user, ordersL
                             description: 'Order Dispatch Email Successfully Sent',
                             ...SUCCESS_TOAST
                           })
-                          return strapiHelpers.sendOrderDispatchEmail(selectedOrder, user)
+                          return strapiHelpers.sendOrderDispatchEmail(selectedOrder)
                         }}
                       >
                         <Text fontSize="12px">DISPATCH</Text>

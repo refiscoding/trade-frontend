@@ -13,11 +13,16 @@ import NoData from '../Checkout/NoDataScreen'
 import OrderItemsSummary from '../Orders/OrderItems'
 import setOrderStatusAndColor from '../Orders/setOrderStatusAndColor'
 
-const DispatchedBusinessOrder: React.FC<BusinessOrdersProps> = ({ orders, ordersLoading }) => {
+const DispatchedBusinessOrder: React.FC<BusinessOrdersProps> = ({
+  orders,
+  ordersLoading,
+  refetchUserOrders
+}) => {
   const [selectedOrder, setSelectedOrder] = React.useState<Order | undefined>()
 
   const confirmationOrders = orders?.filter((order) => order.businessOrderStatus === 'DISPATCHED')
   const noOrders = !confirmationOrders?.length
+  const ordersLength = confirmationOrders?.length
 
   const noOrdersNoOrderClickedMessage =
     'If you had orders, you would select one on the left and view its details here. For now, shop for products'
@@ -32,6 +37,9 @@ const DispatchedBusinessOrder: React.FC<BusinessOrdersProps> = ({ orders, orders
        Selecting an order will have it displayed here
    `
   const orderStatusAndColor = setOrderStatusAndColor(selectedOrder)
+  React.useEffect(() => {
+    refetchUserOrders()
+  }, [ordersLength, refetchUserOrders])
 
   return (
     <PageWrap title="Dispatched" alignSelf="center" width="90%" mt={0} pt={0} p={0}>
