@@ -78,13 +78,13 @@ const ProductFilter: React.FC = () => {
         {({ isSubmitting, status }: FormikProps<ProductValues>) => (
           <Form style={{ width: '100%' }}>
             <ConnectedFormGroup
-              label="Min Price"
+              label="Minimum Price"
               placeholder="Select an option..."
               name="minPrice"
               type="text"
             />
             <ConnectedFormGroup
-              label="Max Price"
+              label="Maximum Price"
               placeholder="Select an option..."
               name="maxPrice"
               type="text"
