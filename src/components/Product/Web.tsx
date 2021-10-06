@@ -118,39 +118,39 @@ const ProductComponent: React.FC<ProductProps> = ({
             padding={5}
             pt={8}
           >
-            <Text fontSize="20px" fontWeight={600}>
+            <Text fontSize="17px" fontWeight={600}>
               {product?.name}
             </Text>
             <Text fontSize="12px" fontWeight={400} maxHeight="70px" overflow="hidden">
               {product?.shortDescription}
             </Text>
             <VerifiedBadge />
-            <Text mt={3} fontSize="24px" fontWeight={600}>
+            <Text mt={3} fontSize="17px" fontWeight={600}>
               {`${product?.currency} ${product?.tradeFedCost}.00`}
             </Text>
-            <Text mt={4} fontSize="16px">
+            <Text mt={4} fontSize="14px">
               {`Retail: ${product?.currency} ${product?.maxSellCost}.00`}
             </Text>
-            <Text mt={3} fontSize="14px" color={textColor} fontWeight={600}>
+            <Text mt={3} fontSize="12px" color={textColor} fontWeight={600}>
               {`This item is sold per ${productPackaging}`}
             </Text>
             <Flex mt={3}>
               <Briefcase />
-              <Text ml={3} fontSize="14px">
+              <Text ml={3} fontSize="12px">
                 {`Supplied by ${product?.business?.name}`}
               </Text>
             </Flex>
             {businessAddress && (
               <Flex mt={3}>
                 <MapPin />
-                <Text ml={3} fontSize="14px">
+                <Text ml={3} fontSize="12px">
                   {`Delivered from ${product?.business && product?.business?.address}`}
                 </Text>
               </Flex>
             )}
             <Flex mt={3}>
               <Award />
-              <Text ml={3} fontSize="14px">
+              <Text ml={3} fontSize="12px">
                 {product?.warranty === null || product?.warranty === 0
                   ? `No warranty on this product`
                   : `Warranty: ${product?.warranty} months`}

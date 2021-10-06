@@ -23,7 +23,7 @@ const SearchBar: FC<SearchBarProps> = ({ handleSearch, handleReset, handleFilter
           fontSize={12}
           paddingLeft="40px"
           borderColor="transparent"
-          bg="accent.600"
+          bg="accent.20"
           iconPosition="left"
           onChange={(e: any) => {
             handleSearch(e.target.value)
@@ -42,14 +42,14 @@ const SearchBar: FC<SearchBarProps> = ({ handleSearch, handleReset, handleFilter
       <SearchBox />
       <Flex
         borderRadius={4}
-        bg="accent.600"
+        bg="accent.20"
         alignItems="center"
         justifyContent="center"
         width="50px"
         height="40px"
         onClick={() => handleFilter()}
       >
-        <Filter fontSize={10} />
+        <Filter color="white" fontSize={10} />
       </Flex>
     </Flex>
   )
