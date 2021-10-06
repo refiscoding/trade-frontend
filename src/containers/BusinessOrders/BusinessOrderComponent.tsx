@@ -3,12 +3,11 @@ import dayjs from 'dayjs'
 import RelativeTime from 'dayjs/plugin/relativeTime'
 import LocalizedFormat from 'dayjs/plugin/localizedFormat'
 import { ChevronRight } from 'react-feather'
-import { Flex, Grid, Button, Link } from '@chakra-ui/core'
+import { Flex, Grid } from '@chakra-ui/core'
 
 import { Text } from '../../typography'
 import { theme } from '../../theme'
 import { Order } from '../../generated/graphql'
-import PickupModal from './PickupModal'
 
 dayjs.extend(RelativeTime)
 dayjs.extend(LocalizedFormat)
@@ -20,32 +19,15 @@ type BusinessOrderComponentProps = {
 }
 
 const BusinessOrderComponent: React.FC<BusinessOrderComponentProps> = ({
-  confirmationText,
   order,
-  setSelectedOrder,
+  setSelectedOrder
 }) => {
-  const [showModal, setShowModal] = React.useState<boolean>(false)
   const handleOrderClicked = () => {
     setSelectedOrder(order)
-  }
-  const handleSelectedLabelItem = () => {
-    localStorage.setItem('generated_label', JSON.stringify(order, null, 2))
-  }
-  const clearSelectedLabelItem = () => {
-    localStorage.removeItem('generated_label')
   }
 
   return (
     <Flex>
-      {showModal && (
-        <PickupModal
-          confirmationText={confirmationText}
-          handleSelectedLabelItem={handleSelectedLabelItem}
-          handleCancelButtonClicked={() => {
-            clearSelectedLabelItem()
-            setShowModal(false)}}
-        />
-      )}
       <Grid
         borderRadius="4px"
         boxShadow="0.8px 2px 4px rgba(0,0,0,0.25)"
@@ -69,27 +51,6 @@ const BusinessOrderComponent: React.FC<BusinessOrderComponentProps> = ({
             Order information
           </Text>
           <ChevronRight />
-        </Flex>
-        <Flex justify="space-between" width="100%" flexDirection="column">
-          <Flex mt={3} ml={3} width="90%">
-            <Button
-              type="submit"
-              mt={4}
-              width="95%"
-              variantColor="brand"
-              onClick={() => setShowModal(true)}
-            >
-              <Text fontSize="12px">READY FOR PICKUP</Text>
-            </Button>
-          </Flex>
-          <Flex flexDirection="column" mt={3} mb={3} width="100%" alignItems="center">
-            <Text fontSize={12} fontWeight={700}>
-              Something not right?{' '}
-              <Link href="#" cursor="pointer">
-                Contact Support
-              </Link>
-            </Text>
-          </Flex>
         </Flex>
       </Grid>
     </Flex>

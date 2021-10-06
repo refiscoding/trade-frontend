@@ -16,13 +16,18 @@ import BusinessOrderConfirmationComponent from './BusinessOrderConfirmationCompo
 import NoData from '../Checkout/NoDataScreen'
 import strapiHelpers from '../../utils/strapiHelpers'
 
-const BusinessOrderConfirmation: React.FC<BusinessOrdersProps> = ({ orders, ordersLoading }) => {
+const BusinessOrderConfirmation: React.FC<BusinessOrdersProps> = ({
+  orders,
+  ordersLoading,
+  refetchUserOrders
+}) => {
   const toast = useToast()
   const { user } = useAuthContext()
   const [selectedOrder, setSelectedOrder] = React.useState<Order | undefined>()
 
   const confirmationOrders = orders?.filter((order) => order.businessOrderStatus === 'CONFIRMATION')
   const noOrders = !confirmationOrders?.length
+  const ordersLength = confirmationOrders?.length
 
   const noOrdersNoOrderClickedMessage =
     'If you had orders, you would select one on the left and view its details here. For now, shop for products'
@@ -36,6 +41,10 @@ const BusinessOrderConfirmation: React.FC<BusinessOrdersProps> = ({ orders, orde
        You haven't selected any order to view its details.
        Selecting an order will have it displayed here
    `
+
+  React.useEffect(() => {
+    refetchUserOrders()
+  }, [ordersLength, refetchUserOrders])
 
   return (
     <PageWrap title="Order Confirmation" alignSelf="center" width="90%" mt={0} pt={0} p={0}>

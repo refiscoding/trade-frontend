@@ -20,7 +20,6 @@ const PackageDetails: React.FC = () => {
       <H3 mb={4} fontWeight={550} textAlign="left">
         Package Details
       </H3>
-      <ConnectedFormGroup label="Date" name="date" type="text" isDisabled={true} />
       <ConnectedFormGroup label="Order Number" name="orderNumber" type="text" isDisabled={true} />
       <ConnectedFormGroup label="Parcel Number" name="parcelNumber" type="text" isDisabled={true} />
       <ConnectedFormGroup label="Package Weight" name="weight" type="text" isDisabled={true} />

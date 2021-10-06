@@ -1,6 +1,6 @@
 import * as React from 'react'
 import dayjs from 'dayjs'
-import { Flex, Grid, Tag, Spinner } from '@chakra-ui/core'
+import { Button, Flex, Grid, Link, Tag, Spinner } from '@chakra-ui/core'
 
 import { BusinessOrdersProps } from '.'
 import { images, theme } from '../../theme'
@@ -11,10 +11,12 @@ import { H3, Text } from '../../typography'
 import BusinessOrderComponent from './BusinessOrderComponent'
 import NoData from '../Checkout/NoDataScreen'
 import OrderItemsSummary from '../Orders/OrderItems'
+import PickupModal from './PickupModal'
 import setOrderStatusAndColor from '../Orders/setOrderStatusAndColor'
 
 const BusinessOrdersPageWeb: React.FC<BusinessOrdersProps> = ({ orders, ordersLoading }) => {
   const [selectedOrder, setSelectedOrder] = React.useState<Order | undefined>()
+  const [showModal, setShowModal] = React.useState<boolean>(false)
 
   const confirmationOrders = orders?.filter((order) => order.businessOrderStatus === 'PROCESSING')
   const noOrders = !confirmationOrders?.length
@@ -33,6 +35,13 @@ const BusinessOrdersPageWeb: React.FC<BusinessOrdersProps> = ({ orders, ordersLo
        Selecting an order will have it displayed here
    `
   const orderStatusAndColor = setOrderStatusAndColor(selectedOrder)
+  const handleSelectedLabelItem = () => {
+    localStorage.setItem('generated_label', JSON.stringify(selectedOrder, null, 2))
+  }
+  const clearSelectedLabelItem = () => {
+    localStorage.removeItem('generated_label')
+  }
+  console.log('selectedOrder', selectedOrder)
 
   return (
     <PageWrap title="Business Orders" alignSelf="center" width="90%" mt={0} pt={0} p={0}>
@@ -80,6 +89,16 @@ const BusinessOrdersPageWeb: React.FC<BusinessOrdersProps> = ({ orders, ordersLo
             >
               {selectedOrder ? (
                 <Flex flexDirection="column" width="100%">
+                  {showModal && (
+                    <PickupModal
+                      confirmationText={confirmationText}
+                      handleSelectedLabelItem={handleSelectedLabelItem}
+                      handleCancelButtonClicked={() => {
+                        clearSelectedLabelItem()
+                        setShowModal(false)
+                      }}
+                    />
+                  )}
                   <Grid
                     gridTemplateColumns="1fr 200px"
                     mb={3}
@@ -171,6 +190,27 @@ const BusinessOrdersPageWeb: React.FC<BusinessOrdersProps> = ({ orders, ordersLo
                       <Text fontSize={14}>{selectedOrder?.deliveryAddress?.city}</Text>
                       <Text fontSize={14}>{selectedOrder?.deliveryAddress?.suburb}</Text>
                       <Text fontSize={14}>{selectedOrder?.deliveryAddress?.postalCode}</Text>
+                    </Flex>
+                  </Flex>
+
+                  <Flex justify="space-between" alignItems="center" flexDirection="column">
+                    <Flex>
+                      <Button
+                        type="submit"
+                        mt={4}
+                        variantColor="brand"
+                        onClick={() => setShowModal(true)}
+                      >
+                        <Text fontSize="12px">READY FOR PICKUP</Text>
+                      </Button>
+                    </Flex>
+                    <Flex flexDirection="column" mt={3} mb={3} width="100%" alignItems="center">
+                      <Text fontSize={12} fontWeight={700}>
+                        Something not right?{' '}
+                        <Link href="#" cursor="pointer">
+                          Contact Support
+                        </Link>
+                      </Text>
                     </Flex>
                   </Flex>
                 </Flex>
