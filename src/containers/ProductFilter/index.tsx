@@ -11,6 +11,7 @@ import { MotionFlex } from '../../components'
 import { PageWrap } from '../../layouts'
 import { useHistory } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
+import { ArrowLeft } from 'react-feather'
 
 const ProductFormValidation = Yup.object().shape({
   minPrice: Yup.string(),
@@ -46,8 +47,23 @@ const ProductFilter: React.FC = () => {
     history.push(`/?minPrice=${minPrice}&maxPrice=${maxPrice}&category=${category}`)
   }
 
+  // const handleBackArrow = () => {
+  //   history.push(`/`)
+  // }
+
   return (
-    <PageWrap title="Add Product" alignSelf="center" width={isTabletOrMobile ? '100%' : '40%'}>
+    <PageWrap
+      m={10}
+      title="Add Product"
+      alignSelf="center"
+      width={isTabletOrMobile ? '100%' : '40%'}
+    >
+      {/* <Flex onClick={handleBackArrow} mb={4}>
+        <ArrowLeft />
+        <Text ml={3} fontWeight={600}>
+          {'Home'}
+        </Text>
+      </Flex> */}
       <Flex width="100%" mb={4} justifyContent="space-between">
         <H3 textAlign="left" fontSize={18} fontWeight={600}>
           Filtering Options

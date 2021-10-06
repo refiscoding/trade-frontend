@@ -51,6 +51,7 @@ const ProductComponent: React.FC<ProductProps> = ({
   return (
     <React.Fragment>
       <Flex
+        mt={10}
         mb={3}
         backgroundColor="white"
         borderRadius={5}

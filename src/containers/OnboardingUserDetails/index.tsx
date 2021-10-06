@@ -103,7 +103,7 @@ const Onboarding: React.FC = () => {
   }
 
   return (
-    <PageWrap pt={0} title="Onboarding Details" mt={10} width="100%">
+    <PageWrap pt={0} title="Onboarding Details" mt={20} width="100%">
       <Flex width={isTabletOrMobile ? '100%' : '40%'} flexDirection="column" alignSelf="center">
         <Stepper activeStep={active}>
           <OnboardingUserNames

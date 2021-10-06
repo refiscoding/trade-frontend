@@ -59,7 +59,7 @@ const OrdersPage = () => {
   }, [refetchUserOrders, isFiltering, setDateRange])
 
   return (
-    <PageWrap title="Orders" width="100%">
+    <PageWrap m={10} title="Orders" width="100%">
       {isWebView ? (
         <OrdersWeb
           orders={orders}

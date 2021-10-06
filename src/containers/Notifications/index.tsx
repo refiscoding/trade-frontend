@@ -69,7 +69,7 @@ const NotificationsPage: React.FC<NotificationsPageProps> = () => {
   }, [refetchNotifications])
 
   return (
-    <PageWrap title="Notifications" alignSelf="center">
+    <PageWrap m={10} title="Notifications" alignSelf="center">
       <Flex marginX="auto" flexDirection="column" width="100%">
         {!notificationsArray?.length && (
           <InfoPage

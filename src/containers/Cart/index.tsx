@@ -57,7 +57,7 @@ const CartPageHeader: React.FC<CartPageHeaderProps> = ({
       width={isTabletOrMobile ? '100%' : '80%'}
       ml={isTabletOrMobile ? 0 : 5}
     >
-      <Flex width="100%" ml={isTabletOrMobile ? 0 : 3} mb={4} justifyContent="space-between">
+      <Flex width="100%" ml={isTabletOrMobile ? 0 : 3} justifyContent="space-between">
         <H3 textAlign="left" fontSize={18} fontWeight={600}>
           My Cart
         </H3>
@@ -217,7 +217,7 @@ const CartPage: React.FC = () => {
   const confirmationText = `You are about to delete these items in your cart? Once they are removed, you’ll have to re-add them to your cart manually.`
 
   return (
-    <PageWrap title="My Cart" align="center" backgroundSize="cover" justify="center">
+    <PageWrap m={10} title="My Cart" align="center" backgroundSize="cover" justify="center">
       {loading || movingLoading ? (
         <Spinner />
       ) : emptyCartProducts || !noCart ? (
