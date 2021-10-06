@@ -1,6 +1,6 @@
 import * as React from 'react'
 import dayjs from 'dayjs'
-import { Flex, Grid, Tag, Spinner } from '@chakra-ui/core'
+import { Button, Link, Flex, Grid, Tag, Spinner } from '@chakra-ui/core'
 
 import { BusinessOrdersProps } from '.'
 import { images, theme } from '../../theme'
@@ -12,6 +12,7 @@ import DispatchedOrderComponent from './DispatchedOrderComponent'
 import NoData from '../Checkout/NoDataScreen'
 import OrderItemsSummary from '../Orders/OrderItems'
 import setOrderStatusAndColor from '../Orders/setOrderStatusAndColor'
+import OrderTrackingModal from './OrderTrackingModal'
 
 const DispatchedBusinessOrder: React.FC<BusinessOrdersProps> = ({
   orders,
@@ -19,7 +20,9 @@ const DispatchedBusinessOrder: React.FC<BusinessOrdersProps> = ({
   refetchUserOrders
 }) => {
   const [selectedOrder, setSelectedOrder] = React.useState<Order | undefined>()
+  const [showModal, setShowModal] = React.useState<boolean>(false)
 
+  const trackingText = 'Your order is ...'
   const confirmationOrders = orders?.filter((order) => order.businessOrderStatus === 'DISPATCHED')
   const noOrders = !confirmationOrders?.length
   const ordersLength = confirmationOrders?.length
@@ -68,7 +71,7 @@ const DispatchedBusinessOrder: React.FC<BusinessOrdersProps> = ({
                   ) : (
                     confirmationOrders?.map((order, index) => (
                       <DispatchedOrderComponent
-                        key={`${index}_order_entry`}
+                        key={`${index}_dispatched_order`}
                         setSelectedOrder={setSelectedOrder}
                         order={order}
                       />
@@ -86,6 +89,12 @@ const DispatchedBusinessOrder: React.FC<BusinessOrdersProps> = ({
             >
               {selectedOrder ? (
                 <Flex flexDirection="column" width="100%">
+                  {showModal && (
+                    <OrderTrackingModal
+                      trackingText={trackingText}
+                      handleCancelButtonClicked={() => setShowModal(false)}
+                    />
+                  )}
                   <Grid
                     gridTemplateColumns="1fr 200px"
                     mb={3}
@@ -172,11 +181,31 @@ const DispatchedBusinessOrder: React.FC<BusinessOrdersProps> = ({
                       >
                         BUSINESS
                       </Tag>
-                      <Text fontSize={14}>{`${selectedOrder?.deliveryAddress?.name}`}</Text>
+                      <Text fontSize={14}>{selectedOrder?.deliveryAddress?.name}</Text>
                       <Text fontSize={14}>{selectedOrder?.deliveryAddress?.province}</Text>
                       <Text fontSize={14}>{selectedOrder?.deliveryAddress?.city}</Text>
                       <Text fontSize={14}>{selectedOrder?.deliveryAddress?.suburb}</Text>
-                      <Text fontSize={14}>{`${selectedOrder?.deliveryAddress?.postalCode}`}</Text>
+                      <Text fontSize={14}>{selectedOrder?.deliveryAddress?.postalCode}</Text>
+                    </Flex>
+                  </Flex>
+                  <Flex justify="space-between" flexDirection="column" alignItems="center">
+                    <Flex>
+                      <Button
+                        type="submit"
+                        mt={4}
+                        variantColor="brand"
+                        onClick={() => setShowModal(true)}
+                      >
+                        <Text fontSize="12px">TRACK ORDER</Text>
+                      </Button>
+                    </Flex>
+                    <Flex flexDirection="column" mt={3} mb={3} width="100%" alignItems="center">
+                      <Text fontSize={12} fontWeight={700}>
+                        Something not right?{' '}
+                        <Link href="#" cursor="pointer">
+                          Contact Support
+                        </Link>
+                      </Text>
                     </Flex>
                   </Flex>
                 </Flex>
