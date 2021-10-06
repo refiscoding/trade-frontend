@@ -4,7 +4,7 @@ import styled from '@emotion/styled'
 import { get } from 'lodash'
 import { motion } from 'framer-motion'
 import { ApolloError } from 'apollo-boost'
-import { Filter, ShoppingCart } from 'react-feather'
+import { ShoppingCart } from 'react-feather'
 import { useMediaQuery } from 'react-responsive'
 import { InstantSearch } from 'react-instantsearch-dom'
 import { Flex, Image, Text, useToast } from '@chakra-ui/core'
@@ -40,7 +40,7 @@ const HeaderCont = styled(motion.div)<HeaderContProps>`
   ${color};
   top: 0;
   right: 0;
-  height: 68px;
+  height: 64px;
   z-index: 1290;
   display: flex;
   position: fixed;
