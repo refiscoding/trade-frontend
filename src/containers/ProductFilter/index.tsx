@@ -53,7 +53,7 @@ const ProductFilter: React.FC = () => {
 
   return (
     <PageWrap
-      m={10}
+      mt={10}
       title="Add Product"
       alignSelf="center"
       width={isTabletOrMobile ? '100%' : '40%'}

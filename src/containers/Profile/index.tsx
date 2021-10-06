@@ -41,7 +41,7 @@ const Profile: React.FC<ProfileProps> = () => {
 
   return (
     <PageWrap
-      m={10}
+      mt={10}
       title="My Account"
       width={isTabletOrMobile ? '100%' : '40%'}
       alignSelf="center"

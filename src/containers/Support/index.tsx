@@ -82,7 +82,7 @@ const UserSupport: React.FC<UserSupportProps> = () => {
   const { data: faqsData } = useFetchFaQsQuery()
 
   return (
-    <PageWrap m={10} title="Support Page" width="100%" alignSelf="center">
+    <PageWrap mt={10} title="Support Page" width="100%" alignSelf="center">
       <Flex onClick={handleBackArrow} mb={4}>
         <ArrowLeft />
         <Text ml={3} fontWeight={600}>

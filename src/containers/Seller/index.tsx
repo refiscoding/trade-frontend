@@ -245,7 +245,7 @@ const Seller: React.FC = () => {
     <PageWrap
       pt={0}
       title="Seller Details"
-      m={20}
+      mt={20}
       width={isTabletOrMobile ? '100%' : '40%'}
       alignSelf="center"
     >

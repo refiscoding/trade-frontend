@@ -217,7 +217,7 @@ const CartPage: React.FC = () => {
   const confirmationText = `You are about to delete these items in your cart? Once they are removed, you’ll have to re-add them to your cart manually.`
 
   return (
-    <PageWrap m={10} title="My Cart" align="center" backgroundSize="cover" justify="center">
+    <PageWrap mt={10} title="My Cart" align="center" backgroundSize="cover" justify="center">
       {loading || movingLoading ? (
         <Spinner />
       ) : emptyCartProducts || !noCart ? (
