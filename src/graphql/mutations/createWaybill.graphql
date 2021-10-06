@@ -1,5 +1,6 @@
 ## import '/fragments/createWaybill.graphql'
-query fetchCreateWaybill($input: createWaybillInput) {
+
+mutation createWaybill($input: createWaybillInput) {
     createWaybill(input: $input) {
         ...waybill
     }

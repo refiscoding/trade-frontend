@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import * as React from 'react'
 import * as Yup from 'yup'
 import styled from '@emotion/styled'
@@ -6,10 +7,14 @@ import { useReactToPrint } from 'react-to-print'
 import { useRef } from 'react'
 
 import { Button, Flex } from '@chakra-ui/core'
+// import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
 import { Form, Formik } from 'formik'
+import { formatError } from '../../utils'
 import { H3, Text } from '../../typography'
-import { theme } from '../../theme'
+import { MotionFlex } from '../../components'
 import { PageWrap } from '../../layouts'
+import { theme } from '../../theme'
+// import { useCreateWaybillMutation } from '../../generated/graphql'
 
 import SenderInfo from './SenderInfo'
 import ReceiverInfo from './ReceiverInfo'
@@ -100,6 +105,7 @@ export type labelValues = {
 }
 
 const GenerateLabel: React.FC = () => {
+  // const toast = useToast()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   const orderDetails = JSON.parse(localStorage.getItem('generated_label') || '')
   const { deliveryAddress, orderNumber, items, owner } = orderDetails
@@ -122,6 +128,48 @@ const GenerateLabel: React.FC = () => {
     length: items[0].product.length || '-',
     width: items[0].product.width || '-'
   }
+  // const date = new Date().toLocaleDateString()
+
+  // const [createWaybill] = useCreateWaybillMutation({
+  //   onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
+  //   onCompleted: async () => {
+  //     toast({ description: 'Waybill successfully created', ...SUCCESS_TOAST })
+  //   }
+  // })
+
+  const handleSubmit = async () => {
+    // const createWaybillInput = {
+    //   Waybill: orderNumber,
+    //   dateWay: date,
+    //   branch: autofillDetails.senderCompanyName,
+    //   accNum: autofillDetails.senderNumber,
+    //   custName: autofillDetails.receiverName,
+    //   sendArea: autofillDetails.receiverName,
+    //   shipAdres1: items[0].product.business.address[0].province,
+    //   shipAdres2: autofillDetails.senderTown,
+    //   shipAdres3: autofillDetails.senderSuburb,
+    //   shipAdres4: autofillDetails.senderStreetAddress,
+    //   consigName: autofillDetails.orderNumber,
+    //   conAddr1: deliveryAddress.province,
+    //   conAddr2: autofillDetails.receiverTown,
+    //   conAddr3: autofillDetails.receiverSuburb,
+    //   conAddr4: autofillDetails.receiverStreetAddress,
+    //   destArea: deliveryAddress.province,
+    //   conName: owner.firstName,
+    //   conTelNo: owner.phoneNumber,
+    //   serv_c: 'ECO',
+    //   numParcel: items.length,
+    //   massKg: autofillDetails.weight
+    // }
+    // await createWaybill({
+    //   variables: {
+    //     input: createWaybillInput
+    //   }
+    // })
+    // console.log('jere now')
+    strapiHelpers.sendReadyForPickUpEmail(orderDetails)
+  }
+
   const printLabel = useRef(null)
   const reactToPrintContent = React.useCallback(() => {
     return printLabel.current
@@ -161,9 +209,16 @@ const GenerateLabel: React.FC = () => {
       <Formik
         validationSchema={GenerateLabelFormValidation}
         initialValues={autofillDetails}
-        onSubmit={() => {}}
+        // onSubmit={()=> {}}
+        onSubmit={async () => {
+          try {
+            await handleSubmit()
+          } catch (error) {
+            formatError(error)
+          }
+        }}
       >
-        {() => {
+        {({ isSubmitting, status }) => {
           return (
             <Form style={{ width: '100%' }}>
               <SenderInfo />
@@ -174,13 +229,18 @@ const GenerateLabel: React.FC = () => {
                 width="100%"
                 type="submit"
                 variantColor="brand"
-                onClick={() => {
-                  handlePrint
-                  return strapiHelpers.sendReadyForPickUpEmail(orderDetails)
-                }}
+                onClick={handlePrint}
+                isLoading={isSubmitting}
               >
                 GENERATE & DOWNLOAD
               </Button>
+              {status && (
+                <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
+                  <Text textAlign="right" color="red.500">
+                    {status}
+                  </Text>
+                </MotionFlex>
+              )}
               <PrintOutFlex ref={printLabel}>
                 <PrintLabelComponent
                   deliveryAddress={deliveryAddress}
