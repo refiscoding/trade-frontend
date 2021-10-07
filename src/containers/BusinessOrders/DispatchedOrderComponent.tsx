@@ -3,7 +3,7 @@ import dayjs from 'dayjs'
 import RelativeTime from 'dayjs/plugin/relativeTime'
 import LocalizedFormat from 'dayjs/plugin/localizedFormat'
 import { ChevronRight } from 'react-feather'
-import { Flex, Grid, Button, Link } from '@chakra-ui/core'
+import { Flex, Grid } from '@chakra-ui/core'
 
 import { Text } from '../../typography'
 import { theme } from '../../theme'
@@ -49,21 +49,6 @@ const DispatchedOrderComponent: React.FC<DispatchedOrderComponentProps> = ({
           Order information
         </Text>
         <ChevronRight />
-      </Flex>
-      <Flex justify="space-between" width="100%" flexDirection="column">
-        <Flex mt={3} ml={3} width="90%">
-          <Button type="submit" mt={4} width="95%" variantColor="brand">
-            <Text fontSize="12px">TRACK ORDER</Text>
-          </Button>
-        </Flex>
-        <Flex flexDirection="column" mt={3} mb={3} width="100%" alignItems="center">
-          <Text fontSize={12} fontWeight={700}>
-            Something not right?{' '}
-            <Link href="#" cursor="pointer">
-              Contact Support
-            </Link>
-          </Text>
-        </Flex>
       </Flex>
     </Grid>
   )

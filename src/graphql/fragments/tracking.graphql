@@ -1,0 +1,11 @@
+fragment tracking on Tracking {
+  ResultSets {
+    Waybill
+    Dateway
+    ActionTaken
+    EventCode
+    Status
+    Person
+  }
+  ReturnValue
+}

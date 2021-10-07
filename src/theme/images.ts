@@ -41,6 +41,7 @@ export default {
   },
   OnboardingDetails: require('../assets/images/onboading-details.svg'),
   onboardingIntro: require('../assets/images/onboarding-intro.svg'),
+  orderTracking: require('../assets/images/orderTracking.PNG'),
   parcel: require('../assets/images/parcel.svg'),
   pdfFile: require('../assets/images/pdf-file.svg'),
   PoweredByGoogle: require('../assets/images/powered_by_google.png'),
