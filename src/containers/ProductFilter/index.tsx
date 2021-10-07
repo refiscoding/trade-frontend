@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as Yup from 'yup'
 
-import { Button, Flex, Text, FormLabel } from '@chakra-ui/core'
+import { Button, Flex, Text, FormLabel, IconButton } from '@chakra-ui/core'
 import { CATEGORIES } from '../../constants'
 import { ConnectedCheckbox, ConnectedFormGroup } from '../../components/FormElements'
 import { Form, Formik, FormikProps } from 'formik'
@@ -47,9 +47,9 @@ const ProductFilter: React.FC = () => {
     history.push(`/?minPrice=${minPrice}&maxPrice=${maxPrice}&category=${category}`)
   }
 
-  // const handleBackArrow = () => {
-  //   history.push(`/`)
-  // }
+  const navigateToProfile = () => {
+    history.push(`/profile`)
+  }
 
   return (
     <PageWrap
@@ -58,12 +58,17 @@ const ProductFilter: React.FC = () => {
       alignSelf="center"
       width={isTabletOrMobile ? '100%' : '40%'}
     >
-      {/* <Flex onClick={handleBackArrow} mb={4}>
-        <ArrowLeft />
-        <Text ml={3} fontWeight={600}>
-          {'Home'}
-        </Text>
-      </Flex> */}
+      <Flex alignSelf="flex-start" pt={4} pb={4}>
+        <IconButton
+          icon={ArrowLeft}
+          aria-label="Go to Profile"
+          backgroundColor="transparent"
+          onClick={() => navigateToProfile()}
+        />
+        <H3 textAlign="left" fontSize={14} fontWeight={700} pl={4} style={{ placeSelf: 'center' }}>
+          Back to Profile
+        </H3>
+      </Flex>
       <Flex width="100%" mb={4} justifyContent="space-between">
         <H3 textAlign="left" fontSize={18} fontWeight={600}>
           Filtering Options
