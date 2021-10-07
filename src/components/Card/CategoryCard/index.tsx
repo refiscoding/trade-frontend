@@ -21,11 +21,11 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category, handleClick }) =>
     <Card
       m={2}
       width={isTabletOrMobile ? '150px' : '150px'}
-      height={isTabletOrMobile ? '200px' : '200px'}
+      height={isTabletOrMobile ? '130px' : '150px'}
       onClick={() => handleClick(category.id)}
     >
       <Image
-        ml={40}
+        ml={4}
         width={isTabletOrMobile ? '100px' : '120px'}
         height={isTabletOrMobile ? '100px' : '120px'}
         src={category.categoryImage?.url || ''}
