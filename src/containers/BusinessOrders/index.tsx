@@ -24,15 +24,12 @@ import DispatchedBusinessOrder from './DispatchedBusinessOrder'
 import NavigationHeader from './navigationHeader'
 import ReadyForDispatch from './ReadyForDispatch'
 import Section from '../../components/Section'
-// import BusinessOrdersSearchBox from './BusinessOrdersSearchBox'
 
 type BusinessOrdersPageProps = FlexProps & {
   isTabletOrMobile: boolean
 }
 
-type BusinessPageProps = {
-  user?: UsersPermissionsUser
-}
+type BusinessPageProps = {}
 
 export type BusinessOrdersProps = {
   orders: Order[]
@@ -60,10 +57,10 @@ const BusinessOrdersPageHeader: React.FC<BusinessOrdersPageProps> = ({ isTabletO
   )
 }
 
-const BusinessOrdersPage: React.FC<BusinessPageProps> = ({ user }) => {
+const BusinessOrdersPage: React.FC<BusinessPageProps> = () => {
   const toast = useToast()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
-  const [activeTab, setActiveTab] = React.useState('all')
+  const [activeTab, setActiveTab] = React.useState('confirmation')
   const [isSearching, setIsSearching] = React.useState<boolean>(false)
 
   const {
