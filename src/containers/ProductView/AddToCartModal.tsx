@@ -214,9 +214,9 @@ const AddToCartModal: React.FC<AddToCartModalProps> = ({
       onClose={handleCancelButtonClicked}
       isCentered
     >
-      <Flex padding={5} pb={0}>
+      <Flex ml={100} padding={5} pb={0}>
         <Grid gridTemplateRows="150px 1fr 1fr 1fr">
-          <CartModalProductComponent product={product} productQuantity={productQuantity} pl={20} />
+          <CartModalProductComponent product={product} productQuantity={productQuantity} />
           <Button
             width="100%"
             mt={4}
