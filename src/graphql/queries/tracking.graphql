@@ -1,0 +1,6 @@
+# import '/fragments/tracking.graphql'
+query fetchTracking($waybill: String!) {
+    getTracking(waybill: $waybill) {
+        ...tracking    
+    }
+}

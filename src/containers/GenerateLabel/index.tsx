@@ -6,15 +6,15 @@ import { useMediaQuery } from 'react-responsive'
 import { useReactToPrint } from 'react-to-print'
 import { useRef } from 'react'
 
-import { Button, Flex } from '@chakra-ui/core'
-// import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
+import { Button, Flex, useToast } from '@chakra-ui/core'
+import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
 import { Form, Formik } from 'formik'
 import { formatError } from '../../utils'
 import { H3, Text } from '../../typography'
 import { MotionFlex } from '../../components'
 import { PageWrap } from '../../layouts'
 import { theme } from '../../theme'
-// import { useCreateWaybillMutation } from '../../generated/graphql'
+import { useCreateWaybillMutation } from '../../generated/graphql'
 
 import SenderInfo from './SenderInfo'
 import ReceiverInfo from './ReceiverInfo'
@@ -105,7 +105,7 @@ export type labelValues = {
 }
 
 const GenerateLabel: React.FC = () => {
-  // const toast = useToast()
+  const toast = useToast()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   const orderDetails = JSON.parse(localStorage.getItem('generated_label') || '')
   const { deliveryAddress, orderNumber, items, owner } = orderDetails
@@ -128,45 +128,45 @@ const GenerateLabel: React.FC = () => {
     length: items[0].product.length || '-',
     width: items[0].product.width || '-'
   }
-  // const date = new Date().toLocaleDateString()
+  const date = new Date().toLocaleDateString()
 
-  // const [createWaybill] = useCreateWaybillMutation({
-  //   onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
-  //   onCompleted: async () => {
-  //     toast({ description: 'Waybill successfully created', ...SUCCESS_TOAST })
-  //   }
-  // })
+  const [createWaybill] = useCreateWaybillMutation({
+    onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
+    onCompleted: async () => {
+      toast({ description: 'Waybill successfully created', ...SUCCESS_TOAST })
+    }
+  })
 
   const handleSubmit = async () => {
-    // const createWaybillInput = {
-    //   Waybill: orderNumber,
-    //   dateWay: date,
-    //   branch: autofillDetails.senderCompanyName,
-    //   accNum: autofillDetails.senderNumber,
-    //   custName: autofillDetails.receiverName,
-    //   sendArea: autofillDetails.receiverName,
-    //   shipAdres1: items[0].product.business.address[0].province,
-    //   shipAdres2: autofillDetails.senderTown,
-    //   shipAdres3: autofillDetails.senderSuburb,
-    //   shipAdres4: autofillDetails.senderStreetAddress,
-    //   consigName: autofillDetails.orderNumber,
-    //   conAddr1: deliveryAddress.province,
-    //   conAddr2: autofillDetails.receiverTown,
-    //   conAddr3: autofillDetails.receiverSuburb,
-    //   conAddr4: autofillDetails.receiverStreetAddress,
-    //   destArea: deliveryAddress.province,
-    //   conName: owner.firstName,
-    //   conTelNo: owner.phoneNumber,
-    //   serv_c: 'ECO',
-    //   numParcel: items.length,
-    //   massKg: autofillDetails.weight
-    // }
-    // await createWaybill({
-    //   variables: {
-    //     input: createWaybillInput
-    //   }
-    // })
-    // console.log('jere now')
+    const createWaybillInput = {
+      Waybill: orderNumber,
+      dateWay: date,
+      branch: autofillDetails.senderCompanyName,
+      accNum: autofillDetails.senderNumber,
+      custName: autofillDetails.receiverName,
+      sendArea: autofillDetails.receiverName,
+      shipAdres1: items[0].product.business.address[0].province,
+      shipAdres2: autofillDetails.senderTown,
+      shipAdres3: autofillDetails.senderSuburb,
+      shipAdres4: autofillDetails.senderStreetAddress,
+      consigName: autofillDetails.orderNumber,
+      conAddr1: deliveryAddress.province,
+      conAddr2: autofillDetails.receiverTown,
+      conAddr3: autofillDetails.receiverSuburb,
+      conAddr4: autofillDetails.receiverStreetAddress,
+      destArea: deliveryAddress.province,
+      conName: owner.firstName,
+      conTelNo: owner.phoneNumber,
+      serv_c: 'ECO',
+      numParcel: items.length,
+      massKg: autofillDetails.weight
+    }
+    await createWaybill({
+      variables: {
+        input: createWaybillInput
+      }
+    })
+    console.log('jere now')
     strapiHelpers.sendReadyForPickUpEmail(orderDetails)
   }
 
@@ -209,7 +209,6 @@ const GenerateLabel: React.FC = () => {
       <Formik
         validationSchema={GenerateLabelFormValidation}
         initialValues={autofillDetails}
-        // onSubmit={()=> {}}
         onSubmit={async () => {
           try {
             await handleSubmit()

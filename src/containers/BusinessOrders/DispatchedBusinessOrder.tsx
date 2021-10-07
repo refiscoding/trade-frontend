@@ -22,7 +22,6 @@ const DispatchedBusinessOrder: React.FC<BusinessOrdersProps> = ({
   const [selectedOrder, setSelectedOrder] = React.useState<Order | undefined>()
   const [showModal, setShowModal] = React.useState<boolean>(false)
 
-  const trackingText = 'Your order is ...'
   const confirmationOrders = orders?.filter((order) => order.businessOrderStatus === 'DISPATCHED')
   const noOrders = !confirmationOrders?.length
   const ordersLength = confirmationOrders?.length
@@ -40,6 +39,7 @@ const DispatchedBusinessOrder: React.FC<BusinessOrdersProps> = ({
        Selecting an order will have it displayed here
    `
   const orderStatusAndColor = setOrderStatusAndColor(selectedOrder)
+  const waybill = selectedOrder?.orderNumber || ''
   React.useEffect(() => {
     refetchUserOrders()
   }, [ordersLength, refetchUserOrders])
@@ -91,8 +91,8 @@ const DispatchedBusinessOrder: React.FC<BusinessOrdersProps> = ({
                 <Flex flexDirection="column" width="100%">
                   {showModal && (
                     <OrderTrackingModal
-                      trackingText={trackingText}
                       handleCancelButtonClicked={() => setShowModal(false)}
+                      waybill={waybill}
                     />
                   )}
                   <Grid

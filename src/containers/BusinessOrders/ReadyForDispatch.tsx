@@ -195,7 +195,8 @@ const ReadyForDispatch: React.FC<BusinessOrdersProps> = ({
                             description: 'Order Dispatch Email Successfully Sent',
                             ...SUCCESS_TOAST
                           })
-                          return strapiHelpers.sendOrderDispatchEmail(selectedOrder)
+                          strapiHelpers.sendOrderDispatchEmail(selectedOrder)
+                          return refetchUserOrders()
                         }}
                       >
                         <Text fontSize="12px">DISPATCH</Text>
