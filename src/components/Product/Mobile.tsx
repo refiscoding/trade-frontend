@@ -66,10 +66,10 @@ const ProductComponentMobile: React.FC<ProductProps> = ({
             borderBottomLeftRadius={2}
             borderBottomRightRadius={2}
           >
-            <Text color="white" fontSize="14px">
+            <Text color="black" fontSize="14px">
               Save
             </Text>
-            <Text color="white" fontSize="14px" fontWeight={600}>
+            <Text color="black" fontSize="14px" fontWeight={600}>
               {`${discount}%`}
             </Text>
           </Flex>

@@ -162,7 +162,7 @@ const BusinessOrdersPage: React.FC<BusinessPageProps> = () => {
     </Formik>
   ))
   return (
-    <PageWrap title="Business Orders" color="colors.white" justifyContent="space-between">
+    <PageWrap mt={10} title="Business Orders" color="colors.white" justifyContent="space-between">
       <InstantSearch indexName={SEARCH_INDEX} searchClient={searchClient}>
         <Flex alignSelf="center" width="80%" flexDirection="column" alignItems="center">
           <BusinessOrdersPageHeader isTabletOrMobile={isTabletOrMobile} />

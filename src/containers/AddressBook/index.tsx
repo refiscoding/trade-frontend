@@ -16,6 +16,7 @@ const AddressBook: React.FC<AddressBookProps> = () => {
 
   return (
     <PageWrap
+      mt={10}
       title="My Address Book"
       height="100vh"
       justifyContent="space-between"

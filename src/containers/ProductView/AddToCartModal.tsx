@@ -78,12 +78,12 @@ const CartModalProductComponent: React.FC<CartModalProductComponentProps> = ({
           bg="accent.700"
           flexDirection="column"
           top={0}
-          left={isTabletOrMobile ? '95px' : '150px'}
+          left={isTabletOrMobile ? '95px' : '250px'}
         >
-          <Text color="white" fontSize="14px">
+          <Text color="black" fontSize="14px">
             Save
           </Text>
-          <Text color="white" fontSize="14px" fontWeight={600}>
+          <Text color="black" fontSize="14px" fontWeight={600}>
             {`${discount}%`}
           </Text>
         </Flex>
@@ -214,7 +214,7 @@ const AddToCartModal: React.FC<AddToCartModalProps> = ({
       onClose={handleCancelButtonClicked}
       isCentered
     >
-      <Flex padding={5} pb={0}>
+      <Flex ml={100} padding={5} pb={0}>
         <Grid gridTemplateRows="150px 1fr 1fr 1fr">
           <CartModalProductComponent product={product} productQuantity={productQuantity} />
           <Button

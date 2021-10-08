@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as Yup from 'yup'
 
-import { Button, Flex, Text, FormLabel } from '@chakra-ui/core'
+import { Button, Flex, Text, FormLabel, IconButton } from '@chakra-ui/core'
 import { CATEGORIES } from '../../constants'
 import { ConnectedCheckbox, ConnectedFormGroup } from '../../components/FormElements'
 import { Form, Formik, FormikProps } from 'formik'
@@ -11,6 +11,7 @@ import { MotionFlex } from '../../components'
 import { PageWrap } from '../../layouts'
 import { useHistory } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
+import { ArrowLeft } from 'react-feather'
 
 const ProductFormValidation = Yup.object().shape({
   minPrice: Yup.string(),
@@ -46,8 +47,28 @@ const ProductFilter: React.FC = () => {
     history.push(`/?minPrice=${minPrice}&maxPrice=${maxPrice}&category=${category}`)
   }
 
+  const navigateToProfile = () => {
+    history.push(`/profile`)
+  }
+
   return (
-    <PageWrap title="Add Product" alignSelf="center" width={isTabletOrMobile ? '100%' : '40%'}>
+    <PageWrap
+      mt={10}
+      title="Add Product"
+      alignSelf="center"
+      width={isTabletOrMobile ? '100%' : '40%'}
+    >
+      <Flex alignSelf="flex-start" pt={4} pb={4}>
+        <IconButton
+          icon={ArrowLeft}
+          aria-label="Go to Profile"
+          backgroundColor="transparent"
+          onClick={() => navigateToProfile()}
+        />
+        <H3 textAlign="left" fontSize={14} fontWeight={700} pl={4} style={{ placeSelf: 'center' }}>
+          Back to Profile
+        </H3>
+      </Flex>
       <Flex width="100%" mb={4} justifyContent="space-between">
         <H3 textAlign="left" fontSize={18} fontWeight={600}>
           Filtering Options
@@ -78,13 +99,13 @@ const ProductFilter: React.FC = () => {
         {({ isSubmitting, status }: FormikProps<ProductValues>) => (
           <Form style={{ width: '100%' }}>
             <ConnectedFormGroup
-              label="Min Price"
+              label="Minimum Price"
               placeholder="Select an option..."
               name="minPrice"
               type="text"
             />
             <ConnectedFormGroup
-              label="Max Price"
+              label="Maximum Price"
               placeholder="Select an option..."
               name="maxPrice"
               type="text"

@@ -40,7 +40,12 @@ const Profile: React.FC<ProfileProps> = () => {
   }
 
   return (
-    <PageWrap title="My Account" width={isTabletOrMobile ? '100%' : '40%'} alignSelf="center">
+    <PageWrap
+      mt={10}
+      title="My Account"
+      width={isTabletOrMobile ? '100%' : '40%'}
+      alignSelf="center"
+    >
       <Flex mt={3}>
         <Flex
           bg="brand.500"

@@ -73,7 +73,7 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
   ]
 
   return (
-    <PageWrap title="Checkout" alignSelf="center" width="90%" mt={20} pt={0} p={0}>
+    <PageWrap title="Checkout" alignSelf="center" width="90%" mt={10} pt={0} p={0}>
       <Flex width="100%">
         {showDeleteCardModal && (
           <DeleteItemsModal
