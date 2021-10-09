@@ -23,23 +23,23 @@ const Hero: React.FC<HeroProps> = ({
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   return (
     <Flex
-      width="100vw"
+      width="1450px"
       minHeight={isTabletOrMobile ? '200px' : isCategory ? '450px' : '400px'}
-      backgroundImage={`url(${image})`}
-      backgroundPosition="center"
-      backgroundSize={isTabletOrMobile && !isCategory ? 'contain' : 'cover'}
-      backgroundRepeat="no-repeat"
-      my={2}
-      ml="-1rem"
+      bg={isCategory ? 'rgba(0,0,0,0.2)' : '#231F20'}
+      justifyContent={isCategory ? 'center' : 'flex-start'}
+      mr="10px"
+      flexDirection="column"
+      alignItems="center"
     >
       <Flex
         width="100vw"
         minHeight={isTabletOrMobile ? '200px' : isCategory ? '450px' : '400px'}
-        bg={isCategory ? 'rgba(0,0,0,0.2)' : 'transparent'}
-        justifyContent={isCategory ? 'center' : 'flex-start'}
-        pt="3rem"
-        flexDirection="column"
-        alignItems="center"
+        backgroundImage={`url(${image})`}
+        backgroundPosition="center"
+        backgroundSize={isTabletOrMobile && !isCategory ? 'contain' : 'contain'}
+        backgroundRepeat="no-repeat"
+        my={2}
+        ml="-1rem"
       >
         <Text fontWeight={600} fontSize={20} mt={headerMargin} color={headerColor}>
           {header}

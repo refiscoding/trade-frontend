@@ -67,7 +67,7 @@ const Login: React.FC<LoginProps> = () => {
       title="Login"
       backgroundSize="contain"
       backgroundRepeat="no-repeat"
-      bgImage={`url(${images.bg})`}
+      bgImage={`url(${images.TradeFedBg})`}
       justify="center"
       pt={0}
     >

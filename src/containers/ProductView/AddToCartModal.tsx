@@ -78,7 +78,7 @@ const CartModalProductComponent: React.FC<CartModalProductComponentProps> = ({
           bg="accent.700"
           flexDirection="column"
           top={0}
-          left={isTabletOrMobile ? '95px' : '250px'}
+          left={isTabletOrMobile ? '95px' : '150px'}
         >
           <Text color="black" fontSize="14px">
             Save
@@ -207,6 +207,7 @@ const AddToCartModal: React.FC<AddToCartModalProps> = ({
   productQuantity,
   product
 }) => {
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   return (
     <ModalWrap
       title="Item added to cart"
@@ -214,11 +215,12 @@ const AddToCartModal: React.FC<AddToCartModalProps> = ({
       onClose={handleCancelButtonClicked}
       isCentered
     >
-      <Flex ml={100} padding={5} pb={0}>
-        <Grid gridTemplateRows="150px 1fr 1fr 1fr">
+      <Flex padding={5} pb={0}>
+        <Grid gridTemplateRows="150px 1fr 1fr 1fr" width="600px">
           <CartModalProductComponent product={product} productQuantity={productQuantity} />
           <Button
-            width="100%"
+            ml={isTabletOrMobile ? '15%' : '25%'}
+            width={isTabletOrMobile ? '70%' : '50%'}
             mt={4}
             variantColor="brand"
             onClick={handleContinueShoppingButtonClicked}
@@ -228,7 +230,8 @@ const AddToCartModal: React.FC<AddToCartModalProps> = ({
           <Button
             justifySelf="start"
             mt={4}
-            width="100%"
+            ml={isTabletOrMobile ? '15%' : '25%'}
+            width={isTabletOrMobile ? '70%' : '50%'}
             onClick={handleGoToCartButtonClicked}
             border={`1px solid ${theme.colors.brand[500]}`}
             background="white"
