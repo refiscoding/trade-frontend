@@ -31,23 +31,22 @@ const CurrentOrderComponent: React.FC<CurrentOrderComponentProps> = ({
         borderRadius="4px"
         boxShadow="0.8px 2px 4px rgba(0,0,0,0.25)"
         backgroundColor="white"
-        p={4}
-        width="332px"
-        margin="1rem"
+        p={2}
+        margin="0.5rem"
       >
-        <Flex borderBottom={`1px solid ${theme.colors.background}`} mb={2} pb={3}>
+        <Flex borderBottom={`1px solid ${theme.colors.background}`}>
           <Flex p={2}>
-            <Image height="80%" style={{ placeSelf: 'center' }} src={images.parcel} />
+            <Image height="70%" style={{ placeSelf: 'center' }} src={images.parcel} />
           </Flex>
-          <Flex flexDirection="column">
-            <Text fontSize={12} fontWeight={600}>
-              Mathias' Parcel
+          <Flex flexDirection="column" pt={2} pl={4}>
+            <Text fontSize={12} pb={2} pt={4} fontWeight={800}>
+              Order: {order?.orderNumber}
             </Text>
-            <Text fontSize={12}>{`Quantity: ${order.items?.length}`}</Text>
-            <Text fontSize={12}>{`Order date: ${dayjs(order?.orderDate).format(
+            <Text fontSize={12} pb={2}>{`Quantity: ${order.items?.length}`}</Text>
+            <Text fontSize={12} pb={2}>{`Order date: ${dayjs(order?.orderDate).format(
               'DD.MM.YYYY'
             )}`}</Text>
-            <Text fontSize={14} fontWeight={600}>
+            <Text fontSize={15} pt={2} fontWeight={800}>
               {`R ${order?.orderTotal}`}
             </Text>
           </Flex>
@@ -57,21 +56,77 @@ const CurrentOrderComponent: React.FC<CurrentOrderComponentProps> = ({
           width="100%"
           flexDirection="column"
           cursor="pointer"
+          p={2}
           onClick={handleOrderClicked}
         >
-          <Flex pb={2}>
-            <Text fontSize={14} fontWeight={600}>
-              Parcel being processed
-            </Text>
-          </Flex>
-          <ProgressBar
-            width="100%"
-            completed={25}
-            borderRadius="4px"
-            bgColor="#3acf2f"
-            baseBgColor="#e7e7e7"
-            labelColor="transparent"
-          />
+          {order?.businessOrderStatus === 'CONFIRMATION' && (
+            <>
+              <Flex pb={2}>
+                <Text fontSize={14} fontWeight={600}>
+                  Parcel being processed
+                </Text>
+              </Flex>
+              <ProgressBar
+                width="100%"
+                completed={25}
+                borderRadius="4px"
+                bgColor="#3acf2f"
+                baseBgColor="#e7e7e7"
+                labelColor="transparent"
+              />
+            </>
+          )}
+          {order?.businessOrderStatus === 'PROCESSING' && (
+            <>
+              <Flex pb={2}>
+                <Text fontSize={14} fontWeight={600}>
+                  Parcel Picked & Packed
+                </Text>
+              </Flex>
+              <ProgressBar
+                width="100%"
+                completed={50}
+                borderRadius="4px"
+                bgColor="#3acf2f"
+                baseBgColor="#e7e7e7"
+                labelColor="transparent"
+              />
+            </>
+          )}
+          {order?.businessOrderStatus === 'READY' && (
+            <>
+              <Flex pb={2}>
+                <Text fontSize={14} fontWeight={600}>
+                  Parcel Out For Delivery
+                </Text>
+              </Flex>
+              <ProgressBar
+                width="100%"
+                completed={75}
+                borderRadius="4px"
+                bgColor="#3acf2f"
+                baseBgColor="#e7e7e7"
+                labelColor="transparent"
+              />
+            </>
+          )}
+          {order?.businessOrderStatus === 'DISPATCHED' && (
+            <>
+              <Flex pb={2}>
+                <Text fontSize={14} fontWeight={600}>
+                  Delivered
+                </Text>
+              </Flex>
+              <ProgressBar
+                width="100%"
+                completed={100}
+                borderRadius="4px"
+                bgColor="#3acf2f"
+                baseBgColor="#e7e7e7"
+                labelColor="transparent"
+              />
+            </>
+          )}
         </Flex>
       </Grid>
     </Flex>
