@@ -26,8 +26,12 @@ const BusinessOrderConfirmation: React.FC<BusinessOrdersProps> = ({
   const [selectedOrder, setSelectedOrder] = React.useState<Order | undefined>()
 
   const confirmationOrders = orders?.filter((order) => order.businessOrderStatus === 'CONFIRMATION')
-  const noOrders = !confirmationOrders?.length
-  const ordersLength = confirmationOrders?.length
+  const businessUserOrders = confirmationOrders?.filter(
+    (order) => order !== undefined && order?.items?.length > 0
+  )
+  console.log('businessUserOrders', businessUserOrders)
+  const noOrders = !businessUserOrders?.length
+  const ordersLength = businessUserOrders?.length
 
   const noOrdersNoOrderClickedMessage =
     'If you had orders, you would select one on the left and view its details here. For now, shop for products'
@@ -71,7 +75,7 @@ const BusinessOrderConfirmation: React.FC<BusinessOrdersProps> = ({
                       image={`${images.emptyWishlist}`}
                     />
                   ) : (
-                    confirmationOrders?.map((order, index) => (
+                    businessUserOrders?.map((order, index) => (
                       <BusinessOrderConfirmationComponent
                         key={`${index}_order_entry`}
                         setSelectedOrder={setSelectedOrder}
