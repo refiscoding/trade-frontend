@@ -77,7 +77,7 @@ const SideBar: React.FC<SideBarProps> = ({
     const updatedNavItems = navItems
     if (user?.isSeller === 'approved') {
       updatedNavItems[1] = SELLER_NAV_ITEM
-      updatedNavItems[2] = BUSINESS_NAV_ITEM
+      updatedNavItems[8] = BUSINESS_NAV_ITEM
     }
     return updatedNavItems
   }
