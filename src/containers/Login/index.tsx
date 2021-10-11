@@ -73,7 +73,7 @@ const Login: React.FC<LoginProps> = () => {
     >
       <SideSlider>
         <Flex width="100%" flexDirection="column" pb={4}>
-          <H3 textAlign="center" mb={4} fontWeight="bold" color={theme.colors.brand[500]}>
+          <H3 textAlign="center" mb={4} fontWeight="bold" color={theme.colors.brand[700]}>
             Login
           </H3>
           <Text textAlign="center" fontSize="18px" color="gray.500">

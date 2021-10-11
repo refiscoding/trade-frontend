@@ -47,9 +47,9 @@ const ProductFilter: React.FC = () => {
     history.push(`/?minPrice=${minPrice}&maxPrice=${maxPrice}&category=${category}`)
   }
 
-  const navigateToProfile = () => {
-    history.push(`/profile`)
-  }
+  // const navigateToPreviousPage = () => {
+  //   history.push(`/`)
+  // }
 
   return (
     <PageWrap
@@ -58,17 +58,17 @@ const ProductFilter: React.FC = () => {
       alignSelf="center"
       width={isTabletOrMobile ? '100%' : '40%'}
     >
-      <Flex alignSelf="flex-start" pt={4} pb={4}>
+      {/* <Flex alignSelf="flex-start" pt={4} pb={4}>
         <IconButton
           icon={ArrowLeft}
-          aria-label="Go to Profile"
+          aria-label="Go "
           backgroundColor="transparent"
-          onClick={() => navigateToProfile()}
+          onClick={() => navigateToPreviousPage()}
         />
         <H3 textAlign="left" fontSize={14} fontWeight={700} pl={4} style={{ placeSelf: 'center' }}>
-          Back to Profile
+          Back
         </H3>
-      </Flex>
+      </Flex> */}
       <Flex width="100%" mb={4} justifyContent="space-between">
         <H3 textAlign="left" fontSize={18} fontWeight={600}>
           Filtering Options

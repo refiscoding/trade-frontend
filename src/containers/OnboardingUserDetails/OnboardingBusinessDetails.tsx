@@ -37,11 +37,8 @@ const BusinessDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       <Flex width="100%" mb={4} flexDirection="column">
         <H3 textAlign="left">Lets get to know you</H3>
         <Text textAlign="left" fontSize="14px">
-          Lets get to know more about your Business:
+          Lets get to know more about your business:
         </Text>
-      </Flex>
-      <Flex width="100%" align="center" justify="center" my={5}>
-        <Image width="60%" src={images['OnboardingDetails']} />
       </Flex>
       <Formik
         validationSchema={BusinessDetailsFormValidation}

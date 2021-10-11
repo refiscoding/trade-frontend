@@ -19,7 +19,7 @@ const OnboardinIntro: React.FC = () => {
         hasLogo
         image={images.onboardingIntro}
         header="Welcome to TradeFed"
-        caption="You have successfully created your TradeFed account. Let the exploration begin! "
+        caption="You have successfully created your TradeFed account."
         action={() => history.push('/user-onboarding-details')}
         actionText="GET STARTED"
       />
