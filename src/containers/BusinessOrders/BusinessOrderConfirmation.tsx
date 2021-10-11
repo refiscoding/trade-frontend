@@ -27,7 +27,7 @@ const BusinessOrderConfirmation: React.FC<BusinessOrdersProps> = ({
 
   const confirmationOrders = orders?.filter((order) => order.businessOrderStatus === 'CONFIRMATION')
   const businessUserOrders = confirmationOrders?.filter(
-    (order) => order !== undefined && order?.items?.length > 0
+    (order) => order?.items && order?.items?.length > 0
   )
   console.log('businessUserOrders', businessUserOrders)
   const noOrders = !businessUserOrders?.length
