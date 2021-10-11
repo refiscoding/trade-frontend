@@ -146,7 +146,7 @@ const Home: React.FC = () => {
           ) : (
             <React.Fragment>
               <Hero
-                image={isTabletOrMobile ? images.heroImg : images.homeBanner}
+                image={isTabletOrMobile ? images.heroImg : images.homeBanner2}
                 header=""
                 caption=""
               />

@@ -13,6 +13,7 @@ const OnboardinIntro: React.FC = () => {
       backgroundSize="cover"
       justify="center"
       pt={0}
+      mt={10}
     >
       <InfoPage
         image={images.sellerAprroval}

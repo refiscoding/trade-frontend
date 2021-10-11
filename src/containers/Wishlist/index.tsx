@@ -41,7 +41,7 @@ const WishlistPageHeader: React.FC<WishlistPageHeaderProps> = ({
   isTabletOrMobile
 }) => {
   return (
-    <Flex width="100%" ml={isTabletOrMobile ? 0 : 5} mb={4} justifyContent="space-between">
+    <Flex mt={10} width="100%" ml={isTabletOrMobile ? 0 : 5} mb={4} justifyContent="space-between">
       <H3 textAlign="left" fontSize={18} fontWeight={600}>
         My Wishlist
       </H3>

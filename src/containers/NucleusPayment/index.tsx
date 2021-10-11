@@ -23,9 +23,9 @@ const BeforeCheckout: React.FC<BeforeCheckoutProps> = () => {
     'Set Delivery Date and Time',
     'Confirm Order and Pay'
   ]
-  
+
   return (
-    <PageWrap title="Before Checkout" alignSelf="center" width="90%" mt={20} pt={0} p={0}>
+    <PageWrap title="Before Checkout" alignSelf="center" width="90%" mt={120} pt={0} p={0}>
       <Flex width="100%">
         <Flex width="100%" flexDirection="column">
           <Grid

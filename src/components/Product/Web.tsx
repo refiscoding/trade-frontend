@@ -51,6 +51,7 @@ const ProductComponent: React.FC<ProductProps> = ({
   return (
     <React.Fragment>
       <Flex
+        mt={10}
         mb={3}
         backgroundColor="white"
         borderRadius={5}
@@ -116,7 +117,7 @@ const ProductComponent: React.FC<ProductProps> = ({
           <Grid
             gridTemplateRows="40px 50px 35px 35px 50px 40px 30px 30px 50px 60px"
             padding={5}
-            pt={8}
+            pt={50}
           >
             <Text fontSize="17px" fontWeight={600}>
               {product?.name}

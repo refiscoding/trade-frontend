@@ -40,7 +40,7 @@ const HeaderCont = styled(motion.div)<HeaderContProps>`
   ${color};
   top: 0;
   right: 0;
-  height: 64px;
+  height: 95px;
   z-index: 1290;
   display: flex;
   position: fixed;
