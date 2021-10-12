@@ -9,9 +9,6 @@ type SideBarButtonProps = {
   onClick?: () => void
 }
 
-const width = 20
-const height = 20
-
 const SvgWrap = styled(MotionFlex)`
   width: 30px;
   &:hover {

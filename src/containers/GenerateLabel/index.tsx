@@ -166,7 +166,6 @@ const GenerateLabel: React.FC = () => {
         input: createWaybillInput
       }
     })
-    console.log('jere now')
     strapiHelpers.sendReadyForPickUpEmail(orderDetails)
   }
 
