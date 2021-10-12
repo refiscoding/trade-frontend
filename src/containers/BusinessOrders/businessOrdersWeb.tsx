@@ -41,7 +41,6 @@ const BusinessOrdersPageWeb: React.FC<BusinessOrdersProps> = ({ orders, ordersLo
   const clearSelectedLabelItem = () => {
     localStorage.removeItem('generated_label')
   }
-  console.log('selectedOrder', selectedOrder)
 
   return (
     <PageWrap title="Business Orders" alignSelf="center" width="90%" mt={0} pt={0} p={0}>
