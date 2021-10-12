@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as Yup from 'yup'
 
-import { Button, Flex, Text, FormLabel, IconButton } from '@chakra-ui/core'
+import { Button, Flex, Text, FormLabel } from '@chakra-ui/core'
 import { CATEGORIES } from '../../constants'
 import { ConnectedCheckbox, ConnectedFormGroup } from '../../components/FormElements'
 import { Form, Formik, FormikProps } from 'formik'
@@ -11,7 +11,6 @@ import { MotionFlex } from '../../components'
 import { PageWrap } from '../../layouts'
 import { useHistory } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
-import { ArrowLeft } from 'react-feather'
 
 const ProductFormValidation = Yup.object().shape({
   minPrice: Yup.string(),
