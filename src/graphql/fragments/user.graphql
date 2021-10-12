@@ -50,6 +50,9 @@ fragment user on UsersPermissionsUser {
    transactions {
     ...transaction
   }
+  sellerDispatchAddress {
+    ...address
+  }
   notifications {
     id
     type
