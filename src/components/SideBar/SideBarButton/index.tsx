@@ -71,8 +71,8 @@ const SideBarButton: React.FC<SideBarButtonProps> = ({
     transition: { type: 'spring', stiffness: 260, damping: 20 }
   }
 
-  const unitHeight = 4
-  const unitWidth = (unitHeight * (width as number)) / (height as number)
+  const unitHeight = 6
+  const unitWidth = 6
 
   return (
     <SvgWrap>

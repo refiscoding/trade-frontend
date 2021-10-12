@@ -67,13 +67,13 @@ const Login: React.FC<LoginProps> = () => {
       title="Login"
       backgroundSize="contain"
       backgroundRepeat="no-repeat"
-      bgImage={`url(${images.bg})`}
+      bgImage={`url(${images.TradeFedBg})`}
       justify="center"
       pt={0}
     >
       <SideSlider>
         <Flex width="100%" flexDirection="column" pb={4}>
-          <H3 textAlign="center" mb={4} fontWeight="bold" color={theme.colors.brand[500]}>
+          <H3 textAlign="center" mb={4} fontWeight="bold" color={theme.colors.brand[700]}>
             Login
           </H3>
           <Text textAlign="center" fontSize="18px" color="gray.500">

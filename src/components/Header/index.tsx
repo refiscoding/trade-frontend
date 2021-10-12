@@ -4,7 +4,7 @@ import styled from '@emotion/styled'
 import { get } from 'lodash'
 import { motion } from 'framer-motion'
 import { ApolloError } from 'apollo-boost'
-import { ShoppingCart } from 'react-feather'
+import { ShoppingCart, Star } from 'react-feather'
 import { useMediaQuery } from 'react-responsive'
 import { InstantSearch } from 'react-instantsearch-dom'
 import { Flex, Image, Text, useToast } from '@chakra-ui/core'
@@ -18,7 +18,7 @@ import { images, theme } from '../../theme'
 import { useAppContext } from '../../context/AppProvider'
 import { useAuthContext } from '../../context/AuthProvider'
 import { SEARCH_INDEX, searchClient, ERROR_TOAST } from '../../constants'
-import { useFetchUsersCartQuery } from '../../generated/graphql'
+import { useFetchUsersCartQuery, useFetchUsersWhishlistQuery } from '../../generated/graphql'
 
 type HeaderProps = RouteComponentProps &
   ColorProps & {
@@ -75,6 +75,20 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
   const numberOfItems = cartProducts?.length
   const hasProducts = numberOfItems > 0
 
+  const { data: userWishlist, refetch: refetchWishlist } = useFetchUsersWhishlistQuery({
+    onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
+  })
+
+  const wishlist = get(userWishlist, 'findWishlist.payload')
+  const wishlistProducts = get(userCart, 'findCart.payload.products')
+
+  const numberOfProducts = wishlistProducts?.length
+  const showProducts = numberOfProducts > 0
+
+  const handleWishlistIconClicked = () => {
+    history.push('/wishlist')
+  }
+
   const handleCartIconClicked = () => {
     history.push('/cart')
   }
@@ -101,6 +115,10 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
   React.useEffect(() => {
     refetchCart()
   }, [refetchCart])
+
+  React.useEffect(() => {
+    refetchWishlist()
+  }, [refetchWishlist])
 
   return (
     <HeaderCont pr={4} pl={drawerOpen ? 'calc(186px + 1rem)' : '1rem'} {...rest}>
@@ -145,6 +163,27 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
           <Flex width="65%" mr={4}>
             <SearchBar handleFilter={handleFilter} handleSearch={() => {}} handleReset={() => {}} />
           </Flex>
+        </Flex>
+        <Flex flexDirection="column" cursor="pointer" mr={5}>
+          {wishlist && showProducts && isAuthenticated && (
+            <Flex
+              backgroundColor={theme.colors.accent[50]}
+              height="25px"
+              width="25px"
+              color={theme.colors.brand[500]}
+              textAlign="center"
+              justify="center"
+              align="center"
+              borderRadius="50%"
+              fontSize="12px"
+              position="absolute"
+              top="4px"
+              right="21px"
+            >
+              {numberOfProducts > 9 ? '9+' : numberOfProducts}
+            </Flex>
+          )}
+          <Star color="white" onClick={handleWishlistIconClicked} />
         </Flex>
         <Flex flexDirection="column" cursor="pointer" mr={5}>
           {cart && hasProducts && isAuthenticated && (

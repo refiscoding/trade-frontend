@@ -78,7 +78,7 @@ const Register: React.FC<RegisterProps> = () => {
       <SideSlider>
         {/* <Box p="4" bg="#FFFAFA"> */}
         <Flex width="100%" flexDirection="column" pb={4} color="white">
-          <H3 textAlign="center" mb={4} fontWeight="bold" color={theme.colors.brand[500]}>
+          <H3 textAlign="center" mb={4} fontWeight="bold" color={theme.colors.brand[700]}>
             Register
           </H3>
           <Text textAlign="center" fontSize="18px" color="gray.500">
@@ -130,7 +130,7 @@ const Register: React.FC<RegisterProps> = () => {
                     mt={4}
                     align="center"
                     justify="center"
-                    color={theme.colors.brand[500]}
+                    color={theme.colors.brand[700]}
                   >
                     <Text>
                       I agree to the{' '}
