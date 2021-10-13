@@ -23,11 +23,11 @@ const PersonalInfo: React.FC = () => {
       </H3>
       <ConnectedFormGroup label="What is your first name?*" name="firstName" type="text" />
       <ConnectedFormGroup label="What is your last name?*" name="lastName" type="text" />
-      <ConnectedFormGroup label="What is your company name?*" name="companyname" type="text" />
+      <ConnectedFormGroup label="What is your company name?*" name="companyName" type="text" />
       <ConnectedSelect
         placeholder="Select Position"
         label="Select Position* "
-        name="location"
+        name="position"
         options={POSITIONS}
       />
       <ConnectedFormGroup label="Your Email Address?*" name="email" type="text" isDisabled={true} />

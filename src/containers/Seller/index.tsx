@@ -28,100 +28,97 @@ import BusinessInfo from './businessInfo'
 import PersonalInfo from './personalInfo'
 
 const SellerFormValidation = Yup.object().shape({
-  firstName: Yup.string().required('First Name is required'),
-  lastName: Yup.string().required('Last Name is required'),
-  email: Yup.string().email('Please enter a valid email address').required('An email is required'),
-  idNumber: Yup.string().required('ID Number is required').length(13),
-  phoneNumber: Yup.string().required('Phone Number is required'),
-  businessPhoneNumber: Yup.string().required('Business Phone Number is required'),
-  yearsInOperation: Yup.number().required('Years Of Operation is required'),
-  name: Yup.string().required('Business Name is required'),
-  category: Yup.string().required('Business Category is required'),
-  isVatRegistered: Yup.boolean().required('VAT Registration Status is required'),
-  vatNumber: Yup.string(),
-  uniqueProducts: Yup.string().required('Number of Unique Products is required'),
-  products: Yup.string().required('Product Description is required'),
-  hasPhysicalStore: Yup.string().required('Physical Presence is required'),
-  isRetailSupplier: Yup.string().required('Retail Supplier Status is required'),
-  businessType: Yup.string().required('Business Type is required'),
-  revenue: Yup.string().required('Revenue Range is required'),
-  registrationNumber: Yup.string().required('Registration Number is required'),
   beeStatus: Yup.string().required('BEE Status is required'),
-  suppliedBrands: Yup.string().required('List of brands is required'),
+  businessPhoneNumber: Yup.string().required('Business Phone Number is required'),
+  businessType: Yup.string().required('Business Type is required'),
+  category: Yup.string().required('Business Category is required'),
+  companyName: Yup.string().required('Company Name is required'),
+  email: Yup.string().email('Please enter a valid email address').required('An email is required'),
+  firstName: Yup.string().required('First Name is required'),
+  hasPhysicalStore: Yup.string().required('Physical Presence is required'),
+  hazChem: Yup.string(),
+  idNumber: Yup.string().required('ID Number is required').length(13),
   isHazChem: Yup.boolean().required('Haz Chem status is required'),
-  hazChem: Yup.string()
+  isRetailSupplier: Yup.boolean().required('Retail Supplier Status is required'),
+  isVatRegistered: Yup.boolean().required('VAT Registration Status is required'),
+  lastName: Yup.string().required('Last Name is required'),
+  name: Yup.string().required('Business Name is required'),
+  phoneNumber: Yup.string().required('Phone Number is required'),
+  position: Yup.string().required('Company Position is required'),
+  products: Yup.string().required('Product Description is required'),
+  registrationNumber: Yup.string().required('Registration Number is required'),
+  revenue: Yup.string().required('Revenue Range is required'),
+  suppliedBrands: Yup.string().required('List of brands is required'),
+  uniqueProducts: Yup.string().required('Number of Unique Products is required'),
+  vatNumber: Yup.string(),
+  yearsInOperation: Yup.number().required('Years Of Operation is required')
 })
 
 export type ErrorsObject = {
-  isVatRegistered?: string | undefined
-  businessType?: string | undefined
-  hasPhysicalStore?: string | undefined
-  isRetailSupplier?: string | undefined
-  revenue?: string | undefined
-  registrationNumber?: string | undefined
   beeStatus?: string | undefined
-  isHazChem?: string | undefined
+  businessType?: string | undefined
+  companyName?: string | undefined
+  hasPhysicalStore?: string | undefined
   hazChem?: string | undefined
+  isHazChem?: boolean | undefined
+  isRetailSupplier?: boolean | undefined
+  isVatRegistered?: boolean | undefined
+  position?: string | undefined
+  registrationNumber?: string | undefined
+  revenue?: string | undefined
 }
 
 export type TouchedErrors = {
-  isVatRegistered?: boolean | undefined
-  businessType?: boolean | undefined
-  hasPhysicalStore?: boolean | undefined
-  isRetailSupplier?: boolean | undefined
-  revenue?: boolean | undefined
-  registrationNumber?: boolean | undefined
   beeStatus?: boolean | undefined
+  businessType?: boolean | undefined
+  companyName?: boolean | undefined
+  hasPhysicalStore?: boolean | undefined
   isHazChem?: boolean | undefined
+  isRetailSupplier?: boolean | undefined
+  isVatRegistered?: boolean | undefined
+  position?: boolean | undefined
+  registrationNumber?: boolean | undefined
+  revenue?: boolean | undefined
   //hazChem?: boolean | undefined
 }
 
 export type SellerValues = {
-  firstName: string
-  lastName: string
-  email: string
-  suppliedBrands: string
-  idNumber: string
-  phoneNumber?: string
-  name: string
-  registrationNumber: string
-  businessPhoneNumber: string
-  businessWebsite?: string
-  yearsInOperation: number
-  category: string
-  location: string
-  isVatRegistered: string
-  vatNumber: string
-  revenue: string
   beeStatus: string
-  uniqueProducts: string
-  products: Maybe<Maybe<string>> | undefined
-  hasPhysicalStore: string
-  isRetailSupplier: string
-  isHazChem: string
-  hazChem: string
-  errors?: ErrorsObject
+  businessPhoneNumber: string
   businessType?: string
+  businessWebsite?: string
+  category: string
+  companyName: string
+  email: string
+  errors?: ErrorsObject
+  firstName: string
+  hasPhysicalStore: string
+  hazChem: string
+  idNumber: string
+  isHazChem: boolean
+  isRetailSupplier: boolean
+  isVatRegistered: boolean
+  lastName: string
+  location: string
+  name: string
+  phoneNumber?: string
+  position: string
+  products: Maybe<Maybe<string>> | undefined
+  registrationNumber: string
+  revenue: string
+  suppliedBrands: string
+  uniqueProducts: string
+  vatNumber: string
+  yearsInOperation: number
 }
 
 const initialValues = {
-  name: '',
-  suppliedBrands: '',
-  businessPhoneNumber: '',
-  yearsInOperation: 0,
-  location: '',
-  beeStatus: '',
-  isHazChem: '',
-  hazChem: '',
-  registrationNumber: '',
   category: '',
-  isVatRegistered: '',
-  vatNumber: '',
-  revenue: '',
-  uniqueProducts: '',
-  products: '' || undefined,
   hasPhysicalStore: '',
-  isRetailSupplier: ''
+  location: '',
+  products: '' || undefined,
+  suppliedBrands: '',
+  uniqueProducts: ''
 }
 
 const Seller: React.FC = () => {
@@ -136,12 +133,27 @@ const Seller: React.FC = () => {
 
   const autofillDetails = {
     ...initialValues,
-    firstName: user?.firstName || '',
-    lastName: user?.lastName || '',
+    beeStatus: user?.business?.beeStatus || '',
+    businessPhoneNumber: user?.business?.phoneNumber || '',
+    businessType: user?.business?.businessType || '',
     companyName: user?.companyName || '',
+    companyRelated: user?.business?.companyRelated || '',
     email: user?.email || '',
+    firstName: user?.firstName || '',
+    hazChem: user?.business?.hazChem || '',
     idNumber: user?.idNumber || '',
-    phoneNumber: user?.phoneNumber || ''
+    isHazChem: user?.business?.isHazChem || false,
+    isRetailSupplier: user?.business?.isRetailSupplier || false,
+    isVatRegistered: user?.business?.isVatRegistered || false,
+    lastName: user?.lastName || '',
+    name: user?.business?.name || '',
+    phoneNumber: user?.phoneNumber || '',
+    position: user?.position || '',
+    registrationNumber: user?.business?.registrationNumber || '',
+    revenue: user?.business?.annualTurn || '',
+    vatNumber: user?.business?.vatNumber || '',
+    websiteAddress: user?.business?.websiteAddress || '',
+    yearsInOperation: user?.business?.yearsInOperation || 0
   }
 
   useEffect(() => {
@@ -192,6 +204,7 @@ const Seller: React.FC = () => {
       location,
       idNumber,
       lastName,
+      companyName,
       isHazChem,
       beeStatus,
       firstName,
@@ -217,6 +230,7 @@ const Seller: React.FC = () => {
       businessType,
       suppliedBrands,
       uniqueProducts,
+      companyName,
       registrationNumber,
       countries: [location],
       categories: [category],

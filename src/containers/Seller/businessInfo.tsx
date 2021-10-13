@@ -42,8 +42,8 @@ const BusinessInfo: React.FC<businessTypes> = ({
   values,
   setFieldValue
 }) => {
-  const [vatChecked, setVatChecked] = React.useState(false)
-  const saidYesToHazChem = values?.isHazChem === 'true'
+  const [vatChecked, setVatChecked] = React.useState(values.isVatRegistered)
+  const [hazChem, setHazChem] = React.useState(values.isHazChem)
   return (
     <React.Fragment>
       <Flex
@@ -58,7 +58,7 @@ const BusinessInfo: React.FC<businessTypes> = ({
           Business Details
         </H3>
         <ConnectedFormGroup
-          label="Company Name*"
+          label="Business Name*"
           name="name"
           type="text"
           placeholder="Enter the name of your business"
@@ -81,7 +81,7 @@ const BusinessInfo: React.FC<businessTypes> = ({
         />
         <ConnectedFormGroup
           label="Business Website"
-          name="businessWebsite"
+          name="websiteAddress"
           type="text"
           placeholder="Eg. https://yourbusiness.com"
         />
@@ -130,14 +130,12 @@ const BusinessInfo: React.FC<businessTypes> = ({
         )}
         <ConnectedSelect
           label="Annual turnover (R)*"
-          placeholder="Select annual turnover"
           name="revenue"
           onChange={(e) => setFieldValue('revenue', e.target.value)}
           options={TURNOVER}
         />
         <ConnectedSelect
           label="BEE status*"
-          placeholder="Select BEE status"
           name="beeStatus"
           onChange={(e) => setFieldValue('beeStatus', e.target.value)}
           options={BEESTATUS}
@@ -163,33 +161,36 @@ const BusinessInfo: React.FC<businessTypes> = ({
         />
         <ConnectedSelect
           label="Business Type*"
-          placeholder="Select Business Type"
           name="businessType"
           onChange={(e) => setFieldValue('businessType', e.target.value)}
           options={businessTypes}
         />
         <ConnectedSelect
           label="Do you have a physical store?*"
-          placeholder="Select Option"
           name="hasPhysicalStore"
           onChange={(e) => setFieldValue('hasPhysicalStore', e.target.value)}
           options={options}
         />
         <ConnectedSelect
           label="Are you a supplier to retail outlets?*"
-          placeholder="Select Option"
           name="isRetailSupplier"
           onChange={(e) => setFieldValue('isRetailSupplier', e.target.value)}
           options={options}
         />
         <ConnectedSelect
           label="Do you deal with Hazardous Chemicals?*"
-          placeholder="Select Option"
           name="isHazChem"
-          onChange={(e) => setFieldValue('isHazChem', e.target.value)}
+          onChange={(e) => {
+            setFieldValue('isHazChem', e.target.value)
+            if (e.target.value === 'true') {
+              setHazChem(true)
+            } else {
+              setHazChem(false)
+            }
+          }}
           options={options}
         />
-        {saidYesToHazChem && (
+        {hazChem && (
           <ConnectedFormGroup
             mt={3}
             label="Please provide brief discussion of Hazardous chemicals*"
