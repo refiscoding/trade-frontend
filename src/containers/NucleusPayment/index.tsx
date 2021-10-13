@@ -16,13 +16,8 @@ const Step = styled.div``
 type BeforeCheckoutProps = {}
 
 const BeforeCheckout: React.FC<BeforeCheckoutProps> = () => {
-
   const cancelButtonStyles = { textDecoration: 'underline', cursor: 'pointer' }
-  const stepsMap = [
-    'Select Delivery Address',
-    'Set Delivery Date and Time',
-    'Confirm Order and Pay'
-  ]
+  const stepsMap = ['Select Delivery Address', 'Confirm Order and Pay']
 
   return (
     <PageWrap title="Before Checkout" alignSelf="center" width="90%" mt={120} pt={0} p={0}>
@@ -40,17 +35,12 @@ const BeforeCheckout: React.FC<BeforeCheckoutProps> = () => {
                 <H3 textAlign="left" fontSize={18} fontWeight={600}>
                   {stepsMap}
                 </H3>
-                <Text
-                  fontSize="12px"
-                  color={theme.colors.blueText}
-                  style={cancelButtonStyles}
-                >
+                <Text fontSize="12px" color={theme.colors.blueText} style={cancelButtonStyles}>
                   Cancel
                 </Text>
               </Flex>
               <StepperContainer style={{ marginTop: 15 }}>
                 <Stepper activeStep={1}>
-                  <Step />
                   <Step />
                   <Step />
                 </Stepper>
@@ -63,14 +53,14 @@ const BeforeCheckout: React.FC<BeforeCheckoutProps> = () => {
               borderRadius={5}
               background={theme.colors.accent[50]}
               boxShadow={theme.boxShadowMedium}
-              height='100%'
+              height="100%"
             >
               sth here
             </Flex>
             <Flex>
-                <Grid gridTemplateRows="1fr 40px" width="100%">
-                  hapa kuna kitu
-                </Grid>
+              <Grid gridTemplateRows="1fr 40px" width="100%">
+                hapa kuna kitu
+              </Grid>
             </Flex>
           </Grid>
         </Flex>

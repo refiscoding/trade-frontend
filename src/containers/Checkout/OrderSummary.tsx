@@ -6,6 +6,7 @@ import ReceiptProduct from './ReceiptProduct'
 
 import { images, theme } from '../../theme'
 import { ComponentLocationAddress, ComponentCartCartProduct } from '../../generated/graphql'
+import { toSentenceCase } from '../../utils/toSentenceCase'
 
 type OrderSummaryComponentProps = {
   cartProducts: ComponentCartCartProduct[]
@@ -42,7 +43,7 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
       p={4}
       flexDirection="column"
     >
-      <Text mb={5} fontWeight={600}>
+      <Text mb={5} fontWeight={600} fontSize="1.4rem">
         Order Summary
       </Text>
       <Grid
@@ -77,7 +78,7 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
         </Flex>
       </Grid>
       <Grid mb={5} borderTop={`1px dashed #acacac}`}>
-        <Text mt={5} fontWeight={600}>{`Delivery Method`}</Text>
+        <Text mt={5} fontWeight={600} fontSize="1.4rem">{`Delivery Method`}</Text>
         <Flex
           mt={3}
           mb={3}
@@ -105,11 +106,43 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
         >{`Change`}</Text>
       </Grid>
       <Grid mb={5} borderTop={`1px dashed #acacac}`}>
-        <Text mt={5} fontWeight={600}>{`Delivery Point`}</Text>
-        <Text mt={3}>{selectedAddress?.name || '-'}</Text>
-        <Text>{selectedAddress?.province || '-'}</Text>
-        <Text>{selectedAddress?.city || '-'}</Text>
-        <Text mt={3}>{selectedAddress?.postalCode || '-'}</Text>
+        <Text mt={5} fontWeight={600} fontSize="1.4rem">{`Delivery Point`}</Text>
+        <Flex>
+          <Text fontWeight={600}> Address name: </Text>
+          <Text pl={2}>
+            {selectedAddress?.name && toSentenceCase(selectedAddress?.name || '-')}
+          </Text>
+        </Flex>
+        <Flex>
+          <Text fontWeight={600}> Building/Complex: </Text>
+          <Text pl={2}>
+            {(selectedAddress?.building && toSentenceCase(selectedAddress?.building || '-')) || '-'}
+          </Text>
+        </Flex>
+        <Flex>
+          <Text fontWeight={600}> Street: </Text>
+          <Text pl={2}>
+            {(selectedAddress?.street && toSentenceCase(selectedAddress?.street || '-')) || '-'}
+          </Text>
+        </Flex>
+        <Flex>
+          <Text fontWeight={600}> Province: </Text>
+          <Text pl={2}>
+            {selectedAddress?.province && toSentenceCase(selectedAddress?.province || '-')}
+          </Text>
+        </Flex>
+        <Flex>
+          <Text fontWeight={600}> City: </Text>
+          <Text pl={2}>
+            {selectedAddress?.city && toSentenceCase(selectedAddress?.city || '-')}
+          </Text>
+        </Flex>
+        <Flex>
+          <Text fontWeight={600}> Postal Code: </Text>
+          <Text pl={2}>
+            {selectedAddress?.postalCode && toSentenceCase(selectedAddress?.postalCode || '-')}
+          </Text>
+        </Flex>
         <Text
           onClick={handleChangeDeliveryAddress}
           mt={3}

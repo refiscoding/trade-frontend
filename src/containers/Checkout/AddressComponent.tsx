@@ -10,7 +10,9 @@ import DeleteItemsModal from '../../components/DeleteItemsModal'
 import { ERROR_TOAST, SUCCESS_TOAST } from '../../constants'
 import { Text } from '../../typography'
 import { theme } from '../../theme'
+import { toSentenceCase } from '../../utils/toSentenceCase'
 import { useAuthContext } from '../../context/AuthProvider'
+
 import DeliveryAddressForm from './DeliveryAddressForm'
 import ModalWrap from '../../components/ModalWrap'
 
@@ -37,15 +39,47 @@ type AddressDetailsComponentProps = {
 const AddressDetailsComponent: React.FC<AddressDetailsComponentProps> = ({ address }) => {
   return (
     <React.Fragment>
-      <Text mt={3} fontSize={14}>
-        {address?.name || '-'}
-      </Text>
-      <Text fontSize={14}>{address.province || '-'} </Text>
-      <Text fontSize={14}>{address.city || '-'} </Text>
-      <Text fontSize={14}>{address.suburb || '-'} </Text>
-      <Text mt={3} fontSize={14}>
-        {address?.postalCode}
-      </Text>
+      <Flex pt={2}>
+        <Text fontSize={14} fontWeight={600}>
+          Building/Complex:
+        </Text>
+        <Text fontSize={14} pl={2}>
+          {(address?.building && toSentenceCase(address?.building || '-')) || '-'}
+        </Text>
+      </Flex>
+      <Flex>
+        <Text fontSize={14} fontWeight={600}>
+          Street:
+        </Text>
+        <Text fontSize={14} pl={2}>
+          {(address?.street && toSentenceCase(address?.street || '-')) || '-'}
+        </Text>
+      </Flex>
+      <Flex>
+        <Text fontSize={14} fontWeight={600}>
+          Province:
+        </Text>
+        <Text fontSize={14} pl={2}>
+          {address?.province && toSentenceCase(address?.province || '-')}
+        </Text>
+      </Flex>
+      <Flex>
+        <Text fontSize={14} fontWeight={600}>
+          City:{' '}
+        </Text>
+        <Text fontSize={14} pl={2}>
+          {address?.city && toSentenceCase(address?.city || '-')}
+        </Text>
+      </Flex>
+      <Flex>
+        <Text fontSize={14} fontWeight={600}>
+          {' '}
+          Postal Code:{' '}
+        </Text>
+        <Text fontSize={14} pl={2}>
+          {address?.postalCode && toSentenceCase(address?.postalCode || '-')}
+        </Text>
+      </Flex>
     </React.Fragment>
   )
 }
