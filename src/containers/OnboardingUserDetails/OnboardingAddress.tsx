@@ -23,6 +23,7 @@ type AddressProps = {
 
 const AddressFormValidation = Yup.object().shape({
   name: Yup.string().required('Name is required'),
+  street: Yup.string().required('Street Address is required'),
   province: Yup.string().required('Province is required'),
   city: Yup.string().required('City / Town is required'),
   suburb: Yup.string().required('Suburb is required'),
@@ -77,10 +78,13 @@ const UserDetails: React.FC<AddressProps> = ({
     label: sub?.Suburb || '',
     value: sub?.Suburb || ''
   }))
-  const postalCodeList = cityWithSuburb.map((sub: any) => ({
-    label: sub?.PostalCode || '',
-    value: sub?.PostalCode || ''
-  }))
+  const postalCodeList = cityWithSuburb
+    .map((sub: any) => sub?.PostalCode)
+    .filter((value: any, index: any, self: any) => self.indexOf(value) === index)
+    .map((postal: any) => ({
+      label: postal,
+      value: postal
+    }))
 
   const initialValues = {
     street: editItem?.street || '',
@@ -158,7 +162,7 @@ const UserDetails: React.FC<AddressProps> = ({
               type="text"
             />
             <ConnectedFormGroup
-              label="Street Address"
+              label="Street Address*"
               placeholder="Eg. 68 Fifth Street"
               name="street"
               type="text"

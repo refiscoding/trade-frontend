@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import * as React from 'react'
 import * as Yup from 'yup'
 import { get } from 'lodash'
@@ -8,6 +9,7 @@ import { useMediaQuery } from 'react-responsive'
 import {
   Category,
   Country,
+  Enum_Componentlocationaddress_Type,
   Maybe,
   useCategoryQuery,
   useCreateMyBusinessMutation,
@@ -25,17 +27,20 @@ import { PageWrap } from '../../layouts'
 import { useAuthContext } from '../../context/AuthProvider'
 
 import BusinessInfo from './businessInfo'
+import DispatchAddress from './dispatchAddress'
 import PersonalInfo from './personalInfo'
 
 const SellerFormValidation = Yup.object().shape({
   beeStatus: Yup.string().required('BEE Status is required'),
+  building: Yup.string().required('Building is required'),
   businessPhoneNumber: Yup.string().required('Business Phone Number is required'),
   businessType: Yup.string().required('Business Type is required'),
   category: Yup.string().required('Business Category is required'),
+  city: Yup.string().required('City / Town is required'),
   companyName: Yup.string().required('Company Name is required'),
   email: Yup.string().email('Please enter a valid email address').required('An email is required'),
   firstName: Yup.string().required('First Name is required'),
-  hasPhysicalStore: Yup.string().required('Physical Presence is required'),
+  hasPhysicalStore: Yup.boolean().required('Physical Presence is required'),
   hazChem: Yup.string(),
   idNumber: Yup.string().required('ID Number is required').length(13),
   isHazChem: Yup.boolean().required('Haz Chem status is required'),
@@ -45,40 +50,56 @@ const SellerFormValidation = Yup.object().shape({
   name: Yup.string().required('Business Name is required'),
   phoneNumber: Yup.string().required('Phone Number is required'),
   position: Yup.string().required('Company Position is required'),
+  postalCode: Yup.string().required('Postal Code is required'),
   products: Yup.string().required('Product Description is required'),
+  province: Yup.string().required('Province is required'),
   registrationNumber: Yup.string().required('Registration Number is required'),
   revenue: Yup.string().required('Revenue Range is required'),
+  street: Yup.string().required('Street Address is required'),
+  suburb: Yup.string().required('Suburb is required'),
   suppliedBrands: Yup.string().required('List of brands is required'),
   uniqueProducts: Yup.string().required('Number of Unique Products is required'),
   vatNumber: Yup.string(),
-  yearsInOperation: Yup.number().required('Years Of Operation is required')
+  yearsInOperation: Yup.number().required('Years of Operation is required')
 })
 
 export type ErrorsObject = {
   beeStatus?: string | undefined
+  building: string | undefined
   businessType?: string | undefined
+  city: string | undefined
   companyName?: string | undefined
-  hasPhysicalStore?: string | undefined
+  hasPhysicalStore?: boolean | undefined
   hazChem?: string | undefined
   isHazChem?: boolean | undefined
   isRetailSupplier?: boolean | undefined
   isVatRegistered?: boolean | undefined
   position?: string | undefined
+  postalCode: string | undefined
+  province: string | undefined
   registrationNumber?: string | undefined
   revenue?: string | undefined
+  street: string | undefined
+  suburb: string | undefined
 }
 
 export type TouchedErrors = {
   beeStatus?: boolean | undefined
+  building: boolean | undefined
   businessType?: boolean | undefined
+  city: boolean | undefined
   companyName?: boolean | undefined
   hasPhysicalStore?: boolean | undefined
   isHazChem?: boolean | undefined
   isRetailSupplier?: boolean | undefined
   isVatRegistered?: boolean | undefined
   position?: boolean | undefined
+  postalCode: boolean | undefined
+  province: boolean | undefined
   registrationNumber?: boolean | undefined
   revenue?: boolean | undefined
+  street: boolean | undefined
+  suburb: boolean | undefined
   //hazChem?: boolean | undefined
 }
 
@@ -92,7 +113,7 @@ export type SellerValues = {
   email: string
   errors?: ErrorsObject
   firstName: string
-  hasPhysicalStore: string
+  hasPhysicalStore: boolean
   hazChem: string
   idNumber: string
   isHazChem: boolean
@@ -110,15 +131,26 @@ export type SellerValues = {
   uniqueProducts: string
   vatNumber: string
   yearsInOperation: number
+  street: string
+  province: string
+  building: string
+  city: string
+  suburb: string
+  postalCode: string
 }
 
 const initialValues = {
   category: '',
-  hasPhysicalStore: '',
   location: '',
   products: '' || undefined,
   suppliedBrands: '',
-  uniqueProducts: ''
+  uniqueProducts: '',
+  street: '',
+  province: '',
+  building: '',
+  city: '',
+  suburb: '',
+  postalCode: ''
 }
 
 const Seller: React.FC = () => {
@@ -140,6 +172,7 @@ const Seller: React.FC = () => {
     companyRelated: user?.business?.companyRelated || '',
     email: user?.email || '',
     firstName: user?.firstName || '',
+    hasPhysicalStore: user?.business?.hasPhysicalStore || false,
     hazChem: user?.business?.hazChem || '',
     idNumber: user?.idNumber || '',
     isHazChem: user?.business?.isHazChem || false,
@@ -219,7 +252,13 @@ const Seller: React.FC = () => {
       hasPhysicalStore,
       yearsInOperation,
       registrationNumber,
-      businessPhoneNumber
+      businessPhoneNumber,
+      street,
+      building,
+      province,
+      city,
+      suburb,
+      postalCode
     } = values
     const businessInput = {
       name,
@@ -241,7 +280,16 @@ const Seller: React.FC = () => {
       isVatRegistered: Boolean(isVatRegistered),
       hasPhysicalStore: Boolean(hasPhysicalStore),
       isRetailSupplier: Boolean(isRetailSupplier),
-      yearsInOperation
+      yearsInOperation,
+      dispatchAddress: {
+        street,
+        building,
+        province,
+        city,
+        suburb,
+        postalCode,
+        type: Enum_Componentlocationaddress_Type.Business
+      }
     }
 
     const userDetails = {
@@ -304,6 +352,7 @@ const Seller: React.FC = () => {
                 values={values}
                 setFieldValue={setFieldValue}
               />
+              <DispatchAddress setFieldValue={setFieldValue} />
               {status && (
                 <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
                   <Text textAlign="right" color="red.500">

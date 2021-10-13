@@ -23,6 +23,7 @@ type AddressProps = {
 
 const AddressFormValidation = Yup.object().shape({
   name: Yup.string().required('Name is required'),
+  street: Yup.string().required('Street Address is required'),
   province: Yup.string().required('Province is required'),
   city: Yup.string().required('City / Town is required'),
   suburb: Yup.string().required('Suburb is required'),
@@ -30,6 +31,8 @@ const AddressFormValidation = Yup.object().shape({
 })
 
 type AddressValues = {
+  street: string
+  building: string
   province: string
   city: string
   suburb: string
@@ -75,12 +78,17 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
     label: sub?.Suburb || '',
     value: sub?.Suburb || ''
   }))
-  const postalCodeList = cityWithSuburb.map((sub: any) => ({
-    label: sub?.PostalCode || '',
-    value: sub?.PostalCode || ''
-  }))
+  const postalCodeList = cityWithSuburb
+    .map((sub: any) => sub?.PostalCode)
+    .filter((value: any, index: any, self: any) => self.indexOf(value) === index)
+    .map((postal: any) => ({
+      label: postal,
+      value: postal
+    }))
 
   const initialValues = {
+    street: editItem?.street || '',
+    building: editItem?.building || '',
     province: editItem?.province || '',
     city: editItem?.city || '',
     suburb: editItem?.suburb || '',
@@ -89,9 +97,19 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
     name: editItem?.name || ''
   }
 
-  const handleSubmit = ({ province, suburb, city, postalCode, name }: AddressValues) => {
+  const handleSubmit = ({
+    street,
+    building,
+    province,
+    suburb,
+    city,
+    postalCode,
+    name
+  }: AddressValues) => {
     handleUserDetails({
       address: {
+        street,
+        building,
         province,
         city,
         suburb,
@@ -116,13 +134,13 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
         validationSchema={AddressFormValidation}
         initialValues={initialValues}
         onSubmit={async (
-          { province, suburb, city, postalCode, name },
+          { street, building, province, suburb, city, postalCode, name }: AddressValues,
           { setStatus, setSubmitting }
         ) => {
           setStatus(null)
           try {
             setSubmitting(true)
-            await handleSubmit({ province, suburb, city, postalCode, name })
+            await handleSubmit({ street, building, province, suburb, city, postalCode, name })
             setSubmitting(false)
           } catch (error) {
             setStatus(formatError(error))
@@ -135,6 +153,18 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
               label="Address Name*"
               placeholder="Eg. Mum's Place"
               name="name"
+              type="text"
+            />
+            <ConnectedFormGroup
+              label="Building/Complex Name"
+              placeholder="Eg. Carlton Centre"
+              name="building"
+              type="text"
+            />
+            <ConnectedFormGroup
+              label="Street Address*"
+              placeholder="Eg. 68 Fifth Street"
+              name="street"
               type="text"
             />
             <ConnectedSelect
