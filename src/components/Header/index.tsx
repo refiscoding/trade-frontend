@@ -191,10 +191,11 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
               backgroundColor={theme.colors.accent[50]}
               height="25px"
               width="25px"
-              color={theme.colors.brand[500]}
+              color={theme.colors.brand[700]}
               textAlign="center"
               justify="center"
               align="center"
+              mt={18}
               borderRadius="50%"
               fontSize="12px"
               position="absolute"
