@@ -213,7 +213,7 @@ const ReadyForDispatch: React.FC<BusinessOrdersProps> = ({
                   </Flex>
                 </Flex>
               ) : (
-                <NoData header={'no orders'} caption={`${noOrderClickedCaption}`} />
+                <NoData header={'No Orders'} caption={`${noOrderClickedCaption}`} />
               )}
             </Flex>
           </Grid>
