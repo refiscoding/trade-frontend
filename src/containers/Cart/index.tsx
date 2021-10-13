@@ -273,7 +273,7 @@ const CartPage: React.FC = () => {
                   mt={4}
                   width="95%"
                   type="submit"
-                  border={`1px solid ${theme.colors.brand[700]}`}
+                  border={`1px solid ${theme.colors.brand[300]}`}
                   background="white"
                 >
                   {editing ? 'DONE' : 'EDIT'}

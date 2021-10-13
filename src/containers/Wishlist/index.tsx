@@ -82,7 +82,7 @@ const WishlistPage: React.FC = () => {
       const itemsRemoved = removeProductsFromWishlist?.payload?.removedItems?.length
       const message =
         itemsRemoved === 0
-          ? 'No items removed from wishlist'
+          ? 'Not items removed from wishlist'
           : `Successfully removed ${itemsRemoved} items from wishlist`
       toast({ description: message, ...SUCCESS_TOAST })
       history.push('/wishlist')
@@ -196,6 +196,7 @@ const WishlistPage: React.FC = () => {
       ) : (
         <Flex
           ml={isTabletOrMobile ? 0 : 5}
+          mt={3}
           alignSelf="center"
           width={isTabletOrMobile ? '100%' : '80%'}
           flexDirection="column"
