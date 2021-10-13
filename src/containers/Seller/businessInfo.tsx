@@ -1,11 +1,11 @@
 import * as React from 'react'
 
-import { Flex, FormLabel } from '@chakra-ui/core'
-import { Field } from 'formik'
+import { Flex } from '@chakra-ui/core'
 
+import { BEESTATUS, TURNOVER } from '../../constants'
 import { theme } from '../../theme'
-import { ErrorsObject, SellerValues, TouchedErrors } from './index'
-import { H3, Text } from '../../typography'
+import { SellerValues } from './index'
+import { H3 } from '../../typography'
 import {
   ConnectedFormGroup,
   ConnectedNumberInput,
@@ -21,9 +21,8 @@ export type Options = {
 type businessTypes = {
   categories: Options[]
   countries: Options[]
-  errors: ErrorsObject
   values: SellerValues
-  touched: TouchedErrors
+  setFieldValue: any
 }
 
 const options = [
@@ -32,38 +31,18 @@ const options = [
 ]
 
 const businessTypes = [
-  { name: 'Wholesaler', value: 'wholesaler' },
-  { name: 'Distributor', value: 'distributor' },
-  { name: 'Both', value: 'both' }
-]
-
-const revenue = [
-  'Less than R 1 million',
-  'R 1 - 2 million',
-  'R 2 - 5 million',
-  'R 5 - 10 million',
-  'More than R 10 million'
-]
-const beeStatuses = [
-  'Not Applicable',
-  'Level 1',
-  'Level 2',
-  'Level 3',
-  'Level 4',
-  'Level 5',
-  'Level 6',
-  'Level 7',
-  'Level 8'
+  { label: 'Wholesaler', value: 'wholesaler' },
+  { label: 'Distributor', value: 'distributor' },
+  { label: 'Both', value: 'both' }
 ]
 
 const BusinessInfo: React.FC<businessTypes> = ({
   categories,
-  errors,
   countries,
   values,
-  touched
+  setFieldValue
 }) => {
-  const saidYesToVATRegistered = values?.isVatRegistered === 'true'
+  const [vatChecked, setVatChecked] = React.useState(false)
   const saidYesToHazChem = values?.isHazChem === 'true'
   return (
     <React.Fragment>
@@ -119,47 +98,50 @@ const BusinessInfo: React.FC<businessTypes> = ({
           name="location"
           options={countries}
         />
-
-        <FormLabel htmlFor="isVatRegistered">Are you VAT registered?*</FormLabel>
-        {options.map((item: Options, i: number) => (
-          <Flex key={`${i}_vat`} alignItems="center">
-            <Field key={i} type="radio" name="isVatRegistered" value={item.value} />
-            <Text ml={2}>{item.label}</Text>
-          </Flex>
-        ))}
-        {touched['isVatRegistered'] && errors['isVatRegistered'] && (
-          <Text color="red.500">{errors['isVatRegistered']}</Text>
+        <ConnectedSelect
+          label="Are you VAT registered?*"
+          name="isVatRegistered"
+          onChange={(name) => {
+            setFieldValue('isVatRegistered', name.target.value)
+            if (name.target.value === 'true') {
+              setVatChecked(true)
+            } else {
+              setVatChecked(false)
+            }
+          }}
+          options={[
+            {
+              label: 'No',
+              value: false
+            },
+            {
+              label: 'Yes',
+              value: true
+            }
+          ]}
+        />
+        {vatChecked === true && (
+          <ConnectedFormGroup
+            label="If yes, please provide VAT number*"
+            placeholder="Please provide VAT number"
+            name="vatNumber"
+            type="text"
+          />
         )}
-
-        {saidYesToVATRegistered && (
-          <ConnectedFormGroup mt={3} label="VAT Number*" name="vatNumber" type="text" />
-        )}
-
-        <FormLabel mt={2} htmlFor="revenue">
-          Annual Turnover*
-        </FormLabel>
-        {revenue.map((item: string, i: number) => (
-          <Flex key={`${i}_revenue`} alignItems="center">
-            <Field key={i} type="radio" name="revenue" value={item} />
-            <Text ml={2}>{item}</Text>
-          </Flex>
-        ))}
-        {touched['revenue'] && errors['revenue'] && (
-          <Text color="red.500">{errors['revenue']}</Text>
-        )}
-
-        <FormLabel mt={3} htmlFor="beeStatus">
-          BEE Status*
-        </FormLabel>
-        {beeStatuses.map((item: string, i: number) => (
-          <Flex key={`${i}_bee`} alignItems="center">
-            <Field key={i} type="radio" name="beeStatus" value={item} />
-            <Text ml={2}>{item}</Text>
-          </Flex>
-        ))}
-        {touched['beeStatus'] && errors['beeStatus'] && (
-          <Text color="red.500">{errors['beeStatus']}</Text>
-        )}
+        <ConnectedSelect
+          label="Annual turnover (R)*"
+          placeholder="Select annual turnover"
+          name="revenue"
+          onChange={(e) => setFieldValue('revenue', e.target.value)}
+          options={TURNOVER}
+        />
+        <ConnectedSelect
+          label="BEE status*"
+          placeholder="Select BEE status"
+          name="beeStatus"
+          onChange={(e) => setFieldValue('beeStatus', e.target.value)}
+          options={BEESTATUS}
+        />
       </Flex>
       <Flex
         flexDirection="column"
@@ -179,58 +161,34 @@ const BusinessInfo: React.FC<businessTypes> = ({
           // eslint-disable-next-line @typescript-eslint/no-empty-function
           handleSetTags={() => {}}
         />
-
-        <FormLabel mt={3} htmlFor="businessType">
-          I am a…*
-        </FormLabel>
-        {businessTypes.map((item: any, i: number) => (
-          <Flex key={`${i}_type`} alignItems="center">
-            <Field key={i} type="radio" name="businessType" value={item.value} />
-            <Text ml={2}>{item.name}</Text>
-          </Flex>
-        ))}
-        {touched['businessType'] && errors['businessType'] && (
-          <Text color="red.500">{errors['businessType']}</Text>
-        )}
-
-        <FormLabel mt={3} htmlFor="hasPhysicalStore">
-          Do you have a physical store?*{' '}
-        </FormLabel>
-        {options.map((item: Options, i: number) => (
-          <Flex key={`${i}_store`} alignItems="center">
-            <Field key={i} type="radio" name="hasPhysicalStore" value={item.value} />
-            <Text ml={2}>{item.label}</Text>
-          </Flex>
-        ))}
-        {touched['hasPhysicalStore'] && errors['hasPhysicalStore'] && (
-          <Text color="red.500">{errors['hasPhysicalStore']}</Text>
-        )}
-
-        <FormLabel mt={3} htmlFor="isRetailSupplier">
-          Are you a supplier to retail outlets?*{' '}
-        </FormLabel>
-        {options.map((item: Options, i: number) => (
-          <Flex key={`${i}_supplier`} alignItems="center">
-            <Field key={i} type="radio" name="isRetailSupplier" value={item.value} />
-            <Text ml={2}>{item.label}</Text>
-          </Flex>
-        ))}
-        {touched['isRetailSupplier'] && errors['isRetailSupplier'] && (
-          <Text color="red.500">{errors['isRetailSupplier']}</Text>
-        )}
-
-        <FormLabel mt={3} htmlFor="isHazChem">
-          Do you deal with Hazardous Chemicals?*
-        </FormLabel>
-        {options.map((item: Options, i: number) => (
-          <Flex key={`${i}_chem`} alignItems="center">
-            <Field key={i} type="radio" name="isHazChem" value={item.value} />
-            <Text ml={2}>{item.label}</Text>
-          </Flex>
-        ))}
-        {touched['isHazChem'] && errors['isHazChem'] && (
-          <Text color="red.500">{errors['isHazChem']}</Text>
-        )}
+        <ConnectedSelect
+          label="Business Type*"
+          placeholder="Select Business Type"
+          name="businessType"
+          onChange={(e) => setFieldValue('businessType', e.target.value)}
+          options={businessTypes}
+        />
+        <ConnectedSelect
+          label="Do you have a physical store?*"
+          placeholder="Select Option"
+          name="hasPhysicalStore"
+          onChange={(e) => setFieldValue('hasPhysicalStore', e.target.value)}
+          options={options}
+        />
+        <ConnectedSelect
+          label="Are you a supplier to retail outlets?*"
+          placeholder="Select Option"
+          name="isRetailSupplier"
+          onChange={(e) => setFieldValue('isRetailSupplier', e.target.value)}
+          options={options}
+        />
+        <ConnectedSelect
+          label="Do you deal with Hazardous Chemicals?*"
+          placeholder="Select Option"
+          name="isHazChem"
+          onChange={(e) => setFieldValue('isHazChem', e.target.value)}
+          options={options}
+        />
         {saidYesToHazChem && (
           <ConnectedFormGroup
             mt={3}
@@ -239,7 +197,6 @@ const BusinessInfo: React.FC<businessTypes> = ({
             type="text"
           />
         )}
-
         <ConnectedTextArea
           mt={3}
           label="List the brands that you supply* "

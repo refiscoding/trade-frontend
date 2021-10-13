@@ -250,7 +250,7 @@ const Seller: React.FC = () => {
       alignSelf="center"
     >
       <Flex width="100%" my={4} flexDirection="column" borderRadius={3}>
-        <H3 textAlign="center">Apply to sell on TradeFed.</H3>
+        <H3 textAlign="center">Apply to sell on TradeFed</H3>
         <Flex
           mt={3}
           background={theme.colors.info}
@@ -280,7 +280,7 @@ const Seller: React.FC = () => {
           }
         }}
       >
-        {({ isSubmitting, status, errors, values, touched }: FormikProps<SellerValues>) => {
+        {({ isSubmitting, status, values, setFieldValue }: FormikProps<SellerValues>) => {
           return (
             <Form style={{ width: '100%' }}>
               <PersonalInfo />
@@ -288,8 +288,7 @@ const Seller: React.FC = () => {
                 categories={mappedCategories}
                 countries={mappedCountries}
                 values={values}
-                touched={touched}
-                errors={errors}
+                setFieldValue={setFieldValue}
               />
               {status && (
                 <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
