@@ -37,7 +37,6 @@ const SellerFormValidation = Yup.object().shape({
   businessType: Yup.string().required('Business Type is required'),
   category: Yup.string().required('Business Category is required'),
   city: Yup.string().required('City / Town is required'),
-  companyName: Yup.string().required('Company Name is required'),
   email: Yup.string().email('Please enter a valid email address').required('An email is required'),
   firstName: Yup.string().required('First Name is required'),
   hasPhysicalStore: Yup.boolean().required('Physical Presence is required'),
@@ -68,7 +67,6 @@ export type ErrorsObject = {
   building: string | undefined
   businessType?: string | undefined
   city: string | undefined
-  companyName?: string | undefined
   hasPhysicalStore?: boolean | undefined
   hazChem?: string | undefined
   isHazChem?: boolean | undefined
@@ -88,7 +86,6 @@ export type TouchedErrors = {
   building: boolean | undefined
   businessType?: boolean | undefined
   city: boolean | undefined
-  companyName?: boolean | undefined
   hasPhysicalStore?: boolean | undefined
   isHazChem?: boolean | undefined
   isRetailSupplier?: boolean | undefined
@@ -109,7 +106,6 @@ export type SellerValues = {
   businessType?: string
   businessWebsite?: string
   category: string
-  companyName: string
   email: string
   errors?: ErrorsObject
   firstName: string
@@ -168,7 +164,6 @@ const Seller: React.FC = () => {
     beeStatus: user?.business?.beeStatus || '',
     businessPhoneNumber: user?.business?.phoneNumber || '',
     businessType: user?.business?.businessType || '',
-    companyName: user?.companyName || '',
     companyRelated: user?.business?.companyRelated || '',
     email: user?.email || '',
     firstName: user?.firstName || '',
@@ -237,7 +232,6 @@ const Seller: React.FC = () => {
       location,
       idNumber,
       lastName,
-      companyName,
       isHazChem,
       beeStatus,
       firstName,
@@ -269,7 +263,6 @@ const Seller: React.FC = () => {
       businessType,
       suppliedBrands,
       uniqueProducts,
-      companyName,
       registrationNumber,
       countries: [location],
       categories: [category],

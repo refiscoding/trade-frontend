@@ -23,7 +23,7 @@ const PersonalInfo: React.FC = () => {
       </H3>
       <ConnectedFormGroup label="What is your first name?*" name="firstName" type="text" />
       <ConnectedFormGroup label="What is your last name?*" name="lastName" type="text" />
-      <ConnectedFormGroup label="What is your company name?*" name="companyName" type="text" />
+      <ConnectedFormGroup label="What is your company name?*" name="name" type="text" />
       <ConnectedSelect
         placeholder="Select Position"
         label="Select Position* "
