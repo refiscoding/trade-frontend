@@ -58,12 +58,6 @@ const BusinessInfo: React.FC<businessTypes> = ({
           Business Details
         </H3>
         <ConnectedFormGroup
-          label="Business Name*"
-          name="name"
-          type="text"
-          placeholder="Enter the name of your business"
-        />
-        <ConnectedFormGroup
           label="Business Registration Number*"
           name="registrationNumber"
           type="text"
