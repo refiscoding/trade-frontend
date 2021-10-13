@@ -180,7 +180,7 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
   const stepsMap = [
     'Select Delivery Address',
     'Add Delivery Address',
-    'Set Delivery Date and Time',
+    'Order Confirmation',
     'Confirm Order and Pay'
   ]
 
