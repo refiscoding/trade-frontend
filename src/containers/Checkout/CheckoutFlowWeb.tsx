@@ -66,11 +66,7 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
     setShowModal(true)
   }
 
-  const stepsMap = [
-    'Select Delivery Address',
-    'Set Delivery Date and Time',
-    'Confirm Order and Pay'
-  ]
+  const stepsMap = ['Select Delivery Address', 'Confirm Order and Pay']
 
   return (
     <PageWrap title="Checkout" alignSelf="center" width="90%" mt={10} pt={0} p={0}>
@@ -118,7 +114,6 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
               </Flex>
               <StepperContainer style={{ marginTop: 15 }}>
                 <Stepper activeStep={active}>
-                  <Step />
                   <Step />
                   <Step />
                 </Stepper>
