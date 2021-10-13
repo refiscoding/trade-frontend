@@ -3,7 +3,11 @@ import * as Yup from 'yup'
 
 import { Button, Flex, Text, FormLabel } from '@chakra-ui/core'
 import { CATEGORIES } from '../../constants'
-import { ConnectedCheckbox, ConnectedFormGroup } from '../../components/FormElements'
+import {
+  ConnectedCheckbox,
+  ConnectedFormGroup,
+  ConnectedSelect
+} from '../../components/FormElements'
 import { Form, Formik, FormikProps } from 'formik'
 import { formatError } from '../../utils'
 import { H3 } from '../../typography'
@@ -20,6 +24,15 @@ const ProductFormValidation = Yup.object().shape({
   country: Yup.string()
 })
 
+export type Options = {
+  label: string
+  value: string
+}
+
+type ProductTypes = {
+  countries: Options[]
+}
+
 export type ProductValues = {
   minPrice: string
   maxPrice: string
@@ -34,7 +47,7 @@ const initialValues = {
   country: ''
 }
 
-const ProductFilter: React.FC = () => {
+const ProductFilter: React.FC<ProductTypes> = ({ countries }) => {
   const history = useHistory()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
 
@@ -116,11 +129,11 @@ const ProductFilter: React.FC = () => {
                 <ConnectedCheckbox key={i} name="categories" label={item.name} value={item.id} />
               </Flex>
             ))}
-            <ConnectedFormGroup
+            <ConnectedSelect
               label="Select Country"
-              placeholder="Select an option..."
+              placeholder="Select a country..."
               name="country"
-              type="text"
+              options={countries}
             />
             {status && (
               <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
