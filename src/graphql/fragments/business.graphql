@@ -3,34 +3,35 @@
 
 fragment business on Business {
   id
+  annualTurn
+  beeStatus
+  businessType
+  companyRelated
   created_at
-  updated_at
+  hasPhysicalStore
+  hazChem
+  headQuater
+  isHazChem
+  isRetailSupplier
+  isVatRegistered
+  phoneNumber
+  productsSummary
   published_at
   registrationNumber
-  companyRelated
-  isVatRegistered
-  hasPhysicalStore
-  businessType
-  vatNumber
-  isRetailSupplier
-  uniqueProducts
-  suppliedBrands
   revenue
+  suppliedBrands
+  uniqueProducts
+  updated_at
+  vatNumber
+  websiteAddress
+  yearsInOperation
   address {
       ...address
   }
-  dispatchAddress {
-    ...address
-  }
-  productsSummary
-  phoneNumber
-  websiteAddress
-  yearsInOperation
-  beeStatus
-  annualTurn
-  hazChem
-  isHazChem
   countries {
     ...country
+  }
+  dispatchAddress {
+    ...address
   }
 }
