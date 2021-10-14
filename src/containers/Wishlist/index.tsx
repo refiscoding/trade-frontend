@@ -82,7 +82,7 @@ const WishlistPage: React.FC = () => {
       const itemsRemoved = removeProductsFromWishlist?.payload?.removedItems?.length
       const message =
         itemsRemoved === 0
-          ? 'Not items removed from wishlist'
+          ? 'No items removed from wishlist'
           : `Successfully removed ${itemsRemoved} items from wishlist`
       toast({ description: message, ...SUCCESS_TOAST })
       history.push('/wishlist')
