@@ -177,7 +177,12 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
     setShowModal(true)
   }
 
-  const stepsMap = ['Select Delivery Address', 'Add Delivery Address', 'Confirm Order and Pay']
+  const stepsMap = [
+    'Select Delivery Address',
+    'Add Delivery Address',
+    'Order Confirmation',
+    'Confirm Order and Pay'
+  ]
 
   return (
     <PageWrap title="Checkout" alignSelf="center" width="100%">

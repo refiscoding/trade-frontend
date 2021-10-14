@@ -134,7 +134,7 @@ const CheckoutPage: React.FC = () => {
   const confirmationTextCard =
     "You are about to remove one of your payment cards? Once you have removed it, you'll have to re-add it manually to your payment cards"
   const beforeCheckoutText =
-    'Please note that the products in your cart come from different suppliers and might not arrive on the same day. Each product has its associated delivery fees.'
+    'Please note that if the products in your cart come from different suppliers they might not arrive on the same day. Each product has its associated delivery fees.'
 
   const { data: userCart } = useFetchUsersCartQuery({
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })

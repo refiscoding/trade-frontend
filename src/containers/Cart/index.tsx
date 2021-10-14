@@ -66,7 +66,7 @@ const CartPageHeader: React.FC<CartPageHeaderProps> = ({
             justifySelf="end"
             width="70px"
             onClick={onClick}
-            border={`1px solid ${theme.colors.brand[700]}`}
+            border={`1px solid ${theme.colors.brand[500]}`}
             background="white"
           >
             <Text fontSize="12px">EDIT</Text>

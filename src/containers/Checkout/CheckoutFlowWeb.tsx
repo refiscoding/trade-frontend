@@ -67,7 +67,6 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
   }
 
   const stepsMap = ['Select Delivery Address', 'Confirm Order and Pay']
-
   return (
     <PageWrap title="Checkout" alignSelf="center" width="90%" mt={10} pt={0} p={0}>
       <Flex width="100%">

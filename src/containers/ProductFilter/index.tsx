@@ -3,7 +3,11 @@ import * as Yup from 'yup'
 
 import { Button, Flex, Text, FormLabel } from '@chakra-ui/core'
 import { CATEGORIES } from '../../constants'
-import { ConnectedCheckbox, ConnectedFormGroup } from '../../components/FormElements'
+import {
+  ConnectedCheckbox,
+  ConnectedFormGroup,
+  ConnectedSelect
+} from '../../components/FormElements'
 import { Form, Formik, FormikProps } from 'formik'
 import { formatError } from '../../utils'
 import { H3 } from '../../typography'
@@ -11,6 +15,7 @@ import { MotionFlex } from '../../components'
 import { PageWrap } from '../../layouts'
 import { useHistory } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
+import { theme } from '../../theme'
 
 const ProductFormValidation = Yup.object().shape({
   minPrice: Yup.string(),
@@ -18,6 +23,15 @@ const ProductFormValidation = Yup.object().shape({
   category: Yup.array().of(Yup.string()),
   country: Yup.string()
 })
+
+export type Options = {
+  label: string
+  value: string
+}
+
+type ProductTypes = {
+  countries: Options[]
+}
 
 export type ProductValues = {
   minPrice: string
@@ -33,7 +47,7 @@ const initialValues = {
   country: ''
 }
 
-const ProductFilter: React.FC = () => {
+const ProductFilter: React.FC<ProductTypes> = ({ countries }) => {
   const history = useHistory()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
 
@@ -115,11 +129,11 @@ const ProductFilter: React.FC = () => {
                 <ConnectedCheckbox key={i} name="categories" label={item.name} value={item.id} />
               </Flex>
             ))}
-            <ConnectedFormGroup
+            <ConnectedSelect
               label="Select Country"
-              placeholder="Select an option..."
+              placeholder="Select a country..."
               name="country"
-              type="text"
+              options={countries}
             />
             {status && (
               <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
@@ -128,8 +142,27 @@ const ProductFilter: React.FC = () => {
                 </Text>
               </MotionFlex>
             )}
-            <Button mt={4} width="100%" type="submit" variantColor="brand" isLoading={isSubmitting}>
-              APPLY
+            <Button
+              ml={1}
+              mt={4}
+              variantColor="brand"
+              type="submit"
+              isLoading={isSubmitting}
+              width="250px"
+            >
+              <Text>APPLY</Text>
+            </Button>
+            <Button
+              mt={4}
+              ml={8}
+              width="250px"
+              // onClick={() => {
+              //   history.push('/profile')
+              // }}
+              border={`1px solid ${theme.colors.brand[700]}`}
+              background="white"
+            >
+              <Text>CANCEL</Text>
             </Button>
           </Form>
         )}
