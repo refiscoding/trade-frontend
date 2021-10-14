@@ -65,13 +65,7 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
         </Flex>
       </Grid>
       <Grid mb={5} borderTop={`1px dashed #acacac}`}>
-        <Text mt={5} fontWeight={600}>{`Delivery Point`}</Text>
-        <Text
-          mt={5}
-          fontWeight={600}
-          fontSize="1.4rem"
-          color={theme.colors.blueText}
-        >{`Delivery Point`}</Text>
+        <Text mt={5} mb={5} fontWeight={600} fontSize="1.4rem">{`Delivery Point`}</Text>
         <Flex>
           <Text fontWeight={600}> Address name: </Text>
           <Text pl={2}>
@@ -109,7 +103,7 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
           </Text>
         </Flex>
       </Grid>
-      <Grid my={6} gridTemplateColumns="1fr 1fr">
+      <Grid my={3} gridTemplateColumns="1fr 1fr">
         <Text color={theme.colors.blueText} fontWeight={600}>
           Delivery Subtotal
         </Text>
@@ -119,7 +113,7 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
           } ${checkoutTotal}.00`}</Text>
         </Flex>
       </Grid>
-      <Grid my={6} gridTemplateColumns="1fr 1fr">
+      <Grid my={3} gridTemplateColumns="1fr 1fr">
         <Text color={theme.colors.blueText} fontWeight={600}>
           Total
         </Text>
