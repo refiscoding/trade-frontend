@@ -69,7 +69,7 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
       </Grid>
       <Grid my={6} gridTemplateColumns="1fr 1fr">
         <Text color={theme.colors.blueText} fontWeight={600}>
-          Order Total
+          Order Subtotal
         </Text>
         <Flex justifySelf="end">
           <Text color={theme.colors.blueText} fontWeight={600}>{`${
@@ -78,35 +78,13 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
         </Flex>
       </Grid>
       <Grid mb={5} borderTop={`1px dashed #acacac}`}>
-        <Text mt={5} fontWeight={600} fontSize="1.4rem">{`Delivery Method`}</Text>
-        <Flex
-          mt={3}
-          mb={3}
-          borderRadius={3}
-          background={theme.colors.info}
-          p={2}
-          width="100%"
-          height="100px"
-          alignItems="center"
-          justifyItems="space-between"
-        >
-          <Image src={images.infoIcon} height="30%" />
-          <Text fontSize={12} ml={3}>
-            Delivery is not included as part of your total. A TradeFed representative will contact
-            you to arrange for delivery to the address.
-          </Text>
-        </Flex>
+        <Text mt={5} fontWeight={600}>{`Delivery Point`}</Text>
         <Text
-          onClick={handleChangeDeliveryDateTime}
-          mt={3}
-          style={CTAStyles}
-          color={theme.colors.blueText}
-          fontSize={12}
+          mt={5}
           fontWeight={600}
-        >{`Change`}</Text>
-      </Grid>
-      <Grid mb={5} borderTop={`1px dashed #acacac}`}>
-        <Text mt={5} fontWeight={600} fontSize="1.4rem">{`Delivery Point`}</Text>
+          fontSize="1.4rem"
+          color={theme.colors.blueText}
+        >{`Delivery Point`}</Text>
         <Flex>
           <Text fontWeight={600}> Address name: </Text>
           <Text pl={2}>
@@ -143,14 +121,26 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
             {selectedAddress?.postalCode && toSentenceCase(selectedAddress?.postalCode || '-')}
           </Text>
         </Flex>
-        <Text
-          onClick={handleChangeDeliveryAddress}
-          mt={3}
-          style={CTAStyles}
-          color={theme.colors.blueText}
-          fontSize={12}
-          fontWeight={600}
-        >{`Change`}</Text>
+      </Grid>
+      <Grid my={6} gridTemplateColumns="1fr 1fr">
+        <Text color={theme.colors.blueText} fontWeight={600}>
+          Delivery Subtotal
+        </Text>
+        <Flex justifySelf="end">
+          <Text color={theme.colors.blueText} fontWeight={600}>{`${
+            cartProducts && cartProducts[0]?.product?.currency
+          } ${checkoutTotal}.00`}</Text>
+        </Flex>
+      </Grid>
+      <Grid my={6} gridTemplateColumns="1fr 1fr">
+        <Text color={theme.colors.blueText} fontWeight={600}>
+          Total
+        </Text>
+        <Flex justifySelf="end">
+          <Text color={theme.colors.blueText} fontWeight={600}>{`${
+            cartProducts && cartProducts[0]?.product?.currency
+          } ${checkoutTotal}.00`}</Text>
+        </Flex>
       </Grid>
     </Flex>
   )
