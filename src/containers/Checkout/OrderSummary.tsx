@@ -1,10 +1,10 @@
 import * as React from 'react'
-import { Grid, Flex, Image } from '@chakra-ui/core'
+import { Grid, Flex } from '@chakra-ui/core'
 import { Text } from '../../typography'
 
 import ReceiptProduct from './ReceiptProduct'
 
-import { images, theme } from '../../theme'
+import { theme } from '../../theme'
 import { ComponentLocationAddress, ComponentCartCartProduct } from '../../generated/graphql'
 import { toSentenceCase } from '../../utils/toSentenceCase'
 
@@ -20,21 +20,8 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
   cartProducts,
   checkoutTotal,
   mobileFlow,
-  selectedAddress,
-  setActiveStep
+  selectedAddress
 }) => {
-  const CTAStyles = { textDecoration: 'underline', cursor: 'pointer' }
-
-  const handleChangeDeliveryDateTime = () => {
-    if (mobileFlow) {
-      setActiveStep(2)
-    } else {
-      setActiveStep(1)
-    }
-  }
-  const handleChangeDeliveryAddress = () => {
-    setActiveStep(0)
-  }
   return (
     <Flex
       borderRadius={5}
