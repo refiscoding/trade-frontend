@@ -1,12 +1,12 @@
 import * as React from 'react'
-
-import { Flex } from '@chakra-ui/core'
+import { FormLabel, Flex } from '@chakra-ui/core'
 
 import { BEESTATUS, TURNOVER } from '../../constants'
 import { theme } from '../../theme'
 import { SellerValues } from './index'
 import { H3 } from '../../typography'
 import {
+  ConnectedCheckbox,
   ConnectedFormGroup,
   ConnectedNumberInput,
   ConnectedTextArea
@@ -55,23 +55,12 @@ const BusinessInfo: React.FC<businessTypes> = ({
         borderRadius={5}
       >
         <H3 mb={3} fontWeight={550} textAlign="left">
-          Business Details
+          Company Details
         </H3>
-        <ConnectedFormGroup
-          label="Business Registration Number*"
-          name="registrationNumber"
-          type="text"
-          placeholder="Enter business registration number"
-        />
         <ConnectedNumberInput
           label="Business Phone number*"
           name="businessPhoneNumber"
           unit="+27"
-        />
-        <ConnectedFormGroup
-          label="Related/associated company/group"
-          name="companyRelated"
-          type="text"
         />
         <ConnectedFormGroup
           label="Business Website"
@@ -79,18 +68,29 @@ const BusinessInfo: React.FC<businessTypes> = ({
           type="text"
           placeholder="Eg. https://yourbusiness.com"
         />
+        <ConnectedFormGroup
+          label="Business Registration Number*"
+          name="registrationNumber"
+          type="text"
+          placeholder="Enter business registration number"
+        />
         <ConnectedNumberInput label="Years of Operation*" name="yearsOfOperation" />
-        <ConnectedSelect
-          placeholder="Select a Category"
-          label="Category* "
-          name="category"
-          options={categories}
+        <ConnectedFormGroup
+          label="Related/associated company/group"
+          name="companyRelated"
+          type="text"
         />
         <ConnectedSelect
-          placeholder="Select a Country"
-          label="Country of Operation* "
-          name="location"
-          options={countries}
+          label="BEE status*"
+          name="beeStatus"
+          onChange={(e) => setFieldValue('beeStatus', e.target.value)}
+          options={BEESTATUS}
+        />
+        <ConnectedSelect
+          label="Annual turnover (R)*"
+          name="revenue"
+          onChange={(e) => setFieldValue('revenue', e.target.value)}
+          options={TURNOVER}
         />
         <ConnectedSelect
           label="Are you VAT registered?*"
@@ -122,18 +122,6 @@ const BusinessInfo: React.FC<businessTypes> = ({
             type="text"
           />
         )}
-        <ConnectedSelect
-          label="Annual turnover (R)*"
-          name="revenue"
-          onChange={(e) => setFieldValue('revenue', e.target.value)}
-          options={TURNOVER}
-        />
-        <ConnectedSelect
-          label="BEE status*"
-          name="beeStatus"
-          onChange={(e) => setFieldValue('beeStatus', e.target.value)}
-          options={BEESTATUS}
-        />
       </Flex>
       <Flex
         flexDirection="column"
@@ -144,7 +132,7 @@ const BusinessInfo: React.FC<businessTypes> = ({
         borderRadius={5}
       >
         <H3 mb={4} fontWeight={550} textAlign="left">
-          Product Description
+          Tell us more about your business
         </H3>
         <ConnectedNumberInput label="Number of unique products*" name="uniqueProducts" />
         <ConnectedTextArea
@@ -192,6 +180,24 @@ const BusinessInfo: React.FC<businessTypes> = ({
             type="text"
           />
         )}
+        <ConnectedSelect
+          placeholder="Select Head Office"
+          label="Head Office*"
+          name="headQuater"
+          options={countries}
+        />
+        <FormLabel htmlFor="countries">Select Countries of Operation</FormLabel>
+        {countries?.map((item: any, i: number) => (
+          <Flex width="50%" key={`${i}-container`}>
+            <ConnectedCheckbox key={i} name="countries" label={item.label} value={item.label} />
+          </Flex>
+        ))}
+        <FormLabel htmlFor="category">Select Category</FormLabel>
+        {categories?.map((item: any, i: number) => (
+          <Flex width="50%" key={`${i}-container`}>
+            <ConnectedCheckbox key={i} name="category" label={item.label} value={item.id} />
+          </Flex>
+        ))}
         <ConnectedTextArea
           mt={3}
           label="List the brands that you supply* "
