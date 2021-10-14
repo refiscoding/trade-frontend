@@ -1,12 +1,14 @@
-import { Button, Flex, useToast } from '@chakra-ui/core'
-import { Form, Formik, FormikProps } from 'formik'
-import { BEESTATUS, ERROR_TOAST, INDUSTRIES, SUCCESS_TOAST, TURNOVER } from '../../constants'
 import * as React from 'react'
 import * as Yup from 'yup'
-import { MotionFlex } from '../../components'
+
+import { Button, Flex, useToast } from '@chakra-ui/core'
+import { Form, Formik, FormikProps } from 'formik'
+
+import { BEESTATUS, ERROR_TOAST, INDUSTRIES, SUCCESS_TOAST, TURNOVER } from '../../constants'
 import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
-import { H3, Text } from '../../typography'
 import { formatError } from '../../utils'
+import { H3, Text } from '../../typography'
+import { MotionFlex } from '../../components'
 import { useCreateBusinessOnSignUpMutation } from '../../generated/graphql'
 
 type NameProps = {
@@ -14,27 +16,25 @@ type NameProps = {
 }
 
 const NameFormValidation = Yup.object().shape({
-  name: Yup.string().required('A business name is required'),
+  annualTurn: Yup.string().required('Annual turnover of the business is required'),
   beeStatus: Yup.string().required('BEE Status is required'),
-  yearsInOperation: Yup.number().required('Years in operation is required'),
+  businessType: Yup.string().required('The industry of the business is required'),
   phoneNumber: Yup.string().required('Business phone number is required'),
   registrationNumber: Yup.string().required('A registration number is required'),
-  annualTurn: Yup.string().required('Annual turnover of the business is required'),
-  businessType: Yup.string().required('The industry of the business is required')
+  yearsInOperation: Yup.number().required('Years in operation is required'),
 })
 
 type CompanyValues = {
-  name: string
-  beeStatus: string
-  vatNumber: string
-  phoneNumber: string
-  websiteAddress: string
-  registrationNumber: string
-  yearsInOperation: number
-  companyRelated: string
   annualTurn: string
+  beeStatus: string
   businessType: string
+  companyRelated: string
   isVatRegistered: boolean
+  phoneNumber: string
+  registrationNumber: string
+  vatNumber: string
+  websiteAddress: string
+  yearsInOperation: number
 }
 
 const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
@@ -52,27 +52,25 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
 
   const handleSubmit = async (values: CompanyValues) => {
     const {
-      name,
-      beeStatus,
-      phoneNumber,
-      websiteAddress,
-      registrationNumber,
-      yearsInOperation,
-      vatNumber,
-      companyRelated,
-      annualTurn
-    } = values
-    const businessInput = {
-      name,
-      phoneNumber,
-      websiteAddress,
-      registrationNumber,
-      yearsInOperation,
-      vatNumber,
-      companyRelated,
       annualTurn,
       beeStatus,
-      isVatRegistered: vatChecked
+      companyRelated,
+      phoneNumber,
+      registrationNumber,
+      vatNumber,
+      websiteAddress,
+      yearsInOperation,
+    } = values
+    const businessInput = {
+      annualTurn,
+      beeStatus,
+      companyRelated,
+      isVatRegistered: vatChecked,
+      phoneNumber,
+      registrationNumber,
+      vatNumber,
+      websiteAddress,
+      yearsInOperation,
     }
     await createBusinessOnSignUp({ variables: { input: businessInput } })
 
@@ -92,7 +90,6 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       <Formik
         validationSchema={NameFormValidation}
         initialValues={{
-          name: '',
           beeStatus: '',
           phoneNumber: '',
           websiteAddress: '',
@@ -118,7 +115,6 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       >
         {({ isSubmitting, status, setFieldValue }: FormikProps<CompanyValues>) => (
           <Form style={{ width: '100%' }}>
-            <ConnectedFormGroup label="Business Name*" name="name" type="text" />
             <ConnectedFormGroup
               label="Business/Work phone number*"
               name="phoneNumber"
