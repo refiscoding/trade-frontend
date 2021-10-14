@@ -138,7 +138,7 @@ const ProductComponent: React.FC<ProductProps> = ({
             <Flex mt={3}>
               <Briefcase />
               <Text ml={3} fontSize="12px">
-                {`Supplied by ${product?.business?.name}`}
+                {`Supplied by ${product?.business?.owner?.companyName}`}
               </Text>
             </Flex>
             {businessAddress && (

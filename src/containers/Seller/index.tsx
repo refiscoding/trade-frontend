@@ -174,7 +174,7 @@ const Seller: React.FC = () => {
     isRetailSupplier: user?.business?.isRetailSupplier || false,
     isVatRegistered: user?.business?.isVatRegistered || false,
     lastName: user?.lastName || '',
-    name: user?.business?.name || '',
+    name: user?.business?.owner?.companyName || '',
     phoneNumber: user?.phoneNumber || '',
     position: user?.position || '',
     registrationNumber: user?.business?.registrationNumber || '',
