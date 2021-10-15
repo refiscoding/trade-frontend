@@ -163,7 +163,7 @@ const CheckoutPage: React.FC = () => {
   const sessionStorageHooks = useBrowserStorage<UserStorage>(STRAPI_USER_STORAGE_KEY, 'session')
 
   const handlePay = async () => {
-    const HOST = `https://${process.env.REACT_APP_STAGE}.tradefed.sovtech.org`
+    const HOST = `${process.env.REACT_FNB_URL}`
     if (products) {
       const orderInput = {
         deliveryAddress: {
