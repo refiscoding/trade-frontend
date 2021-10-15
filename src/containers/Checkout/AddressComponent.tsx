@@ -65,7 +65,7 @@ const AddressDetailsComponent: React.FC<AddressDetailsComponentProps> = ({ addre
       </Flex>
       <Flex>
         <Text fontSize={14} fontWeight={600}>
-          City:{' '}
+          City:
         </Text>
         <Text fontSize={14} pl={2}>
           {address?.city && toSentenceCase(address?.city || '-')}
@@ -73,8 +73,7 @@ const AddressDetailsComponent: React.FC<AddressDetailsComponentProps> = ({ addre
       </Flex>
       <Flex>
         <Text fontSize={14} fontWeight={600}>
-          {' '}
-          Postal Code:{' '}
+          Postal Code:
         </Text>
         <Text fontSize={14} pl={2}>
           {address?.postalCode && toSentenceCase(address?.postalCode || '-')}

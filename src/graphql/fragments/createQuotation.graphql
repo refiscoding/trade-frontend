@@ -1,6 +1,5 @@
 fragment quotation on Quotation {
   ResultSets {
-    AccNum
     Orig
     OrigCode
     Dest

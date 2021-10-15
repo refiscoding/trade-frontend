@@ -128,25 +128,26 @@ const DeliveryItemsComponent: React.FC<DeliveryItemsComponentProps> = ({
 
 const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
   active,
-  cards,
   addresses,
-  handlePay,
-  cartProducts,
-  setActiveStep,
-  checkoutTotal,
-  selectedAddress,
-  noCardDataHeader,
-  noCardDataCaption,
-  setSelectedAddress,
-  createOrderLoading,
   beforeCheckoutText,
-  showDeleteCardModal,
-  noAddressDataHeader,
-  noAddressDataCaption,
-  confirmationTextCard,
+  cards,
+  cartProducts,
+  checkoutTotal,
   confirmationTextAddress,
+  confirmationTextCard,
+  createOrderLoading,
+  handleDeliveryQuotation,
+  handlePay,
+  noAddressDataCaption,
+  noAddressDataHeader,
+  noCardDataCaption,
+  noCardDataHeader,
+  selectedAddress,
+  setActiveStep,
+  setSelectedAddress,
+  setShowCheckoutSignatoryModal,
   showCheckoutSignatoryModal,
-  setShowCheckoutSignatoryModal
+  showDeleteCardModal
 }) => {
   const [showModal, setShowModal] = React.useState<boolean>(false)
   const [showPaymentOptions, setShowPaymentOptions] = React.useState<boolean>()
@@ -253,6 +254,7 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
                         mobileFlow
                         addresses={addresses}
                         setActive={setActiveStep}
+                        handleDeliveryQuotation={handleDeliveryQuotation}
                         confirmationTextAddress={confirmationTextAddress}
                         setSelectedAddress={setSelectedAddress}
                       />

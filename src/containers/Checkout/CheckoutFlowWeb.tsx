@@ -28,25 +28,26 @@ const Step = styled.div``
 
 const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
   active,
-  cards,
   addresses,
-  handlePay,
+  beforeCheckoutText,
+  cards,
   cartProducts,
   checkoutTotal,
-  setActiveStep,
-  selectedAddress,
-  noCardDataHeader,
-  noCardDataCaption,
-  setSelectedAddress,
-  createOrderLoading,
-  noAddressDataHeader,
-  showDeleteCardModal,
-  noAddressDataCaption,
-  beforeCheckoutText,
-  confirmationTextCard,
   confirmationTextAddress,
+  confirmationTextCard,
+  createOrderLoading,
+  handleDeliveryQuotation,
+  handlePay,
+  noAddressDataCaption,
+  noAddressDataHeader,
+  noCardDataCaption,
+  noCardDataHeader,
+  selectedAddress,
+  setActiveStep,
+  setSelectedAddress,
+  setShowCheckoutSignatoryModal,
   showCheckoutSignatoryModal,
-  setShowCheckoutSignatoryModal
+  showDeleteCardModal,
 }) => {
   const history = useHistory()
   const [showModal, setShowModal] = React.useState<boolean>(false)
@@ -175,6 +176,7 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                       addresses={addresses}
                       setActive={setActiveStep}
                       setSelectedAddress={setSelectedAddress}
+                      handleDeliveryQuotation={handleDeliveryQuotation}
                       confirmationTextAddress={confirmationTextAddress}
                     />
                   )}

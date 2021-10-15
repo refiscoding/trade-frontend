@@ -11,18 +11,19 @@ import CheckoutWebFlow from './CheckoutFlowWeb'
 import CheckoutMobileFlow from './CheckoutFlowMobile'
 
 import { Card } from './CardComponent'
+import { ERROR_TOAST, STRAPI_USER_STORAGE_KEY, SUCCESS_TOAST } from '../../constants'
 import { PageWrap } from '../../layouts'
 import { TimeSlot } from './AddressComponent'
 import { cards } from './dummyData'
 import { useBrowserStorage } from '../../hooks'
 import { useAuthContext } from '../../context/AuthProvider'
 import { StrapiLoginPayload } from '../../utils/strapiHelpers'
-import { ERROR_TOAST, STRAPI_USER_STORAGE_KEY } from '../../constants'
 import {
   useFetchUsersCartQuery,
   ComponentCartCartProduct,
   ComponentLocationAddress,
   useCreateCheckoutOrderMutation,
+  useCreateQuotationMutation,
   useFetchOneUserCheckoutOrderQuery
 } from '../../generated/graphql'
 
@@ -66,29 +67,30 @@ export type TimeSlotProps = {
 
 export type CheckoutProps = {
   active: number
-  cards: Card[]
-  handlePay: () => void
-  checkoutTotal: number
-  noCardDataHeader: string
-  noCardDataCaption: string
-  createOrderLoading: boolean
-  noAddressDataHeader: string
+  addresses?: ComponentLocationAddress[]
   beforeCheckoutText: string
-  confirmationTextCard: string
-  noAddressDataCaption: string
+  cards: Card[]
+  cartProducts: ComponentCartCartProduct[]
+  checkoutTotal: number
   confirmationTextAddress: string
+  confirmationTextCard: string
+  createOrderLoading: boolean
+  handleDeliveryQuotation: any
+  handlePay: () => void
+  noAddressDataCaption: string
+  noAddressDataHeader: string
+  noCardDataCaption: string
+  noCardDataHeader: string
+  selectedAddress: ComponentLocationAddress | undefined
   selectedDeliveryDate: Date | Date[]
   setActiveStep: (step: number) => void
-  addresses?: ComponentLocationAddress[]
-  cartProducts: ComponentCartCartProduct[]
-  showDeleteCardModal: boolean | undefined
-  showDeleteItemsModal: boolean | undefined
-  showCheckoutSignatoryModal: boolean | undefined
-  selectedAddress: ComponentLocationAddress | undefined
+  setSelectedAddress: React.Dispatch<React.SetStateAction<ComponentLocationAddress | undefined>>
+  setShowCheckoutSignatoryModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
   setShowDeleteCardModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
   setShowDeleteItemsModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
-  setShowCheckoutSignatoryModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
-  setSelectedAddress: React.Dispatch<React.SetStateAction<ComponentLocationAddress | undefined>>
+  showCheckoutSignatoryModal: boolean | undefined
+  showDeleteCardModal: boolean | undefined
+  showDeleteItemsModal: boolean | undefined
 }
 
 const CheckoutPage: React.FC = () => {
@@ -149,6 +151,16 @@ const CheckoutPage: React.FC = () => {
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
   })
 
+  const [createQuotation, { data: quotationData }] = useCreateQuotationMutation({
+    onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
+    onCompleted: async () => {
+      toast({ description: 'Delivery quotation created!', ...SUCCESS_TOAST })
+    }
+  })
+
+  const deliveryQuotation = quotationData?.createQuotation
+  console.log('deliveryQuotation', deliveryQuotation)
+
   const setActiveStep = (step: number) => {
     setActive(step)
   }
@@ -161,6 +173,28 @@ const CheckoutPage: React.FC = () => {
 
   const userStorageHooks = useBrowserStorage<UserStorage>(STRAPI_USER_STORAGE_KEY, 'local')
   const sessionStorageHooks = useBrowserStorage<UserStorage>(STRAPI_USER_STORAGE_KEY, 'session')
+
+  const handleDeliveryQuotation = async () => {
+    const createQuotationInput = {
+      origin: 'JOHANNESBURG',
+      originCode: 'JNB',
+      destination: 'DURBAN',
+      destinationCode: 'DUR',
+      totalWeight: 1305,
+      pieces: 4,
+      items: '2,1,4,6,11',
+      length: '1,1,1,1',
+      height: '2,2,2,2',
+      width: '5,5,5,5',
+      weight: '1,1,1,1'
+    }
+
+    await createQuotation({
+      variables: {
+        input: createQuotationInput
+      }
+    })
+  }
 
   const handlePay = async () => {
     const HOST = `https://${process.env.REACT_APP_STAGE}.tradefed.sovtech.org`
@@ -210,57 +244,59 @@ const CheckoutPage: React.FC = () => {
     <PageWrap title="Checkout">
       {isTabletOrMobile ? (
         <CheckoutMobileFlow
-          cards={cards}
           active={active}
           addresses={addresses}
-          handlePay={handlePay}
-          cartProducts={products}
-          setActiveStep={setActiveStep}
-          checkoutTotal={checkoutTotal}
-          selectedAddress={selectedAddress}
-          noCardDataHeader={noCardDataHeader}
-          noCardDataCaption={noCardDataCaption}
-          setSelectedAddress={setSelectedAddress}
-          createOrderLoading={createOrderLoading}
-          noAddressDataHeader={noAddressDataHeader}
-          showDeleteCardModal={showDeleteCardModal}
-          showDeleteItemsModal={showDeleteItemsModal}
-          noAddressDataCaption={noAddressDataCaption}
           beforeCheckoutText={beforeCheckoutText}
-          confirmationTextCard={confirmationTextCard}
-          selectedDeliveryDate={selectedDeliveryDate}
-          setShowDeleteCardModal={setShowDeleteCardModal}
+          cards={cards}
+          cartProducts={products}
+          checkoutTotal={checkoutTotal}
           confirmationTextAddress={confirmationTextAddress}
+          confirmationTextCard={confirmationTextCard}
+          createOrderLoading={createOrderLoading}
+          handleDeliveryQuotation={handleDeliveryQuotation}
+          handlePay={handlePay}
+          noAddressDataCaption={noAddressDataCaption}
+          noAddressDataHeader={noAddressDataHeader}
+          noCardDataCaption={noCardDataCaption}
+          noCardDataHeader={noCardDataHeader}
+          selectedAddress={selectedAddress}
+          selectedDeliveryDate={selectedDeliveryDate}
+          setActiveStep={setActiveStep}
+          setSelectedAddress={setSelectedAddress}
+          setShowCheckoutSignatoryModal={setShowCheckoutSignatoryModal}
+          setShowDeleteCardModal={setShowDeleteCardModal}
           setShowDeleteItemsModal={setShowDeleteItemsModal}
           showCheckoutSignatoryModal={showCheckoutSignatoryModal}
-          setShowCheckoutSignatoryModal={setShowCheckoutSignatoryModal}
+          showDeleteCardModal={showDeleteCardModal}
+          showDeleteItemsModal={showDeleteItemsModal}
         />
       ) : (
         <CheckoutWebFlow
-          cards={cards}
           active={active}
           addresses={addresses}
-          handlePay={handlePay}
-          cartProducts={products}
-          setActiveStep={setActiveStep}
-          checkoutTotal={checkoutTotal}
-          selectedAddress={selectedAddress}
-          noCardDataHeader={noCardDataHeader}
-          noCardDataCaption={noCardDataCaption}
-          setSelectedAddress={setSelectedAddress}
-          createOrderLoading={createOrderLoading}
-          noAddressDataHeader={noAddressDataHeader}
-          showDeleteCardModal={showDeleteCardModal}
-          showDeleteItemsModal={showDeleteItemsModal}
-          noAddressDataCaption={noAddressDataCaption}
           beforeCheckoutText={beforeCheckoutText}
-          confirmationTextCard={confirmationTextCard}
-          selectedDeliveryDate={selectedDeliveryDate}
-          setShowDeleteCardModal={setShowDeleteCardModal}
+          cards={cards}
+          cartProducts={products}
+          checkoutTotal={checkoutTotal}
           confirmationTextAddress={confirmationTextAddress}
+          confirmationTextCard={confirmationTextCard}
+          createOrderLoading={createOrderLoading}
+          handleDeliveryQuotation={handleDeliveryQuotation}
+          handlePay={handlePay}
+          noAddressDataCaption={noAddressDataCaption}
+          noAddressDataHeader={noAddressDataHeader}
+          noCardDataCaption={noCardDataCaption}
+          noCardDataHeader={noCardDataHeader}
+          selectedAddress={selectedAddress}
+          selectedDeliveryDate={selectedDeliveryDate}
+          setActiveStep={setActiveStep}
+          setSelectedAddress={setSelectedAddress}
+          setShowCheckoutSignatoryModal={setShowCheckoutSignatoryModal}
+          setShowDeleteCardModal={setShowDeleteCardModal}
           setShowDeleteItemsModal={setShowDeleteItemsModal}
           showCheckoutSignatoryModal={showCheckoutSignatoryModal}
-          setShowCheckoutSignatoryModal={setShowCheckoutSignatoryModal}
+          showDeleteCardModal={showDeleteCardModal}
+          showDeleteItemsModal={showDeleteItemsModal}
         />
       )}
     </PageWrap>
