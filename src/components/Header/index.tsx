@@ -47,9 +47,8 @@ const HeaderCont = styled(motion.div)<HeaderContProps>`
   align-items: center;
   flex-direction: row;
   box-sizing: border-box;
-  border-bottom-width: 1px;
   justify-content: space-between;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.17);
+  box-shadow: 0 1px 1px 0 #231f20;
   left: ${(props) => (props.open ? '250px' : 0)};
   @media screen and (max-width: 40em) {
     left: 0;
