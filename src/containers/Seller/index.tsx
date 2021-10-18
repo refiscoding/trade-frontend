@@ -329,7 +329,6 @@ const Seller: React.FC = () => {
         onSubmit={async (items, { setStatus, setSubmitting }) => {
           setStatus(null)
           try {
-            console.log(items)
             setSubmitting(true)
             await handleSubmit(items)
             setSubmitting(false)
