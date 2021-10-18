@@ -189,13 +189,13 @@ const BusinessInfo: React.FC<businessTypes> = ({
         <FormLabel htmlFor="countries">Select Countries of Operation</FormLabel>
         {countries?.map((item: any, i: number) => (
           <Flex width="50%" key={`${i}-container`}>
-            <ConnectedCheckbox key={i} name="countries" label={item.label} value={item.label} />
+            <ConnectedCheckbox key={i} name="countries" label={item.label} value={item.value} />
           </Flex>
         ))}
         <FormLabel htmlFor="category">Select Category</FormLabel>
         {categories?.map((item: any, i: number) => (
           <Flex width="50%" key={`${i}-container`}>
-            <ConnectedCheckbox key={i} name="category" label={item.label} value={item.id} />
+            <ConnectedCheckbox key={i} name="categories" label={item.label} value={item.value} />
           </Flex>
         ))}
         <ConnectedTextArea
@@ -203,6 +203,7 @@ const BusinessInfo: React.FC<businessTypes> = ({
           label="List the brands that you supply* "
           name="suppliedBrands"
           type="text"
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
           handleSetTags={() => {}}
         />
       </Flex>

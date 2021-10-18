@@ -12,7 +12,12 @@ export type ConnectedCheckboxProps = LabelProps &
     name: string
   }
 
-const ConnectedCheckbox: React.FC<ConnectedCheckboxProps> = ({ reverse, label, checked, ...rest }) => {
+const ConnectedCheckbox: React.FC<ConnectedCheckboxProps> = ({
+  reverse,
+  label,
+  checked,
+  ...rest
+}) => {
   const [field, meta] = useField(rest.name)
 
   return (
