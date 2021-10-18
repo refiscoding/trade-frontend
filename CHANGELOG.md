@@ -1,3 +1,11 @@
+## [1.9.3](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.9.2...v1.9.3) (2021-10-18)
+
+
+### Bug Fixes
+
+* removed console.log ([b200410](http://bitbucket.org/sovtech/tradefed-frontend/commits/b200410d69052b5154501000df1506ab5eb90d3d))
+* **seller sign up:** country and category submission ([376c5c0](http://bitbucket.org/sovtech/tradefed-frontend/commits/376c5c08bab7aa48e3a26fce404e47385e174f90))
+
 ## [1.9.2](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.9.1...v1.9.2) (2021-07-28)
 
 
