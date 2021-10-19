@@ -190,7 +190,9 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
       {showDeleteCardModal && (
         <DeleteItemsModal
           confirmationText={confirmationTextCard}
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
           handleCancelButtonClicked={() => {}}
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
           handleDeleteButtonClicked={() => {}}
         />
       )}
@@ -220,6 +222,7 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
       <Formik
         validationSchema={DeliveryAddressValidation}
         initialValues={initialDeliveryAddressValues}
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         onSubmit={() => {}}
       >
         {({ errors }) => {

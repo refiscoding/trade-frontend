@@ -161,7 +161,10 @@ const AddressComponent: React.FC<AddressComponentProps> = ({
           isCentered
         >
           <Grid padding={5}>
-            <DeliveryAddressForm editItem={address} />
+            <DeliveryAddressForm
+              editItem={address}
+              onAddressSaved={() => setShowEditModal(false)}
+            />
           </Grid>
         </ModalWrap>
       )}

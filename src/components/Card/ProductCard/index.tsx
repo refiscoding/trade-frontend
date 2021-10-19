@@ -74,7 +74,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       alignItems="center"
       position="relative"
     >
-       {isLoading && <Spinner color="brand.300" />}
+      {isLoading && <Spinner color="brand.300" />}
       {(isCart || isWishlist) && editing && (
         <Input
           name={product?.uniqueIdentifier || ''}
@@ -153,6 +153,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                   isCart
                   productId={product?.uniqueIdentifier || ''}
                   count={productsOnly && productsOnly[0]?.quantity}
+                  available={product?.availableUnits as number}
                   setProductQuantity={() => {
                     return
                   }}

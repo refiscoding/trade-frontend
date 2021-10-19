@@ -48,6 +48,7 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
   setShowCheckoutSignatoryModal,
   showCheckoutSignatoryModal,
   showDeleteCardModal,
+  deliveryQuotation
 }) => {
   const history = useHistory()
   const [showModal, setShowModal] = React.useState<boolean>(false)
@@ -61,6 +62,7 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
   const handleCancelButtonClicked = () => {
     history.push('/cart')
   }
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   const setShowPaymentsOption = () => {}
 
   const handleNext = () => {
@@ -74,7 +76,9 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
         {showDeleteCardModal && (
           <DeleteItemsModal
             confirmationText={confirmationTextCard}
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
             handleCancelButtonClicked={() => {}}
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
             handleDeleteButtonClicked={() => {}}
           />
         )}
@@ -131,6 +135,7 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
               <Formik
                 validationSchema={DeliveryAddressValidation}
                 initialValues={initialDeliveryAddressValues}
+                // eslint-disable-next-line @typescript-eslint/no-empty-function
                 onSubmit={() => {}}
               >
                 {({ errors }) => {
@@ -187,6 +192,7 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                       checkoutTotal={checkoutTotal}
                       selectedAddress={selectedAddress}
                       setActiveStep={setActiveStep}
+                      deliveryQuotation={deliveryQuotation}
                     />
                   )}
                 </Grid>

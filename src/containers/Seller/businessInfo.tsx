@@ -203,6 +203,7 @@ const BusinessInfo: React.FC<businessTypes> = ({
           label="List the brands that you supply* "
           name="suppliedBrands"
           type="text"
+          // eslint-disable-next-line @typescript-eslint/no-empty-function
           handleSetTags={() => {}}
         />
       </Flex>

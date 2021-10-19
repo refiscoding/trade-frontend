@@ -1,7 +1,7 @@
 import * as Yup from 'yup'
 import * as React from 'react'
 
-import { get } from 'lodash'
+import { get, toPairs, groupBy, flatten } from 'lodash'
 import { useToast } from '@chakra-ui/core'
 import { ApolloError } from 'apollo-client'
 import { useMediaQuery } from 'react-responsive'
@@ -24,7 +24,8 @@ import {
   ComponentLocationAddress,
   useCreateCheckoutOrderMutation,
   useCreateQuotationMutation,
-  useFetchOneUserCheckoutOrderQuery
+  useFetchOneUserCheckoutOrderQuery,
+  Quotation
 } from '../../generated/graphql'
 
 type UserStorage = StrapiLoginPayload | null
@@ -42,6 +43,7 @@ export type DeliveryAddressValues = {
   city: string
   suburb: string
   postalCode: string
+  hubCode: string
 }
 
 export const initialDeliveryAddressValues = {
@@ -91,6 +93,7 @@ export type CheckoutProps = {
   showCheckoutSignatoryModal: boolean | undefined
   showDeleteCardModal: boolean | undefined
   showDeleteItemsModal: boolean | undefined
+  deliveryQuotation?: Quotation[]
 }
 
 const CheckoutPage: React.FC = () => {
@@ -158,8 +161,12 @@ const CheckoutPage: React.FC = () => {
     }
   })
 
-  const deliveryQuotation = quotationData?.createQuotation
-  console.log('deliveryQuotation', deliveryQuotation)
+  const deliveryQuotation = quotationData?.createQuotation as Quotation[]
+
+  const deliveryTotals = deliveryQuotation?.map((delivery: Quotation) => {
+    const GrandTotal = get(delivery, 'ResultSets[0][0].GrandTotal', 0)
+    return GrandTotal
+  })
 
   const setActiveStep = (step: number) => {
     setActive(step)
@@ -167,7 +174,10 @@ const CheckoutPage: React.FC = () => {
 
   const products = get(userCart, 'findCart.payload.products', null) as ComponentCartCartProduct[]
 
-  const checkoutTotal = get(userCart, 'findCart.payload.total', null)
+  const checkoutTotal =
+    get(userCart, 'findCart.payload.total', 0) +
+    deliveryTotals?.reduce((total, val) => total + val, 0)
+  const cartId = get(userCart, 'findCart.payload.id', null)
 
   const addresses = user?.address as ComponentLocationAddress[]
 
@@ -175,19 +185,66 @@ const CheckoutPage: React.FC = () => {
   const sessionStorageHooks = useBrowserStorage<UserStorage>(STRAPI_USER_STORAGE_KEY, 'session')
 
   const handleDeliveryQuotation = async () => {
-    const createQuotationInput = {
-      origin: 'JOHANNESBURG',
-      originCode: 'JNB',
-      destination: 'DURBAN',
-      destinationCode: 'DUR',
-      totalWeight: 1305,
-      pieces: 4,
-      items: '2,1,4,6,11',
-      length: '1,1,1,1',
-      height: '2,2,2,2',
-      width: '5,5,5,5',
-      weight: '1,1,1,1'
-    }
+    // group products by originCode/hubCode
+    const deliveries: any = groupBy(
+      products,
+      (product: ComponentCartCartProduct) =>
+        product.product?.business?.dispatchAddress?.hubCode || 'NONE'
+    )
+
+    const createQuotationInput = toPairs(deliveries).map((delivery: any) => {
+      const hubCode: string = delivery[0]
+      const products: ComponentCartCartProduct[] = delivery[1]
+
+      return {
+        cart: cartId,
+        origin: products[0]?.product?.business?.dispatchAddress?.city?.toUpperCase() || '',
+        originCode: hubCode || '',
+        destination: selectedAddress?.city?.toUpperCase() || '',
+        destinationCode: selectedAddress?.hubCode || '',
+        totalWeight: products.reduce(
+          (totalWeight: number, product: ComponentCartCartProduct) =>
+            // quantity and weight should never be possibly null/undefined
+            // TODO: make quantity and weight required in the schema
+            (product.quantity || 0) * (product.product?.weight || 0) + totalWeight,
+          0
+        ),
+        pieces: products.reduce(
+          (totalPieces: number, product: ComponentCartCartProduct) =>
+            totalPieces + (product.quantity || 0),
+          0
+        ),
+        items: products.map((product: ComponentCartCartProduct) => product.product?.id).toString(),
+        length: flatten(
+          products.map((product: ComponentCartCartProduct) => {
+            const lengths: number[] = Array.from(Array(product.quantity || 0))
+            lengths.fill(product.product?.packageLength as number)
+            return lengths
+          })
+        ).toString(),
+        height: flatten(
+          products.map((product: ComponentCartCartProduct) => {
+            const heights: number[] = Array.from(Array(product.quantity || 0))
+            heights.fill(product.product?.packageHeight as number)
+            return heights
+          })
+        ).toString(),
+        width: flatten(
+          products.map((product: ComponentCartCartProduct) => {
+            const widths: number[] = Array.from(Array(product.quantity || 0))
+            widths.fill(product.product?.packageWidth as number)
+            return widths
+          })
+        ).toString(),
+        weight: flatten(
+          products.map((product: ComponentCartCartProduct) => {
+            const widths: number[] = Array.from(Array(product.quantity || 0))
+            widths.fill(product.product?.packageWeight as number)
+            return widths
+          })
+        ).toString()
+      }
+    })
 
     await createQuotation({
       variables: {
@@ -197,7 +254,7 @@ const CheckoutPage: React.FC = () => {
   }
 
   const handlePay = async () => {
-    const HOST = `https://${process.env.REACT_APP_STAGE}.tradefed.sovtech.org`
+    const HOST = `https://${process.env.REACT_APP_STAGE}.tradefed.co.za`
     if (products) {
       const orderInput = {
         deliveryAddress: {
@@ -269,6 +326,7 @@ const CheckoutPage: React.FC = () => {
           showCheckoutSignatoryModal={showCheckoutSignatoryModal}
           showDeleteCardModal={showDeleteCardModal}
           showDeleteItemsModal={showDeleteItemsModal}
+          deliveryQuotation={deliveryQuotation}
         />
       ) : (
         <CheckoutWebFlow
@@ -297,6 +355,7 @@ const CheckoutPage: React.FC = () => {
           showCheckoutSignatoryModal={showCheckoutSignatoryModal}
           showDeleteCardModal={showDeleteCardModal}
           showDeleteItemsModal={showDeleteItemsModal}
+          deliveryQuotation={deliveryQuotation}
         />
       )}
     </PageWrap>
