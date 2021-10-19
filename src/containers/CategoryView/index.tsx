@@ -59,19 +59,19 @@ const Home: React.FC = () => {
     if (category?.name === 'Agriculture') {
       return images?.agricultureBanner || null
     } else if (category?.name === 'Automotive') {
-      return null
+      return images?.automotiveBanner || null
     } else if (category?.name === 'Electrical Equipment') {
-      return null
+      return images?.electricalBanner || null
     } else if (category?.name === 'Food Ingredients') {
-      return images?.foodBanner || null
+      return images?.electricalBanner || null
     } else if (category?.name === 'Heavy Machinery') {
-      return null
+      return images?.heavyBanner || null
     } else if (category?.name === 'Industrial') {
-      return null
+      return images?.foodBanner || null
     } else if (category?.name === 'Lighting') {
-      return null
+      return images?.lightingBanner || null
     } else if (category?.name === 'Mining') {
-      return null
+      return images?.miningBanner || null
     } else {
       return null
     }
