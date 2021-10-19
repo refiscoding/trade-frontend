@@ -19,7 +19,7 @@ const HomeBanner: React.FC<HomeBannerProps> = ({ image, headerColor, headerMargi
       width="100vw"
       minHeight={isTabletOrMobile ? '450px' : '400px'}
       bg={'#231F20'}
-      mr="10px"
+      mr="16px"
       flexDirection="column"
       alignItems="center"
     >
