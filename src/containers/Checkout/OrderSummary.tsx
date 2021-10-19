@@ -1,11 +1,16 @@
 import * as React from 'react'
 import { Grid, Flex } from '@chakra-ui/core'
 import { Text } from '../../typography'
+import { get } from 'lodash'
 
 import ReceiptProduct from './ReceiptProduct'
 
 import { theme } from '../../theme'
-import { ComponentLocationAddress, ComponentCartCartProduct } from '../../generated/graphql'
+import {
+  ComponentLocationAddress,
+  ComponentCartCartProduct,
+  Quotation
+} from '../../generated/graphql'
 import { toSentenceCase } from '../../utils/toSentenceCase'
 
 type OrderSummaryComponentProps = {
@@ -14,14 +19,21 @@ type OrderSummaryComponentProps = {
   mobileFlow: boolean
   selectedAddress: ComponentLocationAddress | undefined
   setActiveStep: (step: number) => void
+  deliveryQuotation?: Quotation[]
 }
 
 const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
   cartProducts,
   checkoutTotal,
   mobileFlow,
-  selectedAddress
+  selectedAddress,
+  deliveryQuotation
 }) => {
+  const deliveryTotals = deliveryQuotation?.map((delivery: Quotation) => {
+    const GrandTotal = get(delivery, 'ResultSets[0][0].GrandTotal', null)
+    return GrandTotal
+  })
+
   return (
     <Flex
       borderRadius={5}
@@ -110,7 +122,7 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
         <Flex justifySelf="end">
           <Text color={theme.colors.blueText} fontWeight={600}>{`${
             cartProducts && cartProducts[0]?.product?.currency
-          } ${checkoutTotal}.00`}</Text>
+          } ${deliveryTotals?.reduce((total, val) => total + val, 0)}.00`}</Text>
         </Flex>
       </Grid>
       <Grid my={3} gridTemplateColumns="1fr 1fr">

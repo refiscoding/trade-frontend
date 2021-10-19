@@ -1,7 +1,7 @@
 import * as Yup from 'yup'
 import * as React from 'react'
 
-import { get } from 'lodash'
+import { get, toPairs, groupBy, flatten } from 'lodash'
 import { useToast } from '@chakra-ui/core'
 import { ApolloError } from 'apollo-client'
 import { useMediaQuery } from 'react-responsive'
@@ -11,19 +11,21 @@ import CheckoutWebFlow from './CheckoutFlowWeb'
 import CheckoutMobileFlow from './CheckoutFlowMobile'
 
 import { Card } from './CardComponent'
+import { ERROR_TOAST, STRAPI_USER_STORAGE_KEY, SUCCESS_TOAST } from '../../constants'
 import { PageWrap } from '../../layouts'
 import { TimeSlot } from './AddressComponent'
 import { cards } from './dummyData'
 import { useBrowserStorage } from '../../hooks'
 import { useAuthContext } from '../../context/AuthProvider'
 import { StrapiLoginPayload } from '../../utils/strapiHelpers'
-import { ERROR_TOAST, STRAPI_USER_STORAGE_KEY } from '../../constants'
 import {
   useFetchUsersCartQuery,
   ComponentCartCartProduct,
   ComponentLocationAddress,
   useCreateCheckoutOrderMutation,
-  useFetchOneUserCheckoutOrderQuery
+  useCreateQuotationMutation,
+  useFetchOneUserCheckoutOrderQuery,
+  Quotation
 } from '../../generated/graphql'
 
 type UserStorage = StrapiLoginPayload | null
@@ -41,6 +43,7 @@ export type DeliveryAddressValues = {
   city: string
   suburb: string
   postalCode: string
+  hubCode: string
 }
 
 export const initialDeliveryAddressValues = {
@@ -66,29 +69,31 @@ export type TimeSlotProps = {
 
 export type CheckoutProps = {
   active: number
-  cards: Card[]
-  handlePay: () => void
-  checkoutTotal: number
-  noCardDataHeader: string
-  noCardDataCaption: string
-  createOrderLoading: boolean
-  noAddressDataHeader: string
+  addresses?: ComponentLocationAddress[]
   beforeCheckoutText: string
-  confirmationTextCard: string
-  noAddressDataCaption: string
+  cards: Card[]
+  cartProducts: ComponentCartCartProduct[]
+  checkoutTotal: number
   confirmationTextAddress: string
+  confirmationTextCard: string
+  createOrderLoading: boolean
+  handleDeliveryQuotation: any
+  handlePay: () => void
+  noAddressDataCaption: string
+  noAddressDataHeader: string
+  noCardDataCaption: string
+  noCardDataHeader: string
+  selectedAddress: ComponentLocationAddress | undefined
   selectedDeliveryDate: Date | Date[]
   setActiveStep: (step: number) => void
-  addresses?: ComponentLocationAddress[]
-  cartProducts: ComponentCartCartProduct[]
-  showDeleteCardModal: boolean | undefined
-  showDeleteItemsModal: boolean | undefined
-  showCheckoutSignatoryModal: boolean | undefined
-  selectedAddress: ComponentLocationAddress | undefined
+  setSelectedAddress: React.Dispatch<React.SetStateAction<ComponentLocationAddress | undefined>>
+  setShowCheckoutSignatoryModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
   setShowDeleteCardModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
   setShowDeleteItemsModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
-  setShowCheckoutSignatoryModal: React.Dispatch<React.SetStateAction<boolean | undefined>>
-  setSelectedAddress: React.Dispatch<React.SetStateAction<ComponentLocationAddress | undefined>>
+  showCheckoutSignatoryModal: boolean | undefined
+  showDeleteCardModal: boolean | undefined
+  showDeleteItemsModal: boolean | undefined
+  deliveryQuotation?: Quotation[]
 }
 
 const CheckoutPage: React.FC = () => {
@@ -149,18 +154,104 @@ const CheckoutPage: React.FC = () => {
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })
   })
 
+  const [createQuotation, { data: quotationData }] = useCreateQuotationMutation({
+    onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
+    onCompleted: async () => {
+      toast({ description: 'Delivery quotation created!', ...SUCCESS_TOAST })
+    }
+  })
+
+  const deliveryQuotation = quotationData?.createQuotation as Quotation[]
+
+  const deliveryTotals = deliveryQuotation?.map((delivery: Quotation) => {
+    const GrandTotal = get(delivery, 'ResultSets[0][0].GrandTotal', 0)
+    return GrandTotal
+  })
+
   const setActiveStep = (step: number) => {
     setActive(step)
   }
 
   const products = get(userCart, 'findCart.payload.products', null) as ComponentCartCartProduct[]
 
-  const checkoutTotal = get(userCart, 'findCart.payload.total', null)
+  const checkoutTotal =
+    get(userCart, 'findCart.payload.total', 0) +
+    deliveryTotals?.reduce((total, val) => total + val, 0)
+  const cartId = get(userCart, 'findCart.payload.id', null)
 
   const addresses = user?.address as ComponentLocationAddress[]
 
   const userStorageHooks = useBrowserStorage<UserStorage>(STRAPI_USER_STORAGE_KEY, 'local')
   const sessionStorageHooks = useBrowserStorage<UserStorage>(STRAPI_USER_STORAGE_KEY, 'session')
+
+  const handleDeliveryQuotation = async () => {
+    // group products by originCode/hubCode
+    const deliveries: any = groupBy(
+      products,
+      (product: ComponentCartCartProduct) =>
+        product.product?.business?.dispatchAddress?.hubCode || 'NONE'
+    )
+
+    const createQuotationInput = toPairs(deliveries).map((delivery: any) => {
+      const hubCode: string = delivery[0]
+      const products: ComponentCartCartProduct[] = delivery[1]
+
+      return {
+        cart: cartId,
+        origin: products[0]?.product?.business?.dispatchAddress?.city?.toUpperCase() || '',
+        originCode: hubCode || '',
+        destination: selectedAddress?.city?.toUpperCase() || '',
+        destinationCode: selectedAddress?.hubCode || '',
+        totalWeight: products.reduce(
+          (totalWeight: number, product: ComponentCartCartProduct) =>
+            // quantity and weight should never be possibly null/undefined
+            // TODO: make quantity and weight required in the schema
+            (product.quantity || 0) * (product.product?.weight || 0) + totalWeight,
+          0
+        ),
+        pieces: products.reduce(
+          (totalPieces: number, product: ComponentCartCartProduct) =>
+            totalPieces + (product.quantity || 0),
+          0
+        ),
+        items: products.map((product: ComponentCartCartProduct) => product.product?.id).toString(),
+        length: flatten(
+          products.map((product: ComponentCartCartProduct) => {
+            const lengths: number[] = Array.from(Array(product.quantity || 0))
+            lengths.fill(product.product?.packageLength as number)
+            return lengths
+          })
+        ).toString(),
+        height: flatten(
+          products.map((product: ComponentCartCartProduct) => {
+            const heights: number[] = Array.from(Array(product.quantity || 0))
+            heights.fill(product.product?.packageHeight as number)
+            return heights
+          })
+        ).toString(),
+        width: flatten(
+          products.map((product: ComponentCartCartProduct) => {
+            const widths: number[] = Array.from(Array(product.quantity || 0))
+            widths.fill(product.product?.packageWidth as number)
+            return widths
+          })
+        ).toString(),
+        weight: flatten(
+          products.map((product: ComponentCartCartProduct) => {
+            const widths: number[] = Array.from(Array(product.quantity || 0))
+            widths.fill(product.product?.packageWeight as number)
+            return widths
+          })
+        ).toString()
+      }
+    })
+
+    await createQuotation({
+      variables: {
+        input: createQuotationInput
+      }
+    })
+  }
 
   const handlePay = async () => {
     const HOST = `${process.env.REACT_FNB_URL}`
@@ -210,57 +301,61 @@ const CheckoutPage: React.FC = () => {
     <PageWrap title="Checkout">
       {isTabletOrMobile ? (
         <CheckoutMobileFlow
-          cards={cards}
           active={active}
           addresses={addresses}
-          handlePay={handlePay}
-          cartProducts={products}
-          setActiveStep={setActiveStep}
-          checkoutTotal={checkoutTotal}
-          selectedAddress={selectedAddress}
-          noCardDataHeader={noCardDataHeader}
-          noCardDataCaption={noCardDataCaption}
-          setSelectedAddress={setSelectedAddress}
-          createOrderLoading={createOrderLoading}
-          noAddressDataHeader={noAddressDataHeader}
-          showDeleteCardModal={showDeleteCardModal}
-          showDeleteItemsModal={showDeleteItemsModal}
-          noAddressDataCaption={noAddressDataCaption}
           beforeCheckoutText={beforeCheckoutText}
-          confirmationTextCard={confirmationTextCard}
-          selectedDeliveryDate={selectedDeliveryDate}
-          setShowDeleteCardModal={setShowDeleteCardModal}
+          cards={cards}
+          cartProducts={products}
+          checkoutTotal={checkoutTotal}
           confirmationTextAddress={confirmationTextAddress}
+          confirmationTextCard={confirmationTextCard}
+          createOrderLoading={createOrderLoading}
+          handleDeliveryQuotation={handleDeliveryQuotation}
+          handlePay={handlePay}
+          noAddressDataCaption={noAddressDataCaption}
+          noAddressDataHeader={noAddressDataHeader}
+          noCardDataCaption={noCardDataCaption}
+          noCardDataHeader={noCardDataHeader}
+          selectedAddress={selectedAddress}
+          selectedDeliveryDate={selectedDeliveryDate}
+          setActiveStep={setActiveStep}
+          setSelectedAddress={setSelectedAddress}
+          setShowCheckoutSignatoryModal={setShowCheckoutSignatoryModal}
+          setShowDeleteCardModal={setShowDeleteCardModal}
           setShowDeleteItemsModal={setShowDeleteItemsModal}
           showCheckoutSignatoryModal={showCheckoutSignatoryModal}
-          setShowCheckoutSignatoryModal={setShowCheckoutSignatoryModal}
+          showDeleteCardModal={showDeleteCardModal}
+          showDeleteItemsModal={showDeleteItemsModal}
+          deliveryQuotation={deliveryQuotation}
         />
       ) : (
         <CheckoutWebFlow
-          cards={cards}
           active={active}
           addresses={addresses}
-          handlePay={handlePay}
-          cartProducts={products}
-          setActiveStep={setActiveStep}
-          checkoutTotal={checkoutTotal}
-          selectedAddress={selectedAddress}
-          noCardDataHeader={noCardDataHeader}
-          noCardDataCaption={noCardDataCaption}
-          setSelectedAddress={setSelectedAddress}
-          createOrderLoading={createOrderLoading}
-          noAddressDataHeader={noAddressDataHeader}
-          showDeleteCardModal={showDeleteCardModal}
-          showDeleteItemsModal={showDeleteItemsModal}
-          noAddressDataCaption={noAddressDataCaption}
           beforeCheckoutText={beforeCheckoutText}
-          confirmationTextCard={confirmationTextCard}
-          selectedDeliveryDate={selectedDeliveryDate}
-          setShowDeleteCardModal={setShowDeleteCardModal}
+          cards={cards}
+          cartProducts={products}
+          checkoutTotal={checkoutTotal}
           confirmationTextAddress={confirmationTextAddress}
+          confirmationTextCard={confirmationTextCard}
+          createOrderLoading={createOrderLoading}
+          handleDeliveryQuotation={handleDeliveryQuotation}
+          handlePay={handlePay}
+          noAddressDataCaption={noAddressDataCaption}
+          noAddressDataHeader={noAddressDataHeader}
+          noCardDataCaption={noCardDataCaption}
+          noCardDataHeader={noCardDataHeader}
+          selectedAddress={selectedAddress}
+          selectedDeliveryDate={selectedDeliveryDate}
+          setActiveStep={setActiveStep}
+          setSelectedAddress={setSelectedAddress}
+          setShowCheckoutSignatoryModal={setShowCheckoutSignatoryModal}
+          setShowDeleteCardModal={setShowDeleteCardModal}
           setShowDeleteItemsModal={setShowDeleteItemsModal}
           showCheckoutSignatoryModal={showCheckoutSignatoryModal}
-          setShowCheckoutSignatoryModal={setShowCheckoutSignatoryModal}
+          showDeleteCardModal={showDeleteCardModal}
+          showDeleteItemsModal={showDeleteItemsModal}
+          deliveryQuotation={deliveryQuotation}
         />
       )}
     </PageWrap>

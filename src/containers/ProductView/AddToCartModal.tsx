@@ -134,21 +134,20 @@ export const QuantitySelectComponent: React.FC<QuantityComponentProps> = ({
   const errorColor = '#f53131'
 
   const increment = async () => {
-    if (isCart) {
-      await incrementItem({
-        variables: {
-          input: {
-            productToReduce: productId
-          }
-        }
-      })
-    } else {
-      if (available) {
-        const outOfStock = currentNumber >= available
-        if (outOfStock) {
-          setCurrentNumberColor(errorColor)
-        } else {
-          setCurrentNumber((currentNumber || 1) + 1)
+    if (available) {
+      const outOfStock = currentNumber >= available
+      if (outOfStock) {
+        setCurrentNumberColor(errorColor)
+      } else {
+        setCurrentNumber((currentNumber || 1) + 1)
+        if (isCart) {
+          await incrementItem({
+            variables: {
+              input: {
+                productToReduce: productId
+              }
+            }
+          })
         }
       }
     }
