@@ -12,10 +12,7 @@ type HeroProps = ColorProps & {
   isCategory?: boolean
 }
 
-const Hero: React.FC<HeroProps> = ({
-  image,
-  isCategory
-}) => {
+const Hero: React.FC<HeroProps> = ({ image, isCategory }) => {
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   return (
     <Flex
