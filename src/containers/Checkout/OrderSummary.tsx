@@ -73,7 +73,7 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
         <Flex justifySelf="end">
           <Text color={theme.colors.blueText} fontWeight={600}>{`${
             cartProducts && cartProducts[0]?.product?.currency
-          } ${checkoutTotal}.00`}</Text>
+          } ${checkoutTotal.toFixed(2)}`}</Text>
         </Flex>
       </Grid>
       <Grid mb={5} borderTop={`1px dashed #acacac}`}>
@@ -122,7 +122,7 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
         <Flex justifySelf="end">
           <Text color={theme.colors.blueText} fontWeight={600}>{`${
             cartProducts && cartProducts[0]?.product?.currency
-          } ${deliveryTotals?.reduce((total, val) => total + val, 0)}.00`}</Text>
+          } ${deliveryTotals?.reduce((total, val) => total + val, 0).toFixed(2)}`}</Text>
         </Flex>
       </Grid>
       <Grid my={3} gridTemplateColumns="1fr 1fr">
@@ -132,7 +132,7 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
         <Flex justifySelf="end">
           <Text color={theme.colors.blueText} fontWeight={600}>{`${
             cartProducts && cartProducts[0]?.product?.currency
-          } ${checkoutTotal}.00`}</Text>
+          } ${checkoutTotal.toFixed(2)}`}</Text>
         </Flex>
       </Grid>
     </Flex>
