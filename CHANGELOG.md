@@ -1,3 +1,10 @@
+# [1.10.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.9.3...v1.10.0) (2021-10-19)
+
+
+### Features
+
+* **checkout:** add delivery quote to order totals ([9e08dcc](http://bitbucket.org/sovtech/tradefed-frontend/commits/9e08dcccbd5ff540ee934dd7fafca8ff3990d285))
+
 ## [1.9.3](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.9.2...v1.9.3) (2021-10-18)
 
 
