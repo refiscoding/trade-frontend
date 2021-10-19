@@ -135,7 +135,7 @@ const OrderReturnProduct: React.FC<OrderReturnProductProps> = ({
           </Text>
           <Flex justify="space-between">
             <Text color={`${refundable ? '' : '#acacac'}`} fontSize="12px">
-              {`${product?.currency} ${product?.tradeFedCost}.00`}
+              {`${product?.currency} ${product?.tradeFedCost?.toFixed(2)}`}
             </Text>
             {hasReturnRequest && (
               <Flex mr={2}>
@@ -348,6 +348,7 @@ const OrderReturns: React.FC<OrderReturnsProps> = ({
                     minHeight={`180px`}
                     name="returnComment"
                     value={returnComment}
+                    // eslint-disable-next-line @typescript-eslint/no-empty-function
                     handleSetTags={() => {}}
                     label="Comment(Optional)"
                     placeholder="Comments (Any additional information)"
