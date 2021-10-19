@@ -254,7 +254,7 @@ const CheckoutPage: React.FC = () => {
   }
 
   const handlePay = async () => {
-    const HOST = `https://${process.env.REACT_APP_STAGE}.tradefed.co.za`
+    const HOST = `${process.env.REACT_FNB_URL}`
     if (products) {
       const orderInput = {
         deliveryAddress: {
