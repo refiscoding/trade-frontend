@@ -17,16 +17,15 @@ const Hero: React.FC<HeroProps> = ({ image, isCategory }) => {
   return (
     <Flex
       width="100vw"
-      minHeight={isTabletOrMobile ? '200px' : isCategory ? '450px' : '400px'}
-      bg={isCategory ? 'rgba(0,0,0,0.2)' : '#231F20'}
+      minHeight={isTabletOrMobile ? '200px' : isCategory ? '450px' : '380px'}
       justifyContent={isCategory ? 'center' : 'flex-start'}
-      mr="10px"
+      mr="16px"
       flexDirection="column"
       alignItems="center"
     >
       <Flex
         width="100vw"
-        minHeight={isTabletOrMobile ? '200px' : isCategory ? '500px' : '500px'}
+        minHeight={isTabletOrMobile ? '200px' : isCategory ? '450px' : '400px'}
         backgroundImage={`url(${image})`}
         backgroundPosition="center"
         backgroundSize={isTabletOrMobile && !isCategory ? 'contain' : 'contain'}

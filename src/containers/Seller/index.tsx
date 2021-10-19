@@ -102,7 +102,7 @@ export type TouchedErrors = {
   revenue?: boolean | undefined
   street: boolean | undefined
   suburb: boolean | undefined
-  //hazChem?: boolean | undefined
+  hazChem?: boolean | undefined
 }
 
 export type SellerValues = {
@@ -117,7 +117,7 @@ export type SellerValues = {
   firstName: string
   hasPhysicalStore: boolean
   hazChem: string
-  headQuater: string
+  // headQuater: string
   isHazChem: boolean
   isRetailSupplier: boolean
   isVatRegistered: boolean
@@ -174,7 +174,7 @@ const Seller: React.FC = () => {
     firstName: user?.firstName || '',
     hasPhysicalStore: user?.business?.hasPhysicalStore || false,
     hazChem: user?.business?.hazChem || '',
-    headQuater: user?.business?.headQuater || '',
+    // headQuater: user?.business?.headQuater || '',
     isHazChem: user?.business?.isHazChem || false,
     isRetailSupplier: user?.business?.isRetailSupplier || false,
     isVatRegistered: user?.business?.isVatRegistered || false,
@@ -238,7 +238,7 @@ const Seller: React.FC = () => {
       products,
       lastName,
       isHazChem,
-      headQuater,
+      // headQuater,
       beeStatus,
       firstName,
       vatNumber,
@@ -267,7 +267,7 @@ const Seller: React.FC = () => {
       vatNumber,
       businessType,
       uniqueProducts,
-      headQuater,
+      // headQuater,
       suppliedBrands,
       yearsInOperation,
       registrationNumber,
