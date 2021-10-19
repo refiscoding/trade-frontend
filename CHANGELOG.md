@@ -1,3 +1,10 @@
+## [1.10.1](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.10.0...v1.10.1) (2021-10-19)
+
+
+### Bug Fixes
+
+* **cart:** include quantity in displayed pricing ([b4e1736](http://bitbucket.org/sovtech/tradefed-frontend/commits/b4e1736fe190cd654eda9b1d39812124c787649d))
+
 # [1.10.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.9.3...v1.10.0) (2021-10-19)
 
 
