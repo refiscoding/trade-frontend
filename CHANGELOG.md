@@ -1,3 +1,16 @@
+# [1.11.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.10.1...v1.11.0) (2021-10-20)
+
+
+### Bug Fixes
+
+* **menu:** dynamic hamburger icon styling ([9d9a8f8](http://bitbucket.org/sovtech/tradefed-frontend/commits/9d9a8f8dc074d4826b70e359f42ea89e0ab9c47d))
+* **searchbar:** update icon and text colour to white ([bc4e5da](http://bitbucket.org/sovtech/tradefed-frontend/commits/bc4e5da07d0eb58147b8ea5495c9417f1645d4ea))
+
+
+### Features
+
+* **checkout:** add out of stock modal ([44e1c04](http://bitbucket.org/sovtech/tradefed-frontend/commits/44e1c04a60bcdb416af681a156c2ca73e0357028))
+
 ## [1.10.1](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.10.0...v1.10.1) (2021-10-19)
 
 
