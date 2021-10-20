@@ -2,15 +2,18 @@ import * as Yup from 'yup'
 import * as React from 'react'
 
 import { get, toPairs, groupBy, flatten } from 'lodash'
-import { useToast } from '@chakra-ui/core'
+import { Grid, useToast } from '@chakra-ui/core'
 import { ApolloError } from 'apollo-client'
 import { useMediaQuery } from 'react-responsive'
 import { useLocation, useHistory } from 'react-router'
+import { Text } from '../../typography'
 
 import CheckoutWebFlow from './CheckoutFlowWeb'
 import CheckoutMobileFlow from './CheckoutFlowMobile'
+import ReceiptProduct from './ReceiptProduct'
 
 import { Card } from './CardComponent'
+import ModalWrap from '../../components/ModalWrap'
 import { ERROR_TOAST, STRAPI_USER_STORAGE_KEY, SUCCESS_TOAST } from '../../constants'
 import { PageWrap } from '../../layouts'
 import { TimeSlot } from './AddressComponent'
@@ -78,6 +81,7 @@ export type CheckoutProps = {
   confirmationTextCard: string
   createOrderLoading: boolean
   handleDeliveryQuotation: any
+  handleOutOfStockCheck: () => void
   handlePay: () => void
   noAddressDataCaption: string
   noAddressDataHeader: string
@@ -102,6 +106,7 @@ const CheckoutPage: React.FC = () => {
   const location = useLocation()
   const history = useHistory()
   const [active, setActive] = React.useState<number>(0)
+  const [itemsOutOfStockModalOpen, setItemsOutOfStockModalOpen] = React.useState<boolean>(false)
   const [selectedAddress, setSelectedAddress] = React.useState<
     ComponentLocationAddress | undefined
   >()
@@ -172,7 +177,22 @@ const CheckoutPage: React.FC = () => {
     setActive(step)
   }
 
-  const products = get(userCart, 'findCart.payload.products', null) as ComponentCartCartProduct[]
+  const allCartProducts = get(
+    userCart,
+    'findCart.payload.products',
+    []
+  ) as ComponentCartCartProduct[]
+
+  const outOfStockProducts: ComponentCartCartProduct[] = []
+  const products: ComponentCartCartProduct[] = allCartProducts.filter(
+    (product: ComponentCartCartProduct) => {
+      const insufficientStock = (product.product?.availableUnits || 1) - (product.quantity || 1)
+      if (insufficientStock < 0) {
+        outOfStockProducts.push(product)
+      }
+      return insufficientStock >= 0
+    }
+  )
 
   const checkoutTotal =
     get(userCart, 'findCart.payload.total', 0) +
@@ -183,6 +203,13 @@ const CheckoutPage: React.FC = () => {
 
   const userStorageHooks = useBrowserStorage<UserStorage>(STRAPI_USER_STORAGE_KEY, 'local')
   const sessionStorageHooks = useBrowserStorage<UserStorage>(STRAPI_USER_STORAGE_KEY, 'session')
+
+  const handleOutOfStockCheck = () => {
+    if (outOfStockProducts.length > 0) {
+      setItemsOutOfStockModalOpen(true)
+    }
+    return
+  }
 
   const handleDeliveryQuotation = async () => {
     // group products by originCode/hubCode
@@ -327,6 +354,7 @@ const CheckoutPage: React.FC = () => {
           showDeleteCardModal={showDeleteCardModal}
           showDeleteItemsModal={showDeleteItemsModal}
           deliveryQuotation={deliveryQuotation}
+          handleOutOfStockCheck={handleOutOfStockCheck}
         />
       ) : (
         <CheckoutWebFlow
@@ -356,8 +384,41 @@ const CheckoutPage: React.FC = () => {
           showDeleteCardModal={showDeleteCardModal}
           showDeleteItemsModal={showDeleteItemsModal}
           deliveryQuotation={deliveryQuotation}
+          handleOutOfStockCheck={handleOutOfStockCheck}
         />
       )}
+      <ModalWrap
+        title="Products out of stock"
+        isOpen={itemsOutOfStockModalOpen}
+        onClose={() => {
+          setItemsOutOfStockModalOpen(false)
+        }}
+        isCentered
+      >
+        <Grid
+          p={5}
+          rowGap="10px"
+          height="300px"
+          overflowY="scroll"
+          alignContent="start"
+          alignItems="center"
+        >
+          <Text mt={4} fontSize="14px" textAlign="center">
+            {`The following products have been removed from your order as they are out of stock.`}
+          </Text>
+          {outOfStockProducts?.map((item: ComponentCartCartProduct, index: number) => {
+            const { product, quantity } = item
+            return (
+              <ReceiptProduct
+                key={`${index}_checkout_product`}
+                mobileFlow={false}
+                product={product}
+                quantity={quantity}
+              />
+            )
+          })}
+        </Grid>
+      </ModalWrap>
     </PageWrap>
   )
 }

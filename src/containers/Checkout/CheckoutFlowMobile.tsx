@@ -137,6 +137,7 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
   confirmationTextCard,
   createOrderLoading,
   handleDeliveryQuotation,
+  handleOutOfStockCheck,
   handlePay,
   noAddressDataCaption,
   noAddressDataHeader,
@@ -257,6 +258,7 @@ const CheckoutFlowMobile: React.FC<CheckoutProps> = ({
                         mobileFlow
                         addresses={addresses}
                         setActive={setActiveStep}
+                        handleOutOfStockCheck={handleOutOfStockCheck}
                         handleDeliveryQuotation={handleDeliveryQuotation}
                         confirmationTextAddress={confirmationTextAddress}
                         setSelectedAddress={setSelectedAddress}
