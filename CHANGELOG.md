@@ -1,3 +1,12 @@
+## [1.11.1](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.11.0...v1.11.1) (2021-10-20)
+
+
+### Bug Fixes
+
+* **onboarding:** make VAT number required for VAT registered businesses ([39f05e0](http://bitbucket.org/sovtech/tradefed-frontend/commits/39f05e092c10a8e68ca3623b29649c01e86635d9))
+* **onboarding:** only display one category checkbox validation error ([0cb4d22](http://bitbucket.org/sovtech/tradefed-frontend/commits/0cb4d22eb89095a9145d0b2b45c73f08457ef53e))
+* **onboarding:** skip initial onboarding steps if user has already created a company ([b2c3fdd](http://bitbucket.org/sovtech/tradefed-frontend/commits/b2c3fdd6e5e4bd35ab2d49fc89e16fdeabaf1c47))
+
 # [1.11.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.10.1...v1.11.0) (2021-10-20)
 
 
