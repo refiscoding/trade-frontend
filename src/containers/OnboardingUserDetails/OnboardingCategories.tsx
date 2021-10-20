@@ -44,13 +44,26 @@ const UserDetails: React.FC<CategoriesProps> = ({ categories, handleUserDetails 
           }
         }}
       >
-        {({ isSubmitting }: FormikProps<CategoriesValues>) => (
+        {({ isSubmitting, values }: FormikProps<CategoriesValues>) => (
           <Form style={{ width: '100%', display: 'flex', flexWrap: 'wrap' }}>
             {categories?.map((item: any, i: number) => (
               <Flex width="50%" key={`${i}-container`}>
-                <ConnectedCheckbox key={i} name="categories" label={item.name} value={item.id} />
+                <ConnectedCheckbox
+                  key={i}
+                  name="categories"
+                  label={item.name}
+                  value={item.id}
+                  hideError={true}
+                />
               </Flex>
             ))}
+            {values && values.categories?.length < 1 && (
+              <Flex width="100%" key={`category-error-container`} justifyContent="center">
+                <Text color="red.500" textAlign="right" margin={4}>
+                  {`Category is required`}
+                </Text>
+              </Flex>
+            )}
             <Button mt={4} width="100%" type="submit" variantColor="brand" isLoading={isSubmitting}>
               DONE
             </Button>
