@@ -32,8 +32,6 @@ const AddressBook: React.FC<AddressBookProps> = () => {
       justifyContent="space-between"
       alignSelf="center"
     >
-      ) : emptyAddress || !noAddress ? (
-      <NoAddressComponent header={noAddressHeader} caption={noAddressCaption} />
       <Flex justify="space-between" flexDirection="column">
         <Text mb={4} fontWeight={550} fontSize={14} textAlign="center">
           My Addresses
@@ -72,6 +70,7 @@ const AddressBook: React.FC<AddressBookProps> = () => {
           ))}
         </Flex>
       </Flex>
+      <NoAddressComponent header={noAddressHeader} caption={noAddressCaption} />
     </PageWrap>
   )
 }
