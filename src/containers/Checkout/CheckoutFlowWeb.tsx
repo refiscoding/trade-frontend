@@ -37,6 +37,7 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
   confirmationTextCard,
   createOrderLoading,
   handleDeliveryQuotation,
+  handleOutOfStockCheck,
   handlePay,
   noAddressDataCaption,
   noAddressDataHeader,
@@ -182,6 +183,7 @@ const CheckoutFlowWeb: React.FC<CheckoutProps> = ({
                       setActive={setActiveStep}
                       setSelectedAddress={setSelectedAddress}
                       handleDeliveryQuotation={handleDeliveryQuotation}
+                      handleOutOfStockCheck={handleOutOfStockCheck}
                       confirmationTextAddress={confirmationTextAddress}
                     />
                   )}

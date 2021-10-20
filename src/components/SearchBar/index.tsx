@@ -14,6 +14,7 @@ type SearchBarProps = InputProps & {
 
 const SearchBar: FC<SearchBarProps> = ({ handleSearch, handleReset, handleFilter }) => {
   const SearchBox = connectSearchBox(({ refine, currentRefinement }) => (
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     <Formik initialValues={{ search: '' }} onSubmit={() => {}}>
       <Form style={{ width: '80%' }}>
         <ConnectedFormGroup
@@ -21,10 +22,12 @@ const SearchBar: FC<SearchBarProps> = ({ handleSearch, handleReset, handleFilter
           name="search"
           placeholder="Search for products, categories..."
           fontSize={12}
+          color="white"
           paddingLeft="40px"
           borderColor="transparent"
           bg="accent.20"
           iconPosition="left"
+          iconColor="white"
           onChange={(e: any) => {
             handleSearch(e.target.value)
             refine(e.target.value)

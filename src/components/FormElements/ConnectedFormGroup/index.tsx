@@ -20,12 +20,14 @@ export type ConnectedFormGroupProps = LabelProps &
     name: string
     icon?: React.FC
     iconPosition?: string
+    iconColor?: string
   }
 
 const ConnectedFormGroup: React.FC<ConnectedFormGroupProps> = ({
   label,
   icon,
   iconPosition,
+  iconColor,
   ...rest
 }) => {
   const [field, meta] = useField(rest.name)
@@ -51,7 +53,7 @@ const ConnectedFormGroup: React.FC<ConnectedFormGroupProps> = ({
                     return
                   }}
                   as={icon}
-                  color={'primary.400'}
+                  color={iconColor ? iconColor : 'primary.400'}
                 />
               </InputLeftElement>
             ) : (
@@ -62,7 +64,7 @@ const ConnectedFormGroup: React.FC<ConnectedFormGroupProps> = ({
                     return
                   }}
                   as={icon}
-                  color={'primary.400'}
+                  color={iconColor ? iconColor : 'primary.400'}
                 />
               </InputRightElement>
             ))}

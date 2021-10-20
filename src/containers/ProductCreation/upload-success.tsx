@@ -7,13 +7,7 @@ import { useHistory } from 'react-router-dom'
 const UploadSuccess: React.FC = () => {
   const history = useHistory()
   return (
-    <PageWrap
-      title="Upload Success"
-      align="center"
-      backgroundSize="cover"
-      justify="center"
-      pt={0}
-    >
+    <PageWrap title="Upload Success" align="center" backgroundSize="cover" justify="center" pt={0}>
       <InfoPage
         image={images.uploadProductSuccess}
         header="Success!"
