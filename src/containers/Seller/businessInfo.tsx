@@ -193,9 +193,26 @@ const BusinessInfo: React.FC<businessTypes> = ({
           </Flex>
         ))}
         <FormLabel htmlFor="category">Select Category</FormLabel>
-        {categories?.map((item: any, i: number) => (
+        {categories?.slice(0, categories.length - 1).map((item: any, i: number) => (
           <Flex width="50%" key={`${i}-container`}>
-            <ConnectedCheckbox key={i} name="categories" label={item.label} value={item.value} />
+            <ConnectedCheckbox
+              key={i}
+              name="categories"
+              label={item.label}
+              value={item.value}
+              hideError={true}
+            />
+          </Flex>
+        ))}
+        {categories?.slice(-1).map((item: any, i: number) => (
+          <Flex width="50%" key={`${i}-container`}>
+            <ConnectedCheckbox
+              key={i}
+              name="categories"
+              label={item.label}
+              value={item.value}
+              hideError={false}
+            />
           </Flex>
         ))}
         <ConnectedTextArea

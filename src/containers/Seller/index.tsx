@@ -58,7 +58,10 @@ const SellerFormValidation = Yup.object().shape({
   suburb: Yup.string().required('Suburb is required'),
   suppliedBrands: Yup.string().required('List of brands is required'),
   uniqueProducts: Yup.string().required('Number of Unique Products is required'),
-  vatNumber: Yup.string(),
+  vatNumber: Yup.string().when('isVatRegistered', {
+    is: (isVatRegistered) => isVatRegistered === true,
+    then: Yup.string().required('A VAT number is required if your business is VAT registered')
+  }),
   yearsInOperation: Yup.number().required('Years of Operation is required')
 })
 
