@@ -156,9 +156,9 @@ const ProductFilter: React.FC<ProductTypes> = ({ countries }) => {
               mt={4}
               ml={8}
               width="250px"
-              // onClick={() => {
-              //   history.push('/profile')
-              // }}
+              onClick={() => {
+                history.goBack()
+              }}
               border={`1px solid ${theme.colors.brand[700]}`}
               background="white"
             >
