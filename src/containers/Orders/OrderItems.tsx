@@ -39,7 +39,9 @@ const OrderSummaryComponent: React.FC<OrderItemsSummaryComponentProps> = ({
       <Grid alignSelf="end" gridTemplateColumns="1fr 1fr">
         <Text fontWeight={600}>Order Total</Text>
         <Flex justifySelf="end">
-          <Text fontWeight={600}>{`${items && items[0]?.product?.currency} ${total}.00`}</Text>
+          <Text fontWeight={600}>
+            {`${items && items[0]?.product?.currency} ${total?.toFixed(2)}`}
+          </Text>
         </Flex>
       </Grid>
     </Grid>

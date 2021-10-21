@@ -1,0 +1,18 @@
+fragment quotation on Quotation {
+  ResultSets {
+    Orig
+    OrigCode
+    Dest
+    ServiceCode
+    Weight
+    ChargeableWeight
+    VolumetricWeight
+    TotalFreight
+    TotalSurcharge
+    TotalDocs
+    TotalFuel
+    SubTotal
+    VAT
+    GrandTotal
+  }
+}

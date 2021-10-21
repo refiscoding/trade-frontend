@@ -1,0 +1,7 @@
+## import '/fragments/createQuotation.graphql'
+
+mutation createQuotation($input: [createQuotationInput]) {
+    createQuotation(input: $input) {
+        ...quotation
+    }
+}

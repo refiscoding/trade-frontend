@@ -40,7 +40,9 @@ const OlderActiveProduct: React.FC<OlderActiveProductProps> = ({ product }) => {
           <Text fontWeight={600}>{product?.name}</Text>
         </Flex>
         <Flex width={`100%`} justifySelf="end">
-          <Text fontWeight={600}>{`${product?.currency} ${product?.tradeFedCost}.00`}</Text>
+          <Text fontWeight={600}>
+            {`${product?.currency} ${product?.tradeFedCost?.toFixed(2)}`}
+          </Text>
         </Flex>
         <Flex>
           <Flex mr={3} p={2} background={theme.colors.background} borderRadius={3}>
@@ -204,7 +206,7 @@ const ActiveProduct: React.FC<ActiveProductProps> = ({
               cursor="pointer"
             >
               <Text fontSize={`12px`} fontWeight={550}>
-                {`${product?.currency} ${product?.tradeFedCost}.00`}
+                {`${product?.currency} ${product?.tradeFedCost?.toFixed(2)}`}
               </Text>
               <Text
                 mr={3}

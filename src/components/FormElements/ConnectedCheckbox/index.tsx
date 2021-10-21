@@ -9,10 +9,17 @@ export type ConnectedCheckboxProps = LabelProps &
     reverse?: boolean
     checked?: boolean
     label?: string
+    hideError?: boolean
     name: string
   }
 
-const ConnectedCheckbox: React.FC<ConnectedCheckboxProps> = ({ reverse, label, checked, ...rest }) => {
+const ConnectedCheckbox: React.FC<ConnectedCheckboxProps> = ({
+  reverse,
+  label,
+  checked,
+  hideError,
+  ...rest
+}) => {
   const [field, meta] = useField(rest.name)
 
   return (
@@ -38,8 +45,8 @@ const ConnectedCheckbox: React.FC<ConnectedCheckboxProps> = ({ reverse, label, c
           {label}
         </Checkbox>
       }
-      {meta.touched && meta.error ? (
-        <Text color="red.500" textAlign="right">
+      {meta.touched && meta.error && !hideError ? (
+        <Text color="red.500" textAlign="right" margin={2}>
           {meta.error}
         </Text>
       ) : null}

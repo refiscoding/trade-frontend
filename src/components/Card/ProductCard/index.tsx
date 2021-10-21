@@ -74,7 +74,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       alignItems="center"
       position="relative"
     >
-       {isLoading && <Spinner color="brand.300" />}
+      {isLoading && <Spinner color="brand.300" />}
       {(isCart || isWishlist) && editing && (
         <Input
           name={product?.uniqueIdentifier || ''}
@@ -153,6 +153,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                   isCart
                   productId={product?.uniqueIdentifier || ''}
                   count={productsOnly && productsOnly[0]?.quantity}
+                  available={product?.availableUnits as number}
                   setProductQuantity={() => {
                     return
                   }}
@@ -161,10 +162,15 @@ const ProductCard: React.FC<ProductCardProps> = ({
             </Flex>
           )}
           <Text mt={3} mb={1} fontSize="10px">
-            Retail: {`${product?.currency} ${product?.maxSellCost}.00`}
+            Retail:{' '}
+            {`${product?.currency} ${(
+              (product?.maxSellCost || 0) * (productsOnly ? productsOnly[0]?.quantity : 1)
+            ).toFixed(2)}`}
           </Text>
           <Text mb={2} fontSize="14px" fontWeight={600}>
-            {`${product?.currency} ${product?.tradeFedCost}.00`}
+            {`${product?.currency} ${(
+              (product?.tradeFedCost || 0) * (productsOnly ? productsOnly[0]?.quantity : 1)
+            ).toFixed(2)}`}
           </Text>
           {isWishlist && (
             <AddToWishlistButton

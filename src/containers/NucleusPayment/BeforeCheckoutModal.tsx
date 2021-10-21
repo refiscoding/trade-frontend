@@ -47,7 +47,7 @@ const BeforeCheckoutModal: React.FC<BeforeCheckoutModalProps> = ({
           isLoading={createOrderLoading}
           onClick={handleProceedButtonClicked}
         >
-          {`PAY ZAR ${checkoutTotal}.00`}
+          {`PAY ZAR ${checkoutTotal.toFixed(2)}`}
         </Button>
       </Grid>
     </ModalWrap>

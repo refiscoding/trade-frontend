@@ -10,6 +10,8 @@ type AddressesProps = {
   addresses?: ComponentLocationAddress[]
   confirmationTextAddress: string
   setActive: (step: number) => void
+  handleDeliveryQuotation: () => void
+  handleOutOfStockCheck: () => void
   setSelectedAddress: React.Dispatch<React.SetStateAction<ComponentLocationAddress | undefined>>
 }
 
@@ -18,6 +20,8 @@ const AddressesComponent: React.FC<AddressesProps> = ({
   setActive,
   mobileFlow,
   setSelectedAddress,
+  handleDeliveryQuotation,
+  handleOutOfStockCheck,
   confirmationTextAddress
 }) => {
   const [activateButton, setActivateButton] = React.useState<boolean>(true)
@@ -48,7 +52,11 @@ const AddressesComponent: React.FC<AddressesProps> = ({
             type="submit"
             variantColor="brand"
             isDisabled={activateButton}
-            onClick={() => setActive(1)}
+            onClick={() => {
+              setActive(1)
+              handleDeliveryQuotation()
+              handleOutOfStockCheck()
+            }}
           >
             USE ADDRESS
           </Button>
