@@ -61,7 +61,7 @@ const ProductFilter: React.FC<ProductTypes> = ({ countries }) => {
   }
 
   // const navigateToPreviousPage = () => {
-  //   history.push(`/`)
+  //  history.goBack()
   // }
 
   return (

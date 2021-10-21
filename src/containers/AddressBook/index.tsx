@@ -69,8 +69,10 @@ const AddressBook: React.FC<AddressBookProps> = () => {
             </Grid>
           ))}
         </Flex>
+        {user?.address ? (
+          <NoAddressComponent header={noAddressHeader} caption={noAddressCaption} />
+        ) : null}
       </Flex>
-      <NoAddressComponent header={noAddressHeader} caption={noAddressCaption} />
     </PageWrap>
   )
 }
