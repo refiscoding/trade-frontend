@@ -8,7 +8,7 @@ import { PageWrap } from '../../layouts'
 import { Stepper } from '../../components'
 import { useHistory } from 'react-router-dom'
 import { useAuthContext } from '../../context/AuthProvider'
-import { useCategoryQuery, useUpdateSelfMutation } from '../../generated/graphql'
+import { useCategoryQuery, useUpdateSelfMutation, useSelfQuery } from '../../generated/graphql'
 import { useMediaQuery } from 'react-responsive'
 
 import OnboardingAddress from './OnboardingAddress'
@@ -40,6 +40,17 @@ const Onboarding: React.FC = () => {
 
   const { data } = useCategoryQuery({
     onError: (err: any) => formatError(err)
+  })
+
+  // If user has partially completed business registration
+  // take them straight to next steps
+  useSelfQuery({
+    onCompleted: (user) => {
+      if (user.self?.business) {
+        setCurrentAccountType('Business')
+        setActive(3)
+      }
+    }
   })
 
   const categoriesList = get(data, 'categories', [])

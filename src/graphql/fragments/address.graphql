@@ -9,4 +9,5 @@ fragment address on ComponentLocationAddress {
   suburb
   postalCode
   type
+  hubCode
 }

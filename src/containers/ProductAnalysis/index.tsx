@@ -206,7 +206,7 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
                     cursor="pointer"
                   >
                     <Text fontSize={`12px`} fontWeight={550}>
-                      {`${productItem?.currency} ${productItem?.tradeFedCost}.00`}
+                      {`${productItem?.currency} ${productItem?.tradeFedCost?.toFixed(2)}`}
                     </Text>
                     <Text
                       mr={3}
@@ -294,7 +294,7 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
                   Units Sold:{' '}
                 </Text>
                 <Text fontSize={`12px`} ml={2}>
-                {`${count}`}
+                  {`${count}`}
                 </Text>
               </Flex>
               <Flex alignItems="center" height="20px">
@@ -314,7 +314,7 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
                 cursor="pointer"
               >
                 <Text fontSize={`12px`} fontWeight={550}>
-                  {`${productItem?.currency} ${productItem?.tradeFedCost}.00`}
+                  {`${productItem?.currency} ${productItem?.tradeFedCost?.toFixed(2)}`}
                 </Text>
                 <Text
                   mr={3}

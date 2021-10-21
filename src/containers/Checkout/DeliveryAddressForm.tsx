@@ -20,13 +20,14 @@ import { ApolloError } from 'apollo-client'
 
 type DeliveryAddressFormProps = {
   editItem?: ComponentLocationAddress
+  onAddressSaved?: () => void
 }
 
 type DetailsInput = {
   address?: ComponentLocationAddressInput
 }
 
-const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = ({ editItem }) => {
+const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = ({ editItem, onAddressSaved }) => {
   const { setUser } = useAuthContext()
   const [addressTypeChecked, setAddressTypeChecked] = React.useState<
     Maybe<Enum_Componentlocationaddress_Type> | undefined
@@ -58,6 +59,7 @@ const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = ({ editItem }) =
           description: 'Successfully added your details!',
           ...SUCCESS_TOAST
         })
+        onAddressSaved && onAddressSaved()
       }
     }
   })
@@ -71,6 +73,7 @@ const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = ({ editItem }) =
           description: 'Successfully edited your details!',
           ...SUCCESS_TOAST
         })
+        onAddressSaved && onAddressSaved()
       }
     }
   })
@@ -85,7 +88,8 @@ const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = ({ editItem }) =
         city,
         suburb,
         postalCode,
-        isDefaultAddress
+        isDefaultAddress,
+        hubCode
       } = editItem
       return await editAddress({
         variables: {
@@ -97,6 +101,7 @@ const DeliveryAddressForm: React.FC<DeliveryAddressFormProps> = ({ editItem }) =
             suburb,
             postalCode,
             isDefaultAddress,
+            hubCode,
             ...details.address,
             type: addressTypeChecked,
             id
