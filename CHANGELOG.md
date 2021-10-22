@@ -1,3 +1,12 @@
+# [1.12.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.11.1...v1.12.0) (2021-10-22)
+
+
+### Features
+
+* **banner:** banner component ([2c28c3c](http://bitbucket.org/sovtech/tradefed-frontend/commits/2c28c3c986e477381e2c102e626a337eafc7016f))
+* **banner:** rebase commit ([149dea6](http://bitbucket.org/sovtech/tradefed-frontend/commits/149dea6e548d77acff6bc73721db567f40f150e0))
+* **banner:** revert hq comment ([5596b91](http://bitbucket.org/sovtech/tradefed-frontend/commits/5596b91dd71e6d909542611455bd5df2483380ce))
+
 ## [1.11.1](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.11.0...v1.11.1) (2021-10-20)
 
 
