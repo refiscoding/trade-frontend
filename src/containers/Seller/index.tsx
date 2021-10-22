@@ -29,13 +29,16 @@ import { useAuthContext } from '../../context/AuthProvider'
 import BusinessInfo from './businessInfo'
 import DispatchAddress from './dispatchAddress'
 import PersonalInfo from './personalInfo'
+import DispatchSecondaryContact from './dispatchSecondaryContact'
 
 const SellerFormValidation = Yup.object().shape({
   beeStatus: Yup.string().required('BEE status is required'),
   businessPhoneNumber: Yup.string().required('Business/ work phone number is required'),
   categories: Yup.array().required('Business category is required'),
   city: Yup.string().required('City is required'),
-  email: Yup.string().email('Please enter a valid email address').required('An email is required'),
+  email: Yup.string()
+    .email('Please enter a valid email address')
+    .required('Email address is required'),
   firstName: Yup.string().required('Name is required'),
   hazChem: Yup.string(),
   headQuater: Yup.string().required('Head-office is required'),
@@ -52,6 +55,12 @@ const SellerFormValidation = Yup.object().shape({
   revenue: Yup.string().required('Annual turnover is required'),
   street: Yup.string().required('Street address is required'),
   suburb: Yup.string().required('Suburb is required'),
+  dispatchSecondaryFirstName: Yup.string().required('Name is required'),
+  dispatchSecondarySurname: Yup.string().required('Surname is required'),
+  dispatchSecondaryPhoneNumber: Yup.string().required('Cell phone number is required'),
+  dispatchSecondaryEmailAddress: Yup.string()
+    .email('Please enter a valid email address')
+    .required('Email address is required'),
   vatNumber: Yup.string().when('isVatRegistered', {
     is: (isVatRegistered) => isVatRegistered === true,
     then: Yup.string().required('VAT number is required')
@@ -321,6 +330,7 @@ const Seller: React.FC = () => {
                 setFieldValue={setFieldValue}
               />
               <DispatchAddress setFieldValue={setFieldValue} />
+              <DispatchSecondaryContact />
               {status && (
                 <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
                   <Text textAlign="right" color="red.500">
