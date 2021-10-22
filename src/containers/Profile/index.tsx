@@ -111,24 +111,26 @@ const Profile: React.FC<ProfileProps> = () => {
         </Flex>
         <ChevronRight />
       </Flex>
-      <Flex
-        mt={5}
-        pl={5}
-        height="70px"
-        borderRadius="10px"
-        boxShadow="0 2px 4px 0 rgba(0,0,0,0.25)"
-        width="100%"
-        justify="space-between"
-        alignItems="center"
-        onClick={() => handleBecomeSeller()}
-        backgroundColor="white"
-      >
-        <Briefcase />
-        <Flex width="100%" ml={3}>
-          <Text fontSize={12}>{isSellerApproved ? 'Product Management' : 'Become a Seller'}</Text>
+      {user?.isBusiness === true && (
+        <Flex
+          mt={5}
+          pl={5}
+          height="70px"
+          borderRadius="10px"
+          boxShadow="0 2px 4px 0 rgba(0,0,0,0.25)"
+          width="100%"
+          justify="space-between"
+          alignItems="center"
+          onClick={() => handleBecomeSeller()}
+          backgroundColor="white"
+        >
+          <Briefcase />
+          <Flex width="100%" ml={3}>
+            <Text fontSize={12}>{isSellerApproved ? 'Product Management' : 'Become a Seller'}</Text>
+          </Flex>
+          <ChevronRight />
         </Flex>
-        <ChevronRight />
-      </Flex>
+      )}
       <Flex
         mt={5}
         pl={5}
