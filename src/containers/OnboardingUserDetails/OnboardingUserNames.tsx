@@ -31,10 +31,7 @@ const UserDetails: React.FC<NameProps> = ({
   return (
     <React.Fragment>
       <Flex width="100%" mb={4} flexDirection="column">
-        <H3 textAlign="left">Let’s get to know you.</H3>
-        <Text textAlign="left" fontSize="14px">
-          Fill out some information about yourself to get started.
-        </Text>
+        <H3 textAlign="left">Let’s get to know you</H3>
       </Flex>
       <Flex width="100%" align="center" justify="center" my={5}>
         <Image width="60%" src={images['OnboardingDetails']} />
