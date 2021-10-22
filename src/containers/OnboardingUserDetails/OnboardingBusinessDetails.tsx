@@ -2,7 +2,11 @@ import * as React from 'react'
 import * as Yup from 'yup'
 import { Button, Flex } from '@chakra-ui/core'
 import { Form, Formik, FormikProps } from 'formik'
-import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
+import {
+  ConnectedFormGroup,
+  ConnectedNumberInput,
+  ConnectedSelect
+} from '../../components/FormElements'
 import { formatError } from '../../utils'
 import { H3, Text } from '../../typography'
 import { MotionFlex } from '../../components'
@@ -17,14 +21,12 @@ const BusinessDetailsFormValidation = Yup.object().shape({
   lastName: Yup.string().required('Name is required'),
   companyName: Yup.string().required('Company name is required'),
   position: Yup.string().required('Position is required'),
-  workEmailAddress: Yup.string().required('Work email is required'),
-  phoneNumber: Yup.string().required('Phone number is required')
+  phoneNumber: Yup.string().required('Cell phone number is required')
 })
 
 type NameValues = {
   companyName: string
   position: string
-  workEmailAddress: string
   phoneNumber: string
 }
 
@@ -35,9 +37,6 @@ const BusinessDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
     <React.Fragment>
       <Flex width="100%" mb={4} flexDirection="column">
         <H3 textAlign="left">Lets get to know you</H3>
-        <Text textAlign="left" fontSize="14px">
-          Lets get to know more about your business:
-        </Text>
       </Flex>
       <Formik
         validationSchema={BusinessDetailsFormValidation}
@@ -46,11 +45,10 @@ const BusinessDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
           lastName: '',
           companyName: '',
           position: '',
-          workEmailAddress: '',
           phoneNumber: ''
         }}
         onSubmit={async (
-          { firstName, lastName, companyName, workEmailAddress, phoneNumber },
+          { firstName, lastName, companyName, phoneNumber },
           { setStatus, setSubmitting }
         ) => {
           setStatus(null)
@@ -61,7 +59,6 @@ const BusinessDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
               lastName,
               companyName,
               position: currentPosition,
-              workEmailAddress,
               phoneNumber
             })
             setSubmitting(false)
@@ -87,8 +84,7 @@ const BusinessDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
               name="otherPosition"
               type="text"
             />
-            <ConnectedFormGroup label="Work email address*" name="workEmailAddress" type="text" />
-            <ConnectedFormGroup label="Cell phone number*" name="phoneNumber" type="text" />
+            <ConnectedNumberInput label="Cell phone number*" name="phoneNumber" unit="+27" />
             {status && (
               <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
                 <Text textAlign="right" color="red.500">

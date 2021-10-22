@@ -23,10 +23,7 @@ const UserDetails: React.FC<CategoriesProps> = ({ categories, handleUserDetails 
   return (
     <React.Fragment>
       <Flex width="100%" mb={4} flexDirection="column">
-        <H3 textAlign="left">Let’s get to know you.</H3>
-        <Text textAlign="left" fontSize="14px">
-          Select a few categories you’re interested in.
-        </Text>
+        <H3 textAlign="left">Which Industries are you interested in?</H3>
       </Flex>
       <Formik
         validationSchema={CategoriesFormValidation}

@@ -1,12 +1,13 @@
-import { Button, Flex } from '@chakra-ui/core'
-import { Form, Formik, FormikProps } from 'formik'
 import * as React from 'react'
 import * as Yup from 'yup'
+import { Button, Flex } from '@chakra-ui/core'
+import { Form, Formik, FormikProps } from 'formik'
+
 import { ComponentLocationAddress } from '../../generated/graphql'
-import { MotionFlex } from '../../components'
-import { ConnectedFormGroup } from '../../components/FormElements'
-import { H3, Text } from '../../typography'
+import { ConnectedFormGroup, ConnectedNumberInput } from '../../components/FormElements'
 import { formatError } from '../../utils'
+import { H3, Text } from '../../typography'
+import { MotionFlex } from '../../components'
 
 type NameProps = {
   handleUserDetails: (details: any) => void
@@ -16,14 +17,12 @@ type NameProps = {
 const NameFormValidation = Yup.object().shape({
   firstName: Yup.string().required('Name is required'),
   lastName: Yup.string().required('Surname is required'),
-  phoneNumber: Yup.string().required('Phone number is required'),
-  email: Yup.string().required('Email address is required')
+  phoneNumber: Yup.string().required('Cell phone number is required')
 })
 
 type NameValues = {
   firstName: string
   lastName: string
-  email: string
   phoneNumber: string
 }
 
@@ -31,31 +30,23 @@ const OnboardingIndividual: React.FC<NameProps> = ({ handleUserDetails }) => {
   return (
     <React.Fragment>
       <Flex width="100%" mb={4} flexDirection="column">
-        <H3 textAlign="left">Let’s get to know you more</H3>
-        <Text textAlign="left" fontSize="14px">
-          Fill out some information about yourself to get started.
-        </Text>
+        <H3 textAlign="left">Let’s get to know you</H3>
       </Flex>
       <Formik
         validationSchema={NameFormValidation}
         initialValues={{
           firstName: '',
           lastName: '',
-          phoneNumber: '',
-          email: ''
+          phoneNumber: ''
         }}
-        onSubmit={async (
-          { firstName, lastName, phoneNumber, email },
-          { setStatus, setSubmitting }
-        ) => {
+        onSubmit={async ({ firstName, lastName, phoneNumber }, { setStatus, setSubmitting }) => {
           setStatus(null)
           try {
             setSubmitting(true)
             handleUserDetails({
               firstName,
               lastName,
-              phoneNumber,
-              email
+              phoneNumber
             })
             setSubmitting(false)
           } catch (error) {
@@ -67,8 +58,7 @@ const OnboardingIndividual: React.FC<NameProps> = ({ handleUserDetails }) => {
           <Form style={{ width: '100%' }}>
             <ConnectedFormGroup label="Name*" name="firstName" type="text" />
             <ConnectedFormGroup label="Surname*" name="lastName" type="text" />
-            <ConnectedFormGroup label="Phone number*" name="phoneNumber" type="text" />
-            <ConnectedFormGroup label="Email address*" name="email" type="text" />
+            <ConnectedNumberInput label="Cell phone number*" name="phoneNumber" unit="+27" />
             {status && (
               <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
                 <Text textAlign="right" color="red.500">
