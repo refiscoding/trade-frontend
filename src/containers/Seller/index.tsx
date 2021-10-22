@@ -35,7 +35,7 @@ const SellerFormValidation = Yup.object().shape({
   building: Yup.string().required('Building is required'),
   businessPhoneNumber: Yup.string().required('Business Phone Number is required'),
   businessType: Yup.string().required('Business Type is required'),
-  category: Yup.string().required('Business Category is required'),
+  categories: Yup.array().required('Business Category is required'),
   city: Yup.string().required('City / Town is required'),
   email: Yup.string().email('Please enter a valid email address').required('An email is required'),
   firstName: Yup.string().required('First Name is required'),
@@ -58,7 +58,10 @@ const SellerFormValidation = Yup.object().shape({
   suburb: Yup.string().required('Suburb is required'),
   suppliedBrands: Yup.string().required('List of brands is required'),
   uniqueProducts: Yup.string().required('Number of Unique Products is required'),
-  vatNumber: Yup.string(),
+  vatNumber: Yup.string().when('isVatRegistered', {
+    is: (isVatRegistered) => isVatRegistered === true,
+    then: Yup.string().required('A VAT number is required if your business is VAT registered')
+  }),
   yearsInOperation: Yup.number().required('Years of Operation is required')
 })
 
@@ -107,7 +110,8 @@ export type SellerValues = {
   businessPhoneNumber: string
   businessType?: string
   businessWebsite?: string
-  category: string
+  categories: string[]
+  countries: string[]
   email: string
   errors?: ErrorsObject
   firstName: string
@@ -138,7 +142,6 @@ export type SellerValues = {
 }
 
 const initialValues = {
-  category: '',
   location: '',
   products: '' || undefined,
   suppliedBrands: '',
@@ -183,7 +186,9 @@ const Seller: React.FC = () => {
     revenue: user?.business?.annualTurn || '',
     vatNumber: user?.business?.vatNumber || '',
     websiteAddress: user?.business?.websiteAddress || '',
-    yearsInOperation: user?.business?.yearsInOperation || 0
+    yearsInOperation: user?.business?.yearsInOperation || 0,
+    countries: [],
+    categories: []
   }
 
   useEffect(() => {
@@ -228,9 +233,9 @@ const Seller: React.FC = () => {
       email,
       revenue,
       hazChem,
-      category,
+      categories,
+      countries,
       products,
-      location,
       lastName,
       isHazChem,
       // headQuater,
@@ -266,8 +271,8 @@ const Seller: React.FC = () => {
       suppliedBrands,
       yearsInOperation,
       registrationNumber,
-      countries: [location],
-      categories: [category],
+      countries: countries,
+      categories: categories,
       productsSummary: products,
       isHazChem: Boolean(isHazChem),
       websiteAddress: businessWebsite,

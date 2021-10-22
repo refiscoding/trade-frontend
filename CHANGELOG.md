@@ -1,3 +1,47 @@
+## [1.11.1](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.11.0...v1.11.1) (2021-10-20)
+
+
+### Bug Fixes
+
+* **onboarding:** make VAT number required for VAT registered businesses ([39f05e0](http://bitbucket.org/sovtech/tradefed-frontend/commits/39f05e092c10a8e68ca3623b29649c01e86635d9))
+* **onboarding:** only display one category checkbox validation error ([0cb4d22](http://bitbucket.org/sovtech/tradefed-frontend/commits/0cb4d22eb89095a9145d0b2b45c73f08457ef53e))
+* **onboarding:** skip initial onboarding steps if user has already created a company ([b2c3fdd](http://bitbucket.org/sovtech/tradefed-frontend/commits/b2c3fdd6e5e4bd35ab2d49fc89e16fdeabaf1c47))
+
+# [1.11.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.10.1...v1.11.0) (2021-10-20)
+
+
+### Bug Fixes
+
+* **menu:** dynamic hamburger icon styling ([9d9a8f8](http://bitbucket.org/sovtech/tradefed-frontend/commits/9d9a8f8dc074d4826b70e359f42ea89e0ab9c47d))
+* **searchbar:** update icon and text colour to white ([bc4e5da](http://bitbucket.org/sovtech/tradefed-frontend/commits/bc4e5da07d0eb58147b8ea5495c9417f1645d4ea))
+
+
+### Features
+
+* **checkout:** add out of stock modal ([44e1c04](http://bitbucket.org/sovtech/tradefed-frontend/commits/44e1c04a60bcdb416af681a156c2ca73e0357028))
+
+## [1.10.1](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.10.0...v1.10.1) (2021-10-19)
+
+
+### Bug Fixes
+
+* **cart:** include quantity in displayed pricing ([b4e1736](http://bitbucket.org/sovtech/tradefed-frontend/commits/b4e1736fe190cd654eda9b1d39812124c787649d))
+
+# [1.10.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.9.3...v1.10.0) (2021-10-19)
+
+
+### Features
+
+* **checkout:** add delivery quote to order totals ([9e08dcc](http://bitbucket.org/sovtech/tradefed-frontend/commits/9e08dcccbd5ff540ee934dd7fafca8ff3990d285))
+
+## [1.9.3](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.9.2...v1.9.3) (2021-10-18)
+
+
+### Bug Fixes
+
+* removed console.log ([b200410](http://bitbucket.org/sovtech/tradefed-frontend/commits/b200410d69052b5154501000df1506ab5eb90d3d))
+* **seller sign up:** country and category submission ([376c5c0](http://bitbucket.org/sovtech/tradefed-frontend/commits/376c5c08bab7aa48e3a26fce404e47385e174f90))
+
 ## [1.9.2](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.9.1...v1.9.2) (2021-07-28)
 
 

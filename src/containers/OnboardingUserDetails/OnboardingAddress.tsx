@@ -39,6 +39,7 @@ type AddressValues = {
   postalCode: string
   name?: string
   type?: string
+  hubCode?: string
 }
 
 const UserDetails: React.FC<AddressProps> = ({
@@ -48,9 +49,9 @@ const UserDetails: React.FC<AddressProps> = ({
   editItem
 }) => {
   const toast = useToast()
-  const [selectedProvince, setSelectedProvince] = useState('')
-  const [selectedCity, setSelectedCity] = useState('')
-  const [selectedSuburb, setSelectedSuburb] = useState('')
+  const [selectedProvince, setSelectedProvince] = useState(editItem?.province || '')
+  const [selectedCity, setSelectedCity] = useState(editItem?.city || '')
+  const [selectedSuburb, setSelectedSuburb] = useState(editItem?.suburb || '')
 
   const { data } = useGetHubCodesQuery({
     onError: (err: ApolloError) =>
@@ -94,7 +95,8 @@ const UserDetails: React.FC<AddressProps> = ({
     suburb: editItem?.suburb || '',
     postalCode: editItem?.postalCode || '',
     type: editItem?.type || 'Residential',
-    name: editItem?.name || ''
+    name: editItem?.name || '',
+    hubCode: editItem?.hubCode || ''
   }
 
   const handleSubmit = ({
@@ -104,7 +106,8 @@ const UserDetails: React.FC<AddressProps> = ({
     suburb,
     city,
     postalCode,
-    name
+    name,
+    hubCode
   }: AddressValues) => {
     handleUserDetails({
       address: {
@@ -114,6 +117,7 @@ const UserDetails: React.FC<AddressProps> = ({
         city,
         suburb,
         postalCode,
+        hubCode,
         type: initialValues.type,
         name
       }
@@ -134,13 +138,22 @@ const UserDetails: React.FC<AddressProps> = ({
         validationSchema={AddressFormValidation}
         initialValues={initialValues}
         onSubmit={async (
-          { street, building, province, suburb, city, postalCode, name }: AddressValues,
+          { street, building, province, suburb, city, postalCode, name, hubCode }: AddressValues,
           { setStatus, setSubmitting }
         ) => {
           setStatus(null)
           try {
             setSubmitting(true)
-            await handleSubmit({ street, building, province, suburb, city, postalCode, name })
+            await handleSubmit({
+              street,
+              building,
+              province,
+              suburb,
+              city,
+              postalCode,
+              name,
+              hubCode
+            })
             setSubmitting(false)
           } catch (error) {
             setStatus(formatError(error))
@@ -185,6 +198,10 @@ const UserDetails: React.FC<AddressProps> = ({
               onChange={(name) => {
                 setSelectedCity(name.target.value)
                 setFieldValue('city', name.target.value)
+                const hubCode = hubCodes.find(
+                  (hub: any) => hub.City.toUpperCase() === name.target.value.toUpperCase()
+                )?.HubCode
+                setFieldValue('hubCode', hubCode)
               }}
               options={cities}
               isDisabled={selectedProvince === '' ? true : false}

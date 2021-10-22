@@ -161,6 +161,7 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
             </Text>
           </Flex>
           <Flex width="65%" mr={4}>
+            {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
             <SearchBar handleFilter={handleFilter} handleSearch={() => {}} handleReset={() => {}} />
           </Flex>
         </Flex>

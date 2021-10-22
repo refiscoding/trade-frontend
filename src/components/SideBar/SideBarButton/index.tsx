@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { motion } from 'framer-motion'
-import React from 'react'
+import React, { useState } from 'react'
 import MotionFlex from '../../MotionFlex'
 
 type SideBarButtonProps = {
@@ -29,6 +29,9 @@ const SideBarButton: React.FC<SideBarButtonProps> = ({
   ...props
 }) => {
   const variant = open ? 'opened' : 'closed'
+
+  // TODO: replace this dynamic height issue by properly setting styling in parent component
+  const [firstRender, setFirstRender] = useState(true)
 
   const top = {
     closed: {
@@ -75,8 +78,11 @@ const SideBarButton: React.FC<SideBarButtonProps> = ({
     <SvgWrap>
       <MotionSvg
         width={open ? 12 : 24}
-        height={open ? 12 : 24}
-        onClick={onClick}
+        height={open ? 12 : firstRender ? 24 : 48}
+        onClick={() => {
+          setFirstRender(false)
+          onClick && onClick()
+        }}
         overflow="visible"
         preserveAspectRatio="none"
         viewBox={`0 0 ${unitWidth} ${unitHeight}`}

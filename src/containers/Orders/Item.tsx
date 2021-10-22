@@ -42,7 +42,7 @@ const OrderItemComponent: React.FC<OrderItemComponentProps> = ({ cartItem }) => 
           <Text mt={1} fontSize={12}>{`Delivery fee not included`}</Text>
         </Flex>
         <Flex justifySelf="end">
-          <Text fontWeight={600} fontSize={14}>{`${currency} ${total}.00`}</Text>
+          <Text fontWeight={600} fontSize={14}>{`${currency} ${total?.toFixed(2)}`}</Text>
         </Flex>
       </Grid>
     </Grid>
