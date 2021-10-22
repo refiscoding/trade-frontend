@@ -1,6 +1,6 @@
-import { Flex, Text } from '@chakra-ui/core'
 import * as React from 'react'
 import { ColorProps } from 'styled-system'
+import { Flex } from '@chakra-ui/core'
 import { useMediaQuery } from 'react-responsive'
 
 type HeroProps = ColorProps & {
@@ -12,22 +12,14 @@ type HeroProps = ColorProps & {
   isCategory?: boolean
 }
 
-const Hero: React.FC<HeroProps> = ({
-  image,
-  caption,
-  isCategory,
-  headerColor,
-  headerMargin,
-  header
-}) => {
+const Hero: React.FC<HeroProps> = ({ image, isCategory }) => {
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   return (
     <Flex
-      width="1450px"
-      minHeight={isTabletOrMobile ? '200px' : isCategory ? '450px' : '400px'}
-      bg={isCategory ? 'rgba(0,0,0,0.2)' : '#231F20'}
+      width="100vw"
+      minHeight={isTabletOrMobile ? '200px' : isCategory ? '450px' : '380px'}
       justifyContent={isCategory ? 'center' : 'flex-start'}
-      mr="10px"
+      mr="16px"
       flexDirection="column"
       alignItems="center"
     >
@@ -38,14 +30,7 @@ const Hero: React.FC<HeroProps> = ({
         backgroundPosition="center"
         backgroundSize={isTabletOrMobile && !isCategory ? 'contain' : 'contain'}
         backgroundRepeat="no-repeat"
-        my={2}
-        ml="-1rem"
-      >
-        <Text fontWeight={600} fontSize={20} mt={headerMargin} color={headerColor}>
-          {header}
-        </Text>
-        <Text>{caption}</Text>
-      </Flex>
+      ></Flex>
     </Flex>
   )
 }

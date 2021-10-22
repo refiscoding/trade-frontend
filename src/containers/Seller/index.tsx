@@ -102,7 +102,7 @@ export type TouchedErrors = {
   revenue?: boolean | undefined
   street: boolean | undefined
   suburb: boolean | undefined
-  //hazChem?: boolean | undefined
+  hazChem?: boolean | undefined
 }
 
 export type SellerValues = {

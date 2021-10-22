@@ -8,7 +8,7 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { Flex, useToast, Text, Button } from '@chakra-ui/core'
 import { Hits, InstantSearch, Stats } from 'react-instantsearch-dom'
 
-import Hero from '../../components/Hero'
+import HomeBanner from '../../components/HomeBanner'
 import Footer from '../../components/Footer'
 import Section from '../../components/Section'
 import ProductCard from '../../components/Card/ProductCard'
@@ -145,7 +145,7 @@ const Home: React.FC = () => {
             </Section>
           ) : (
             <React.Fragment>
-              <Hero
+              <HomeBanner
                 image={isTabletOrMobile ? images.heroImg : images.homeBanner2}
                 header=""
                 caption=""
