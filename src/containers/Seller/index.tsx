@@ -32,10 +32,9 @@ import PersonalInfo from './personalInfo'
 
 const SellerFormValidation = Yup.object().shape({
   beeStatus: Yup.string().required('BEE status is required'),
-  building: Yup.string().required('Building is required'),
   businessPhoneNumber: Yup.string().required('Business/ work phone number is required'),
   categories: Yup.array().required('Business category is required'),
-  city: Yup.string().required('City / town is required'),
+  city: Yup.string().required('City is required'),
   email: Yup.string().email('Please enter a valid email address').required('An email is required'),
   firstName: Yup.string().required('Name is required'),
   hazChem: Yup.string(),
@@ -43,17 +42,16 @@ const SellerFormValidation = Yup.object().shape({
   isHazChem: Yup.boolean().required('Haz Chem status is required'),
   isVatRegistered: Yup.boolean().required('VAT Registration Status is required'),
   lastName: Yup.string().required('Surname is required'),
-  name: Yup.string().required('Compant name is required'),
+  name: Yup.string().required('Address name is required'),
   phoneNumber: Yup.string().required('Cell phone number is required'),
-  position: Yup.string().required('Company Position is required'),
-  postalCode: Yup.string().required('Postal Code is required'),
+  position: Yup.string().required('Company position is required'),
+  postalCode: Yup.string().required('Postal code is required'),
   products: Yup.string().required('Product Description is required'),
   province: Yup.string().required('Province is required'),
   registrationNumber: Yup.string().required('Business registration number is required'),
   revenue: Yup.string().required('Annual turnover is required'),
-  street: Yup.string().required('Street Address is required'),
+  street: Yup.string().required('Street address is required'),
   suburb: Yup.string().required('Suburb is required'),
-  suppliedBrands: Yup.string().required('List of brands is required'),
   vatNumber: Yup.string().when('isVatRegistered', {
     is: (isVatRegistered) => isVatRegistered === true,
     then: Yup.string().required('VAT number is required')
@@ -63,7 +61,6 @@ const SellerFormValidation = Yup.object().shape({
 
 export type ErrorsObject = {
   beeStatus?: string | undefined
-  building: string | undefined
   city: string | undefined
   hazChem?: string | undefined
   headQuater: string | undefined
@@ -80,7 +77,6 @@ export type ErrorsObject = {
 
 export type TouchedErrors = {
   beeStatus?: boolean | undefined
-  building: boolean | undefined
   city: boolean | undefined
   headQuater?: boolean | undefined
   isHazChem?: boolean | undefined

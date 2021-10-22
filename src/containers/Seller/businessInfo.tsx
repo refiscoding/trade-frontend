@@ -158,7 +158,7 @@ const BusinessInfo: React.FC<businessTypes> = ({
         {hazChem && (
           <ConnectedFormGroup
             mt={3}
-            label="Please provide brief description of the hazardous chemicals*"
+            label="Please provide a brief description of the hazardous chemicals*"
             name="hazChem"
             type="text"
           />
@@ -175,7 +175,7 @@ const BusinessInfo: React.FC<businessTypes> = ({
             <ConnectedCheckbox key={i} name="countries" label={item.label} value={item.value} />
           </Flex>
         ))}
-        <FormLabel htmlFor="category">Select Category</FormLabel>
+        <FormLabel htmlFor="category">Select the categories your business falls under*</FormLabel>
         {categories?.slice(0, categories.length - 1).map((item: any, i: number) => (
           <Flex width="50%" key={`${i}-container`}>
             <ConnectedCheckbox
@@ -200,7 +200,7 @@ const BusinessInfo: React.FC<businessTypes> = ({
         ))}
         <ConnectedTextArea
           mt={3}
-          label="List the brands that you supply* "
+          label="List the brands that you supply"
           name="suppliedBrands"
           type="text"
           // eslint-disable-next-line @typescript-eslint/no-empty-function
