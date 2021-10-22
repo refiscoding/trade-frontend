@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { FormLabel, Flex } from '@chakra-ui/core'
 
-import { BEESTATUS, TURNOVER } from '../../constants'
+import { BEESTATUS, POSITIONS, TURNOVER } from '../../constants'
 import { theme } from '../../theme'
 import { SellerValues } from './index'
 import { H3 } from '../../typography'
@@ -55,28 +55,35 @@ const BusinessInfo: React.FC<businessTypes> = ({
         borderRadius={5}
       >
         <H3 mb={3} fontWeight={550} textAlign="left">
-          Company Details
+          Company details
         </H3>
+        <ConnectedFormGroup label="Company name*" name="name" type="text" />
+        <ConnectedSelect
+          placeholder="Select position"
+          label="Position* "
+          name="position"
+          options={POSITIONS}
+        />
+        <ConnectedFormGroup label="If other, please specifiy" name="otherPosition" type="text" />
         <ConnectedNumberInput
-          label="Business Phone number*"
+          label="Business/ work phone number*"
           name="businessPhoneNumber"
           unit="+27"
         />
         <ConnectedFormGroup
-          label="Business Website"
+          label="Business website"
           name="websiteAddress"
           type="text"
           placeholder="Eg. https://yourbusiness.com"
         />
         <ConnectedFormGroup
-          label="Business Registration Number*"
+          label="Business registration number*"
           name="registrationNumber"
           type="text"
-          placeholder="Enter business registration number"
         />
-        <ConnectedNumberInput label="Years of Operation*" name="yearsOfOperation" />
+        <ConnectedNumberInput label="NUmber of years in operation*" name="yearsOfOperation" />
         <ConnectedFormGroup
-          label="Related/associated company/group"
+          label="Related/ associated company/ group"
           name="companyRelated"
           type="text"
         />
@@ -115,12 +122,7 @@ const BusinessInfo: React.FC<businessTypes> = ({
           ]}
         />
         {vatChecked === true && (
-          <ConnectedFormGroup
-            label="If yes, please provide VAT number*"
-            placeholder="Please provide VAT number"
-            name="vatNumber"
-            type="text"
-          />
+          <ConnectedFormGroup label="Please provide VAT number*" name="vatNumber" type="text" />
         )}
       </Flex>
       <Flex
@@ -134,7 +136,6 @@ const BusinessInfo: React.FC<businessTypes> = ({
         <H3 mb={4} fontWeight={550} textAlign="left">
           Tell us more about your business
         </H3>
-        <ConnectedNumberInput label="Number of unique products*" name="uniqueProducts" />
         <ConnectedTextArea
           label="Please give a brief description about what the business does and what you are wanting to sell on our platform* "
           name="products"
@@ -142,25 +143,7 @@ const BusinessInfo: React.FC<businessTypes> = ({
           handleSetTags={() => {}}
         />
         <ConnectedSelect
-          label="Business Type*"
-          name="businessType"
-          onChange={(e) => setFieldValue('businessType', e.target.value)}
-          options={businessTypes}
-        />
-        <ConnectedSelect
-          label="Do you have a physical store?*"
-          name="hasPhysicalStore"
-          onChange={(e) => setFieldValue('hasPhysicalStore', e.target.value)}
-          options={options}
-        />
-        <ConnectedSelect
-          label="Are you a supplier to retail outlets?*"
-          name="isRetailSupplier"
-          onChange={(e) => setFieldValue('isRetailSupplier', e.target.value)}
-          options={options}
-        />
-        <ConnectedSelect
-          label="Do you deal with Hazardous Chemicals?*"
+          label="Do you deal with hazardous chemicals?*"
           name="isHazChem"
           onChange={(e) => {
             setFieldValue('isHazChem', e.target.value)
@@ -175,24 +158,24 @@ const BusinessInfo: React.FC<businessTypes> = ({
         {hazChem && (
           <ConnectedFormGroup
             mt={3}
-            label="Please provide brief discussion of Hazardous chemicals*"
+            label="Please provide a brief description of the hazardous chemicals*"
             name="hazChem"
             type="text"
           />
         )}
         <ConnectedSelect
-          placeholder="Select Head Office"
+          placeholder="Where is your dead-office situated"
           label="Head Office*"
           name="headQuater"
           options={countries}
         />
-        <FormLabel htmlFor="countries">Select Countries of Operation</FormLabel>
+        <FormLabel htmlFor="countries">What countries do you operate in?*</FormLabel>
         {countries?.map((item: any, i: number) => (
           <Flex width="50%" key={`${i}-container`}>
             <ConnectedCheckbox key={i} name="countries" label={item.label} value={item.value} />
           </Flex>
         ))}
-        <FormLabel htmlFor="category">Select Category</FormLabel>
+        <FormLabel htmlFor="category">Select the categories your business falls under*</FormLabel>
         {categories?.slice(0, categories.length - 1).map((item: any, i: number) => (
           <Flex width="50%" key={`${i}-container`}>
             <ConnectedCheckbox
@@ -217,7 +200,7 @@ const BusinessInfo: React.FC<businessTypes> = ({
         ))}
         <ConnectedTextArea
           mt={3}
-          label="List the brands that you supply* "
+          label="List the brands that you supply"
           name="suppliedBrands"
           type="text"
           // eslint-disable-next-line @typescript-eslint/no-empty-function

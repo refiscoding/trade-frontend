@@ -65,29 +65,29 @@ const DispatchAddress: React.FC<dispatchAddressTypes> = ({ setFieldValue }) => {
       boxShadow={theme.boxShadowMedium}
     >
       <H3 mb={4} fontWeight={550} textAlign="left">
-        Dispatch Address
+        Dispatch address
       </H3>
       <ConnectedFormGroup
-        label="Address Name*"
+        label="Address name*"
         placeholder="Eg. Mum's Place"
         name="name"
         type="text"
       />
       <ConnectedFormGroup
-        label="Building/Complex Name"
+        label="Building/ complex name"
         placeholder="Eg. Carlton Centre"
         name="building"
         type="text"
       />
       <ConnectedFormGroup
-        label="Street Address*"
+        label="Street address*"
         placeholder="Eg. 68 Fifth Street"
         name="street"
         type="text"
       />
       <ConnectedSelect
         label="Province*"
-        placeholder="Select a Province"
+        placeholder="Select province"
         name="province"
         onChange={(name) => {
           setSelectedProvince(name.target.value)
@@ -97,7 +97,7 @@ const DispatchAddress: React.FC<dispatchAddressTypes> = ({ setFieldValue }) => {
       />
       <ConnectedSelect
         label="City*"
-        placeholder="Select a City / Town"
+        placeholder="Select city"
         name="city"
         textTransform="lowercase"
         onChange={(name) => {
@@ -109,7 +109,7 @@ const DispatchAddress: React.FC<dispatchAddressTypes> = ({ setFieldValue }) => {
       />
       <ConnectedSelect
         label="Suburb*"
-        placeholder="Select a Suburb"
+        placeholder="Select suburb"
         name="suburb"
         textTransform="lowercase"
         onChange={(name) => {
@@ -120,7 +120,7 @@ const DispatchAddress: React.FC<dispatchAddressTypes> = ({ setFieldValue }) => {
         isDisabled={selectedCity === '' ? true : false}
       />
       <ConnectedSelect
-        label="Postal Code*"
+        label="Postal code*"
         name="postalCode"
         onChange={(name) => {
           setFieldValue('postalCode', name.target.value)

@@ -294,8 +294,8 @@ export const BEESTATUS = [
     value: 'Level 8'
   },
   {
-    label: 'None',
-    value: 'None'
+    label: 'Not applicable',
+    value: 'Not applicable'
   }
 ]
 
