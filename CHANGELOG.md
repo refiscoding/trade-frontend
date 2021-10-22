@@ -1,3 +1,10 @@
+# [1.13.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.12.0...v1.13.0) (2021-10-22)
+
+
+### Features
+
+* **user:** TS-202 hide become seller for individual user ([8f975f3](http://bitbucket.org/sovtech/tradefed-frontend/commits/8f975f35c02df3aac79fb4287b75eeee5b7c132d))
+
 # [1.12.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.11.1...v1.12.0) (2021-10-22)
 
 
