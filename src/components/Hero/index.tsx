@@ -1,6 +1,6 @@
-import { Flex, Text } from '@chakra-ui/core'
 import * as React from 'react'
 import { ColorProps } from 'styled-system'
+import { Flex } from '@chakra-ui/core'
 import { useMediaQuery } from 'react-responsive'
 
 type HeroProps = ColorProps & {
