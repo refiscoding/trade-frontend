@@ -11,8 +11,6 @@ import { useAuthContext } from '../../context/AuthProvider'
 import { useCategoryQuery, useUpdateSelfMutation, useSelfQuery } from '../../generated/graphql'
 import { useMediaQuery } from 'react-responsive'
 
-import OnboardingAddress from './OnboardingAddress'
-import OnboardingBusinessDetails from './OnboardingBusinessDetails'
 import OnboardingCategories from './OnboardingCategories'
 import OnboardingCompanyDetails from './OnboardingCompanyDetails'
 import OnboardingIndividual from './OnboardingIndividual'
@@ -71,12 +69,12 @@ const Onboarding: React.FC = () => {
 
   const handleUserDetails = async (details: any) => {
     if (currentAccountType === 'Business') {
-      if (active <= 3) {
+      if (active <= 2) {
         setActive(active + 1)
       }
       setUserdetails({ ...userDetails, ...details })
 
-      if (active === 4) {
+      if (active === 3) {
         if (details.categories) {
           await updateSelf({
             variables: {
@@ -91,7 +89,7 @@ const Onboarding: React.FC = () => {
         }
       }
     } else {
-      if (active <= 3) {
+      if (active <= 2) {
         setActive(active + 1)
       }
       setUserdetails({ ...userDetails, ...details })
@@ -122,16 +120,9 @@ const Onboarding: React.FC = () => {
             setCurrentAccountType={setCurrentAccountType}
             handleUserDetails={handleUserDetails}
           />
-          {currentAccountType === 'Business' ? (
-            <OnboardingBusinessDetails handleUserDetails={handleUserDetails} />
-          ) : (
-            <OnboardingIndividual handleUserDetails={handleUserDetails} />
-          )}
+          <OnboardingIndividual handleUserDetails={handleUserDetails} />
           {currentAccountType === 'Business' && (
             <OnboardingCompanyDetails handleUserDetails={handleUserDetails} />
-          )}
-          {currentAccountType === 'Business' && (
-            <OnboardingAddress handleUserDetails={handleUserDetails} />
           )}
           <OnboardingCategories categories={categoriesList} handleUserDetails={handleUserDetails} />
         </Stepper>

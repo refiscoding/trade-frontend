@@ -5,10 +5,15 @@ import { Button, Flex, useToast } from '@chakra-ui/core'
 import { Form, Formik, FormikProps } from 'formik'
 
 import { BEESTATUS, ERROR_TOAST, INDUSTRIES, SUCCESS_TOAST, TURNOVER } from '../../constants'
-import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
+import {
+  ConnectedFormGroup,
+  ConnectedNumberInput,
+  ConnectedSelect
+} from '../../components/FormElements'
 import { formatError } from '../../utils'
 import { H3, Text } from '../../typography'
 import { MotionFlex } from '../../components'
+import { POSITIONS } from '../../constants'
 import { useCreateBusinessOnSignUpMutation } from '../../generated/graphql'
 
 type NameProps = {
@@ -16,15 +21,17 @@ type NameProps = {
 }
 
 const NameFormValidation = Yup.object().shape({
-  annualTurn: Yup.string().required('Annual turnover of the business is required'),
-  beeStatus: Yup.string().required('BEE Status is required'),
-  businessType: Yup.string().required('The industry of the business is required'),
+  annualTurn: Yup.string().required('Annual turnover is required'),
+  beeStatus: Yup.string().required('BEE status is required'),
+  businessType: Yup.string().required('Industry is required'),
+  companyName: Yup.string().required('Company name is required'),
   phoneNumber: Yup.string().required('Business phone number is required'),
-  registrationNumber: Yup.string().required('A registration number is required'),
+  position: Yup.string().required('Position is required'),
+  registrationNumber: Yup.string().required('Business registration number is required'),
   yearsInOperation: Yup.number().required('Years in operation is required'),
   vatNumber: Yup.string().when('isVatRegistered', {
     is: (isVatRegistered) => isVatRegistered === 'true',
-    then: Yup.string().required('A VAT number is required if your business is VAT registered')
+    then: Yup.string().required('VAT number is required')
   })
 })
 
@@ -32,9 +39,12 @@ type CompanyValues = {
   annualTurn: string
   beeStatus: string
   businessType: string
+  companyName: string
   companyRelated: string
   isVatRegistered: boolean
+  otherPosition: string
   phoneNumber: string
+  position: string
   registrationNumber: string
   vatNumber: string
   websiteAddress: string
@@ -58,8 +68,11 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
     const {
       annualTurn,
       beeStatus,
+      companyName,
       companyRelated,
+      otherPosition,
       phoneNumber,
+      position,
       registrationNumber,
       vatNumber,
       websiteAddress,
@@ -68,9 +81,12 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
     const businessInput = {
       annualTurn,
       beeStatus,
+      companyName,
       companyRelated,
       isVatRegistered: vatChecked,
+      otherPosition,
       phoneNumber,
+      position,
       registrationNumber,
       vatNumber,
       websiteAddress,
@@ -86,24 +102,24 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
   return (
     <React.Fragment>
       <Flex width="100%" mb={4} flexDirection="column">
-        <H3 textAlign="left">Company Details</H3>
-        <Text textAlign="left" fontSize="14px">
-          Fill out some information about your company to get started.
-        </Text>
+        <H3 textAlign="left">Company details</H3>
       </Flex>
       <Formik
         validationSchema={NameFormValidation}
         initialValues={{
+          annualTurn: '',
           beeStatus: '',
-          phoneNumber: '',
-          websiteAddress: '',
-          registrationNumber: '',
-          isVatRegistered: false,
-          yearsInOperation: 0,
-          vatNumber: '',
           businessType: '',
+          companyName: '',
           companyRelated: '',
-          annualTurn: ''
+          isVatRegistered: false,
+          otherPosition: '',
+          phoneNumber: '',
+          position: '',
+          registrationNumber: '',
+          vatNumber: '',
+          websiteAddress: '',
+          yearsInOperation: 0
         }}
         onSubmit={async (businessInput, { setSubmitting, setStatus }) => {
           setStatus(null)
@@ -119,10 +135,19 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       >
         {({ isSubmitting, status, setFieldValue }: FormikProps<CompanyValues>) => (
           <Form style={{ width: '100%' }}>
-            <ConnectedFormGroup
-              label="Business/Work phone number*"
+            <ConnectedFormGroup label="Company name*" name="companyName" type="text" />
+            <ConnectedSelect
+              label="Position*"
+              placeholder="Select position"
+              onChange={(e) => setFieldValue('position', e.target.value)}
+              name="position"
+              options={POSITIONS}
+            />
+            <ConnectedFormGroup label="If other, please specify" name="otherPosition" type="text" />
+            <ConnectedNumberInput
+              label="Business/ work phone number*"
               name="phoneNumber"
-              type="text"
+              unit="+27"
             />
             <ConnectedFormGroup
               label="Business website address"
@@ -140,19 +165,19 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
               type="number"
             />
             <ConnectedFormGroup
-              label="Related/Associated company/Group"
+              label="Related/ associated company/ group"
               name="relatedCompany"
               type="text"
             />
             <ConnectedSelect
-              label="Select BEE status*"
+              label="BEE status*"
               placeholder="Select BEE status"
               name="beeStatus"
               onChange={(e) => setFieldValue('beeStatus', e.target.value)}
               options={BEESTATUS}
             />
             <ConnectedSelect
-              label="Select annual turnover (R)*"
+              label="Annual turnover (R)*"
               placeholder="Select annual turnover"
               name="annualTurn"
               onChange={(e) => setFieldValue('annualTurn', e.target.value)}
@@ -181,16 +206,11 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
               ]}
             />
             {vatChecked === true && (
-              <ConnectedFormGroup
-                label="If yes, please provide VAT number*"
-                placeholder="Please provide VAT number"
-                name="vatNumber"
-                type="text"
-              />
+              <ConnectedFormGroup label="Please provide VAT number*" name="vatNumber" type="text" />
             )}
             <ConnectedSelect
-              label="Which industry does your business operate in*"
-              placeholder="Select an Industry"
+              label="Which industry does your business operate in?*"
+              placeholder="Select industry"
               name="businessType"
               onChange={(name) => {
                 setFieldValue('businessType', name.target.value)
