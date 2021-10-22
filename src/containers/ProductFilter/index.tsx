@@ -60,10 +60,6 @@ const ProductFilter: React.FC<ProductTypes> = ({ countries }) => {
     history.push(`/?minPrice=${minPrice}&maxPrice=${maxPrice}&category=${category}`)
   }
 
-  // const navigateToPreviousPage = () => {
-  //   history.push(`/`)
-  // }
-
   return (
     <PageWrap
       mt={10}
@@ -71,20 +67,9 @@ const ProductFilter: React.FC<ProductTypes> = ({ countries }) => {
       alignSelf="center"
       width={isTabletOrMobile ? '100%' : '40%'}
     >
-      {/* <Flex alignSelf="flex-start" pt={4} pb={4}>
-        <IconButton
-          icon={ArrowLeft}
-          aria-label="Go "
-          backgroundColor="transparent"
-          onClick={() => navigateToPreviousPage()}
-        />
-        <H3 textAlign="left" fontSize={14} fontWeight={700} pl={4} style={{ placeSelf: 'center' }}>
-          Back
-        </H3>
-      </Flex> */}
       <Flex width="100%" mb={4} justifyContent="space-between">
         <H3 textAlign="left" fontSize={18} fontWeight={600}>
-          Filtering Options
+          Filtering options
         </H3>
         <Text
           color="accent.500"
@@ -92,7 +77,7 @@ const ProductFilter: React.FC<ProductTypes> = ({ countries }) => {
           fontSize="12px"
           onClick={() => handleClearFilters()}
         >
-          Clear Filters
+          Clear filters
         </Text>
       </Flex>
       <Formik
@@ -111,27 +96,17 @@ const ProductFilter: React.FC<ProductTypes> = ({ countries }) => {
       >
         {({ isSubmitting, status }: FormikProps<ProductValues>) => (
           <Form style={{ width: '100%' }}>
-            <ConnectedFormGroup
-              label="Minimum Price"
-              placeholder="Select an option..."
-              name="minPrice"
-              type="text"
-            />
-            <ConnectedFormGroup
-              label="Maximum Price"
-              placeholder="Select an option..."
-              name="maxPrice"
-              type="text"
-            />
-            <FormLabel htmlFor="category">Select Category</FormLabel>
+            <ConnectedFormGroup label="Minimum price" name="minPrice" type="text" />
+            <ConnectedFormGroup label="Maximum price" name="maxPrice" type="text" />
+            <FormLabel htmlFor="category">Category</FormLabel>
             {CATEGORIES?.map((item: any, i: number) => (
               <Flex width="50%" key={`${i}-container`}>
                 <ConnectedCheckbox key={i} name="categories" label={item.name} value={item.id} />
               </Flex>
             ))}
             <ConnectedSelect
-              label="Select Country"
-              placeholder="Select a country..."
+              label="Country"
+              placeholder="Select country"
               name="country"
               options={countries}
             />
@@ -143,26 +118,26 @@ const ProductFilter: React.FC<ProductTypes> = ({ countries }) => {
               </MotionFlex>
             )}
             <Button
-              ml={1}
-              mt={4}
+              mt={1}
+              ml={4}
+              width="250px"
+              onClick={() => {
+                history.goBack()
+              }}
+              border={`1px solid ${theme.colors.brand[700]}`}
+              background="white"
+            >
+              <Text>CANCEL</Text>
+            </Button>
+            <Button
+              ml={4}
+              mt={1}
               variantColor="brand"
               type="submit"
               isLoading={isSubmitting}
               width="250px"
             >
               <Text>APPLY</Text>
-            </Button>
-            <Button
-              mt={4}
-              ml={8}
-              width="250px"
-              // onClick={() => {
-              //   history.push('/profile')
-              // }}
-              border={`1px solid ${theme.colors.brand[700]}`}
-              background="white"
-            >
-              <Text>CANCEL</Text>
             </Button>
           </Form>
         )}

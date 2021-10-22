@@ -7,12 +7,22 @@ import { theme } from '../../theme'
 import { Text } from '../../typography'
 import { PageWrap } from '../../layouts'
 import { useAuthContext } from '../../context/AuthProvider'
+import NoAddressComponent from './NoAddress'
 
-type AddressBookProps = {}
+type AddressBookProps = {
+  noAddressHeader: string
+  noAddressCaption: string
+}
 
 const AddressBook: React.FC<AddressBookProps> = () => {
   const { user } = useAuthContext()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
+
+  const noAddressHeader = `No Delivery Addresses Here...`
+  const noAddressCaption = `
+      You don’t seem to have any delivery addresses yet. 
+      You can add an address at your next checkout and it will display here.
+    `
 
   return (
     <PageWrap
@@ -59,6 +69,9 @@ const AddressBook: React.FC<AddressBookProps> = () => {
             </Grid>
           ))}
         </Flex>
+        {user?.address ? (
+          <NoAddressComponent header={noAddressHeader} caption={noAddressCaption} />
+        ) : null}
       </Flex>
     </PageWrap>
   )
