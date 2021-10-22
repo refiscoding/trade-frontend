@@ -60,10 +60,6 @@ const ProductFilter: React.FC<ProductTypes> = ({ countries }) => {
     history.push(`/?minPrice=${minPrice}&maxPrice=${maxPrice}&category=${category}`)
   }
 
-  // const navigateToPreviousPage = () => {
-  //  history.goBack()
-  // }
-
   return (
     <PageWrap
       mt={10}
@@ -71,17 +67,6 @@ const ProductFilter: React.FC<ProductTypes> = ({ countries }) => {
       alignSelf="center"
       width={isTabletOrMobile ? '100%' : '40%'}
     >
-      {/* <Flex alignSelf="flex-start" pt={4} pb={4}>
-        <IconButton
-          icon={ArrowLeft}
-          aria-label="Go "
-          backgroundColor="transparent"
-          onClick={() => navigateToPreviousPage()}
-        />
-        <H3 textAlign="left" fontSize={14} fontWeight={700} pl={4} style={{ placeSelf: 'center' }}>
-          Back
-        </H3>
-      </Flex> */}
       <Flex width="100%" mb={4} justifyContent="space-between">
         <H3 textAlign="left" fontSize={18} fontWeight={600}>
           Filtering options
