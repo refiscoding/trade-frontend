@@ -31,50 +31,43 @@ import DispatchAddress from './dispatchAddress'
 import PersonalInfo from './personalInfo'
 
 const SellerFormValidation = Yup.object().shape({
-  beeStatus: Yup.string().required('BEE Status is required'),
+  beeStatus: Yup.string().required('BEE status is required'),
   building: Yup.string().required('Building is required'),
-  businessPhoneNumber: Yup.string().required('Business Phone Number is required'),
-  businessType: Yup.string().required('Business Type is required'),
-  categories: Yup.array().required('Business Category is required'),
-  city: Yup.string().required('City / Town is required'),
+  businessPhoneNumber: Yup.string().required('Business/ work phone number is required'),
+  categories: Yup.array().required('Business category is required'),
+  city: Yup.string().required('City / town is required'),
   email: Yup.string().email('Please enter a valid email address').required('An email is required'),
-  firstName: Yup.string().required('First Name is required'),
-  hasPhysicalStore: Yup.boolean().required('Physical Presence is required'),
+  firstName: Yup.string().required('Name is required'),
   hazChem: Yup.string(),
-  headQuater: Yup.string().required('Business Head Quater is required'),
+  headQuater: Yup.string().required('Head-office is required'),
   isHazChem: Yup.boolean().required('Haz Chem status is required'),
-  isRetailSupplier: Yup.boolean().required('Retail Supplier Status is required'),
   isVatRegistered: Yup.boolean().required('VAT Registration Status is required'),
-  lastName: Yup.string().required('Last Name is required'),
-  name: Yup.string().required('Business Name is required'),
-  phoneNumber: Yup.string().required('Phone Number is required'),
+  lastName: Yup.string().required('Surname is required'),
+  name: Yup.string().required('Compant name is required'),
+  phoneNumber: Yup.string().required('Cell phone number is required'),
   position: Yup.string().required('Company Position is required'),
   postalCode: Yup.string().required('Postal Code is required'),
   products: Yup.string().required('Product Description is required'),
   province: Yup.string().required('Province is required'),
-  registrationNumber: Yup.string().required('Registration Number is required'),
-  revenue: Yup.string().required('Revenue Range is required'),
+  registrationNumber: Yup.string().required('Business registration number is required'),
+  revenue: Yup.string().required('Annual turnover is required'),
   street: Yup.string().required('Street Address is required'),
   suburb: Yup.string().required('Suburb is required'),
   suppliedBrands: Yup.string().required('List of brands is required'),
-  uniqueProducts: Yup.string().required('Number of Unique Products is required'),
   vatNumber: Yup.string().when('isVatRegistered', {
     is: (isVatRegistered) => isVatRegistered === true,
-    then: Yup.string().required('A VAT number is required if your business is VAT registered')
+    then: Yup.string().required('VAT number is required')
   }),
-  yearsInOperation: Yup.number().required('Years of Operation is required')
+  yearsInOperation: Yup.number().required('Number of years in operation is required')
 })
 
 export type ErrorsObject = {
   beeStatus?: string | undefined
   building: string | undefined
-  businessType?: string | undefined
   city: string | undefined
-  hasPhysicalStore?: boolean | undefined
   hazChem?: string | undefined
   headQuater: string | undefined
   isHazChem?: boolean | undefined
-  isRetailSupplier?: boolean | undefined
   isVatRegistered?: boolean | undefined
   position?: string | undefined
   postalCode: string | undefined
@@ -88,12 +81,9 @@ export type ErrorsObject = {
 export type TouchedErrors = {
   beeStatus?: boolean | undefined
   building: boolean | undefined
-  businessType?: boolean | undefined
   city: boolean | undefined
-  hasPhysicalStore?: boolean | undefined
   headQuater?: boolean | undefined
   isHazChem?: boolean | undefined
-  isRetailSupplier?: boolean | undefined
   isVatRegistered?: boolean | undefined
   position?: boolean | undefined
   postalCode: boolean | undefined
@@ -108,18 +98,15 @@ export type TouchedErrors = {
 export type SellerValues = {
   beeStatus: string
   businessPhoneNumber: string
-  businessType?: string
   businessWebsite?: string
   categories: string[]
   countries: string[]
   email: string
   errors?: ErrorsObject
   firstName: string
-  hasPhysicalStore: boolean
   hazChem: string
   headQuater: string
   isHazChem: boolean
-  isRetailSupplier: boolean
   isVatRegistered: boolean
   lastName: string
   location: string
@@ -130,7 +117,6 @@ export type SellerValues = {
   registrationNumber: string
   revenue: string
   suppliedBrands: string
-  uniqueProducts: string
   vatNumber: string
   yearsInOperation: number
   street: string
@@ -145,7 +131,6 @@ const initialValues = {
   location: '',
   products: '' || undefined,
   suppliedBrands: '',
-  uniqueProducts: '',
   street: '',
   province: '',
   building: '',
@@ -168,15 +153,12 @@ const Seller: React.FC = () => {
     ...initialValues,
     beeStatus: user?.business?.beeStatus || '',
     businessPhoneNumber: user?.business?.phoneNumber || '',
-    businessType: user?.business?.businessType || '',
     companyRelated: user?.business?.companyRelated || '',
     email: user?.email || '',
     firstName: user?.firstName || '',
-    hasPhysicalStore: user?.business?.hasPhysicalStore || false,
     hazChem: user?.business?.hazChem || '',
     headQuater: user?.business?.headQuater || '',
     isHazChem: user?.business?.isHazChem || false,
-    isRetailSupplier: user?.business?.isRetailSupplier || false,
     isVatRegistered: user?.business?.isVatRegistered || false,
     lastName: user?.lastName || '',
     name: user?.business?.owner?.companyName || '',
@@ -243,13 +225,9 @@ const Seller: React.FC = () => {
       firstName,
       vatNumber,
       phoneNumber,
-      businessType,
-      uniqueProducts,
       suppliedBrands,
       isVatRegistered,
       businessWebsite,
-      isRetailSupplier,
-      hasPhysicalStore,
       yearsInOperation,
       registrationNumber,
       businessPhoneNumber,
@@ -265,8 +243,6 @@ const Seller: React.FC = () => {
       hazChem,
       beeStatus,
       vatNumber,
-      businessType,
-      uniqueProducts,
       headQuater,
       suppliedBrands,
       yearsInOperation,
@@ -278,8 +254,6 @@ const Seller: React.FC = () => {
       websiteAddress: businessWebsite,
       phoneNumber: businessPhoneNumber,
       isVatRegistered: Boolean(isVatRegistered),
-      hasPhysicalStore: Boolean(hasPhysicalStore),
-      isRetailSupplier: Boolean(isRetailSupplier),
       dispatchAddress: {
         street,
         building,
