@@ -146,15 +146,17 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
             justifyContent="space-between"
             px={5}
           >
-            <Text
-              color="white"
-              fontSize="14px"
-              cursor="pointer"
-              onClick={handleBecomeSeller}
-              pr={4}
-            >
-              {isSellerApproved ? 'Product Management' : 'Become a Seller'}
-            </Text>
+            {user?.isBusiness === true && (
+              <Text
+                color="white"
+                fontSize="14px"
+                cursor="pointer"
+                onClick={handleBecomeSeller}
+                pr={4}
+              >
+                {isSellerApproved ? 'Product Management' : 'Become a Seller'}
+              </Text>
+            )}
             <Text color="white" fontSize="14px" cursor="pointer" onClick={handleMyaccount}>
               My Account
             </Text>
