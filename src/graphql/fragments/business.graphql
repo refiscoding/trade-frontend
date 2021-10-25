@@ -5,16 +5,16 @@ fragment business on Business {
   id
   annualTurn
   beeStatus
-  businessType
+  companyName
   companyRelated
   created_at
-  hasPhysicalStore
   hazChem
   headQuater
   isHazChem
-  isRetailSupplier
   isVatRegistered
+  otherPosition
   phoneNumber
+  position
   productsSummary
   published_at
   registrationNumber
