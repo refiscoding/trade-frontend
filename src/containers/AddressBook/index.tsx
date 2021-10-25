@@ -37,41 +37,42 @@ const AddressBook: React.FC<AddressBookProps> = () => {
           My Addresses
         </Text>
         <Flex width="100%" flexDirection="column" p={3}>
-          {user?.address?.map((address, index) => (
-            <Grid
-              gridTemplateRows="30px 1fr 1fr"
-              borderRadius={5}
-              key={`${index}_address`}
-              background={theme.colors.accent[50]}
-              boxShadow={theme.boxShadowMedium}
-              minWidth={`${isTabletOrMobile ? '400px' : '600px'}`}
-              p={4}
-              mb={5}
-            >
-              <Grid gridTemplateColumns="1fr 90px" width="100%">
-                <Text fontWeight={550} fontSize={14}>
-                  {address?.name}
+          {user?.address?.length === 0 ? (
+            <NoAddressComponent header={noAddressHeader} caption={noAddressCaption} />
+          ) : (
+            user?.address?.map((address, index) => (
+              <Grid
+                gridTemplateRows="30px 1fr 1fr"
+                borderRadius={5}
+                key={`${index}_address`}
+                background={theme.colors.accent[50]}
+                boxShadow={theme.boxShadowMedium}
+                minWidth={`${isTabletOrMobile ? '400px' : '600px'}`}
+                p={4}
+                mb={5}
+              >
+                <Grid gridTemplateColumns="1fr 90px" width="100%">
+                  <Text fontWeight={550} fontSize={14}>
+                    {address?.name}
+                  </Text>
+                  <Tag
+                    fontSize={11}
+                    size="sm"
+                    background={theme.colors.tag}
+                    color={theme.colors.tagText}
+                    justifySelf="start"
+                  >
+                    {address?.type?.toUpperCase()}
+                  </Tag>
+                </Grid>
+                <Text mt={3} fontSize={12}>
+                  {address?.province || ''} - {address?.city || ''} - {address?.suburb || ''}
                 </Text>
-                <Tag
-                  fontSize={11}
-                  size="sm"
-                  background={theme.colors.tag}
-                  color={theme.colors.tagText}
-                  justifySelf="start"
-                >
-                  {address?.type?.toUpperCase()}
-                </Tag>
+                <Text fontSize={12}>{address?.postalCode}</Text>
               </Grid>
-              <Text mt={3} fontSize={12}>
-                {address?.province || ''} - {address?.city || ''} - {address?.suburb || ''}
-              </Text>
-              <Text fontSize={12}>{address?.postalCode}</Text>
-            </Grid>
-          ))}
+            ))
+          )}
         </Flex>
-        {user?.address ? (
-          <NoAddressComponent header={noAddressHeader} caption={noAddressCaption} />
-        ) : null}
       </Flex>
     </PageWrap>
   )
