@@ -125,7 +125,7 @@ const BusinessOrderConfirmation: React.FC<BusinessOrdersProps> = ({
                         Origin:
                       </Text>
                       <Text fontSize={12} pl={2}>
-                        {user?.companyName}
+                        {user?.business?.companyName}
                       </Text>
                     </Flex>
                     <Flex width="100%" pb={4}>
