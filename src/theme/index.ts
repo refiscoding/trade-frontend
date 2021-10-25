@@ -13,7 +13,7 @@ const theme = {
     tag: '#B6DAF5',
     tagText: '#004A81',
     info: '#CEEDFF',
-    blueText: '#355EC0',
+    blueText: '#5C88DA',
     background: '#efefef',
     dimText: '#6A6A6A',
     bodyText: '#4F4F4F',
