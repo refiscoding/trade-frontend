@@ -1,3 +1,10 @@
+## [1.13.1](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.13.0...v1.13.1) (2021-10-25)
+
+
+### Bug Fixes
+
+* modal header text ([8b7ac7f](http://bitbucket.org/sovtech/tradefed-frontend/commits/8b7ac7f1b214f848d52a37bf34f95d3e496f7bed))
+
 # [1.13.0](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.12.0...v1.13.0) (2021-10-22)
 
 

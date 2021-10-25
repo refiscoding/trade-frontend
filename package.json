@@ -1,6 +1,6 @@
 {
   "name": "tradefed-frontend",
-  "version": "1.13.0",
+  "version": "1.13.1",
   "private": true,
   "dependencies": {
     "@apollo/react-hooks": "^3.1.5",
