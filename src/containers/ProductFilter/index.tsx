@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as Yup from 'yup'
 
-import { Button, Flex, Text, FormLabel, Grid } from '@chakra-ui/core'
+import { Button, Flex, Text, FormLabel } from '@chakra-ui/core'
 import { CATEGORIES } from '../../constants'
 import {
   ConnectedCheckbox,
