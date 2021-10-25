@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as Yup from 'yup'
 
-import { Button, Flex, Text, FormLabel } from '@chakra-ui/core'
+import { Button, Flex, Text, FormLabel, Grid } from '@chakra-ui/core'
 import { CATEGORIES } from '../../constants'
 import {
   ConnectedCheckbox,
@@ -117,28 +117,29 @@ const ProductFilter: React.FC<ProductTypes> = ({ countries }) => {
                 </Text>
               </MotionFlex>
             )}
-            <Button
-              mt={1}
-              ml={4}
-              width="250px"
-              onClick={() => {
-                history.goBack()
-              }}
-              border={`1px solid ${theme.colors.brand[700]}`}
-              background="white"
-            >
-              <Text>CANCEL</Text>
-            </Button>
-            <Button
-              ml={4}
-              mt={1}
-              variantColor="brand"
-              type="submit"
-              isLoading={isSubmitting}
-              width="250px"
-            >
-              <Text>APPLY</Text>
-            </Button>
+            <Flex w="100%">
+              <Button
+                mt={isTabletOrMobile ? '1' : '1'}
+                width={isTabletOrMobile ? '50%' : '50%'}
+                onClick={() => {
+                  history.goBack()
+                }}
+                border={`1px solid ${theme.colors.brand[700]}`}
+                background="white"
+              >
+                <Text>CANCEL</Text>
+              </Button>
+              <Button
+                ml={4}
+                mt={isTabletOrMobile ? '1' : '1'}
+                variantColor="brand"
+                type="submit"
+                isLoading={isSubmitting}
+                width={isTabletOrMobile ? '50%' : '50%'}
+              >
+                <Text>APPLY</Text>
+              </Button>
+            </Flex>
           </Form>
         )}
       </Formik>
