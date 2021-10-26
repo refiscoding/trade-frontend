@@ -263,7 +263,7 @@ const CartPage: React.FC = () => {
                   Cart Summary
                 </H3>
                 <Text
-                  fontSize={10}
+                  fontSize={14}
                   mt={4}
                   color="blue"
                 >{`Cart Total (${itemsCount}): R ${cartTotal.toFixed(2)}`}</Text>

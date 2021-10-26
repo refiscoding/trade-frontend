@@ -57,23 +57,22 @@ const Home: React.FC = () => {
 
   const bannerImage = () => {
     if (category?.name === 'Agriculture') {
-      return images?.agricultureBanner || null
+      return images?.agricultureBanner
     } else if (category?.name === 'Automotive') {
-      return images?.automotiveBanner || null
+      return images?.automotiveBanner
     } else if (category?.name === 'Electrical Equipment') {
-      return images?.electricalBanner || null
+      return images?.electricalBanner
     } else if (category?.name === 'Food Ingredients') {
-      return images?.electricalBanner || null
+      return images?.foodBanner
     } else if (category?.name === 'Heavy Machinery') {
-      return images?.heavyBanner || null
+      return images?.heavyBanner
     } else if (category?.name === 'Industrial') {
-      return images?.foodBanner || null
-    } else if (category?.name === 'Lighting') {
-      return images?.lightingBanner || null
-    } else if (category?.name === 'Mining') {
-      return images?.miningBanner || null
-    } else {
+      // return images?.foodBanner || null
       return null
+    } else if (category?.name === 'Lighting') {
+      return images?.lightingBanner
+    } else if (category?.name === 'Mining') {
+      return images?.miningBanner
     }
   }
 

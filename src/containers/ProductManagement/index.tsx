@@ -142,7 +142,7 @@ const ActiveProduct: React.FC<ActiveProductProps> = ({
               top={0}
               right={0}
             >
-              <Text color="white" fontSize="14px">
+              <Text color="white" fontWeight={600} fontSize="14px">
                 Save
               </Text>
               <Text color="white" fontSize="14px" fontWeight={600}>
