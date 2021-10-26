@@ -12,23 +12,22 @@ type HeroProps = ColorProps & {
   isCategory?: boolean
 }
 
-const Hero: React.FC<HeroProps> = ({ image, isCategory }) => {
+const Hero: React.FC<HeroProps> = ({ image }) => {
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   return (
     <Flex
       width="100vw"
-      minHeight={isTabletOrMobile ? '200px' : isCategory ? '450px' : '380px'}
-      justifyContent={isCategory ? 'center' : 'flex-start'}
+      minHeight={isTabletOrMobile ? '450px' : '400px'}
       mr="16px"
       flexDirection="column"
       alignItems="center"
     >
       <Flex
         width="100vw"
-        minHeight={isTabletOrMobile ? '200px' : isCategory ? '450px' : '400px'}
+        minHeight={isTabletOrMobile ? '400px' : '500px'}
         backgroundImage={`url(${image})`}
         backgroundPosition="center"
-        backgroundSize={isTabletOrMobile && !isCategory ? 'contain' : 'contain'}
+        backgroundSize={isTabletOrMobile ? 'contain' : 'cover'}
         backgroundRepeat="no-repeat"
       ></Flex>
     </Flex>
