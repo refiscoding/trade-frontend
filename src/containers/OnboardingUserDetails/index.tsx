@@ -21,7 +21,6 @@ const userDetailsInitialValues = {
   lastName: '',
   address: [],
   categories: [],
-  position: '',
   workEmailAddress: '',
   phoneNumber: '',
   idNumber: ''
