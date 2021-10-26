@@ -99,12 +99,12 @@ const ProductComponentMobile: React.FC<ProductProps> = ({
           Retail: {`${product?.currency} ${product?.maxSellCost?.toFixed(2)}`}
         </Text>
         <Text ml={marginLeft} fontSize="14px" color={textColor} fontWeight={600}>
-          {`This item is sold per ${productPackaging}`}
+          {/* {`This item is sold per ${productPackaging}`} */}
         </Text>
         <Flex ml={marginLeft} mt={2}>
           <Briefcase />
           <Text ml={3} fontSize="14px">
-            {`Supplied by ${product?.business?.owner?.companyName}`}
+            {`Supplied by ${product?.business?.companyName}`}
           </Text>
         </Flex>
         {businessAddress && (

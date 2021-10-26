@@ -9,20 +9,19 @@
 # import '/fragments/order.graphql'
 
 fragment user on UsersPermissionsUser {
-  id
+  blocked
+  confirmed
   created_at
+  email
+  firstName
+  id
+  idNumber
+  isSeller
+  lastName
+  phoneNumber
+  profileCompleted
   updated_at
   username
-  email
-  confirmed
-  blocked
-  phoneNumber
-  firstName
-  lastName
-  companyName
-  idNumber
-  profileCompleted
-  isSeller
   profilePicture {
     ...uploadFile
   }
