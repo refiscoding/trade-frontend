@@ -179,8 +179,8 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
             <ConnectedSelect
               label="Annual turnover (R)*"
               placeholder="Select annual turnover"
-              name="annualTurn"
-              onChange={(e) => setFieldValue('annualTurn', e.target.value)}
+              name="revenue"
+              onChange={(e) => setFieldValue('revenue', e.target.value)}
               options={TURNOVER}
             />
             <ConnectedSelect

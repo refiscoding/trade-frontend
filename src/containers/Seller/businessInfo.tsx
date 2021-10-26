@@ -81,7 +81,7 @@ const BusinessInfo: React.FC<businessTypes> = ({
           name="registrationNumber"
           type="text"
         />
-        <ConnectedNumberInput label="NUmber of years in operation*" name="yearsOfOperation" />
+        <ConnectedNumberInput label="Number of years in operation*" name="yearsOfOperation" />
         <ConnectedFormGroup
           label="Related/ associated company/ group"
           name="companyRelated"
@@ -164,8 +164,8 @@ const BusinessInfo: React.FC<businessTypes> = ({
           />
         )}
         <ConnectedSelect
-          placeholder="Where is your dead-office situated"
-          label="Head Office*"
+          placeholder="Select country"
+          label="Where is your head office situated?*"
           name="headQuater"
           options={countries}
         />

@@ -27,11 +27,6 @@ export const NAV_ITEMS: NavItem[] = [
     Icon: Home
   },
   {
-    to: `/apply-seller`,
-    title: 'Become a Seller',
-    Icon: Briefcase
-  },
-  {
     to: `/wishlist`,
     title: 'My Wish List',
     Icon: Star
@@ -57,6 +52,12 @@ export const NAV_ITEMS: NavItem[] = [
     Icon: HelpCircle
   }
 ]
+
+export const BECOME_SELLER_NAV_ITEM = {
+  to: `/apply-seller`,
+  title: 'Become a Seller',
+  Icon: Briefcase
+}
 
 export const SELLER_NAV_ITEM = {
   to: `/product-management`,

@@ -1,8 +1,9 @@
-import { Button, Flex } from '@chakra-ui/core'
-import { Form, Formik, FormikProps } from 'formik'
 import * as React from 'react'
 import * as Yup from 'yup'
+
+import { Button, Flex } from '@chakra-ui/core'
 import { ConnectedCheckbox } from '../../components/FormElements'
+import { Form, Formik, FormikProps } from 'formik'
 import { H3, Text } from '../../typography'
 import { formatError } from '../../utils'
 
@@ -23,7 +24,7 @@ const UserDetails: React.FC<CategoriesProps> = ({ categories, handleUserDetails 
   return (
     <React.Fragment>
       <Flex width="100%" mb={4} flexDirection="column">
-        <H3 textAlign="left">Which Industries are you interested in?</H3>
+        <H3 textAlign="left">Which industries are you interested in?</H3>
       </Flex>
       <Formik
         validationSchema={CategoriesFormValidation}

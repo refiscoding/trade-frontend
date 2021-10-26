@@ -23,11 +23,11 @@ type AddressProps = {
 
 const AddressFormValidation = Yup.object().shape({
   name: Yup.string().required('Name is required'),
-  street: Yup.string().required('Street Address is required'),
+  street: Yup.string().required('Street address is required'),
   province: Yup.string().required('Province is required'),
-  city: Yup.string().required('City / Town is required'),
+  city: Yup.string().required('City is required'),
   suburb: Yup.string().required('Suburb is required'),
-  postalCode: Yup.string().required('Postal Code is required')
+  postalCode: Yup.string().required('Postal code is required')
 })
 
 type AddressValues = {
@@ -150,26 +150,26 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
         {({ isSubmitting, status, setFieldValue }: FormikProps<AddressValues>) => (
           <Form style={{ width: '100%' }}>
             <ConnectedFormGroup
-              label="Address Name*"
+              label="Address name*"
               placeholder="Eg. Mum's Place"
               name="name"
               type="text"
             />
             <ConnectedFormGroup
-              label="Building/Complex Name"
+              label="Building/ complex name"
               placeholder="Eg. Carlton Centre"
               name="building"
               type="text"
             />
             <ConnectedFormGroup
-              label="Street Address*"
+              label="Street address*"
               placeholder="Eg. 68 Fifth Street"
               name="street"
               type="text"
             />
             <ConnectedSelect
               label="Province*"
-              placeholder="Select a Province"
+              placeholder="Select province"
               name="province"
               onChange={(name) => {
                 setSelectedProvince(name.target.value)
@@ -179,7 +179,7 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
             />
             <ConnectedSelect
               label="City*"
-              placeholder="Select a City / Town"
+              placeholder="Select city"
               name="city"
               textTransform="lowercase"
               onChange={(name) => {
@@ -191,7 +191,7 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
             />
             <ConnectedSelect
               label="Suburb*"
-              placeholder="Select a Suburb"
+              placeholder="Select suburb"
               name="suburb"
               textTransform="lowercase"
               onChange={(name) => {
@@ -202,12 +202,12 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
               isDisabled={selectedCity === '' ? true : false}
             />
             <ConnectedSelect
-              label="Postal Code*"
+              label="Postal code*"
               name="postalCode"
               onChange={(name) => {
                 setFieldValue('postalCode', name.target.value)
               }}
-              placeholder="Select Postal Code"
+              placeholder="Select postal code"
               options={postalCodeList}
               isDisabled={selectedSuburb === '' ? true : false}
             />

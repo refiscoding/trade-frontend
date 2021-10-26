@@ -14,6 +14,7 @@ import SideBarButton from './SideBarButton'
 import {
   NavItem,
   AUTH_NAV_ITEMS,
+  BECOME_SELLER_NAV_ITEM,
   BUSINESS_NAV_ITEM,
   LOGOUT_NAV_ITEM,
   SELLER_NAV_ITEM
@@ -75,9 +76,12 @@ const SideBar: React.FC<SideBarProps> = ({
 
   const handleNavItems = () => {
     const updatedNavItems = navItems
+    if (user?.isBusiness && user?.isSeller !== 'approved') {
+      updatedNavItems[6] = BECOME_SELLER_NAV_ITEM
+    }
     if (user?.isSeller === 'approved') {
-      updatedNavItems[1] = SELLER_NAV_ITEM
-      updatedNavItems[8] = BUSINESS_NAV_ITEM
+      updatedNavItems[6] = SELLER_NAV_ITEM
+      updatedNavItems[7] = BUSINESS_NAV_ITEM
     }
     return updatedNavItems
   }
