@@ -125,7 +125,7 @@ const DispatchAddress: React.FC<dispatchAddressTypes> = ({ setFieldValue }) => {
         onChange={(name) => {
           setFieldValue('postalCode', name.target.value)
         }}
-        placeholder="Select Postal Code"
+        placeholder="Select postal code"
         options={postalCodeList}
         isDisabled={selectedSuburb === '' ? true : false}
       />

@@ -85,7 +85,7 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
           </Text>
         </Flex>
         <Flex>
-          <Text fontWeight={600}> Building/Complex: </Text>
+          <Text fontWeight={600}> Building: </Text>
           <Text pl={2}>
             {(selectedAddress?.building && toSentenceCase(selectedAddress?.building || '-')) || '-'}
           </Text>
