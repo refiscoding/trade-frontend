@@ -106,7 +106,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               top={0}
               right={0}
             >
-              <Text color="black" fontSize="14px">
+              <Text color="black" fontWeight={600} fontSize="14px">
                 Save
               </Text>
               <Text color="black" fontSize="14px" fontWeight={600}>

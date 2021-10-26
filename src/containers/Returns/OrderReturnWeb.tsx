@@ -101,7 +101,7 @@ const OrderReturnProduct: React.FC<OrderReturnProductProps> = ({
               justifyContent="center"
               bg={refundable ? 'accent.700' : '#acacac'}
             >
-              <Text color="white" fontSize="14px">
+              <Text color="white" fontWeight={600} fontSize="14px">
                 Save
               </Text>
               <Text color="white" fontSize="14px" fontWeight={600}>
