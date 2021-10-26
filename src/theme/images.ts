@@ -1,5 +1,6 @@
 export default {
   404: require('../assets/images/404.svg'),
+  aboutUsBanner: require('../assets/images/AboutUs_Banner-01.jpg'),
   adPlaceholder: require('../assets/images/ad_placeholder.jpg'),
   adPlaceholder2: require('../assets/images/ad_placeholder_2.png'),
   agricultureBanner: require('../assets/images/Agriculture.jpg'),

@@ -9,23 +9,26 @@ import { ChevronRight, Facebook, Linkedin, Book, BookOpen } from 'react-feather'
 
 import Section from '../../components/Section'
 
-import { theme } from '../../theme'
+import { images, theme } from '../../theme'
 import { PageWrap } from '../../layouts'
 
 import { useFetchLegalitiesQuery } from '../../generated/graphql'
 import { ApolloError } from 'apollo-client'
 import { ERROR_TOAST } from '../../constants'
+import About from '../../components/About'
 
 type LinkProps = {
   boxShadow: string
   background: string
   mt?: string
+  ml?: string
 }
 
 const Link = styled.a<LinkProps>`
   width: 100%;
   padding: 0.8rem;
   border-radius: 0.4rem;
+  margin-left: ${(props) => props.ml};
   margin-top: ${(props) => props.mt};
   background: ${(props) => props.background};
   box-shadow: ${(props) => props.boxShadow};
@@ -48,8 +51,9 @@ const AboutUs: React.FC = () => {
   const linkedInLink = 'https://www.linkedin.com/company/tradefedsolutions/'
 
   return (
-    <PageWrap title="About Us" alignSelf="center" width={isTabletOrMobile ? '100%' : '40%'}>
-      <Section my={1} title="About Us" bg="transparent" width="100%">
+    <PageWrap title="About Us" alignSelf="center">
+      <About image={isTabletOrMobile ? null : images.aboutUsBanner} />
+      <Section bg="transparent" width="40%" ml="30%">
         <Link
           href={privacyPolicyFile || ''}
           target="_blank"
