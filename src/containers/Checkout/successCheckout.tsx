@@ -28,7 +28,6 @@ const CheckoutSuccess: React.FC = () => {
         caption={`
           We have received your payment for order ${orderNumber}.
           We have sent an invoice to your email with the summary.
-          One of our representatives will also contact you to facilitate delivery to the pickup point.
         `}
         action={() => history.push('/')}
         actionText="TAKE ME HOME"
