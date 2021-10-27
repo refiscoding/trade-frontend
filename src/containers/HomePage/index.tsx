@@ -26,6 +26,7 @@ import {
   Category,
   useCategoryQuery
 } from '../../generated/graphql'
+import InfoBanner from '../../components/InfoBanner'
 
 type filterParams = {
   minPrice: string
@@ -145,6 +146,7 @@ const Home: React.FC = () => {
             </Section>
           ) : (
             <React.Fragment>
+              <InfoBanner> </InfoBanner>
               <HomeBanner
                 image={isTabletOrMobile ? images.heroImg : images.homeBanner2}
                 header=""
