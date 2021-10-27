@@ -14,7 +14,6 @@ import Section from '../../components/Section'
 import ProductCard from '../../components/Card/ProductCard'
 import CategoryCard from '../../components/Card/CategoryCard'
 
-import { images } from '../../theme'
 import { PageWrap } from '../../layouts'
 import { SearchBar } from '../../components'
 import { useAuthContext } from '../../context/AuthProvider'
@@ -145,11 +144,7 @@ const Home: React.FC = () => {
             </Section>
           ) : (
             <React.Fragment>
-              <HomeBanner
-                // image={isTabletOrMobile ? images.heroImg : images.homeBanner2}
-                header=""
-                caption=""
-              />
+              <HomeBanner />
               <Section card title="Product Categories" borderBottomWidth={10} maxWidth={'1100px'}>
                 {categories?.map((category: Category) => (
                   <CategoryCard

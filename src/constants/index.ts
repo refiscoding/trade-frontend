@@ -189,6 +189,45 @@ export const CATEGORIES = [
   }
 ]
 
+export const BANNER_IMAGES = [
+  {
+    id: 1,
+    image: `${images?.homeBanner2}`
+  },
+  {
+    id: 2,
+    image: `${images?.agricultureBanner}`
+  },
+  {
+    id: 3,
+    image: `${images?.automotiveBanner}`
+  },
+  {
+    id: 4,
+    image: `${images?.electricalBanner}`
+  },
+  {
+    id: 5,
+    image: `${images?.foodBanner}`
+  },
+  {
+    id: 6,
+    image: `${images?.heavyBanner}`
+  },
+  {
+    id: 7,
+    image: `${images?.lightingBanner}`
+  },
+  {
+    id: 8,
+    image: `${images?.toolsBanner}`
+  },
+  {
+    id: 8,
+    image: `${images?.miningBanner}`
+  }
+]
+
 export const INDUSTRIES = [
   {
     label: 'Accommodation and food service activities',
