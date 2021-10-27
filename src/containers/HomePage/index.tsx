@@ -13,6 +13,7 @@ import Footer from '../../components/Footer'
 import Section from '../../components/Section'
 import ProductCard from '../../components/Card/ProductCard'
 import CategoryCard from '../../components/Card/CategoryCard'
+
 import { PageWrap } from '../../layouts'
 import { SearchBar } from '../../components'
 import { useAuthContext } from '../../context/AuthProvider'
