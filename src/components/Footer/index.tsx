@@ -51,6 +51,9 @@ const Footer: React.FC<FooterProps> = ({ removePadding }) => {
   })
 
   const termsAndConditionsFile = legalities?.legality?.termsAndConditionsFile?.url ?? ''
+  const handleLegalDocuments = () => {
+    history.push('/about-us')
+  }
 
   return (
     <Flex
@@ -118,9 +121,14 @@ const Footer: React.FC<FooterProps> = ({ removePadding }) => {
           </Text>
         ))}
       </Flex>
-      <a target="_blank" rel="noopener noreferrer" href={termsAndConditionsFile}>
-        <Text color="white" fontSize="10px" textTransform="uppercase">
-          T’s & C’s for Buyers and Sellers
+      <a target="_blank" rel="noopener noreferrer">
+        <Text
+          onClick={handleLegalDocuments}
+          color="white"
+          fontSize="10px"
+          textTransform="uppercase"
+        >
+          Legal Documents
         </Text>
       </a>
       <Text m={2} color="brand.100" fontSize="10px">
