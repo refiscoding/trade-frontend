@@ -25,6 +25,7 @@ import {
   Category,
   useCategoryQuery
 } from '../../generated/graphql'
+import InfoBanner from '../../components/InfoBanner'
 
 type filterParams = {
   minPrice: string
@@ -144,7 +145,12 @@ const Home: React.FC = () => {
             </Section>
           ) : (
             <React.Fragment>
-              <HomeBanner />
+              <InfoBanner />
+              <HomeBanner
+                image={isTabletOrMobile ? images.heroImg : images.homeBanner2}
+                header=""
+                caption=""
+              />
               <Section card title="Product Categories" borderBottomWidth={10} maxWidth={'1100px'}>
                 {categories?.map((category: Category) => (
                   <CategoryCard
