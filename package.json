@@ -41,6 +41,7 @@
     "react-instantsearch-dom": "^6.10.3",
     "react-intersection-observer": "^8.26.2",
     "react-responsive": "^8.0.3",
+    "react-responsive-carousel": "^3.2.22",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-table": "^7.1.0",
