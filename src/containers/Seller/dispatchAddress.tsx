@@ -59,7 +59,7 @@ const DispatchAddress: React.FC<dispatchAddressTypes> = ({ setFieldValue, setSel
 
   useEffect(() => {
     setSelectedHub(hubCodeList[0])
-  }, [hubCodeList])
+  })
 
   return (
     <Flex
