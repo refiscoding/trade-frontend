@@ -66,6 +66,8 @@ const Home: React.FC = () => {
       return images?.foodBanner
     } else if (category?.name === 'Heavy Machinery') {
       return images?.heavyBanner
+    } else if (category?.name === 'Tools and Hardware') {
+      return images?.toolsBanner
     } else if (category?.name === 'Industrial') {
       // return images?.foodBanner || null
       return null
