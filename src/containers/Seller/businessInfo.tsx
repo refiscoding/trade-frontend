@@ -2,15 +2,16 @@ import * as React from 'react'
 import { FormLabel, Flex } from '@chakra-ui/core'
 
 import { BEESTATUS, POSITIONS, TURNOVER } from '../../constants'
-import { theme } from '../../theme'
-import { SellerValues } from './index'
-import { H3 } from '../../typography'
+import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter'
 import {
   ConnectedCheckbox,
   ConnectedFormGroup,
   ConnectedNumberInput,
   ConnectedTextArea
 } from '../../components/FormElements'
+import { H3 } from '../../typography'
+import { SellerValues } from './index'
+import { theme } from '../../theme'
 import ConnectedSelect from '../../components/FormElements/ConnectedSelect'
 
 export type Options = {
@@ -181,7 +182,7 @@ const BusinessInfo: React.FC<businessTypes> = ({
             <ConnectedCheckbox
               key={i}
               name="categories"
-              label={item.label}
+              label={item.label && capitalizeFirstLetter(item.label)}
               value={item.value}
               hideError={true}
             />
@@ -192,7 +193,7 @@ const BusinessInfo: React.FC<businessTypes> = ({
             <ConnectedCheckbox
               key={i}
               name="categories"
-              label={item.label}
+              label={item.label && capitalizeFirstLetter(item.label)}
               value={item.value}
               hideError={false}
             />

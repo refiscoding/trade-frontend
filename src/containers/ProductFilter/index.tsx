@@ -2,6 +2,7 @@ import * as React from 'react'
 import * as Yup from 'yup'
 
 import { Button, Flex, Text, FormLabel } from '@chakra-ui/core'
+import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter'
 import { CATEGORIES, QUANTITY } from '../../constants'
 import {
   ConnectedCheckbox,
@@ -112,7 +113,12 @@ const ProductFilter: React.FC<ProductTypes> = ({ countries }) => {
             <FormLabel htmlFor="category">Category</FormLabel>
             {CATEGORIES?.map((item: any, i: number) => (
               <Flex width="50%" key={`${i}-container`}>
-                <ConnectedCheckbox key={i} name="categories" label={item.name} value={item.id} />
+                <ConnectedCheckbox
+                  key={i}
+                  name="categories"
+                  label={item.name && capitalizeFirstLetter(item.name)}
+                  value={item.id}
+                />
               </Flex>
             ))}
             <ConnectedSelect

@@ -8,6 +8,7 @@ import { Form, Formik, FormikProps } from 'formik'
 import { Text } from '../../typography'
 import { formatError } from '../../utils'
 import { Category } from '../../generated/graphql'
+import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter'
 import {
   ConnectedCheckbox,
   ConnectedFormGroup,
@@ -90,7 +91,7 @@ const ProfileDetailForm: React.FC<formProps> = ({
                 key={i}
                 name="categories"
                 checked={isInUserCategory(item.id)}
-                label={item.name}
+                label={item.name && capitalizeFirstLetter(item.name)}
                 value={item.id}
               />
             ))}

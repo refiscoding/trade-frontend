@@ -6,6 +6,7 @@ import { ConnectedCheckbox } from '../../components/FormElements'
 import { Form, Formik, FormikProps } from 'formik'
 import { H3, Text } from '../../typography'
 import { formatError } from '../../utils'
+import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter'
 
 type CategoriesProps = {
   handleUserDetails: (details: any) => void
@@ -49,7 +50,7 @@ const UserDetails: React.FC<CategoriesProps> = ({ categories, handleUserDetails 
                 <ConnectedCheckbox
                   key={i}
                   name="categories"
-                  label={item.name}
+                  label={item.name && capitalizeFirstLetter(item.name)}
                   value={item.id}
                   hideError={true}
                 />
