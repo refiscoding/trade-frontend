@@ -34,6 +34,9 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
     return GrandTotal
   })
 
+  const deliverySubTotal = deliveryTotals?.reduce((total, val) => total + val, 0).toFixed(2)
+  const orderTotal = parseInt(deliverySubTotal) + parseInt(checkoutTotal.toFixed(2))
+
   return (
     <Flex
       borderRadius={5}
@@ -132,7 +135,7 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
         <Flex justifySelf="end">
           <Text color={theme.colors.blueText} fontWeight={600}>{`${
             cartProducts && cartProducts[0]?.product?.currency
-          } ${checkoutTotal.toFixed(2)}`}</Text>
+          } ${orderTotal}`}</Text>
         </Flex>
       </Grid>
     </Flex>
