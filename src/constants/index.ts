@@ -141,6 +141,19 @@ export const PROVINCES = [
   }
 ]
 
+export const QUANTITY = [
+  {
+    id: 1,
+    label: 'Bulk',
+    value: 'Bulk'
+  },
+  {
+    id: 2,
+    label: 'Single',
+    value: 'Single'
+  }
+]
+
 export const CATEGORIES = [
   {
     id: 1,

@@ -1,8 +1,8 @@
 import * as React from 'react'
 import * as Yup from 'yup'
 
-import { Button, Flex, Text, FormLabel } from '@chakra-ui/core'
-import { CATEGORIES } from '../../constants'
+import { Button, Flex, Text, FormLabel, Input } from '@chakra-ui/core'
+import { CATEGORIES, QUANTITY } from '../../constants'
 import {
   ConnectedCheckbox,
   ConnectedFormGroup,
@@ -21,7 +21,8 @@ const ProductFormValidation = Yup.object().shape({
   minPrice: Yup.string(),
   maxPrice: Yup.string(),
   category: Yup.array().of(Yup.string()),
-  country: Yup.string()
+  country: Yup.string(),
+  quantity: Yup.string()
 })
 
 export type Options = {
@@ -38,13 +39,15 @@ export type ProductValues = {
   maxPrice: string
   category: string[]
   country: string
+  quantity: string
 }
 
 const initialValues = {
   minPrice: '',
   maxPrice: '',
   category: [''],
-  country: ''
+  country: '',
+  quantity: ''
 }
 
 const ProductFilter: React.FC<ProductTypes> = ({ countries }) => {
@@ -56,8 +59,10 @@ const ProductFilter: React.FC<ProductTypes> = ({ countries }) => {
   }
 
   const handleSelectFilters = (values: ProductValues) => {
-    const { minPrice, maxPrice, category } = values
-    history.push(`/?minPrice=${minPrice}&maxPrice=${maxPrice}&category=${category}`)
+    const { minPrice, maxPrice, category, quantity } = values
+    history.push(
+      `/?minPrice=${minPrice}&maxPrice=${maxPrice}&category=${category}&quantity=${quantity}`
+    )
   }
 
   return (
@@ -98,6 +103,12 @@ const ProductFilter: React.FC<ProductTypes> = ({ countries }) => {
           <Form style={{ width: '100%' }}>
             <ConnectedFormGroup label="Minimum price" name="minPrice" type="text" />
             <ConnectedFormGroup label="Maximum price" name="maxPrice" type="text" />
+            <FormLabel htmlFor="quantity">Product quantity</FormLabel>
+            {QUANTITY?.map((item: any, i: number) => (
+              <Flex width="50%" key={`${i}-container`}>
+                <ConnectedCheckbox key={i} name="quantity" label={item.label} value={item.id} />
+              </Flex>
+            ))}
             <FormLabel htmlFor="category">Category</FormLabel>
             {CATEGORIES?.map((item: any, i: number) => (
               <Flex width="50%" key={`${i}-container`}>
