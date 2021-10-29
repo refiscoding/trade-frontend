@@ -19,6 +19,7 @@ const StyledCarousel = styled(Carousel)`
 
 const HomeBanner: React.FC<HomeBannerProps> = () => {
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
+
   return (
     <Flex
       width="100vw"
@@ -26,7 +27,7 @@ const HomeBanner: React.FC<HomeBannerProps> = () => {
       flexDirection="column"
       alignItems="center"
     >
-      <StyledCarousel>
+      <StyledCarousel infiniteLoop autoPlay showStatus={false} interval={4000}>
         {BANNER_IMAGES.map((banner, index) => (
           <div key={index}>
             <Image src={banner.image} />

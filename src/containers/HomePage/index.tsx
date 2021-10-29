@@ -5,7 +5,7 @@ import { ApolloError } from 'apollo-client'
 import { useMediaQuery } from 'react-responsive'
 import { sortBy, reverse, slice, some, get } from 'lodash'
 import { useHistory, useLocation } from 'react-router-dom'
-import { Flex, useToast, Text, Button } from '@chakra-ui/core'
+import { Flex, useToast, Text, Button, Grid } from '@chakra-ui/core'
 import { Hits, InstantSearch, Stats } from 'react-instantsearch-dom'
 
 import HomeBanner from '../../components/HomeBanner'
@@ -146,19 +146,17 @@ const Home: React.FC = () => {
           ) : (
             <React.Fragment>
               <InfoBanner />
-              <HomeBanner
-                image={isTabletOrMobile ? images.heroImg : images.homeBanner2}
-                header=""
-                caption=""
-              />
+              <HomeBanner />
               <Section card title="Product Categories" borderBottomWidth={10} maxWidth={'1100px'}>
-                {categories?.map((category: Category) => (
-                  <CategoryCard
-                    key={category.id}
-                    category={category}
-                    handleClick={navigateToCategory}
-                  />
-                ))}
+                <Grid gridTemplateColumns="200px 200px 200px 200px 200px" height="400px" mr="10px">
+                  {categories?.map((category: Category) => (
+                    <CategoryCard
+                      key={category.id}
+                      category={category}
+                      handleClick={navigateToCategory}
+                    />
+                  ))}
+                </Grid>
               </Section>
               <Section card title="Today’s Best Deals" borderBottomWidth={10} maxWidth={'1100px'}>
                 {deals?.map((product: Product) => (
