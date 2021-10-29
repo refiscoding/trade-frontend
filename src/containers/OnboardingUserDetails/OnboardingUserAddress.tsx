@@ -7,6 +7,7 @@ import { Button, Flex, useToast } from '@chakra-ui/core'
 import { Form, Formik, FormikProps } from 'formik'
 import { get } from 'lodash'
 
+import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter'
 import { ComponentLocationAddress, useGetHubCodesQuery } from '../../generated/graphql'
 import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
 import { ERROR_TOAST, PROVINCES } from '../../constants'
@@ -39,6 +40,7 @@ type AddressValues = {
   postalCode: string
   name?: string
   type?: string
+  hubCode: string
 }
 
 const OnbordingUserAddress: React.FC<AddressProps> = ({
@@ -67,7 +69,7 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
     .map((hub: any) => hub.City)
     .filter((value, index, self) => self.indexOf(value) === index)
     .map((city) => ({
-      label: city,
+      label: city && capitalizeFirstLetter(city),
       value: city
     }))
   const checkCity = (cities: any, selectedCity: string) => {
@@ -75,7 +77,7 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
   }
   const cityWithSuburb = checkCity(hubCodes, selectedCity)
   const suburbList = cityWithSuburb.map((sub: any) => ({
-    label: sub?.Suburb || '',
+    label: (sub?.Suburb && capitalizeFirstLetter(sub?.Suburb)) || '',
     value: sub?.Suburb || ''
   }))
   const postalCodeList = cityWithSuburb
@@ -85,6 +87,8 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
       label: postal,
       value: postal
     }))
+  const hubCodeList = cityWithSuburb.map((hubCode: any) => hubCode.HubCode)
+  const selectedHubCode = hubCodeList[0]
 
   const initialValues = {
     street: editItem?.street || '',
@@ -94,7 +98,8 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
     suburb: editItem?.suburb || '',
     postalCode: editItem?.postalCode || '',
     type: editItem?.type || 'Residential',
-    name: editItem?.name || ''
+    name: editItem?.name || '',
+    hubCode: editItem?.hubCode || ''
   }
 
   const handleSubmit = ({
@@ -114,6 +119,7 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
         city,
         suburb,
         postalCode,
+        hubCode: selectedHubCode,
         type: initialValues.type,
         name
       }
@@ -140,7 +146,16 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
           setStatus(null)
           try {
             setSubmitting(true)
-            await handleSubmit({ street, building, province, suburb, city, postalCode, name })
+            await handleSubmit({
+              street,
+              building,
+              province,
+              suburb,
+              city,
+              postalCode,
+              name,
+              hubCode: selectedHubCode
+            })
             setSubmitting(false)
           } catch (error) {
             setStatus(formatError(error))

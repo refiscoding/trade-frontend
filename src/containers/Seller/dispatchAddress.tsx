@@ -1,20 +1,22 @@
 import * as React from 'react'
 import { ApolloError } from 'apollo-boost'
 import { Flex, useToast } from '@chakra-ui/core'
-import { useState } from 'react'
 import { get } from 'lodash'
+import { useEffect, useState } from 'react'
 
 import { ERROR_TOAST, PROVINCES } from '../../constants'
 import { theme } from '../../theme'
 import { H3 } from '../../typography'
 import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
 import { useGetHubCodesQuery } from '../../generated/graphql'
+import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter'
 
 type dispatchAddressTypes = {
   setFieldValue: any
+  setSelectedHub: any
 }
 
-const DispatchAddress: React.FC<dispatchAddressTypes> = ({ setFieldValue }) => {
+const DispatchAddress: React.FC<dispatchAddressTypes> = ({ setFieldValue, setSelectedHub }) => {
   const toast = useToast()
   const [selectedProvince, setSelectedProvince] = useState('')
   const [selectedCity, setSelectedCity] = useState('')
@@ -35,7 +37,7 @@ const DispatchAddress: React.FC<dispatchAddressTypes> = ({ setFieldValue }) => {
     .map((hub: any) => hub.City)
     .filter((value, index, self) => self.indexOf(value) === index)
     .map((city) => ({
-      label: city,
+      label: city && capitalizeFirstLetter(city),
       value: city
     }))
   const checkCity = (cities: any, selectedCity: string) => {
@@ -43,7 +45,7 @@ const DispatchAddress: React.FC<dispatchAddressTypes> = ({ setFieldValue }) => {
   }
   const cityWithSuburb = checkCity(hubCodes, selectedCity)
   const suburbList = cityWithSuburb.map((sub: any) => ({
-    label: sub?.Suburb || '',
+    label: (sub?.Suburb && capitalizeFirstLetter(sub?.Suburb)) || '',
     value: sub?.Suburb || ''
   }))
   const postalCodeList = cityWithSuburb
@@ -53,6 +55,11 @@ const DispatchAddress: React.FC<dispatchAddressTypes> = ({ setFieldValue }) => {
       label: postal,
       value: postal
     }))
+  const hubCodeList = cityWithSuburb.map((hubCode: any) => hubCode.HubCode)
+
+  useEffect(() => {
+    setSelectedHub(hubCodeList[0])
+  }, [hubCodeList])
 
   return (
     <Flex
