@@ -2,7 +2,7 @@
 import * as React from 'react'
 import * as Yup from 'yup'
 import { get } from 'lodash'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { useMediaQuery } from 'react-responsive'
 
@@ -102,15 +102,18 @@ export type TouchedErrors = {
 
 export type SellerValues = {
   beeStatus: string
+  building: string
   businessPhoneNumber: string
   businessWebsite?: string
   categories: string[]
+  city: string
   countries: string[]
   email: string
   errors?: ErrorsObject
   firstName: string
   hazChem: string
   headQuater: string
+  hubCode: string
   isHazChem: boolean
   isVatRegistered: boolean
   lastName: string
@@ -118,30 +121,29 @@ export type SellerValues = {
   name: string
   phoneNumber?: string
   position: string
+  postalCode: string
   products: Maybe<Maybe<string>> | undefined
+  province: string
   registrationNumber: string
   revenue: string
+  street: string
+  suburb: string
   suppliedBrands: string
   vatNumber: string
   yearsInOperation: number
-  street: string
-  province: string
-  building: string
-  city: string
-  suburb: string
-  postalCode: string
 }
 
 const initialValues = {
-  location: '',
-  products: '' || undefined,
-  suppliedBrands: '',
-  street: '',
-  province: '',
   building: '',
   city: '',
+  hubCode: '',
+  location: '',
+  postalCode: '',
+  products: '' || undefined,
+  province: '',
+  street: '',
   suburb: '',
-  postalCode: ''
+  suppliedBrands: ''
 }
 
 const Seller: React.FC = () => {
@@ -149,6 +151,8 @@ const Seller: React.FC = () => {
   const history = useHistory()
   const toast = useToast()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
+  const [selectedHub, setSelectedHub] = useState('')
+
   const { data } = useCategoryQuery({
     onError: (err: any) => formatError(err)
   })
@@ -217,31 +221,31 @@ const Seller: React.FC = () => {
 
   const handleSubmit = async (values: SellerValues) => {
     const {
-      email,
-      revenue,
-      hazChem,
-      categories,
-      countries,
-      products,
-      lastName,
-      isHazChem,
-      headQuater,
       beeStatus,
-      firstName,
-      vatNumber,
-      phoneNumber,
-      suppliedBrands,
-      isVatRegistered,
-      businessWebsite,
-      yearsInOperation,
-      registrationNumber,
-      businessPhoneNumber,
-      street,
       building,
-      province,
+      businessPhoneNumber,
+      businessWebsite,
+      categories,
       city,
+      countries,
+      email,
+      firstName,
+      hazChem,
+      headQuater,
+      isHazChem,
+      isVatRegistered,
+      lastName,
+      phoneNumber,
+      postalCode,
+      products,
+      province,
+      registrationNumber,
+      revenue,
+      street,
       suburb,
-      postalCode
+      suppliedBrands,
+      vatNumber,
+      yearsInOperation
     } = values
     const businessInput = {
       revenue,
@@ -266,6 +270,7 @@ const Seller: React.FC = () => {
         city,
         suburb,
         postalCode,
+        hubCode: selectedHub,
         type: Enum_Componentlocationaddress_Type.Business
       }
     }
@@ -329,7 +334,7 @@ const Seller: React.FC = () => {
                 values={values}
                 setFieldValue={setFieldValue}
               />
-              <DispatchAddress setFieldValue={setFieldValue} />
+              <DispatchAddress setFieldValue={setFieldValue} setSelectedHub={setSelectedHub} />
               <DispatchSecondaryContact />
               {status && (
                 <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">

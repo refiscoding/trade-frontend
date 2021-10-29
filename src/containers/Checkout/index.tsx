@@ -194,9 +194,11 @@ const CheckoutPage: React.FC = () => {
     }
   )
 
-  const checkoutTotal =
-    get(userCart, 'findCart.payload.total', 0) +
-    deliveryTotals?.reduce((total, val) => total + val, 0)
+  // const checkoutTotal =
+  //   get(userCart, 'findCart.payload.total', 0) +
+  //   deliveryTotals?.reduce((total, val) => total + val, 0)
+  const checkoutTotal = get(userCart, 'findCart.payload.total', null)
+
   const cartId = get(userCart, 'findCart.payload.id', null)
 
   const addresses = user?.address as ComponentLocationAddress[]

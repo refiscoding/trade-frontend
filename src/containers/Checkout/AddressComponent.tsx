@@ -41,7 +41,7 @@ const AddressDetailsComponent: React.FC<AddressDetailsComponentProps> = ({ addre
     <React.Fragment>
       <Flex pt={2}>
         <Text fontSize={14} fontWeight={600}>
-          Building/Complex:
+          Building:
         </Text>
         <Text fontSize={14} pl={2}>
           {(address?.building && toSentenceCase(address?.building || '-')) || '-'}

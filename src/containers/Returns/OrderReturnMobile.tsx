@@ -54,7 +54,7 @@ const OrderReturns: React.FC<OrderReturnsProps> = ({
               placeholder="Eg. TFSA-aw3erdfsd"
             />
             <ConnectedFormGroup
-              label="Delivery Address Name"
+              label="Delivery address name"
               name="addressName"
               type="text"
               placeholder="Eg. Mum's Place"

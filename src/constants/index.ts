@@ -104,20 +104,20 @@ export const EMPTY_FILE: UploadFile = {
 
 export const PROVINCES = [
   {
-    label: 'Eastern Cape',
-    value: 'Eastern Cape'
+    label: 'Eastern cape',
+    value: 'Eastern cape'
   },
   {
-    label: 'Free State',
-    value: 'Free State'
+    label: 'Free state',
+    value: 'Free state'
   },
   {
     label: 'Gauteng',
     value: 'Gauteng'
   },
   {
-    label: 'KwaZulu Natal',
-    value: 'KwaZulu Natal'
+    label: 'KwaZulu natal',
+    value: 'KwaZulu natal'
   },
   {
     label: 'Limpopo',
@@ -128,16 +128,16 @@ export const PROVINCES = [
     value: 'Mpumalanga'
   },
   {
-    label: 'Northern Cape',
-    value: 'Northern Cape'
+    label: 'Northern cape',
+    value: 'Northern cape'
   },
   {
-    label: 'North West',
-    value: 'North West'
+    label: 'North west',
+    value: 'North west'
   },
   {
-    label: 'Western Cape',
-    value: 'Western Cape'
+    label: 'Western cape',
+    value: 'Western cape'
   }
 ]
 

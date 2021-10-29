@@ -7,6 +7,7 @@ import { Button, Flex, useToast } from '@chakra-ui/core'
 import { Form, Formik, FormikProps } from 'formik'
 import { get } from 'lodash'
 
+import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter'
 import { ComponentLocationAddress, useGetHubCodesQuery } from '../../generated/graphql'
 import { ConnectedFormGroup, ConnectedSelect } from '../../components/FormElements'
 import { ERROR_TOAST, PROVINCES } from '../../constants'
@@ -68,7 +69,7 @@ const UserDetails: React.FC<AddressProps> = ({
     .map((hub: any) => hub.City)
     .filter((value, index, self) => self.indexOf(value) === index)
     .map((city) => ({
-      label: city,
+      label: city && capitalizeFirstLetter(city),
       value: city
     }))
   const checkCity = (cities: any, selectedCity: string) => {
@@ -76,7 +77,7 @@ const UserDetails: React.FC<AddressProps> = ({
   }
   const cityWithSuburb = checkCity(hubCodes, selectedCity)
   const suburbList = cityWithSuburb.map((sub: any) => ({
-    label: sub?.Suburb || '',
+    label: (sub?.Suburb && capitalizeFirstLetter(sub?.Suburb)) || '',
     value: sub?.Suburb || ''
   }))
   const postalCodeList = cityWithSuburb
@@ -86,6 +87,8 @@ const UserDetails: React.FC<AddressProps> = ({
       label: postal,
       value: postal
     }))
+  const hubCodeList = cityWithSuburb.map((hubCode: any) => hubCode.HubCode)
+  const selectedHubCode = hubCodeList[0]
 
   const initialValues = {
     street: editItem?.street || '',
@@ -106,8 +109,7 @@ const UserDetails: React.FC<AddressProps> = ({
     suburb,
     city,
     postalCode,
-    name,
-    hubCode
+    name
   }: AddressValues) => {
     handleUserDetails({
       address: {
@@ -117,7 +119,7 @@ const UserDetails: React.FC<AddressProps> = ({
         city,
         suburb,
         postalCode,
-        hubCode,
+        hubCode: selectedHubCode,
         type: initialValues.type,
         name
       }
@@ -138,7 +140,7 @@ const UserDetails: React.FC<AddressProps> = ({
         validationSchema={AddressFormValidation}
         initialValues={initialValues}
         onSubmit={async (
-          { street, building, province, suburb, city, postalCode, name, hubCode }: AddressValues,
+          { street, building, province, suburb, city, postalCode, name }: AddressValues,
           { setStatus, setSubmitting }
         ) => {
           setStatus(null)
@@ -152,7 +154,7 @@ const UserDetails: React.FC<AddressProps> = ({
               city,
               postalCode,
               name,
-              hubCode
+              hubCode: selectedHubCode
             })
             setSubmitting(false)
           } catch (error) {
