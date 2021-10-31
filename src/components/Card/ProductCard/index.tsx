@@ -164,10 +164,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <Text
             mt={3}
             fontSize="10px"
+            color="brand.200"
             style={{
               textDecorationLine: 'line-through',
-              textDecorationStyle: 'solid',
-              color: 'gray'
+              textDecorationStyle: 'solid'
             }}
           >
             {`${product?.currency} ${(
