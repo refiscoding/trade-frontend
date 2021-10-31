@@ -161,12 +161,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
               </Flex>
             </Flex>
           )}
-          <Text mt={3} mb={1} fontSize="10px">
+          {/* <Text mt={3} mb={1} fontSize="10px">
             {`${product?.currency} ${(
               (product?.maxSellCost || 0) * (productsOnly ? productsOnly[0]?.quantity : 1)
             ).toFixed(2)}`}
-          </Text>
-          <Text mb={2} fontSize="14px" fontWeight={600}>
+          </Text> */}
+          <Text mt={2} fontSize="14px" fontWeight={600}>
             {`${product?.currency} ${(
               (product?.tradeFedCost || 0) * (productsOnly ? productsOnly[0]?.quantity : 1)
             ).toFixed(2)}`}
