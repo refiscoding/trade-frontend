@@ -66,7 +66,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
   )
 
   const discount = Math.round(((maxSellCost - tradeFedCost) / maxSellCost) * 100)
-  const textColor = theme.colors.gray
 
   return (
     <Flex
