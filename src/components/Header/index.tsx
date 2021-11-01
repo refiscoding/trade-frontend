@@ -107,6 +107,11 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
   const handleFilter = () => {
     history.push(`/product-filter`)
   }
+
+  const handleLoginClicked = () => {
+    history.push('/login')
+  }
+
   const handleLogoClicked = () => {
     history.push(`/`)
   }
@@ -157,9 +162,21 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
                 {isSellerApproved ? 'Product Management' : 'Become a Seller'}
               </Text>
             )}
-            <Text color="white" fontSize="14px" cursor="pointer" onClick={handleMyaccount}>
-              My Account
-            </Text>
+            {isAuthenticated ? (
+              <Text color="white" fontSize="14px" cursor="pointer" onClick={handleMyaccount}>
+                My Account
+              </Text>
+            ) : (
+              <Text
+                color="white"
+                fontSize="14px"
+                cursor="pointer"
+                onClick={handleLoginClicked}
+                pr={4}
+              >
+                Login / Sign Up
+              </Text>
+            )}
           </Flex>
           <Flex width="65%" mr={4}>
             {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
