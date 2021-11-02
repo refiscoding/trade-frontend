@@ -1,3 +1,10 @@
+## [1.13.2](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.13.1...v1.13.2) (2021-11-02)
+
+
+### Bug Fixes
+
+* info banner link ([3b115f9](http://bitbucket.org/sovtech/tradefed-frontend/commits/3b115f95922348e204dbcdc2c143bdb7d1488853))
+
 ## [1.13.1](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.13.0...v1.13.1) (2021-10-25)
 
 
