@@ -21,8 +21,7 @@ const InfoBanner: React.FC<InfoBannerProps> = ({ caption }) => {
     >
       <Text fontSize={13} mt={3} color="accent.50">
         <Link to="http://www.sacoronavirus.co.za">
-          For official Government information about COVID-19, please visit
-          http://www.sacoronavirus.co.za
+          For official Government information about COVID-19, please visit www.sacoronavirus.co.za
         </Link>{' '}
       </Text>
     </Flex>
