@@ -139,7 +139,7 @@ const Header: React.FC<HeaderProps> = ({ ...rest }) => {
               cursor="pointer"
               onClick={handleLogoClicked}
               mr={5}
-              width={isTabletOrMobile ? '100%' : '40%'}
+              width="200px"
               src={images['TFInverseWhite']}
             />
           </Flex>
