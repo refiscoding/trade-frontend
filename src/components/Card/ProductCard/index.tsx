@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { Flex, Image, Text, FlexProps, Spinner } from '@chakra-ui/core'
+import { Flex, Image, Text, FlexProps, Spinner, theme } from '@chakra-ui/core'
 import { get } from 'lodash'
 
 import { Card } from '../../index'
@@ -161,13 +161,20 @@ const ProductCard: React.FC<ProductCardProps> = ({
               </Flex>
             </Flex>
           )}
-          <Text mt={3} mb={1} fontSize="10px">
-            Retail:{' '}
+          <Text
+            mt={3}
+            fontSize="10px"
+            color="brand.200"
+            style={{
+              textDecorationLine: 'line-through',
+              textDecorationStyle: 'solid'
+            }}
+          >
             {`${product?.currency} ${(
               (product?.maxSellCost || 0) * (productsOnly ? productsOnly[0]?.quantity : 1)
             ).toFixed(2)}`}
           </Text>
-          <Text mb={2} fontSize="14px" fontWeight={600}>
+          <Text fontSize="14px" fontWeight={600}>
             {`${product?.currency} ${(
               (product?.tradeFedCost || 0) * (productsOnly ? productsOnly[0]?.quantity : 1)
             ).toFixed(2)}`}
