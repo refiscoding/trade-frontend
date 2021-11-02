@@ -1,3 +1,10 @@
+## [1.13.3](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.13.2...v1.13.3) (2021-11-02)
+
+
+### Bug Fixes
+
+* make header logo responsive to diff screens ([3f59225](http://bitbucket.org/sovtech/tradefed-frontend/commits/3f592256f9a87b2d8077a81bbbe032911b058ca6))
+
 ## [1.13.2](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.13.1...v1.13.2) (2021-11-02)
 
 
