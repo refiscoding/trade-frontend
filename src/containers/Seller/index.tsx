@@ -65,7 +65,7 @@ const SellerFormValidation = Yup.object().shape({
     is: (isVatRegistered) => isVatRegistered === true,
     then: Yup.string().required('VAT number is required')
   }),
-  yearsInOperation: Yup.number().required('Number of years in operation is required')
+  yearsInOperation: Yup.string().required('Number of years in operation is required')
 })
 
 export type ErrorsObject = {
@@ -130,7 +130,7 @@ export type SellerValues = {
   suburb: string
   suppliedBrands: string
   vatNumber: string
-  yearsInOperation: number
+  yearsInOperation: string
 }
 
 const initialValues = {
@@ -177,7 +177,7 @@ const Seller: React.FC = () => {
     revenue: user?.business?.revenue || '',
     vatNumber: user?.business?.vatNumber || '',
     websiteAddress: user?.business?.websiteAddress || '',
-    yearsInOperation: user?.business?.yearsInOperation || 0,
+    yearsInOperation: user?.business?.yearsInOperation || '',
     countries: [],
     categories: []
   }

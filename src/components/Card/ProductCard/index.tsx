@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { Flex, Image, Text, FlexProps, Spinner, theme } from '@chakra-ui/core'
+import { Flex, Image, Text, FlexProps, Spinner } from '@chakra-ui/core'
 import { get } from 'lodash'
 
 import { Card } from '../../index'

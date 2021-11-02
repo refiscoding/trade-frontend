@@ -28,7 +28,7 @@ const NameFormValidation = Yup.object().shape({
   phoneNumber: Yup.string().required('Business phone number is required'),
   position: Yup.string().required('Position is required'),
   registrationNumber: Yup.string().required('Business registration number is required'),
-  yearsInOperation: Yup.number().required('Years in operation is required'),
+  yearsInOperation: Yup.string().required('Years in operation is required'),
   vatNumber: Yup.string().when('isVatRegistered', {
     is: (isVatRegistered) => isVatRegistered === 'true',
     then: Yup.string().required('VAT number is required')
@@ -48,7 +48,7 @@ type CompanyValues = {
   registrationNumber: string
   vatNumber: string
   websiteAddress: string
-  yearsInOperation: number
+  yearsInOperation: string
 }
 
 const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
@@ -119,7 +119,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
           registrationNumber: '',
           vatNumber: '',
           websiteAddress: '',
-          yearsInOperation: 0
+          yearsInOperation: ''
         }}
         onSubmit={async (businessInput, { setSubmitting, setStatus }) => {
           setStatus(null)
