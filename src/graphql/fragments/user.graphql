@@ -16,6 +16,7 @@ fragment user on UsersPermissionsUser {
   firstName
   id
   idNumber
+  isBusiness
   isSeller
   lastName
   phoneNumber

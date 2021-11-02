@@ -1,24 +1,21 @@
 import * as React from 'react'
-import * as Yup from 'yup'
 
-import { Button, Flex } from '@chakra-ui/core'
+import { Button, Flex, Image } from '@chakra-ui/core'
+import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter'
+import { Category } from '../../generated/graphql'
 import { ConnectedCheckbox } from '../../components/FormElements'
 import { Form, Formik, FormikProps } from 'formik'
-import { H3, Text } from '../../typography'
 import { formatError } from '../../utils'
-import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter'
+import { H3, Text } from '../../typography'
+import { images, theme } from '../../theme'
 
 type CategoriesProps = {
   handleUserDetails: (details: any) => void
   categories?: any
 }
 
-const CategoriesFormValidation = Yup.object().shape({
-  categories: Yup.array().required('Category is required')
-})
-
 type CategoriesValues = {
-  categories: any
+  categories: Category[]
 }
 
 const UserDetails: React.FC<CategoriesProps> = ({ categories, handleUserDetails }) => {
@@ -26,9 +23,22 @@ const UserDetails: React.FC<CategoriesProps> = ({ categories, handleUserDetails 
     <React.Fragment>
       <Flex width="100%" mb={4} flexDirection="column">
         <H3 textAlign="left">Which industries are you interested in?</H3>
+        <Flex
+          mt={3}
+          background={theme.colors.info}
+          p={2}
+          width="100%"
+          height="40px"
+          alignItems="center"
+          justifyItems="space-between"
+        >
+          <Image src={images.infoIcon} height="50%" />
+          <Text fontSize={12} ml={3}>
+            Please select an industry or industries of interest to continue
+          </Text>
+        </Flex>
       </Flex>
       <Formik
-        validationSchema={CategoriesFormValidation}
         initialValues={{
           categories: []
         }}
@@ -56,14 +66,14 @@ const UserDetails: React.FC<CategoriesProps> = ({ categories, handleUserDetails 
                 />
               </Flex>
             ))}
-            {values && values.categories?.length < 1 && (
-              <Flex width="100%" key={`category-error-container`} justifyContent="center">
-                <Text color="red.500" textAlign="right" margin={4}>
-                  {`Category is required`}
-                </Text>
-              </Flex>
-            )}
-            <Button mt={4} width="100%" type="submit" variantColor="brand" isLoading={isSubmitting}>
+            <Button
+              mt={4}
+              width="100%"
+              type="submit"
+              variantColor="brand"
+              isLoading={isSubmitting}
+              isDisabled={values && values.categories?.length < 1 ? true : false}
+            >
               DONE
             </Button>
           </Form>
