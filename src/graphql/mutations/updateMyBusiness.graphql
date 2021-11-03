@@ -1,0 +1,7 @@
+# import '/fragments/business.graphql'
+
+mutation updateMyBusiness($input: BusinessInput) {
+  updateMyBusiness(input: $input) {
+    ...business
+  }
+}
