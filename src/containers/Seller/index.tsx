@@ -33,6 +33,7 @@ import DispatchSecondaryContact from './dispatchSecondaryContact'
 
 const SellerFormValidation = Yup.object().shape({
   addressName: Yup.string().required('Address name is required'),
+  annualTurnover: Yup.string().required('Annual turnover is required'),
   beeStatus: Yup.string().required('BEE status is required'),
   businessPhoneNumber: Yup.string().required('Business/ work phone number is required'),
   city: Yup.string().required('City is required'),
@@ -44,7 +45,10 @@ const SellerFormValidation = Yup.object().shape({
   dispatchSecondaryPhoneNumber: Yup.string().required('Cell phone number is required'),
   dispatchSecondarySurname: Yup.string().required('Surname is required'),
   firstName: Yup.string().required('Name is required'),
-  hazChem: Yup.string().required('Description of the hazardous chemicals is required'),
+  hazChem: Yup.string().when('isHazChem', {
+    is: (isHazChem) => isHazChem === true,
+    then: Yup.string().required('Description of the hazardous chemicals is required')
+  }),
   headQuater: Yup.string().required('Head office is required'),
   isHazChem: Yup.boolean().required('Haz Chem status is required'),
   isVatRegistered: Yup.boolean().required('VAT Registration Status is required'),
@@ -55,7 +59,6 @@ const SellerFormValidation = Yup.object().shape({
   products: Yup.string().required('Product description is required'),
   province: Yup.string().required('Province is required'),
   registrationNumber: Yup.string().required('Business registration number is required'),
-  annualTurnover: Yup.string().required('Annual turnover is required'),
   street: Yup.string().required('Street address is required'),
   suburb: Yup.string().required('Suburb is required'),
   vatNumber: Yup.string().when('isVatRegistered', {
@@ -285,9 +288,9 @@ const Seller: React.FC = () => {
     } = values
     const businessInput = {
       beeStatus,
-      categories: categories,
+      categories: categories.map((category: any) => category.id),
       companyName,
-      countries: countries,
+      countries: countries.map((country: any) => country.id),
       hazChem,
       headQuater,
       isHazChem: Boolean(isHazChem),
