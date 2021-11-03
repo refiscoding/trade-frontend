@@ -196,7 +196,6 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
               label="City*"
               placeholder="Select city"
               name="city"
-              textTransform="lowercase"
               onChange={(name) => {
                 setSelectedCity(name.target.value)
                 setFieldValue('city', name.target.value)
@@ -208,7 +207,6 @@ const OnbordingUserAddress: React.FC<AddressProps> = ({
               label="Suburb*"
               placeholder="Select suburb"
               name="suburb"
-              textTransform="lowercase"
               onChange={(name) => {
                 setSelectedSuburb(name.target.value)
                 setFieldValue('suburb', name.target.value)

@@ -12,7 +12,7 @@ import {
   Enum_Componentlocationaddress_Type,
   Maybe,
   useCategoryQuery,
-  useCreateMyBusinessMutation,
+  useUpdateMyBusinessMutation,
   useFetchCountriesQuery,
   useUpdateSelfMutation
 } from '../../generated/graphql'
@@ -244,7 +244,7 @@ const Seller: React.FC = () => {
     }
   })
 
-  const [createMyBusiness] = useCreateMyBusinessMutation({
+  const [updateMyBusiness] = useUpdateMyBusinessMutation({
     onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
     onCompleted: async () => {
       toast({ description: 'Business details updated!', ...SUCCESS_TOAST })
@@ -323,7 +323,7 @@ const Seller: React.FC = () => {
       lastName,
       phoneNumber
     }
-    await createMyBusiness({ variables: { input: businessInput } })
+    await updateMyBusiness({ variables: { input: businessInput } })
     await updateSelf({ variables: { input: { ...userDetails } } })
   }
 

@@ -21,7 +21,7 @@ type NameProps = {
 }
 
 const NameFormValidation = Yup.object().shape({
-  annualTurn: Yup.string().required('Annual turnover is required'),
+  annualTurnover: Yup.string().required('Annual turnover is required'),
   beeStatus: Yup.string().required('BEE status is required'),
   businessType: Yup.string().required('Industry is required'),
   companyName: Yup.string().required('Company name is required'),
@@ -36,7 +36,7 @@ const NameFormValidation = Yup.object().shape({
 })
 
 type CompanyValues = {
-  annualTurn: string
+  annualTurnover: string
   beeStatus: string
   businessType: string
   companyName: string
@@ -47,7 +47,7 @@ type CompanyValues = {
   position: string
   registrationNumber: string
   vatNumber: string
-  websiteAddress: string
+  website: string
   yearsInOperation: string
 }
 
@@ -66,7 +66,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
 
   const handleSubmit = async (values: CompanyValues) => {
     const {
-      annualTurn,
+      annualTurnover,
       beeStatus,
       companyName,
       companyRelated,
@@ -75,11 +75,11 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       position,
       registrationNumber,
       vatNumber,
-      websiteAddress,
+      website,
       yearsInOperation
     } = values
     const businessInput = {
-      annualTurn,
+      annualTurnover,
       beeStatus,
       companyName,
       companyRelated,
@@ -89,7 +89,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       position,
       registrationNumber,
       vatNumber,
-      websiteAddress,
+      website,
       yearsInOperation
     }
     await createBusinessOnSignUp({ variables: { input: businessInput } })
@@ -107,7 +107,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
       <Formik
         validationSchema={NameFormValidation}
         initialValues={{
-          annualTurn: '',
+          annualTurnover: '',
           beeStatus: '',
           businessType: '',
           companyName: '',
@@ -118,7 +118,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
           position: '',
           registrationNumber: '',
           vatNumber: '',
-          websiteAddress: '',
+          website: '',
           yearsInOperation: ''
         }}
         onSubmit={async (businessInput, { setSubmitting, setStatus }) => {
@@ -149,11 +149,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
               name="phoneNumber"
               unit="+27"
             />
-            <ConnectedFormGroup
-              label="Business website address"
-              name="websiteAddress"
-              type="text"
-            />
+            <ConnectedFormGroup label="Business website address" name="website" type="text" />
             <ConnectedFormGroup
               label="Business registration number*"
               name="registrationNumber"
@@ -162,7 +158,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
             <ConnectedFormGroup
               label="Number of years in operation*"
               name="yearsInOperation"
-              type="number"
+              type="text"
             />
             <ConnectedFormGroup
               label="Related/ associated company/ group"
@@ -179,8 +175,8 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
             <ConnectedSelect
               label="Annual turnover (R)*"
               placeholder="Select annual turnover"
-              name="annualTurn"
-              onChange={(e) => setFieldValue('annualTurn', e.target.value)}
+              name="annualTurnover"
+              onChange={(e) => setFieldValue('annualTurnover', e.target.value)}
               options={TURNOVER}
             />
             <ConnectedSelect
