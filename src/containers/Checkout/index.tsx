@@ -167,6 +167,7 @@ const CheckoutPage: React.FC = () => {
   })
 
   const deliveryQuotation = quotationData?.createQuotation as Quotation[]
+  console.log('deliveryQuotation', deliveryQuotation)
 
   // const deliveryTotals = deliveryQuotation?.map((delivery: Quotation) => {
   //   const GrandTotal = get(delivery, 'ResultSets[0][0].GrandTotal', 0)
@@ -339,7 +340,9 @@ const CheckoutPage: React.FC = () => {
           confirmationTextAddress={confirmationTextAddress}
           confirmationTextCard={confirmationTextCard}
           createOrderLoading={createOrderLoading}
+          deliveryQuotation={deliveryQuotation}
           handleDeliveryQuotation={handleDeliveryQuotation}
+          handleOutOfStockCheck={handleOutOfStockCheck}
           handlePay={handlePay}
           noAddressDataCaption={noAddressDataCaption}
           noAddressDataHeader={noAddressDataHeader}
@@ -355,8 +358,6 @@ const CheckoutPage: React.FC = () => {
           showCheckoutSignatoryModal={showCheckoutSignatoryModal}
           showDeleteCardModal={showDeleteCardModal}
           showDeleteItemsModal={showDeleteItemsModal}
-          deliveryQuotation={deliveryQuotation}
-          handleOutOfStockCheck={handleOutOfStockCheck}
         />
       ) : (
         <CheckoutWebFlow
@@ -369,7 +370,9 @@ const CheckoutPage: React.FC = () => {
           confirmationTextAddress={confirmationTextAddress}
           confirmationTextCard={confirmationTextCard}
           createOrderLoading={createOrderLoading}
+          deliveryQuotation={deliveryQuotation}
           handleDeliveryQuotation={handleDeliveryQuotation}
+          handleOutOfStockCheck={handleOutOfStockCheck}
           handlePay={handlePay}
           noAddressDataCaption={noAddressDataCaption}
           noAddressDataHeader={noAddressDataHeader}
@@ -385,8 +388,6 @@ const CheckoutPage: React.FC = () => {
           showCheckoutSignatoryModal={showCheckoutSignatoryModal}
           showDeleteCardModal={showDeleteCardModal}
           showDeleteItemsModal={showDeleteItemsModal}
-          deliveryQuotation={deliveryQuotation}
-          handleOutOfStockCheck={handleOutOfStockCheck}
         />
       )}
       <ModalWrap

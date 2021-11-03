@@ -3,7 +3,7 @@
 
 fragment business on Business {
   id
-  annualTurn
+  annualTurnover
   beeStatus
   companyName
   companyRelated
@@ -18,12 +18,14 @@ fragment business on Business {
   productsSummary
   published_at
   registrationNumber
-  revenue
+  secondaryEmailAddress
+  secondaryFirstName
+  secondaryPhoneNumber
+  secondarySurname
   suppliedBrands
-  uniqueProducts
   updated_at
   vatNumber
-  websiteAddress
+  website
   yearsInOperation
   address {
       ...address
