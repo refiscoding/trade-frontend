@@ -77,7 +77,7 @@ const DispatchAddress: React.FC<dispatchAddressTypes> = ({ setFieldValue, setSel
       <ConnectedFormGroup
         label="Address name*"
         placeholder="Eg. Mum's Place"
-        name="name"
+        name="addressName"
         type="text"
       />
       <ConnectedFormGroup
@@ -106,7 +106,6 @@ const DispatchAddress: React.FC<dispatchAddressTypes> = ({ setFieldValue, setSel
         label="City*"
         placeholder="Select city"
         name="city"
-        textTransform="lowercase"
         onChange={(name) => {
           setSelectedCity(name.target.value)
           setFieldValue('city', name.target.value)
@@ -118,7 +117,6 @@ const DispatchAddress: React.FC<dispatchAddressTypes> = ({ setFieldValue, setSel
         label="Suburb*"
         placeholder="Select suburb"
         name="suburb"
-        textTransform="lowercase"
         onChange={(name) => {
           setSelectedSuburb(name.target.value)
           setFieldValue('suburb', name.target.value)

@@ -20,7 +20,7 @@ const DispatchSecondaryContact: React.FC = () => {
         Secondary contact for dispatch
       </H3>
       <Text textAlign="left" fontSize="14px" mb={2}>
-        In the case of not being able to get hold of you, please leave a secondary individual whom
+        In the case of not being able to get hold of you, please provide a secondary individual whom
         we can contact at your dispatch center for pick-up purposes
       </Text>
       <ConnectedFormGroup label="Name*" name="dispatchSecondaryFirstName" type="text" />

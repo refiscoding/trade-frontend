@@ -58,7 +58,7 @@ const BusinessInfo: React.FC<businessTypes> = ({
         <H3 mb={3} fontWeight={550} textAlign="left">
           Company details
         </H3>
-        <ConnectedFormGroup label="Company name*" name="name" type="text" />
+        <ConnectedFormGroup label="Company name*" name="companyName" type="text" />
         <ConnectedSelect
           placeholder="Select position"
           label="Position* "
@@ -73,7 +73,7 @@ const BusinessInfo: React.FC<businessTypes> = ({
         />
         <ConnectedFormGroup
           label="Business website"
-          name="websiteAddress"
+          name="website"
           type="text"
           placeholder="Eg. https://yourbusiness.com"
         />
@@ -82,7 +82,7 @@ const BusinessInfo: React.FC<businessTypes> = ({
           name="registrationNumber"
           type="text"
         />
-        <ConnectedNumberInput label="Number of years in operation*" name="yearsOfOperation" />
+        <ConnectedNumberInput label="Number of years in operation*" name="yearsInOperation" />
         <ConnectedFormGroup
           label="Related/ associated company/ group"
           name="companyRelated"
@@ -96,8 +96,8 @@ const BusinessInfo: React.FC<businessTypes> = ({
         />
         <ConnectedSelect
           label="Annual turnover (R)*"
-          name="revenue"
-          onChange={(e) => setFieldValue('revenue', e.target.value)}
+          name="annualTurnover"
+          onChange={(e) => setFieldValue('annualTurnover', e.target.value)}
           options={TURNOVER}
         />
         <ConnectedSelect

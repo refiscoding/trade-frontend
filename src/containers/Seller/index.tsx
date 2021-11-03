@@ -12,7 +12,7 @@ import {
   Enum_Componentlocationaddress_Type,
   Maybe,
   useCategoryQuery,
-  useCreateMyBusinessMutation,
+  useUpdateMyBusinessMutation,
   useFetchCountriesQuery,
   useUpdateSelfMutation
 } from '../../generated/graphql'
@@ -32,111 +32,151 @@ import PersonalInfo from './personalInfo'
 import DispatchSecondaryContact from './dispatchSecondaryContact'
 
 const SellerFormValidation = Yup.object().shape({
+  addressName: Yup.string().required('Address name is required'),
+  annualTurnover: Yup.string().required('Annual turnover is required'),
   beeStatus: Yup.string().required('BEE status is required'),
   businessPhoneNumber: Yup.string().required('Business/ work phone number is required'),
-  categories: Yup.array().required('Business category is required'),
   city: Yup.string().required('City is required'),
-  email: Yup.string()
+  companyName: Yup.string().required('Company name is required'),
+  dispatchSecondaryEmailAddress: Yup.string()
     .email('Please enter a valid email address')
     .required('Email address is required'),
+  dispatchSecondaryFirstName: Yup.string().required('Name is required'),
+  dispatchSecondaryPhoneNumber: Yup.string().required('Cell phone number is required'),
+  dispatchSecondarySurname: Yup.string().required('Surname is required'),
   firstName: Yup.string().required('Name is required'),
-  hazChem: Yup.string(),
+  hazChem: Yup.string().when('isHazChem', {
+    is: (isHazChem) => isHazChem === true,
+    then: Yup.string().required('Description of the hazardous chemicals is required')
+  }),
   headQuater: Yup.string().required('Head office is required'),
   isHazChem: Yup.boolean().required('Haz Chem status is required'),
   isVatRegistered: Yup.boolean().required('VAT Registration Status is required'),
   lastName: Yup.string().required('Surname is required'),
-  name: Yup.string().required('Address name is required'),
   phoneNumber: Yup.string().required('Cell phone number is required'),
   position: Yup.string().required('Company position is required'),
   postalCode: Yup.string().required('Postal code is required'),
   products: Yup.string().required('Product description is required'),
   province: Yup.string().required('Province is required'),
   registrationNumber: Yup.string().required('Business registration number is required'),
-  revenue: Yup.string().required('Annual turnover is required'),
   street: Yup.string().required('Street address is required'),
   suburb: Yup.string().required('Suburb is required'),
-  dispatchSecondaryFirstName: Yup.string().required('Name is required'),
-  dispatchSecondarySurname: Yup.string().required('Surname is required'),
-  dispatchSecondaryPhoneNumber: Yup.string().required('Cell phone number is required'),
-  dispatchSecondaryEmailAddress: Yup.string()
-    .email('Please enter a valid email address')
-    .required('Email address is required'),
   vatNumber: Yup.string().when('isVatRegistered', {
     is: (isVatRegistered) => isVatRegistered === true,
     then: Yup.string().required('VAT number is required')
   }),
   yearsInOperation: Yup.string().required('Number of years in operation is required')
+  // categories: Yup.array().required('Business category is required'),
+  // countries: Yup.array().required('Countries of operation is required'),
 })
 
 export type ErrorsObject = {
-  beeStatus?: string | undefined
+  addressName: string | undefined
+  beeStatus: string | undefined
+  businessPhoneNumber: string | undefined
   city: string | undefined
-  hazChem?: string | undefined
+  companyName: string | undefined
+  dispatchSecondaryEmailAddress: string | undefined
+  dispatchSecondaryFirstName: string | undefined
+  dispatchSecondaryPhoneNumber: string | undefined
+  dispatchSecondarySurname: string | undefined
+  firstName: string | undefined
+  hazChem: string | undefined
   headQuater: string | undefined
-  isHazChem?: boolean | undefined
-  isVatRegistered?: boolean | undefined
-  position?: string | undefined
+  isHazChem: boolean | undefined
+  isVatRegistered: boolean | undefined
+  lastName: string | undefined
+  phoneNumber: string | undefined
+  position: string | undefined
   postalCode: string | undefined
+  products: string | undefined
   province: string | undefined
-  registrationNumber?: string | undefined
-  revenue?: string | undefined
+  registrationNumber: string | undefined
+  annualTurnover: string | undefined
   street: string | undefined
   suburb: string | undefined
+  vatNumber: string | undefined
+  yearsInOperation: string | undefined
 }
 
 export type TouchedErrors = {
-  beeStatus?: boolean | undefined
+  addressName: boolean | undefined
+  beeStatus: boolean | undefined
+  businessPhoneNumber: boolean | undefined
   city: boolean | undefined
-  headQuater?: boolean | undefined
-  isHazChem?: boolean | undefined
-  isVatRegistered?: boolean | undefined
-  position?: boolean | undefined
+  companyName: boolean | undefined
+  dispatchSecondaryEmailAddress: boolean | undefined
+  dispatchSecondaryFirstName: boolean | undefined
+  dispatchSecondaryPhoneNumber: boolean | undefined
+  dispatchSecondarySurname: boolean | undefined
+  firstName: boolean | undefined
+  hazChem: boolean | undefined
+  headQuater: boolean | undefined
+  isHazChem: boolean | undefined
+  isVatRegistered: boolean | undefined
+  lastName: boolean | undefined
+  phoneNumber: boolean | undefined
+  position: boolean | undefined
   postalCode: boolean | undefined
+  products: boolean | undefined
   province: boolean | undefined
-  registrationNumber?: boolean | undefined
-  revenue?: boolean | undefined
+  registrationNumber: boolean | undefined
+  annualTurnover: boolean | undefined
   street: boolean | undefined
   suburb: boolean | undefined
-  hazChem?: boolean | undefined
+  vatNumber: boolean | undefined
+  yearsInOperation: boolean | undefined
 }
 
 export type SellerValues = {
+  addressName: string
   beeStatus: string
   building: string
   businessPhoneNumber: string
-  businessWebsite?: string
   categories: string[]
   city: string
   countries: string[]
-  email: string
+  companyName: string
+  dispatchSecondaryEmailAddress: string
+  dispatchSecondaryFirstName: string
+  dispatchSecondaryPhoneNumber: string
+  dispatchSecondarySurname: string
   errors?: ErrorsObject
   firstName: string
   hazChem: string
   headQuater: string
-  hubCode: string
   isHazChem: boolean
   isVatRegistered: boolean
   lastName: string
-  location: string
-  name: string
-  phoneNumber?: string
+  phoneNumber: string
   position: string
   postalCode: string
   products: Maybe<Maybe<string>> | undefined
   province: string
   registrationNumber: string
-  revenue: string
+  annualTurnover: string
   street: string
   suburb: string
   suppliedBrands: string
   vatNumber: string
+  website?: string
   yearsInOperation: string
 }
 
 const initialValues = {
+  addressName: '',
   building: '',
+  categories: [],
   city: '',
+  countries: [],
+  dispatchSecondaryEmailAddress: '',
+  dispatchSecondaryFirstName: '',
+  dispatchSecondaryPhoneNumber: '',
+  dispatchSecondarySurname: '',
+  hazChem: '',
+  headQuater: '',
   hubCode: '',
+  isHazChem: false,
   location: '',
   postalCode: '',
   products: '' || undefined,
@@ -162,24 +202,19 @@ const Seller: React.FC = () => {
     ...initialValues,
     beeStatus: user?.business?.beeStatus || '',
     businessPhoneNumber: user?.business?.phoneNumber || '',
+    companyName: user?.business?.companyName || '',
     companyRelated: user?.business?.companyRelated || '',
-    email: user?.email || '',
     firstName: user?.firstName || '',
-    hazChem: user?.business?.hazChem || '',
-    headQuater: user?.business?.headQuater || '',
-    isHazChem: user?.business?.isHazChem || false,
     isVatRegistered: user?.business?.isVatRegistered || false,
     lastName: user?.lastName || '',
-    name: user?.business?.companyName || '',
+    otherPosition: user?.business?.otherPosition || '',
     phoneNumber: user?.phoneNumber || '',
     position: user?.business?.position || '',
     registrationNumber: user?.business?.registrationNumber || '',
-    revenue: user?.business?.revenue || '',
+    annualTurnover: user?.business?.annualTurnover || '',
     vatNumber: user?.business?.vatNumber || '',
-    websiteAddress: user?.business?.websiteAddress || '',
-    yearsInOperation: user?.business?.yearsInOperation || '',
-    countries: [],
-    categories: []
+    website: user?.business?.website || '',
+    yearsInOperation: user?.business?.yearsInOperation || ''
   }
 
   useEffect(() => {
@@ -212,7 +247,7 @@ const Seller: React.FC = () => {
     }
   })
 
-  const [createMyBusiness] = useCreateMyBusinessMutation({
+  const [updateMyBusiness] = useUpdateMyBusinessMutation({
     onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST }),
     onCompleted: async () => {
       toast({ description: 'Business details updated!', ...SUCCESS_TOAST })
@@ -221,14 +256,17 @@ const Seller: React.FC = () => {
 
   const handleSubmit = async (values: SellerValues) => {
     const {
+      addressName,
       beeStatus,
       building,
       businessPhoneNumber,
-      businessWebsite,
-      categories,
+      website,
       city,
-      countries,
-      email,
+      companyName,
+      dispatchSecondaryEmailAddress,
+      dispatchSecondaryFirstName,
+      dispatchSecondaryPhoneNumber,
+      dispatchSecondarySurname,
       firstName,
       hazChem,
       headQuater,
@@ -236,11 +274,12 @@ const Seller: React.FC = () => {
       isVatRegistered,
       lastName,
       phoneNumber,
+      position,
       postalCode,
       products,
       province,
       registrationNumber,
-      revenue,
+      annualTurnover,
       street,
       suburb,
       suppliedBrands,
@@ -248,29 +287,36 @@ const Seller: React.FC = () => {
       yearsInOperation
     } = values
     const businessInput = {
-      revenue,
-      hazChem,
       beeStatus,
-      vatNumber,
+      categories: categories.map((category: any) => category.id),
+      companyName,
+      countries: countries.map((country: any) => country.id),
+      hazChem,
       headQuater,
-      suppliedBrands,
-      yearsInOperation,
-      registrationNumber,
-      countries: countries,
-      categories: categories,
-      productsSummary: products,
       isHazChem: Boolean(isHazChem),
-      websiteAddress: businessWebsite,
-      phoneNumber: businessPhoneNumber,
       isVatRegistered: Boolean(isVatRegistered),
+      phoneNumber: businessPhoneNumber,
+      position,
+      productsSummary: products,
+      registrationNumber,
+      annualTurnover,
+      secondaryEmailAddress: dispatchSecondaryEmailAddress,
+      secondaryFirstName: dispatchSecondaryFirstName,
+      secondaryPhoneNumber: dispatchSecondaryPhoneNumber,
+      secondarySurname: dispatchSecondarySurname,
+      suppliedBrands,
+      vatNumber,
+      website: website,
+      yearsInOperation,
       dispatchAddress: {
-        street,
         building,
-        province,
         city,
-        suburb,
-        postalCode,
         hubCode: selectedHub,
+        name: addressName,
+        postalCode,
+        province,
+        street,
+        suburb,
         type: Enum_Componentlocationaddress_Type.Business
       }
     }
@@ -278,10 +324,9 @@ const Seller: React.FC = () => {
     const userDetails = {
       firstName,
       lastName,
-      email,
       phoneNumber
     }
-    await createMyBusiness({ variables: { input: businessInput } })
+    await updateMyBusiness({ variables: { input: businessInput } })
     await updateSelf({ variables: { input: { ...userDetails } } })
   }
 

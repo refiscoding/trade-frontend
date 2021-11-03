@@ -1,7 +1,0 @@
-# import '/fragments/business.graphql'
-
-mutation createMyBusiness($input: BusinessInput) {
-  createMyBusiness(input: $input) {
-    ...business
-  }
-}
