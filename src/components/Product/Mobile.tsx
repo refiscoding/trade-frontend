@@ -95,9 +95,6 @@ const ProductComponentMobile: React.FC<ProductProps> = ({
         <Text ml={marginLeft} mt={2} mb={2} fontSize="18px" fontWeight={600}>
           {`${product?.currency} ${product?.tradeFedCost?.toFixed(2)}`}
         </Text>
-        <Text ml={marginLeft} mt={-1} mb={1} fontSize="12px">
-          Retail: {`${product?.currency} ${product?.maxSellCost?.toFixed(2)}`}
-        </Text>
         <Text ml={marginLeft} fontSize="14px" color={textColor} fontWeight={600}>
           {/* {`This item is sold per ${productPackaging}`} */}
         </Text>
