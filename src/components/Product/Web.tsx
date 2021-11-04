@@ -129,9 +129,6 @@ const ProductComponent: React.FC<ProductProps> = ({
             <Text mt={3} fontSize="17px" fontWeight={600}>
               {`${product?.currency} ${product?.tradeFedCost?.toFixed(2)}`}
             </Text>
-            <Text mt={4} fontSize="14px">
-              {`Retail: ${product?.currency} ${product?.maxSellCost?.toFixed(2)}`}
-            </Text>
             <Text mt={3} fontSize="12px" color={textColor} fontWeight={600}>
               {/* {`This item is sold per ${productPackaging}`} */}
             </Text>

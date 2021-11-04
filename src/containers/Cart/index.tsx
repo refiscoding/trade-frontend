@@ -24,6 +24,7 @@ import {
   useRemoveProductsFromCartMutation,
   Maybe
 } from '../../generated/graphql'
+import CartCard from '../../components/Card/CartCard'
 // import { useScript } from '../../hooks'
 
 export type CartProduct = {
@@ -236,7 +237,7 @@ const CartPage: React.FC = () => {
               {productsOnly
                 ?.sort((a: Product, b: Product) => parseInt(a.id) - parseInt(b.id))
                 .map((product: Product) => (
-                  <ProductCard
+                  <CartCard
                     width={'100%'}
                     key={`${product?.id}`}
                     isWishlist={false}
