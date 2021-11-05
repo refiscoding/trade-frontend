@@ -244,7 +244,13 @@ const CheckoutPage: React.FC = () => {
             totalPieces + (product.quantity || 0),
           0
         ),
-        items: products.map((product: ComponentCartCartProduct) => product.product?.id).toString(),
+        items: flatten(
+          products.map((product: ComponentCartCartProduct) => {
+            const products: string[] = Array.from(Array(product.quantity || 0))
+            products.fill(product.product?.id as string)
+            return products
+          })
+        ).toString(),
         length: flatten(
           products.map((product: ComponentCartCartProduct) => {
             const lengths: number[] = Array.from(Array(product.quantity || 0))
