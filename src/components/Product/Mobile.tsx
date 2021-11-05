@@ -93,7 +93,9 @@ const ProductComponentMobile: React.FC<ProductProps> = ({
           {product?.shortDescription}
         </Text>
         <Text ml={marginLeft} mt={2} mb={2} fontSize="18px" fontWeight={600}>
-          {`${product?.currency} ${product?.tradeFedCost?.toFixed(2)}`}
+          {`${product?.currency} ${product?.tradeFedCost
+            ?.toFixed(2)
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
         </Text>
         <Text ml={marginLeft} fontSize="14px" color={textColor} fontWeight={600}>
           {/* {`This item is sold per ${productPackaging}`} */}

@@ -57,7 +57,7 @@ const CardsComponent: React.FC<CardsProps> = ({
           onClick={handlePay}
         >
           {createOrderLoading && <Spinner height="25px" />}
-          {`PAY R ${checkoutTotal.toFixed(2)}`}
+          {`PAY R ${checkoutTotal.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
         </Button>
       )}
     </React.Fragment>

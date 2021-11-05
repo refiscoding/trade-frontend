@@ -40,7 +40,9 @@ const OrderSummaryComponent: React.FC<OrderItemsSummaryComponentProps> = ({
         <Text fontWeight={600}>Order Total</Text>
         <Flex justifySelf="end">
           <Text fontWeight={600}>
-            {`${items && items[0]?.product?.currency} ${total?.toFixed(2)}`}
+            {`${items && items[0]?.product?.currency} ${total
+              ?.toFixed(2)
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
           </Text>
         </Flex>
       </Grid>

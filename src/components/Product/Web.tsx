@@ -15,6 +15,7 @@ import { VerifiedBadge } from '../../components/Product'
 import { useAppContext } from '../../context/AppProvider'
 import { useAuthContext } from '../../context/AuthProvider'
 import { QuantitySelectComponent } from '../../containers/ProductView/AddToCartModal'
+import { useEffect } from 'react'
 
 const ProductComponent: React.FC<ProductProps> = ({
   deals,
@@ -47,6 +48,10 @@ const ProductComponent: React.FC<ProductProps> = ({
   const textColor = theme.colors.blueText
   const coverImageWidth = drawerOpen ? '415px' : '450px'
   const coverImageHeight = drawerOpen ? '435px' : '435px'
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   return (
     <React.Fragment>
@@ -126,8 +131,15 @@ const ProductComponent: React.FC<ProductProps> = ({
               {product?.shortDescription}
             </Text>
             <VerifiedBadge />
+            <Text mt={4} fontSize="14px">
+              {`Retail: ${product?.currency} ${product?.maxSellCost
+                ?.toFixed(2)
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
+            </Text>
             <Text mt={3} fontSize="17px" fontWeight={600}>
-              {`${product?.currency} ${product?.tradeFedCost?.toFixed(2)}`}
+              {`${product?.currency} ${product?.tradeFedCost
+                ?.toFixed(2)
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
             </Text>
             <Text mt={3} fontSize="12px" color={textColor} fontWeight={600}>
               {/* {`This item is sold per ${productPackaging}`} */}

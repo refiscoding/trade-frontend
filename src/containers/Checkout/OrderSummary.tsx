@@ -34,8 +34,13 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
     return GrandTotal
   })
 
-  const deliverySubTotal = deliveryTotals?.reduce((total, val) => total + val, 0).toFixed(2)
-  const orderTotal = parseInt(deliverySubTotal) + parseInt(checkoutTotal.toFixed(2))
+  const deliverySubTotal = deliveryTotals
+    ?.reduce((total, val) => total + val, 0)
+    .toFixed(2)
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  const orderTotal =
+    parseInt(deliverySubTotal) +
+    parseInt(checkoutTotal.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ','))
 
   return (
     <Flex
@@ -76,7 +81,7 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
         <Flex justifySelf="end">
           <Text color={theme.colors.blueText} fontWeight={600}>{`${
             cartProducts && cartProducts[0]?.product?.currency
-          } ${checkoutTotal.toFixed(2)}`}</Text>
+          } ${checkoutTotal.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</Text>
         </Flex>
       </Grid>
       <Grid mb={5} borderTop={`1px dashed #acacac}`}>
@@ -125,7 +130,10 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
         <Flex justifySelf="end">
           <Text color={theme.colors.blueText} fontWeight={600}>{`${
             cartProducts && cartProducts[0]?.product?.currency
-          } ${deliveryTotals?.reduce((total, val) => total + val, 0).toFixed(2)}`}</Text>
+          } ${deliveryTotals
+            ?.reduce((total, val) => total + val, 0)
+            .toFixed(2)
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</Text>
         </Flex>
       </Grid>
       <Grid my={3} gridTemplateColumns="1fr 1fr">
