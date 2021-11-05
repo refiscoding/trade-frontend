@@ -82,7 +82,9 @@ const CartPageHeader: React.FC<CartPageHeaderProps> = ({
       </Flex>
       {isTabletOrMobile && (
         <Flex width="100%" mb={3} justifyContent="space-between">
-          <Text>{`Cart Total (${numberOfItems}): R ${cartTotal.toFixed(2)}`}</Text>
+          <Text>{`Cart Total (${numberOfItems}): R ${cartTotal
+            .toFixed(2)
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</Text>
         </Flex>
       )}
     </Grid>
@@ -267,7 +269,9 @@ const CartPage: React.FC = () => {
                   fontSize={14}
                   mt={4}
                   color="blue"
-                >{`Cart Total (${itemsCount}): R ${cartTotal.toFixed(2)}`}</Text>
+                >{`Cart Total (${itemsCount}): R ${cartTotal
+                  .toFixed(2)
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</Text>
                 <Button
                   alignSelf="center"
                   onClick={handleEditCartClicked}

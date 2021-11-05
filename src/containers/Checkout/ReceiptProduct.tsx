@@ -41,7 +41,9 @@ const ReceiptProductComponent: React.FC<ReceiptProductComponentProps> = ({
           <Text fontWeight={600} fontSize={14}>{`${product?.currency} ${(product?.tradeFedCost
             ? product?.tradeFedCost * (quantity || 1)
             : product?.tradeFedCost
-          )?.toFixed(2)}`}</Text>
+          )
+            ?.toFixed(2)
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</Text>
         </Flex>
       </Grid>
     </Flex>

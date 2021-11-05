@@ -135,7 +135,9 @@ const OrderReturnProduct: React.FC<OrderReturnProductProps> = ({
           </Text>
           <Flex justify="space-between">
             <Text color={`${refundable ? '' : '#acacac'}`} fontSize="12px">
-              {`${product?.currency} ${product?.tradeFedCost?.toFixed(2)}`}
+              {`${product?.currency} ${product?.tradeFedCost
+                ?.toFixed(2)
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
             </Text>
             {hasReturnRequest && (
               <Flex mr={2}>

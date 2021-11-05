@@ -42,7 +42,9 @@ const OrderItemComponent: React.FC<OrderItemComponentProps> = ({ cartItem }) => 
           <Text mt={1} fontSize={12}>{`Delivery fee not included`}</Text>
         </Flex>
         <Flex justifySelf="end">
-          <Text fontWeight={600} fontSize={14}>{`${currency} ${total?.toFixed(2)}`}</Text>
+          <Text fontWeight={600} fontSize={14}>{`${currency} ${total
+            ?.toFixed(2)
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</Text>
         </Flex>
       </Grid>
     </Grid>

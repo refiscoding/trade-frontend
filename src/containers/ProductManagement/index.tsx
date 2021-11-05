@@ -41,7 +41,9 @@ const OlderActiveProduct: React.FC<OlderActiveProductProps> = ({ product }) => {
         </Flex>
         <Flex width={`100%`} justifySelf="end">
           <Text fontWeight={600}>
-            {`${product?.currency} ${product?.tradeFedCost?.toFixed(2)}`}
+            {`${product?.currency} ${product?.tradeFedCost
+              ?.toFixed(2)
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
           </Text>
         </Flex>
         <Flex>
@@ -206,7 +208,9 @@ const ActiveProduct: React.FC<ActiveProductProps> = ({
               cursor="pointer"
             >
               <Text fontSize={`12px`} fontWeight={550}>
-                {`${product?.currency} ${product?.tradeFedCost?.toFixed(2)}`}
+                {`${product?.currency} ${product?.tradeFedCost
+                  ?.toFixed(2)
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
               </Text>
               <Text
                 mr={3}

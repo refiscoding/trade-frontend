@@ -103,7 +103,9 @@ const CartModalProductComponent: React.FC<CartModalProductComponentProps> = ({
         <Flex width="100%">
           <Text fontSize="12px" fontWeight="bold">{`${product?.currency} ${(
             product?.tradeFedCost * productQuantity
-          ).toFixed(2)}`}</Text>
+          )
+            .toFixed(2)
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</Text>
         </Flex>
       </Flex>
     </Flex>

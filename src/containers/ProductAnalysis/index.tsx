@@ -206,7 +206,9 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
                     cursor="pointer"
                   >
                     <Text fontSize={`12px`} fontWeight={550}>
-                      {`${productItem?.currency} ${productItem?.tradeFedCost?.toFixed(2)}`}
+                      {`${productItem?.currency} ${productItem?.tradeFedCost
+                        ?.toFixed(2)
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
                     </Text>
                     <Text
                       mr={3}
@@ -314,7 +316,9 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
                 cursor="pointer"
               >
                 <Text fontSize={`12px`} fontWeight={550}>
-                  {`${productItem?.currency} ${productItem?.tradeFedCost?.toFixed(2)}`}
+                  {`${productItem?.currency} ${productItem?.tradeFedCost
+                    ?.toFixed(2)
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
                 </Text>
                 <Text
                   mr={3}

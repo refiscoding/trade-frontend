@@ -172,12 +172,16 @@ const ProductCard: React.FC<ProductCardProps> = ({
           >
             {`${product?.currency} ${(
               (product?.maxSellCost || 0) * (productsOnly ? productsOnly[0]?.quantity : 1)
-            ).toFixed(2)}`}
+            )
+              .toFixed(2)
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
           </Text>
           <Text fontSize="14px" fontWeight={600}>
             {`${product?.currency} ${(
               (product?.tradeFedCost || 0) * (productsOnly ? productsOnly[0]?.quantity : 1)
-            ).toFixed(2)}`}
+            )
+              .toFixed(2)
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
           </Text>
           {isWishlist && (
             <AddToWishlistButton

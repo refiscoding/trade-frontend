@@ -52,7 +52,7 @@ const BeforeCheckoutModal: React.FC<BeforeCheckoutModalProps> = ({
           isLoading={createOrderLoading}
           onClick={handleProceedButtonClicked}
         >
-          {`PAY ZAR ${checkoutTotal.toFixed(2)}`}
+          {`PAY ZAR ${checkoutTotal.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
         </Button>
       </Grid>
     </ModalWrap>
