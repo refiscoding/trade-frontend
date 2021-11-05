@@ -87,7 +87,7 @@ const PersonalDetailsComponent: React.FC<ProfileProps> = ({ user }) => {
           {user?.phoneNumber === '' ? (
             <Text fontSize={12}> - </Text>
           ) : (
-            <Text fontSize={12}>{`+27${user?.phoneNumber}`}</Text>
+            <Text fontSize={12}>${user?.phoneNumber}</Text>
           )}
         </Flex>
       </Flex>
