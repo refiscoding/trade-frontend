@@ -1,13 +1,8 @@
-import { Flex, Text } from '@chakra-ui/core'
 import * as React from 'react'
-import { ColorProps } from 'styled-system'
+import { Flex, Text } from '@chakra-ui/core'
 import { Link } from 'react-router-dom'
 
-type InfoBannerProps = ColorProps & {
-  caption?: string
-}
-
-const InfoBanner: React.FC<InfoBannerProps> = ({}) => {
+const InfoBanner: React.FC = () => {
   return (
     <Flex
       width="100vw"
