@@ -15,7 +15,9 @@ import { VerifiedBadge } from '../../components/Product'
 import { useAppContext } from '../../context/AppProvider'
 import { useAuthContext } from '../../context/AuthProvider'
 import { QuantitySelectComponent } from '../../containers/ProductView/AddToCartModal'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { Carousel } from 'react-responsive-carousel'
+import 'react-responsive-carousel/lib/styles/carousel.min.css'
 
 const ProductComponent: React.FC<ProductProps> = ({
   deals,
@@ -27,6 +29,7 @@ const ProductComponent: React.FC<ProductProps> = ({
   handleAddToCartClicked,
   handleAddToWishlistClicked
 }) => {
+  const [selectedImage, setSelectedImage] = useState()
   const history = useHistory()
   const { drawerOpen } = useAppContext()
   const { isAuthenticated } = useAuthContext()
@@ -107,14 +110,16 @@ const ProductComponent: React.FC<ProductProps> = ({
                 mt={6}
                 overflowY="scroll"
               >
-                {productImages?.map((product: string | undefined) => (
-                  <Image
-                    key={product || `${Math.random()}`}
-                    width="90%"
-                    height="90px"
-                    objectFit="cover"
-                    src={product || ''}
-                  />
+                {productImages?.map((product: string | undefined, index: any) => (
+                  <Flex onClick={() => console.log('stringProduct', product)} key={index}>
+                    <Image
+                      key={product || `${Math.random()}`}
+                      width="90%"
+                      height="90px"
+                      objectFit="cover"
+                      src={product || ''}
+                    />
+                  </Flex>
                 ))}
               </Grid>
             )}
