@@ -1,3 +1,11 @@
+## [1.13.4](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.13.3...v1.13.4) (2021-11-05)
+
+
+### Bug Fixes
+
+* remove retail price from my cart ([dba8bb7](http://bitbucket.org/sovtech/tradefed-frontend/commits/dba8bb761c998b41e96fe9b761c5de53024db589))
+* remove retail price from my cart ([2dfeaa5](http://bitbucket.org/sovtech/tradefed-frontend/commits/2dfeaa5311c54bc152ea8f5367fadd82d4c15285))
+
 ## [1.13.3](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.13.2...v1.13.3) (2021-11-02)
 
 
