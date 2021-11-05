@@ -21,7 +21,7 @@ const PersonalInfo: React.FC = () => {
       </H3>
       <ConnectedFormGroup label="Name*" name="firstName" type="text" />
       <ConnectedFormGroup label="Surname*" name="lastName" type="text" />
-      <ConnectedNumberInput label="Cell phone number*" name="phoneNumber" unit="+27" />
+      <ConnectedNumberInput label="Cell phone number*" name="phoneNumber" />
     </Flex>
   )
 }

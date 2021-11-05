@@ -82,7 +82,7 @@ const ProfileDetailForm: React.FC<formProps> = ({
               type="text"
               isDisabled={true}
             />
-            <ConnectedNumberInput label="Your Phone Number?" name="phoneNumber" unit="+27" />
+            <ConnectedNumberInput label="Your Phone Number?" name="phoneNumber" />
             <ConnectedFormGroup label="Your ID Number?" name="idNumber" type="text" />
             {/* <ConnectedFormGroup label="Your Address?" name="address" type="text" /> */}
             <Text my={3}>Your Interests?</Text>
