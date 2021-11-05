@@ -1,3 +1,12 @@
+## [1.13.5](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.13.4...v1.13.5) (2021-11-05)
+
+
+### Bug Fixes
+
+* clickable external link ([cef9f0a](http://bitbucket.org/sovtech/tradefed-frontend/commits/cef9f0a052faf4ed922721c7febc0c0390f8326e))
+* link ([b040a6f](http://bitbucket.org/sovtech/tradefed-frontend/commits/b040a6f8af0155fc50968ff79d1c165f1db036f2))
+* remove unused declarations ([874170a](http://bitbucket.org/sovtech/tradefed-frontend/commits/874170a248e741c65cd035e53034af4e07cccc4f))
+
 ## [1.13.4](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.13.3...v1.13.4) (2021-11-05)
 
 
