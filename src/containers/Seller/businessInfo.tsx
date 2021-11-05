@@ -66,11 +66,7 @@ const BusinessInfo: React.FC<businessTypes> = ({
           options={POSITIONS}
         />
         <ConnectedFormGroup label="If other, please specifiy" name="otherPosition" type="text" />
-        <ConnectedNumberInput
-          label="Business/ work phone number*"
-          name="businessPhoneNumber"
-          unit="+27"
-        />
+        <ConnectedNumberInput label="Business/ work phone number*" name="businessPhoneNumber" />
         <ConnectedFormGroup
           label="Business website"
           name="website"

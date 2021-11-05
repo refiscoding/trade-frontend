@@ -144,11 +144,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
               options={POSITIONS}
             />
             <ConnectedFormGroup label="If other, please specify" name="otherPosition" type="text" />
-            <ConnectedNumberInput
-              label="Business/ work phone number*"
-              name="phoneNumber"
-              unit="+27"
-            />
+            <ConnectedNumberInput label="Business/ work phone number*" name="phoneNumber" />
             <ConnectedFormGroup label="Business website address" name="website" type="text" />
             <ConnectedFormGroup
               label="Business registration number*"
@@ -162,7 +158,7 @@ const CompanyDetails: React.FC<NameProps> = ({ handleUserDetails }) => {
             />
             <ConnectedFormGroup
               label="Related/ associated company/ group"
-              name="relatedCompany"
+              name="companyRelated"
               type="text"
             />
             <ConnectedSelect

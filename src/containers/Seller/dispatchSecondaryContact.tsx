@@ -25,11 +25,7 @@ const DispatchSecondaryContact: React.FC = () => {
       </Text>
       <ConnectedFormGroup label="Name*" name="dispatchSecondaryFirstName" type="text" />
       <ConnectedFormGroup label="Surname*" name="dispatchSecondarySurname" type="text" />
-      <ConnectedNumberInput
-        label="Cell phone number*"
-        name="dispatchSecondaryPhoneNumber"
-        unit="+27"
-      />
+      <ConnectedNumberInput label="Cell phone number*" name="dispatchSecondaryPhoneNumber" />
       <ConnectedFormGroup label="Email address*" name="dispatchSecondaryEmailAddress" type="text" />
     </Flex>
   )

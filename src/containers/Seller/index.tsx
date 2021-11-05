@@ -137,6 +137,7 @@ export type SellerValues = {
   city: string
   countries: string[]
   companyName: string
+  companyRelated: string
   dispatchSecondaryEmailAddress: string
   dispatchSecondaryFirstName: string
   dispatchSecondaryPhoneNumber: string
@@ -263,6 +264,7 @@ const Seller: React.FC = () => {
       website,
       city,
       companyName,
+      companyRelated,
       dispatchSecondaryEmailAddress,
       dispatchSecondaryFirstName,
       dispatchSecondaryPhoneNumber,
@@ -290,6 +292,7 @@ const Seller: React.FC = () => {
       beeStatus,
       categories: categories.map((category: any) => category.id),
       companyName,
+      companyRelated,
       countries: countries.map((country: any) => country.id),
       hazChem,
       headQuater,

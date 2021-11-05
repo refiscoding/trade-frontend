@@ -33,12 +33,7 @@ const SenderInfo: React.FC = () => {
       />
       <ConnectedFormGroup label="Suburb:" name="senderSuburb" type="text" isDisabled={true} />
       <ConnectedFormGroup label="City / Town" name="senderTown" type="text" isDisabled={true} />
-      <ConnectedNumberInput
-        label="Contact Number:"
-        name="senderNumber"
-        unit="+27"
-        isDisabled={true}
-      />
+      <ConnectedNumberInput label="Contact Number:" name="senderNumber" isDisabled={true} />
     </Flex>
   )
 }

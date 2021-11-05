@@ -58,7 +58,7 @@ const OnboardingIndividual: React.FC<NameProps> = ({ handleUserDetails }) => {
           <Form style={{ width: '100%' }}>
             <ConnectedFormGroup label="Name*" name="firstName" type="text" />
             <ConnectedFormGroup label="Surname*" name="lastName" type="text" />
-            <ConnectedNumberInput label="Cell phone number*" name="phoneNumber" unit="+27" />
+            <ConnectedNumberInput label="Cell phone number*" name="phoneNumber" />
             {status && (
               <MotionFlex initial={{ opacity: 0 }} animate={{ opacity: 1 }} mb={2} width="100%">
                 <Text textAlign="right" color="red.500">

@@ -29,12 +29,7 @@ const ReceiverInfo: React.FC = () => {
       />
       <ConnectedFormGroup label="Suburb:" name="receiverSuburb" type="text" isDisabled={true} />
       <ConnectedFormGroup label="City / Town" name="receiverTown" type="text" isDisabled={true} />
-      <ConnectedNumberInput
-        label="Contact Number"
-        name="receiverNumber"
-        unit="+27"
-        isDisabled={true}
-      />
+      <ConnectedNumberInput label="Contact Number" name="receiverNumber" isDisabled={true} />
     </Flex>
   )
 }
