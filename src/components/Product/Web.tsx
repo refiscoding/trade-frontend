@@ -15,21 +15,17 @@ import { VerifiedBadge } from '../../components/Product'
 import { useAppContext } from '../../context/AppProvider'
 import { useAuthContext } from '../../context/AuthProvider'
 import { QuantitySelectComponent } from '../../containers/ProductView/AddToCartModal'
-import { useEffect, useState } from 'react'
-import { Carousel } from 'react-responsive-carousel'
-import 'react-responsive-carousel/lib/styles/carousel.min.css'
+import { useEffect } from 'react'
 
 const ProductComponent: React.FC<ProductProps> = ({
   deals,
   product,
   isPreview,
   productImages,
-  productPackaging,
   setProductQuantity,
   handleAddToCartClicked,
   handleAddToWishlistClicked
 }) => {
-  const [selectedImage, setSelectedImage] = useState()
   const history = useHistory()
   const { drawerOpen } = useAppContext()
   const { isAuthenticated } = useAuthContext()
