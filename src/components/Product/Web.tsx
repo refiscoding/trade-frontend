@@ -1,4 +1,5 @@
 import * as React from 'react'
+import styled from '@emotion/styled'
 
 import { Award, MapPin, Briefcase } from 'react-feather'
 import { Flex, Image, Text, Button, Grid } from '@chakra-ui/core'
@@ -6,16 +7,29 @@ import { get } from 'lodash'
 import { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 
-import { ProductProps } from './props'
 import { images, theme } from '../../theme'
 import { Maybe, Product } from '../../generated/graphql'
-import { VerifiedBadge } from '../../components/Product'
+import { ProductProps } from './props'
+import { QuantitySelectComponent } from '../../containers/ProductView/AddToCartModal'
 import { useAppContext } from '../../context/AppProvider'
 import { useAuthContext } from '../../context/AuthProvider'
-import { QuantitySelectComponent } from '../../containers/ProductView/AddToCartModal'
+import { VerifiedBadge } from '../../components/Product'
 
 import Section from '../../components/Section'
 import ProductCard from '../../components/Card/ProductCard'
+
+const StyledImage = styled(Image)`
+  transition: transform 0.3s;
+  object-fit: cover;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.35);
+    -ms-transform: scale(1.35); /* IE 9 */
+    -webkit-transform: scale(1.35); /* Safari 3-8 */
+    border-radius: 1rem;
+  }
+`
 
 const ProductComponent: React.FC<ProductProps> = ({
   deals,
@@ -76,11 +90,10 @@ const ProductComponent: React.FC<ProductProps> = ({
             columnGap={3}
           >
             <Flex m={5} width={`${coverImageWidth}`} height="450px" position="relative">
-              <Image
-                width={coverImageWidth}
-                height={coverImageHeight}
+              <StyledImage
+                width={parseInt(coverImageWidth)}
+                height={parseInt(coverImageHeight)}
                 src={selectedImage}
-                objectFit="cover"
               />
               {discount ? (
                 <Flex
