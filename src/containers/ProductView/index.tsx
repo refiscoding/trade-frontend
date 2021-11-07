@@ -2,7 +2,7 @@ import * as React from 'react'
 import { get } from 'lodash'
 import { useParams } from 'react-router-dom'
 import { useHistory } from 'react-router-dom'
-import { Flex, useToast } from '@chakra-ui/core'
+import { Flex, useToast, Spinner } from '@chakra-ui/core'
 
 import { PageWrap } from '../../layouts'
 import Footer from '../../components/Footer'
@@ -21,7 +21,7 @@ const ProductView: React.FC = () => {
   const [currentNumber, setCurrentNumber] = React.useState<number>(1)
   const [showAddToCartModal, setShowAddToCartModal] = React.useState<boolean | undefined>()
 
-  const { data } = useFindProductQuery({
+  const { data, loading } = useFindProductQuery({
     variables: { uniqueIdentifier: id },
     onError: (err: any) => toast({ description: err.message, ...ERROR_TOAST })
   })
@@ -43,12 +43,18 @@ const ProductView: React.FC = () => {
 
   return (
     <PageWrap alignItems="center" title="Product" bg={theme.colors.background}>
-      <ProductComponent
-        product={product}
-        setShowAddToCartModal={setShowAddCartModal}
-        setCurrentNumber={setCurrentNumber}
-        currentNumber={currentNumber}
-      />
+      {loading ? (
+        <Flex height="100vh" alignItems="center">
+          <Spinner color="brand.300" />
+        </Flex>
+      ) : (
+        <ProductComponent
+          product={product}
+          setShowAddToCartModal={setShowAddCartModal}
+          setCurrentNumber={setCurrentNumber}
+          currentNumber={currentNumber}
+        />
+      )}
       <Flex ml="1rem">
         <Footer />
       </Flex>

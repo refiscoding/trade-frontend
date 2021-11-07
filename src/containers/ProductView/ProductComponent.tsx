@@ -16,17 +16,17 @@ import {
 } from '../../generated/graphql'
 
 type ProductProps = {
-  product?: any
-  setShowAddToCartModal: () => void
-  setCurrentNumber: React.Dispatch<React.SetStateAction<number>>
   currentNumber: number
+  product?: any
+  setCurrentNumber: React.Dispatch<React.SetStateAction<number>>
+  setShowAddToCartModal: () => void
 }
 
 const ProductComponent: React.FC<ProductProps> = ({
+  currentNumber,
   product,
-  setShowAddToCartModal,
   setCurrentNumber,
-  currentNumber
+  setShowAddToCartModal
 }) => {
   const toast = useToast()
   const location = useLocation()
@@ -83,14 +83,14 @@ const ProductComponent: React.FC<ProductProps> = ({
       {isWebViewport ? (
         <ProductWeb
           deals={deals}
-          product={product}
-          isPreview={isPreview}
-          productImages={productImages}
-          productQuantity={currentNumber}
-          setProductQuantity={setCurrentNumber}
-          productPackaging={productPackaging}
           handleAddToCartClicked={handleAddToCartClicked}
           handleAddToWishlistClicked={handleAddToWishlistClicked}
+          isPreview={isPreview}
+          product={product}
+          productImages={productImages}
+          productPackaging={productPackaging}
+          productQuantity={currentNumber}
+          setProductQuantity={setCurrentNumber}
         />
       ) : (
         <ProductMobile
