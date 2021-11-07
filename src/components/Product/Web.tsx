@@ -89,7 +89,7 @@ const ProductComponent: React.FC<ProductProps> = ({
             height={coverImageHeight}
             columnGap={3}
           >
-            <Flex m={5} width={`${coverImageWidth}`} height="450px" position="relative">
+            <Flex m={5} width={`${coverImageWidth}`} height="415px" position="relative">
               <StyledImage
                 width={parseInt(coverImageWidth)}
                 height={parseInt(coverImageHeight)}
@@ -123,7 +123,7 @@ const ProductComponent: React.FC<ProductProps> = ({
                 gridTemplateRows="90px 90px 90px 90px"
                 rowGap={3}
                 ml={5}
-                mt={6}
+                mt={5}
                 overflowY="scroll"
               >
                 <Image
