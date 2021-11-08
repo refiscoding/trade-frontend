@@ -1,21 +1,35 @@
 import * as React from 'react'
+import styled from '@emotion/styled'
 
-import { get } from 'lodash'
-import { useHistory } from 'react-router-dom'
 import { Award, MapPin, Briefcase } from 'react-feather'
 import { Flex, Image, Text, Button, Grid } from '@chakra-ui/core'
+import { get } from 'lodash'
+import { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
+
+import { images, theme } from '../../theme'
+import { Maybe, Product } from '../../generated/graphql'
+import { ProductProps } from './props'
+import { QuantitySelectComponent } from '../../containers/ProductView/AddToCartModal'
+import { useAppContext } from '../../context/AppProvider'
+import { useAuthContext } from '../../context/AuthProvider'
+import { VerifiedBadge } from '../../components/Product'
 
 import Section from '../../components/Section'
 import ProductCard from '../../components/Card/ProductCard'
 
-import { ProductProps } from './props'
-import { images, theme } from '../../theme'
-import { Maybe, Product } from '../../generated/graphql'
-import { VerifiedBadge } from '../../components/Product'
-import { useAppContext } from '../../context/AppProvider'
-import { useAuthContext } from '../../context/AuthProvider'
-import { QuantitySelectComponent } from '../../containers/ProductView/AddToCartModal'
-import { useEffect } from 'react'
+const StyledImage = styled(Image)`
+  transition: transform 0.3s;
+  object-fit: cover;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.35);
+    -ms-transform: scale(1.35); /* IE 9 */
+    -webkit-transform: scale(1.35); /* Safari 3-8 */
+    border-radius: 1rem;
+  }
+`
 
 const ProductComponent: React.FC<ProductProps> = ({
   deals,
@@ -29,14 +43,15 @@ const ProductComponent: React.FC<ProductProps> = ({
   const history = useHistory()
   const { drawerOpen } = useAppContext()
   const { isAuthenticated } = useAuthContext()
+  const [selectedImage, setSelectedImage] = useState('')
 
   const navigateToProduct = (id: Maybe<string> | undefined) => {
     const modifiedId = id?.toLowerCase()
     history.push(`/product/${modifiedId}`)
   }
 
-  const coverImage = product?.coverImage?.url
   const hasProductImages = productImages?.length > 0
+  const coverImage = product?.coverImage?.url || ''
 
   const maxSellCost = get(product, 'maxSellCost') as number
   const tradeFedCost = get(product, 'tradeFedCost') as number
@@ -48,9 +63,15 @@ const ProductComponent: React.FC<ProductProps> = ({
   const coverImageWidth = drawerOpen ? '415px' : '450px'
   const coverImageHeight = drawerOpen ? '435px' : '435px'
 
+  const handleClickedImage = (product: string) => setSelectedImage(product)
+
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
+
+  useEffect(() => {
+    setSelectedImage(coverImage)
+  }, [coverImage])
 
   return (
     <React.Fragment>
@@ -68,12 +89,11 @@ const ProductComponent: React.FC<ProductProps> = ({
             height={coverImageHeight}
             columnGap={3}
           >
-            <Flex m={5} width={`${coverImageWidth}`} height="450px" position="relative">
-              <Image
-                width={coverImageWidth}
-                height={coverImageHeight}
-                src={coverImage || ''}
-                objectFit="cover"
+            <Flex m={5} width={`${coverImageWidth}`} height="415px" position="relative">
+              <StyledImage
+                width={parseInt(coverImageWidth)}
+                height={parseInt(coverImageHeight)}
+                src={selectedImage}
               />
               {discount ? (
                 <Flex
@@ -103,16 +123,25 @@ const ProductComponent: React.FC<ProductProps> = ({
                 gridTemplateRows="90px 90px 90px 90px"
                 rowGap={3}
                 ml={5}
-                mt={6}
+                mt={5}
                 overflowY="scroll"
               >
+                <Image
+                  width="90%"
+                  height="90px"
+                  cursor="pointer"
+                  onClick={() => handleClickedImage(coverImage)}
+                  src={coverImage}
+                  objectFit="cover"
+                />
                 {productImages?.map((product: string | undefined, index: any) => (
-                  <Flex onClick={() => console.log('stringProduct', product)} key={index}>
+                  <Flex onClick={() => handleClickedImage(product || '')} key={index}>
                     <Image
                       key={product || `${Math.random()}`}
                       width="90%"
                       height="90px"
                       objectFit="cover"
+                      cursor="pointer"
                       src={product || ''}
                     />
                   </Flex>
