@@ -1,3 +1,10 @@
+## [1.13.6](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.13.5...v1.13.6) (2021-11-08)
+
+
+### Bug Fixes
+
+* height and mt on product images ([8615771](http://bitbucket.org/sovtech/tradefed-frontend/commits/8615771ead463448b561b6c1a357e801c40251ac))
+
 ## [1.13.5](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.13.4...v1.13.5) (2021-11-05)
 
 
