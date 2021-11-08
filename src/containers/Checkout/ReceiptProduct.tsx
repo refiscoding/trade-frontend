@@ -21,10 +21,20 @@ const ReceiptProductComponent: React.FC<ReceiptProductComponentProps> = ({
     <Flex height="70px" alignSelf="start" borderBottom={`1px solid ${theme.colors.background}`}>
       <Grid width="100%" gridTemplateColumns="50% 50%" justifyContent="space-between">
         <Flex justifySelf="start">
-          <Image width="50px" height="50px" src={product?.coverImage?.url || ''} />
-          <Text ml={10} fontWeight={600} fontSize={14}>
-            {product?.name}
-          </Text>
+          <Image width="70px" height="60px" src={product?.coverImage?.url || ''} />
+          <Grid gridTemplateRows="1fr 2fr">
+            <Text ml={5} fontWeight={600} fontSize={14}>
+              {product?.name}
+            </Text>
+            <Text ml={5} fontWeight={600} fontSize={14}>{`${
+              product?.currency
+            } ${(product?.tradeFedCost
+              ? product?.tradeFedCost * (quantity || 1)
+              : product?.tradeFedCost
+            )
+              ?.toFixed(2)
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</Text>
+          </Grid>
           <Tag
             height="40%"
             justifySelf="start"
