@@ -14,7 +14,7 @@ type HomeBannerProps = ColorProps & {
 }
 
 const StyledCarousel = styled(Carousel)`
-  margin-left: -2rem;
+  margin-left: -1rem;
 `
 
 const HomeBanner: React.FC<HomeBannerProps> = () => {
