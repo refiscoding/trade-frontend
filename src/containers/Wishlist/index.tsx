@@ -41,10 +41,13 @@ const WishlistPageHeader: React.FC<WishlistPageHeaderProps> = ({
   isTabletOrMobile
 }) => {
   return (
-    <Flex mt={10} width="100%" ml={isTabletOrMobile ? 0 : 5} mb={4} justifyContent="space-between">
-      <H3 textAlign="left" fontSize={18} fontWeight={600}>
-        My Wishlist
-      </H3>
+    <Flex
+      mt={10}
+      width="100%"
+      ml={isTabletOrMobile ? 0 : '170%'}
+      mb={4}
+      justifyContent="space-between"
+    >
       {!editing ? (
         <Button
           justifySelf="end"
@@ -198,7 +201,7 @@ const WishlistPage: React.FC = () => {
           ml={isTabletOrMobile ? 0 : 5}
           mt={3}
           alignSelf="center"
-          width={isTabletOrMobile ? '100%' : '80%'}
+          width={isTabletOrMobile ? '100%' : '100%'}
           flexDirection="column"
           alignItems="center"
         >
@@ -207,17 +210,21 @@ const WishlistPage: React.FC = () => {
             onClick={handleEditWishlistClicked}
             editing={editing}
           />
-          {products?.map((product: Product) => (
-            <ProductCard
-              width={isTabletOrMobile ? '100%' : '100%'}
-              key={`${product.id}-${Math.random()}`}
-              isWishlist
-              product={product}
-              handleClick={editing ? handleWishlistProductClickedEditing : navigateToProduct}
-              editing={editing || false}
-              handleIconClick={handleWishlistProductClickedNormal}
-            />
-          ))}
+          <Flex ml={5} mt={3} width="100%" flexDirection="column" alignItems="center">
+            <Section card title="My wishlist">
+              {products?.map((product: Product) => (
+                <ProductCard
+                  width={isTabletOrMobile ? '100%' : '100%'}
+                  key={`${product.id}-${Math.random()}`}
+                  isWishlist
+                  product={product}
+                  handleClick={editing ? handleWishlistProductClickedEditing : navigateToProduct}
+                  editing={editing || false}
+                  handleIconClick={handleWishlistProductClickedNormal}
+                />
+              ))}
+            </Section>
+          </Flex>
           {editing ? (
             <DeleteItemsButton handleDeleteButtonClicked={handleDeleteButtonClicked} />
           ) : (
