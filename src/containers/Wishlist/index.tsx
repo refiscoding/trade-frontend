@@ -211,7 +211,7 @@ const WishlistPage: React.FC = () => {
             editing={editing}
           />
           <Flex ml={5} mt={3} width="100%" flexDirection="column" alignItems="center">
-            <Section card title="My wishlist">
+            <Section card title="My Wishlist">
               {products?.map((product: Product) => (
                 <ProductCard
                   width={isTabletOrMobile ? '100%' : '100%'}

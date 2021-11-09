@@ -59,9 +59,6 @@ const CartPageHeader: React.FC<CartPageHeaderProps> = ({
       ml={isTabletOrMobile ? 0 : 5}
     >
       <Flex width="100%" ml={isTabletOrMobile ? 0 : 3} justifyContent="space-between">
-        <H3 textAlign="left" fontSize={18} fontWeight={600}>
-          My Cart
-        </H3>
         {isTabletOrMobile && !editing ? (
           <Button
             justifySelf="end"
@@ -234,8 +231,8 @@ const CartPage: React.FC = () => {
             numberOfItems={itemsCount}
             cartTotal={cartTotal}
           />
-          <Flex width={isTabletOrMobile ? '100%' : '80%'} justifyContent="space-between">
-            <Flex width="100%" flexDirection="column">
+          <Flex flexDirection="row" ml={8} mt={3} width="80%">
+            <Section card title="My Cart">
               {productsOnly
                 ?.sort((a: Product, b: Product) => parseInt(a.id) - parseInt(b.id))
                 .map((product: Product) => (
@@ -251,16 +248,17 @@ const CartPage: React.FC = () => {
                     handleIconClick={handleCartProductClickedNormal}
                   />
                 ))}
-            </Flex>
+            </Section>
             {!isTabletOrMobile && (
               <Flex
-                m={2}
+                m={4}
                 borderRadius={5}
                 p={3}
                 flexDirection="column"
                 width="250px"
                 height="180px"
                 background="white"
+                boxShadow={theme.boxShadowMedium}
               >
                 <H3 textAlign="left" fontSize={16} fontWeight={600}>
                   Cart Summary
