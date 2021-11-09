@@ -20,7 +20,6 @@ import {
 } from '../../generated/graphql'
 
 import { PageWrap } from '../../layouts'
-import { H3 } from '../../typography'
 import Section from '../../components/Section'
 import { useMediaQuery } from 'react-responsive'
 import { theme } from '../../theme'
