@@ -1,3 +1,10 @@
+## [1.13.7](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.13.6...v1.13.7) (2021-11-09)
+
+
+### Bug Fixes
+
+* cart page ([a86713f](http://bitbucket.org/sovtech/tradefed-frontend/commits/a86713f2e8f7d0846b71e59fe375fe735b0b0922))
+
 ## [1.13.6](http://bitbucket.org/sovtech/tradefed-frontend/compare/v1.13.5...v1.13.6) (2021-11-08)
 
 
