@@ -46,8 +46,8 @@ const packagingItems = [
 
 const currency = [
   {
-    label: 'ZAR',
-    value: 'ZAR'
+    label: 'BWP',
+    value: 'BWP'
   }
 ]
 

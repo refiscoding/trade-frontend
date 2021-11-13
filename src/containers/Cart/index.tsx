@@ -144,7 +144,7 @@ const CartPage: React.FC = () => {
       limit: 3,
       where: {
         // eslint-disable-next-line @typescript-eslint/camelcase
-        tradeFedCost_lt: discountedPriceMarker
+        MoverCost_lt: discountedPriceMarker
       }
     },
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })

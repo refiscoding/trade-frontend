@@ -18,8 +18,8 @@ const OnboardinIntro: React.FC = () => {
       <InfoPage
         hasLogo
         image={images.onboardingIntro}
-        header="Welcome to TradeFed"
-        caption="You have successfully created your TradeFed account."
+        header="Welcome to Mover"
+        caption="You have successfully created your Mover account."
         action={() => history.push('/user-onboarding-details')}
         actionText="GET STARTED"
       />

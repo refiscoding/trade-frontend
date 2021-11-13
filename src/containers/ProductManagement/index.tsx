@@ -41,7 +41,7 @@ const OlderActiveProduct: React.FC<OlderActiveProductProps> = ({ product }) => {
         </Flex>
         <Flex width={`100%`} justifySelf="end">
           <Text fontWeight={600}>
-            {`${product?.currency} ${product?.tradeFedCost
+            {`${product?.currency} ${product?.MoverCost
               ?.toFixed(2)
               .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
           </Text>
@@ -76,9 +76,9 @@ const ActiveProduct: React.FC<ActiveProductProps> = ({
   const averageMover = sold > 49 && sold <= 70
   const fastMove = sold > 70
   const maxSellCost = get(product, 'maxSellCost') as number
-  const tradeFedCost = get(product, 'tradeFedCost') as number
+  const MoverCost = get(product, 'MoverCost') as number
 
-  const discount = Math.round(((maxSellCost - tradeFedCost) / maxSellCost) * 100)
+  const discount = Math.round(((maxSellCost - MoverCost) / maxSellCost) * 100)
 
   const tagColors = slowMover
     ? {
@@ -208,7 +208,7 @@ const ActiveProduct: React.FC<ActiveProductProps> = ({
               cursor="pointer"
             >
               <Text fontSize={`12px`} fontWeight={550}>
-                {`${product?.currency} ${product?.tradeFedCost
+                {`${product?.currency} ${product?.MoverCost
                   ?.toFixed(2)
                   .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
               </Text>

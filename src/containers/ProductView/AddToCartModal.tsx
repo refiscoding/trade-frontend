@@ -57,8 +57,8 @@ const CartModalProductComponent: React.FC<CartModalProductComponentProps> = ({
 }) => {
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 40em)' })
   const maxSellCost = get(product, 'maxSellCost') as number
-  const tradeFedCost = get(product, 'tradeFedCost') as number
-  const discount = Math.round(((maxSellCost - tradeFedCost) / maxSellCost) * 100)
+  const MoverCost = get(product, 'MoverCost') as number
+  const discount = Math.round(((maxSellCost - MoverCost) / maxSellCost) * 100)
 
   return (
     <Flex border={`1px solid ${theme.colors.background}`} borderRadius={5} position="relative">
@@ -102,7 +102,7 @@ const CartModalProductComponent: React.FC<CartModalProductComponentProps> = ({
         </Flex>
         <Flex width="100%">
           <Text fontSize="12px" fontWeight="bold">{`${product?.currency} ${(
-            product?.tradeFedCost * productQuantity
+            product?.MoverCost * productQuantity
           )
             .toFixed(2)
             .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</Text>

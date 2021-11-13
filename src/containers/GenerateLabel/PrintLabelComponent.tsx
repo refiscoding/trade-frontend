@@ -74,9 +74,9 @@ const PrintLabelComponent: React.FC<PrintLabelComponentProps> = ({
           justifyContent="center"
           width="150px"
         >
-          <Image width="40%" height="auto" src={images.TradeFedLogo} />
+          <Image width="40%" height="auto" src={images.MoverLogo} />
           <Text fontSize="23px" fontWeight={400} color="#16385a" mt={2}>
-            TradeFed
+            Mover
           </Text>
         </Flex>
         <Flex flexDirection="row" justifyContent="space-between">

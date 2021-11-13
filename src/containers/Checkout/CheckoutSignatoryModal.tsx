@@ -34,7 +34,7 @@ const CheckoutSignatoryModal: React.FC<CheckoutSignatoryModalProps> = ({
             <Flex>
               <Checkbox name="rememberMe" mr={3} onChange={handleIsCustomerClicked} />
               <Flex align="center" justify="center">
-                <Text>I have a TradeFed account</Text>
+                <Text>I have a Mover account</Text>
               </Flex>
             </Flex>
             <Button

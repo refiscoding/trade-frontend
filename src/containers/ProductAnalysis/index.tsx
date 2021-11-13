@@ -70,8 +70,8 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
   const productImagesCount = productImages?.length
   const imageHeight = productImagesCount === 1 ? '40%' : productImagesCount === 2 ? '60%' : '100%'
   const maxSellCost = get(productItem, 'maxSellCost') as number
-  const tradeFedCost = get(productItem, 'tradeFedCost') as number
-  const discount = Math.round(((maxSellCost - tradeFedCost) / maxSellCost) * 100)
+  const MoverCost = get(productItem, 'MoverCost') as number
+  const discount = Math.round(((maxSellCost - MoverCost) / maxSellCost) * 100)
 
   const slowMover = sold <= 10
   const mover = sold > 10 && sold <= 49
@@ -206,7 +206,7 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
                     cursor="pointer"
                   >
                     <Text fontSize={`12px`} fontWeight={550}>
-                      {`${productItem?.currency} ${productItem?.tradeFedCost
+                      {`${productItem?.currency} ${productItem?.MoverCost
                         ?.toFixed(2)
                         .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
                     </Text>
@@ -316,7 +316,7 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
                 cursor="pointer"
               >
                 <Text fontSize={`12px`} fontWeight={550}>
-                  {`${productItem?.currency} ${productItem?.tradeFedCost
+                  {`${productItem?.currency} ${productItem?.MoverCost
                     ?.toFixed(2)
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
                 </Text>

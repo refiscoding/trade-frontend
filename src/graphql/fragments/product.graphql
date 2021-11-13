@@ -12,7 +12,7 @@ fragment product on Product {
   packaging
   minSellCost
   maxSellCost
-  tradeFedCost
+  MoverCost
   dimensionsUnit
   weightUnit
   discount

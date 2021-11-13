@@ -42,7 +42,7 @@ const VerifiedBadge: React.FC<VerifiedBadgeProps> = ({ marginLeft }) => (
       <PopoverBody>
         <Text fontSize="12px">
           This badge is to indicate that the seller has gone through a verification process to sell
-          items on TradeFed’s platform.
+          items on Mover’s platform.
         </Text>
       </PopoverBody>
     </PopoverContent>
