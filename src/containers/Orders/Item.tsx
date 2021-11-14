@@ -13,7 +13,7 @@ type OrderItemComponentProps = {
 
 const OrderItemComponent: React.FC<OrderItemComponentProps> = ({ cartItem }) => {
   const itemToUse = cartItem?.product
-  const price = get(itemToUse, 'MoverCost')
+  const price = get(itemToUse, 'tradeFedCost')
   const name = get(itemToUse, 'name')
   const currency = get(itemToUse, 'currency')
   const quantity = get(cartItem, 'quantity') ?? 1

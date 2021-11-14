@@ -67,7 +67,7 @@ const Login: React.FC<LoginProps> = () => {
       title="Login"
       backgroundSize="contain"
       backgroundRepeat="no-repeat"
-      bgImage={`url(${images.MoverBg})`}
+      bgImage={`url(${images.tradeFedBg})`}
       justify="center"
       pt={0}
     >
@@ -77,7 +77,7 @@ const Login: React.FC<LoginProps> = () => {
             Login
           </H3>
           <Text textAlign="center" fontSize="18px" color="gray.500">
-            Hi there! Welcome back to Mover.
+            Hi there! Welcome back to tradeFed.
           </Text>
         </Flex>
         <Formik

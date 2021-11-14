@@ -112,7 +112,7 @@ const WishlistPage: React.FC = () => {
       limit: 3,
       where: {
         // eslint-disable-next-line @typescript-eslint/camelcase
-        MoverCost_lt: discountedPriceMarker
+        tradeFedCost_lt: discountedPriceMarker
       }
     },
     onError: (err: ApolloError) => toast({ description: err.message, ...ERROR_TOAST })

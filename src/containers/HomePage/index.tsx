@@ -65,8 +65,8 @@ const Home: React.FC = () => {
   const { data: productData } = useProductQuery({
     variables: {
       where: isFiltered && {
-        MoverCost_gt: parseInt(query?.minPrice || '0'),
-        MoverCost_lt: parseInt(query?.maxPrice || '10000'),
+        tradeFedCost_gt: parseInt(query?.minPrice || '0'),
+        tradeFedCost_lt: parseInt(query?.maxPrice || '10000'),
         categories_contains: query?.category
       }
     },

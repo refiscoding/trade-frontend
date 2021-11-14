@@ -54,8 +54,8 @@ const ProductComponent: React.FC<ProductProps> = ({
   const coverImage = product?.coverImage?.url || ''
 
   const maxSellCost = get(product, 'maxSellCost') as number
-  const MoverCost = get(product, 'MoverCost') as number
-  const discount = Math.round(((maxSellCost - MoverCost) / maxSellCost) * 100)
+  const tradeFedCost = get(product, 'tradeFedCost') as number
+  const discount = Math.round(((maxSellCost - tradeFedCost) / maxSellCost) * 100)
 
   const addresses = get(product, 'business.address')
   const businessAddress = addresses ? addresses[0]?.address : ''
@@ -167,7 +167,7 @@ const ProductComponent: React.FC<ProductProps> = ({
                 .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
             </Text>
             <Text mt={3} fontSize="17px" fontWeight={600}>
-              {`${product?.currency} ${product?.MoverCost
+              {`${product?.currency} ${product?.tradeFedCost
                 ?.toFixed(2)
                 .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
             </Text>

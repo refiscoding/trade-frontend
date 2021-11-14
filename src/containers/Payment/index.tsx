@@ -27,7 +27,7 @@ const statusMap = {
   },
   success: {
     header: 'Payment Succeeded ...',
-    caption: 'Your payment was successful, thank you for shopping at Mover'
+    caption: 'Your payment was successful, thank you for shopping at tradeFed'
   },
   pending: {
     header: 'Processing Payment...',

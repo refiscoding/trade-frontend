@@ -60,12 +60,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
   }
 
   const maxSellCost = get(product, 'maxSellCost') as number
-  const MoverCost = get(product, 'MoverCost') as number
+  const tradeFedCost = get(product, 'tradeFedCost') as number
   const productsOnly = products?.filter(
     (entry: CartProduct) => entry?.product?.uniqueIdentifier === product?.uniqueIdentifier
   )
 
-  const discount = Math.round(((maxSellCost - MoverCost) / maxSellCost) * 100)
+  const discount = Math.round(((maxSellCost - tradeFedCost) / maxSellCost) * 100)
 
   return (
     <Flex
@@ -163,7 +163,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
           )}
           <Text mt={5} fontSize="14px" fontWeight={600}>
             {`${product?.currency} ${(
-              (product?.MoverCost || 0) * (productsOnly ? productsOnly[0]?.quantity : 1)
+              (product?.tradeFedCost || 0) * (productsOnly ? productsOnly[0]?.quantity : 1)
             )
               .toFixed(2)
               .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}

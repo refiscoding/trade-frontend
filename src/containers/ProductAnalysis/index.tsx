@@ -70,19 +70,19 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
   const productImagesCount = productImages?.length
   const imageHeight = productImagesCount === 1 ? '40%' : productImagesCount === 2 ? '60%' : '100%'
   const maxSellCost = get(productItem, 'maxSellCost') as number
-  const MoverCost = get(productItem, 'MoverCost') as number
-  const discount = Math.round(((maxSellCost - MoverCost) / maxSellCost) * 100)
+  const tradeFedCost = get(productItem, 'tradeFedCost') as number
+  const discount = Math.round(((maxSellCost - tradeFedCost) / maxSellCost) * 100)
 
-  const slowMover = sold <= 10
-  const mover = sold > 10 && sold <= 49
-  const averageMover = sold > 49 && sold <= 70
+  const slowtradeFed = sold <= 10
+  const tradeFed = sold > 10 && sold <= 49
+  const averagetradeFed = sold > 49 && sold <= 70
   const fastMove = sold > 70
 
-  const textColor = slowMover
+  const textColor = slowtradeFed
     ? theme.colors.background
-    : mover
+    : tradeFed
     ? theme.colors.tagText
-    : averageMover
+    : averagetradeFed
     ? '#f0943d'
     : fastMove
     ? theme.colors.greenFill
@@ -206,7 +206,7 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
                     cursor="pointer"
                   >
                     <Text fontSize={`12px`} fontWeight={550}>
-                      {`${productItem?.currency} ${productItem?.MoverCost
+                      {`${productItem?.currency} ${productItem?.tradeFedCost
                         ?.toFixed(2)
                         .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
                     </Text>
@@ -316,7 +316,7 @@ const ProductManagementAnalysis: React.FC<ProductManagementAnalysisProps> = () =
                 cursor="pointer"
               >
                 <Text fontSize={`12px`} fontWeight={550}>
-                  {`${productItem?.currency} ${productItem?.MoverCost
+                  {`${productItem?.currency} ${productItem?.tradeFedCost
                     ?.toFixed(2)
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
                 </Text>

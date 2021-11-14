@@ -50,11 +50,11 @@ const OrderReturnProduct: React.FC<OrderReturnProductProps> = ({
   setProductToReturn
 }) => {
   const maxSellCost = get(product, 'maxSellCost') as number
-  const MoverCost = get(product, 'MoverCost') as number
+  const tradeFedCost = get(product, 'tradeFedCost') as number
 
   const hasReturnRequest = product?.return_request
 
-  const discount = Math.round(((maxSellCost - MoverCost) / maxSellCost) * 100)
+  const discount = Math.round(((maxSellCost - tradeFedCost) / maxSellCost) * 100)
 
   const handleProductClicked = () => {
     if (setProductToReturn && !hasReturnRequest) {
@@ -135,7 +135,7 @@ const OrderReturnProduct: React.FC<OrderReturnProductProps> = ({
           </Text>
           <Flex justify="space-between">
             <Text color={`${refundable ? '' : '#acacac'}`} fontSize="12px">
-              {`${product?.currency} ${product?.MoverCost
+              {`${product?.currency} ${product?.tradeFedCost
                 ?.toFixed(2)
                 .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
             </Text>
@@ -207,7 +207,7 @@ const OrderReturns: React.FC<OrderReturnsProps> = ({
 
   const isNonRefundableEmpty = nonRefundableProducts?.length
 
-  const message = `Hi Mover, I would like to request a return of ${productToReturn?.name} from Order# ${orderToReturn?.orderNumber}. I have indicated my reason and preferred action. Looking forward to hearing from you. Thanks in advance!`
+  const message = `Hi tradeFed, I would like to request a return of ${productToReturn?.name} from Order# ${orderToReturn?.orderNumber}. I have indicated my reason and preferred action. Looking forward to hearing from you. Thanks in advance!`
   const returnComment = (orderToReturn && productToReturn && message) ?? ''
 
   const handleReasonChanged = (event: React.ChangeEvent<HTMLSelectElement>) => {

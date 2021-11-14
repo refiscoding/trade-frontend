@@ -26,9 +26,9 @@ const ReceiptProductComponent: React.FC<ReceiptProductComponentProps> = ({
             <Text ml={5} fontWeight={600} fontSize={14}>
               {product?.name}
             </Text>
-            <Text ml={5} fontWeight={600} fontSize={14}>{`${product?.currency} ${(product?.MoverCost
-              ? product?.MoverCost * (quantity || 1)
-              : product?.MoverCost
+            <Text ml={5} fontWeight={600} fontSize={14}>{`${product?.currency} ${(product?.tradeFedCost
+              ? product?.tradeFedCost * (quantity || 1)
+              : product?.tradeFedCost
             )
               ?.toFixed(2)
               .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</Text>
@@ -47,9 +47,9 @@ const ReceiptProductComponent: React.FC<ReceiptProductComponentProps> = ({
           </Tag>
         </Flex>
         <Flex justifySelf="end">
-          <Text fontWeight={600} fontSize={14}>{`${product?.currency} ${(product?.MoverCost
-            ? product?.MoverCost * (quantity || 1)
-            : product?.MoverCost
+          <Text fontWeight={600} fontSize={14}>{`${product?.currency} ${(product?.tradeFedCost
+            ? product?.tradeFedCost * (quantity || 1)
+            : product?.tradeFedCost
           )
             ?.toFixed(2)
             .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</Text>

@@ -41,7 +41,7 @@ const OlderActiveProduct: React.FC<OlderActiveProductProps> = ({ product }) => {
         </Flex>
         <Flex width={`100%`} justifySelf="end">
           <Text fontWeight={600}>
-            {`${product?.currency} ${product?.MoverCost
+            {`${product?.currency} ${product?.tradeFedCost
               ?.toFixed(2)
               .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
           </Text>
@@ -71,26 +71,26 @@ const ActiveProduct: React.FC<ActiveProductProps> = ({
 }) => {
   const history = useHistory()
 
-  const slowMover = sold <= 10
-  const mover = sold > 10 && sold <= 49
-  const averageMover = sold > 49 && sold <= 70
+  const slowtradeFed = sold <= 10
+  const tradeFed = sold > 10 && sold <= 49
+  const averagetradeFed = sold > 49 && sold <= 70
   const fastMove = sold > 70
   const maxSellCost = get(product, 'maxSellCost') as number
-  const MoverCost = get(product, 'MoverCost') as number
+  const tradeFedCost = get(product, 'tradeFedCost') as number
 
-  const discount = Math.round(((maxSellCost - MoverCost) / maxSellCost) * 100)
+  const discount = Math.round(((maxSellCost - tradeFedCost) / maxSellCost) * 100)
 
-  const tagColors = slowMover
+  const tagColors = slowtradeFed
     ? {
         background: theme.colors.background,
         color: ''
       }
-    : mover
+    : tradeFed
     ? {
         background: '#B6DAF5',
         color: theme.colors.tagText
       }
-    : averageMover
+    : averagetradeFed
     ? {
         background: '#f0943d',
         color: theme.colors.accent[50]
@@ -208,7 +208,7 @@ const ActiveProduct: React.FC<ActiveProductProps> = ({
               cursor="pointer"
             >
               <Text fontSize={`12px`} fontWeight={550}>
-                {`${product?.currency} ${product?.MoverCost
+                {`${product?.currency} ${product?.tradeFedCost
                   ?.toFixed(2)
                   .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
               </Text>

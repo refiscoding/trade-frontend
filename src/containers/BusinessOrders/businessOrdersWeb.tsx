@@ -173,7 +173,7 @@ const BusinessOrdersPageWeb: React.FC<BusinessOrdersProps> = ({ orders, ordersLo
                       borderRadius={5}
                     >
                       <Text fontWeight={600} mb={3}>
-                        Mover Pickup Point
+                        tradeFed Pickup Point
                       </Text>
                       <Tag
                         fontSize={12}

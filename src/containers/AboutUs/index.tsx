@@ -47,8 +47,8 @@ const AboutUs: React.FC = () => {
   const privacyPolicyFile = legalities?.legality?.privacyPolicyFile?.url
   const termsAndConditionsFile = legalities?.legality?.termsAndConditionsFile?.url
 
-  const facebookLink = 'https://www.facebook.com/Mover'
-  const linkedInLink = 'https://www.linkedin.com/company/Moversolutions/'
+  const facebookLink = 'https://www.facebook.com/tradeFed'
+  const linkedInLink = 'https://www.linkedin.com/company/tradeFedsolutions/'
 
   return (
     <PageWrap title="About Us" alignSelf="center">
@@ -86,9 +86,9 @@ const AboutUs: React.FC = () => {
           </Flex>
         </Link>
       </Section>
-      <Section my={1} title="What is Mover all about? " bg="transparent" width="100%">
+      <Section my={1} title="What is tradeFed all about? " bg="transparent" width="100%">
         <Text fontSize={14}>
-          Mover is a B2B (Business to Business) as well as a B2C (Business to Customer) platform.
+          tradeFed is a B2B (Business to Business) as well as a B2C (Business to Customer) platform.
           We focus on selling products in bulk at an affordable price that benefits both the sellers
           and the buyers.
           <br />
@@ -96,7 +96,7 @@ const AboutUs: React.FC = () => {
           from across the world for your convenience.
           <br />
           Do you want to become a seller? Do you have access or dead stock you can’t seem to get rid
-          of? Complete an application to become a seller at Mover{' '}
+          of? Complete an application to become a seller at tradeFed{' '}
           <span onClick={() => history.push('/register')}>here</span>.
         </Text>
       </Section>

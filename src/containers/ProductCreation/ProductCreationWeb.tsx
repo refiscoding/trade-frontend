@@ -45,7 +45,7 @@ const ProductCreationWebFlow: React.FC<ProductCreationProps> = ({
   const currentImage = productInfoStage ? productInfoStageImage : productDetailsStageImage
   const currentAdImage = productInfoStage ? productInfoStageAdImage : productDetailsStageAdImage
   const currentTitle = productInfoStage
-    ? 'This is your first step to adding your new product on Mover.'
+    ? 'This is your first step to adding your new product on tradeFed.'
     : 'This is your second step that targets the expected audience'
   const currentText = productInfoStage
     ? 'This is the most important information to be displayed for potential buyers.'

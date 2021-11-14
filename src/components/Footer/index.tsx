@@ -38,8 +38,8 @@ const Footer: React.FC<FooterProps> = ({ removePadding }) => {
   const currentYear = dayjs().format('YYYY')
   const history = useHistory()
 
-  const facebookLink = 'https://www.facebook.com/Mover'
-  const linkedInLink = 'https://www.linkedin.com/company/Moversolutions/'
+  const facebookLink = 'https://www.facebook.com/tradeFed'
+  const linkedInLink = 'https://www.linkedin.com/company/tradeFedsolutions/'
 
   const handleLegalDocuments = () => {
     history.push('/about-us')
@@ -121,7 +121,7 @@ const Footer: React.FC<FooterProps> = ({ removePadding }) => {
         Legal Documents
       </Text>
       <Text m={2} color="brand.100" fontSize="10px">
-        {`© ${currentYear} Mover. All rights reserved`}
+        {`© ${currentYear} tradeFed. All rights reserved`}
       </Text>
     </Flex>
   )

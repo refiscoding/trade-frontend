@@ -342,7 +342,7 @@ const Seller: React.FC = () => {
       alignSelf="center"
     >
       <Flex width="100%" my={4} flexDirection="column" borderRadius={3}>
-        <H3 textAlign="center">Apply to sell on Mover</H3>
+        <H3 textAlign="center">Apply to sell on tradeFed</H3>
         <Flex
           mt={3}
           background={theme.colors.info}

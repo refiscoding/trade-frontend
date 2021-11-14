@@ -34,7 +34,7 @@ const ActiveProgressCard: React.FC<ActiveProgressCardProps> = ({ activeProductsC
   const annoationStyles = {
     fillColor: '#9fcdff',
     label: {
-      text: 'High Mover'
+      text: 'High tradeFed'
     }
   }
 

@@ -22,7 +22,7 @@ const SellerApproval: React.FC = () => {
           Thank you. Your application to become a seller is complete.
           We will be in contact with you within the next 72 hours.
           If you have any further questions regarding "Becoming a seller",
-          please contact queries@Mover.co.za.
+          please contact queries@tradeFed.co.za.
         `}
         action={() => history.push('/profile')}
         actionText="CONTINUE"

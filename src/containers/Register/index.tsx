@@ -71,7 +71,7 @@ const Register: React.FC<RegisterProps> = () => {
       title="Login"
       backgroundSize="contain"
       backgroundRepeat="no-repeat"
-      bgImage={`url(${images.MoverBg})`}
+      bgImage={`url(${images.tradeFedBg})`}
       justify="center"
       pt={0}
     >
@@ -82,7 +82,7 @@ const Register: React.FC<RegisterProps> = () => {
             Register
           </H3>
           <Text textAlign="center" fontSize="18px" color="gray.500">
-            Hi there! Welcome to Mover.
+            Hi there! Welcome to tradeFed.
           </Text>
         </Flex>
         <Box p="4" bg="gray.300">

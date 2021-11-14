@@ -22,7 +22,7 @@ export const MONTHS_OF_THE_YEAR = [
   'Dev'
 ]
 
-export const APP_NAME = 'Mover'
+export const APP_NAME = 'tradeFed'
 
 export const STRAPI_USER_STORAGE_KEY = 'strapi-user'
 
@@ -33,7 +33,7 @@ export const searchClient = algoliasearch(
   process.env.REACT_APP_ALGOLIA_API_KEY || ''
 )
 
-export const SEARCH_INDEX = `${process.env.REACT_APP_STAGE}_Mover`
+export const SEARCH_INDEX = `${process.env.REACT_APP_STAGE}_tradeFed`
 
 export const zendeskWidgetScriptUrl =
   `https://static.zdassets.com/ekr/snippet.js?key=${process.env.REACT_APP_ZENDESK_WIDGET_KEY}` || ''
