@@ -161,11 +161,6 @@ const ProductComponent: React.FC<ProductProps> = ({
               {product?.shortDescription}
             </Text>
             <VerifiedBadge />
-            <Text mt={4} fontSize="14px">
-              {`Retail: ${product?.currency} ${product?.maxSellCost
-                ?.toFixed(2)
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}
-            </Text>
             <Text mt={3} fontSize="17px" fontWeight={600}>
               {`${product?.currency} ${product?.tradeFedCost
                 ?.toFixed(2)
