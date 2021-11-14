@@ -267,7 +267,7 @@ const CartPage: React.FC = () => {
                   fontSize={14}
                   mt={4}
                   color="blue"
-                >{`Cart Total (${itemsCount}): R ${cartTotal
+                >{`Cart Total (${itemsCount}): BWP ${cartTotal
                   .toFixed(2)
                   .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`}</Text>
                 <Button
