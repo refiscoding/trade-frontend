@@ -76,7 +76,7 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
       </Grid>
       <Grid my={6} gridTemplateColumns="1fr 1fr">
         <Text color={theme.colors.blueText} fontWeight={600}>
-          Order Subtotal
+          Order Total
         </Text>
         <Flex justifySelf="end">
           <Text color={theme.colors.blueText} fontWeight={600}>{`${
@@ -87,7 +87,7 @@ const OrderSummaryComponent: React.FC<OrderSummaryComponentProps> = ({
       <Grid mb={5} borderTop={`1px dashed #acacac}`}>
         <Text mt={5} mb={5} fontWeight={600} fontSize="1.4rem">{`Delivery Point`}</Text>
         <Flex>
-          <Text fontWeight={600}> Address name: </Text>
+          <Text fontWeight={600}> Address name </Text>
           <Text pl={2}>
             {selectedAddress?.name && toSentenceCase(selectedAddress?.name || '-')}
           </Text>
