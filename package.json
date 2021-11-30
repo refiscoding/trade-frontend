@@ -1,5 +1,5 @@
 {
-  "name": "tradefed-frontend",
+  "name": "trade-frontend",
   "version": "1.13.7",
   "private": true,
   "dependencies": {
